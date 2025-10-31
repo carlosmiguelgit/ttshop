@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Share2, ShoppingCart, MoreVertical, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 import MediaViewerDialog from './MediaViewerDialog';
+import { showSuccess } from "@/utils/toast"; // Importando showSuccess
 
 interface MediaItem {
   type: 'image' | 'video';
@@ -68,20 +69,14 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ onCartClick }
   };
   
   const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: 'Patinete Elétrico Scooter De Alumínio Com Bluetooth 30km/h',
-          text: 'Confira este produto incrível!',
-          url: window.location.href, // Compartilha o URL atual da página
-        });
-      } catch (error) {
-        console.error('Erro ao compartilhar:', error);
-        // Opcional: Adicionar um fallback ou toast de erro
-      }
-    } else {
-      // Fallback para navegadores que não suportam a API de compartilhamento
-      alert('A API de compartilhamento nativo não é suportada neste navegador.');
+    const url = window.location.href;
+    try {
+      await navigator.clipboard.writeText(url);
+      showSuccess("Link da oferta copiado!");
+    } catch (err) {
+      console.error('Falha ao copiar o link:', err);
+      // Fallback simples caso a API de clipboard falhe
+      alert(`Falha ao copiar. Copie manualmente: ${url}`);
     }
   };
 
@@ -99,7 +94,7 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ onCartClick }
       <div className="absolute top-0 right-0 p-4 flex space-x-2 z-10">
         <button 
           className="w-8 h-8 bg-black/30 rounded-full flex items-center justify-center text-white backdrop-blur-sm"
-          onClick={handleShare} // Adicionando o handler de compartilhamento
+          onClick={handleShare} // Agora copia o link
         >
           <Share2 size={16} />
         </button>
