@@ -8,6 +8,7 @@ interface ReviewCardProps {
   verified: boolean;
   attributes: string;
   comment: string;
+  reviewImages?: string[]; // Novo campo para URLs de imagens
 }
 
 const ProductReviewCard: React.FC<ReviewCardProps> = ({
@@ -17,6 +18,7 @@ const ProductReviewCard: React.FC<ReviewCardProps> = ({
   verified,
   attributes,
   comment,
+  reviewImages,
 }) => {
   return (
     <div className="py-4">
@@ -42,9 +44,23 @@ const ProductReviewCard: React.FC<ReviewCardProps> = ({
       </p>
 
       {/* Comentário */}
-      <p className="text-sm text-gray-700 leading-relaxed">
+      <p className="text-sm text-gray-700 leading-relaxed mb-3">
         {comment}
       </p>
+      
+      {/* Galeria de Imagens da Avaliação (se houver) */}
+      {reviewImages && reviewImages.length > 0 && (
+        <div className="flex space-x-2 overflow-x-auto py-2">
+          {reviewImages.map((src, index) => (
+            <img 
+              key={index}
+              src={src}
+              alt={`Imagem da avaliação ${index + 1}`}
+              className="w-16 h-16 object-cover rounded-md border border-gray-200 flex-shrink-0"
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

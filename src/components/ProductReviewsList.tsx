@@ -10,6 +10,9 @@ const additionalReviews = [
     verified: true,
     attributes: "Custo-benefício: excelente | Bateria: duradoura",
     comment: "Chegou em 3 dias! A velocidade é ótima para o dia a dia e a bateria realmente aguenta o prometido. Muito satisfeito com a compra.",
+    reviewImages: [
+      "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8fxmt12@resize_w72_nl.webp",
+    ],
   },
   {
     username: "fernanda.paz",
@@ -34,6 +37,10 @@ const additionalReviews = [
     verified: true,
     attributes: "Velocidade: conforme o anúncio | Fácil de usar: sim",
     comment: "Perfeito para ir ao trabalho. Economizei muito tempo no trânsito. A dobragem é fácil para guardar no escritório.",
+    reviewImages: [
+      "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mbpgcdc8okt50c@resize_w72_nl.webp",
+      "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mbpgcdc8rdy1b7@resize_w72_nl.webp",
+    ],
   },
   {
     username: "marcos.souza",

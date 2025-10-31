@@ -87,6 +87,11 @@ const ProductDetailPage: React.FC = () => {
           verified={true}
           attributes="Custo-benefício: excelente | Parecido com anúncio: sim"
           comment="Patinete chegou super rápido e funciona perfeitamente! A bateria dura bastante e a velocidade máxima é incrível. Bluetooth conecta fácil no celular."
+          reviewImages={[
+            "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8fxmt12@resize_w72_nl.webp",
+            "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8ej2d65@resize_w72_nl.webp",
+            "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8prls27@resize_w72_nl.webp",
+          ]}
         />
         
         <Separator className="my-4" />
@@ -101,6 +106,9 @@ const ProductDetailPage: React.FC = () => {
               verified={true}
               attributes="Custo-benefício: ótimo | Qualidade: superior"
               comment="Produto de altíssima qualidade, superou minhas expectativas. A montagem foi simples e o desempenho na rua é excelente. Recomendo a todos!"
+              reviewImages={[
+                "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mchw4fwmt5hda2@resize_w72_nl.webp",
+              ]}
             />
             <Separator className="my-4" />
           </>
