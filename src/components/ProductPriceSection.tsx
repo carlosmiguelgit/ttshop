@@ -1,28 +1,37 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronRight, Star, Tag, Bookmark, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-// Componente para exibir o tempo restante (simulado)
+// Componente para exibir o tempo restante (com contagem regressiva simulada)
 const FlashSaleTimer: React.FC = () => {
-  // Simulação de tempo restante: 10 horas, 25 minutos, 17 segundos (baseado na imagem)
-  const hours = 10;
-  const minutes = 25;
-  const seconds = 17;
+  // Começa em 3 minutos (180 segundos)
+  const initialTime = 3 * 60; 
+  const [timeRemaining, setTimeRemaining] = useState(initialTime);
 
-  const TimeSegment: React.FC<{ value: number }> = ({ value }) => (
-    <span className="text-white text-lg font-bold">
-      {String(value).padStart(2, '0')}
-    </span>
-  );
+  useEffect(() => {
+    // Se o tempo for 0 ou menos, para o timer
+    if (timeRemaining <= 0) return;
+
+    const timerId = setInterval(() => {
+      setTimeRemaining(prevTime => prevTime - 1);
+    }, 1000);
+
+    return () => clearInterval(timerId);
+  }, [timeRemaining]);
+
+  const hours = Math.floor(timeRemaining / 3600);
+  const minutes = Math.floor((timeRemaining % 3600) / 60);
+  const seconds = timeRemaining % 60;
+
+  const formatTime = (value: number) => String(value).padStart(2, '0');
 
   return (
-    <div className="flex items-center space-x-0.5">
-      <TimeSegment value={hours} />
-      <span className="text-white font-bold">:</span>
-      <TimeSegment value={minutes} />
-      <span className="text-white font-bold">:</span>
-      <TimeSegment value={seconds} />
-    </div>
+    <span className="text-white text-sm font-medium">
+      Termina em 
+      <span className="font-bold ml-1">
+        {formatTime(hours)}:{formatTime(minutes)}:{formatTime(seconds)}
+      </span>
+    </span>
   );
 };
 
@@ -49,7 +58,7 @@ const ProductPriceSection: React.FC = () => {
   return (
     <div className="bg-white space-y-0">
       
-      {/* Seção de Oferta Relâmpago (Flash Sale) - Design IDÊNTICO À IMAGEM */}
+      {/* Seção de Oferta Relâmpago (Flash Sale) */}
       <div className="bg-gradient-to-r from-[#FF3399] to-[#FF6633] p-4">
         <div className="flex justify-between items-start">
           
@@ -75,14 +84,12 @@ const ProductPriceSection: React.FC = () => {
 
           {/* Timer da Oferta (Lado Direito) */}
           <div className="flex flex-col items-end text-white text-sm font-medium pt-1">
-            <div className="flex items-center space-x-1 font-bold">
+            <div className="flex items-center space-x-1 font-bold mb-1">
                 <Zap size={16} className="text-white fill-white" />
                 <span>Oferta Relâmpago</span>
             </div>
-            <div className="mt-1 text-sm">
-                <span className="text-white/80">Termina em </span>
-                <FlashSaleTimer />
-            </div>
+            {/* Exibição do Timer em uma única linha */}
+            <FlashSaleTimer />
           </div>
         </div>
       </div>
