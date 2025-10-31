@@ -111,11 +111,10 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ onCartClick }
             className="max-h-full object-contain w-full" 
           />
         ) : (
-          /* Vídeo Principal (Sem controles e mudo para visualização na galeria) */
+          /* Vídeo Principal (Usando poster e garantindo que o vídeo não tente reproduzir automaticamente se o poster for o foco) */
           <video 
             src={activeItem.src} 
-            autoPlay 
-            loop 
+            // Removendo autoPlay e loop aqui para garantir que o poster seja o foco inicial
             muted 
             className="max-h-full object-contain w-full h-full"
             poster={activeItem.thumbnailSrc} // Usando a miniatura como poster
@@ -124,8 +123,9 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ onCartClick }
         
         {/* Overlay de Play para Vídeo na Galeria */}
         {activeItem.type === 'video' && (
-            <div className="absolute inset-0 flex items-center justify-center bg-black/10">
-                <Play size={48} className="text-white fill-white opacity-80" />
+            // Tornando o overlay mais escuro para garantir que o ícone de Play se destaque
+            <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                <Play size={48} className="text-white fill-white opacity-90" />
             </div>
         )}
 

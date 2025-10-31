@@ -199,14 +199,7 @@ const ProductDetailPage: React.FC = () => {
               <ChevronRight size={20} className="text-gray-400" />
             </div>
 
-            {/* Devoluções Gratuitas em 30 dias */}
-            <div className="flex items-center justify-between py-2 cursor-pointer hover:bg-gray-50 transition-colors">
-              <div className="flex items-start space-x-3">
-                <CheckCircle size={24} className="text-green-500 fill-white mt-1" />
-                <p className="font-semibold text-gray-800">Devoluções gratuitas em 30 dias</p>
-              </div>
-              <ChevronRight size={20} className="text-gray-400" />
-            </div>
+            {/* Devoluções Gratuitas em 30 dias - REMOVIDO */}
           </div>
         </div>
         
