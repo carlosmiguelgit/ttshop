@@ -52,13 +52,13 @@ const ProductPriceSection: React.FC = () => {
   const salesCount = 4348;
   const productTitle = "Patinete Elétrico Scooter De Alumínio Com Bluetooth 30km/h";
   
-  // Cálculo do parcelamento (2x sem juros)
-  const installmentPrice = (67.90 / 2).toFixed(2).replace('.', ',');
+  // Cálculo do parcelamento (não mais usado na renderização)
+  // const installmentPrice = (67.90 / 2).toFixed(2).replace('.', ',');
 
   return (
     <div className="bg-white space-y-0">
       
-      {/* Seção de Oferta Relâmpago (Flash Sale) - Gradiente ajustado para vermelho mais escuro */}
+      {/* Seção de Oferta Relâmpago (Flash Sale) */}
       <div className="bg-gradient-to-r from-[#D32F2F] to-[#FF5722] p-4">
         <div className="flex justify-between items-start">
           
@@ -94,15 +94,7 @@ const ProductPriceSection: React.FC = () => {
         </div>
       </div>
       
-      {/* Linha de Parcelamento */}
-      <div className="p-4 pt-2 pb-0">
-        <div className="flex items-center text-sm text-gray-700 cursor-pointer hover:text-gray-900">
-          <span className="mr-1">
-            2x R$ {installmentPrice} sem juros
-          </span>
-          <ChevronRight size={16} className="text-gray-400" />
-        </div>
-      </div>
+      {/* A linha de Parcelamento foi removida daqui */}
 
       <div className="p-4 space-y-3">
         {/* Linha 2: Banners de Cupom */}
@@ -132,7 +124,7 @@ const ProductPriceSection: React.FC = () => {
             <span className="text-gray-500 ml-1">({(reviewCount / 1000).toFixed(1)} mil)</span>
           </div>
           <span className="text-gray-500">|</span>
-          <span className="text-gray-500">{salesCount} vendidos</span>
+          <span className="text-gray-500">{salesCount} vendidos}</span>
         </div>
       </div>
     </div>
