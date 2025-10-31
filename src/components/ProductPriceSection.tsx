@@ -103,9 +103,9 @@ const ProductPriceSection: React.FC = () => {
           {/* Badge de Cupom com Pulse */}
           <CouponBadge text={`R$ ${discountAmount} de desconto`} />
           
-          {/* Mensagem de Urgência com Pulse */}
+          {/* Mensagem de Urgência com Pulse (Agora com estilo rosa) */}
           <div className={cn(
-            "flex items-center text-sm font-bold text-red-600 bg-red-50 px-2 py-1 rounded-md whitespace-nowrap border border-red-600",
+            "flex items-center bg-pink-50/80 text-sm text-[#FF3399] font-semibold px-2 py-1 rounded-md whitespace-nowrap border border-[#FF3399]",
             "animate-pulse-slow" // Aplicando o efeito de pulso ao redor do frame
           )}>
             <span className="mr-1">🚨</span>
