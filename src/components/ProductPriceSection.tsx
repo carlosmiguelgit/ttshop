@@ -99,8 +99,8 @@ const ProductPriceSection: React.FC = () => {
       <div className="p-4 space-y-3">
         {/* Linha 2: Banners de Cupom */}
         <div className="flex space-x-2 overflow-x-auto py-1 border-t border-gray-100 pt-4">
-          <CouponBadge text="Desconto de R$ 5" />
-          <CouponBadge text="R$15 off no Google Pay" />
+          <CouponBadge text="R$ 5 de desconto aqui" />
+          <CouponBadge text="Desconto disponível somente no PIX" />
         </div>
 
         {/* Linha 3: Título do Produto e Bookmark */}
@@ -124,7 +124,7 @@ const ProductPriceSection: React.FC = () => {
             <span className="text-gray-500 ml-1">({(reviewCount / 1000).toFixed(1)} mil)</span>
           </div>
           <span className="text-gray-500">|</span>
-          <span className="text-gray-500">{salesCount} vendidos}</span>
+          <span className="text-gray-500">{salesCount} vendidos</span>
         </div>
       </div>
     </div>
