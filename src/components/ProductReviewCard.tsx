@@ -23,7 +23,6 @@ const ProductReviewCard: React.FC<ReviewCardProps> = ({
   username,
   date,
   avatarSrc,
-  verified,
   comment,
   reviewImages,
 }) => {
@@ -76,10 +75,7 @@ const ProductReviewCard: React.FC<ReviewCardProps> = ({
         </div>
       )}
       
-      {/* Compra Verificada (Mantido, mas pode ser movido se o layout final exigir) */}
-      {verified && (
-        <p className="text-xs text-gray-500 mt-2">Compra Verificada</p>
-      )}
+      {/* Compra Verificada removida */}
     </div>
   );
 };

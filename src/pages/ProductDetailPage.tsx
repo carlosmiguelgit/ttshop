@@ -56,7 +56,8 @@ const ProductDetailPage: React.FC = () => {
     <div ref={reviewsRef}> 
       {/* Seção de Avaliações */}
       <div className="p-4 bg-white">
-        <h3 className="text-xl font-bold mb-4">Avaliações dos clientes (892)</h3>
+        {/* Título Atualizado */}
+        <h3 className="text-xl font-bold mb-4">Avaliações da loja (9,5mil)</h3>
         
         {/* Média de Avaliação */}
         <div className="flex items-baseline mb-4">
@@ -69,14 +70,12 @@ const ProductDetailPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Filtros de Estrelas */}
+        {/* Filtros de Estrelas (Apenas 5 estrelas) */}
         <div className="flex space-x-2 mb-4">
           <div className="flex items-center bg-gray-100 px-3 py-1 rounded-full text-sm font-medium text-gray-800">
             5 <Star size={12} className="text-yellow-500 fill-yellow-500 ml-1 mr-1" /> (765)
           </div>
-          <div className="flex items-center bg-gray-100 px-3 py-1 rounded-full text-sm font-medium text-gray-800">
-            4 <Star size={12} className="text-yellow-500 fill-yellow-500 ml-1 mr-1" /> (102)
-          </div>
+          {/* Filtro de 4 estrelas removido */}
         </div>
 
         {/* Avaliação 1 (Mais recente) */}
@@ -118,21 +117,18 @@ const ProductDetailPage: React.FC = () => {
         {showAllReviews ? (
           <ProductReviewsList />
         ) : (
-          /* Botão Ver Avaliações */
+          /* Botão Ver Avaliações Atualizado */
           <div className="flex justify-center pt-2 pb-4">
             <button 
               onClick={handleViewAllReviews}
-              className="flex items-center text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors"
+              className="flex items-center text-base font-semibold text-cyan-500 hover:text-cyan-600 transition-colors"
             >
-              Ver Avaliações <ChevronRight size={18} className="ml-1" />
+              Ver Avaliações da Loja <ChevronRight size={18} className="ml-1" />
             </button>
           </div>
         )}
         
-        {/* Paginação (Sempre visível abaixo das avaliações) */}
-        <div className="text-center text-xs text-gray-500 pt-4">
-          1/269
-        </div>
+        {/* Paginação Removida */}
       </div>
       
       {/* Seção de Informações da Loja */}
