@@ -68,7 +68,7 @@ const ProductDetailPage: React.FC = () => {
                     <span className="bg-cyan-50 text-cyan-700 px-2 py-0.5 rounded text-xs font-semibold">
                       Frete grátis
                     </span>
-                    <p className="font-semibold text-gray-800">Receba até <span className="font-extrabold">AMANHÃ</span></p>
+                    <p className="font-semibold text-gray-800">Receba até <span className="font-extrabold text-cyan-500">AMANHÃ</span></p>
                   </div>
                   <p className="text-xs text-gray-500 line-through mt-1">Taxa de envio: R$ 39,45</p>
                 </div>
