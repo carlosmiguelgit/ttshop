@@ -1,16 +1,27 @@
 import React from 'react';
 import { CheckCircle, ShoppingBag, ChevronRight } from 'lucide-react';
+import { showSuccess } from '@/utils/toast';
 
 interface NavLinkProps {
   title: string;
+  toastMessage: string;
 }
 
-const NavLink: React.FC<NavLinkProps> = ({ title }) => (
-  <div className="flex justify-between items-center py-3 cursor-pointer hover:bg-gray-50 transition-colors">
-    <span className="text-base text-gray-800">{title}</span>
-    <ChevronRight size={20} className="text-gray-400" />
-  </div>
-);
+const NavLink: React.FC<NavLinkProps> = ({ title, toastMessage }) => {
+  const handleClick = () => {
+    showSuccess(toastMessage);
+  };
+
+  return (
+    <div 
+      className="flex justify-between items-center py-3 cursor-pointer hover:bg-gray-50 transition-colors"
+      onClick={handleClick}
+    >
+      <span className="text-base text-gray-800">{title}</span>
+      <ChevronRight size={20} className="text-gray-400" />
+    </div>
+  );
+};
 
 const StoreInfoSection: React.FC = () => {
   return (
@@ -32,9 +43,18 @@ const StoreInfoSection: React.FC = () => {
 
       {/* Links de Navegação */}
       <div className="divide-y divide-gray-100">
-        <NavLink title="Informações da empresa" />
-        <NavLink title="Suporte ao cliente" />
-        <NavLink title="Políticas e aspectos legais" />
+        <NavLink 
+          title="Informações da empresa" 
+          toastMessage="A Tech Mobility Brasil é líder no mercado de mobilidade elétrica, focada em inovação e sustentabilidade. Oferecemos produtos de alta qualidade e tecnologia de ponta."
+        />
+        <NavLink 
+          title="Suporte ao cliente" 
+          toastMessage="Todo o suporte é feito pela equipe do Tiktok Shop."
+        />
+        <NavLink 
+          title="Políticas e aspectos legais" 
+          toastMessage="Nossas políticas de privacidade e termos de serviço estão em conformidade com a legislação brasileira. Consulte o site para detalhes sobre devoluções e garantias."
+        />
       </div>
     </div>
   );
