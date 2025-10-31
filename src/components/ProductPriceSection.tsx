@@ -98,19 +98,17 @@ const ProductPriceSection: React.FC = () => {
         {/* Linha 2: Banners de Cupom */}
         <div className="flex space-x-2 overflow-x-auto py-1 border-t border-gray-100 pt-4">
           {/* Badge atualizado com o valor real do desconto */}
-          <CouponBadge text={`R$ ${discountAmount} de desconto aqui`} />
+          <CouponBadge text={`R$ ${discountAmount} de desconto`} />
         </div>
 
-        {/* Linha 3: Título do Produto e Bookmark */}
+        {/* Linha 3: Título do Produto (Botão de Bookmark removido) */}
         <div className="flex justify-between items-start pt-2">
           <div className="flex items-center">
             <h2 className="text-lg font-bold text-gray-900 leading-snug line-clamp-2">
               {productTitle}
             </h2>
           </div>
-          <button className="p-1 text-gray-500 hover:text-gray-700 flex-shrink-0">
-            <Bookmark size={24} />
-          </button>
+          {/* O botão de Bookmark foi removido daqui */}
         </div>
         
         {/* Linha 4: Avaliação e Vendas */}
