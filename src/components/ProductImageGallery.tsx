@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Share2, ShoppingCart, MoreVertical, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
+import MediaViewerDialog from './MediaViewerDialog';
 
 interface MediaItem {
   type: 'image' | 'video';
@@ -50,6 +51,8 @@ const ProductImageGallery: React.FC = () => {
   ];
   
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isViewerOpen, setIsViewerOpen] = useState(false);
+  
   const totalMedia = media.length;
   const activeItem = media[activeIndex];
 
@@ -60,9 +63,21 @@ const ProductImageGallery: React.FC = () => {
   const handlePrev = () => {
     setActiveIndex((prevIndex) => (prevIndex - 1 + totalMedia) % totalMedia);
   };
+  
+  const handleMediaClick = () => {
+    setIsViewerOpen(true);
+  };
 
   return (
     <div className="relative bg-white">
+      
+      {/* Media Viewer Dialog */}
+      <MediaViewerDialog 
+        isOpen={isViewerOpen}
+        onClose={() => setIsViewerOpen(false)}
+        mediaItem={activeItem}
+      />
+
       {/* Top Floating Header */}
       <div className="absolute top-0 right-0 p-4 flex space-x-2 z-10">
         <button className="w-8 h-8 bg-black/30 rounded-full flex items-center justify-center text-white backdrop-blur-sm">
@@ -77,7 +92,10 @@ const ProductImageGallery: React.FC = () => {
       </div>
 
       {/* Main Media Area */}
-      <div className="relative h-[400px] flex items-center justify-center bg-white">
+      <div 
+        className="relative h-[400px] flex items-center justify-center bg-white cursor-pointer"
+        onClick={handleMediaClick}
+      >
         {activeItem.type === 'image' ? (
           /* Imagem Principal */
           <img 
@@ -86,10 +104,9 @@ const ProductImageGallery: React.FC = () => {
             className="max-h-full object-contain w-full" 
           />
         ) : (
-          /* Vídeo Principal */
+          /* Vídeo Principal (Sem controles e mudo para visualização na galeria) */
           <video 
             src={activeItem.src} 
-            controls 
             autoPlay 
             loop 
             muted 
@@ -97,16 +114,23 @@ const ProductImageGallery: React.FC = () => {
             poster={activeItem.thumbnailSrc} // Usando a miniatura como poster
           />
         )}
+        
+        {/* Overlay de Play para Vídeo na Galeria */}
+        {activeItem.type === 'video' && (
+            <div className="absolute inset-0 flex items-center justify-center bg-black/10">
+                <Play size={48} className="text-white fill-white opacity-80" />
+            </div>
+        )}
 
         {/* Navigation Arrows */}
         <button 
-          onClick={handlePrev}
+          onClick={(e) => { e.stopPropagation(); handlePrev(); }}
           className="absolute left-4 w-9 h-9 bg-black/30 rounded-full flex items-center justify-center text-white hover:bg-black/50 transition-colors"
         >
           <ChevronLeft size={20} />
         </button>
         <button 
-          onClick={handleNext}
+          onClick={(e) => { e.stopPropagation(); handleNext(); }}
           className="absolute right-4 w-9 h-9 bg-black/30 rounded-full flex items-center justify-center text-white hover:bg-black/50 transition-colors"
         >
           <ChevronRight size={20} />
