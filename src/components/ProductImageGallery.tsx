@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Share2, ShoppingCart, MoreVertical, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 import MediaViewerDialog from './MediaViewerDialog';
@@ -80,6 +80,17 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ onCartClick, 
       alert(`Falha ao copiar. Copie manualmente: ${url}`);
     }
   };
+  
+  // Efeito de carrossel automático
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prevIndex) => (prevIndex + 1) % totalMedia);
+    }, 3000); // Muda a cada 3 segundos
+
+    // Limpa o intervalo quando o componente é desmontado ou o totalMedia muda
+    return () => clearInterval(interval);
+  }, [totalMedia]);
+
 
   return (
     <div className="relative bg-white">
