@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle, ShoppingBag } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import StoreInfoCollapsibleItem from './StoreInfoCollapsibleItem';
 
 interface NavLinkData {
@@ -31,14 +31,6 @@ const StoreInfoSection: React.FC = () => {
         <CheckCircle size={18} className="text-blue-500 fill-white" />
       </div>
       <p className="text-sm text-gray-500 mb-4">Loja verificada por Mercado Livre</p>
-
-      {/* Ícone Shop */}
-      <div className="flex items-center space-x-3 py-2">
-        <div className="w-8 h-8 bg-cyan-500 rounded-full flex items-center justify-center">
-          <ShoppingBag size={18} className="text-white fill-white" />
-        </div>
-        <span className="text-lg font-bold text-gray-900">Shop</span>
-      </div>
 
       {/* Links de Navegação (Collapsible Items) */}
       <div className="divide-y divide-gray-100">
