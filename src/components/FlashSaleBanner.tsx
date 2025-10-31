@@ -34,15 +34,17 @@ const FlashSaleBanner: React.FC = () => {
       {/* Lado Esquerdo: Desconto e Preços */}
       <div className="flex items-center space-x-2">
         
-        {/* Balão de Desconto */}
+        {/* Balão de Desconto (Ajustado para 89%) */}
         <span className="bg-white text-[#FF3399] text-xs font-bold px-1.5 py-0.5 rounded-sm flex-shrink-0">
-          -52%
+          -89%
         </span>
         
         {/* Preço Atual e Preço Original */}
         <div className="flex flex-col items-start leading-none">
-          <span className="text-xl font-bold">R$ 95,00</span>
-          <span className="text-xs opacity-70 line-through mt-0.5">R$ 198,99</span>
+          {/* Preço Atual em destaque */}
+          <span className="text-2xl font-bold">R$ 67,90</span>
+          {/* Preço Original riscado */}
+          <span className="text-xs opacity-70 line-through mt-0.5">R$ 619,90</span>
         </div>
       </div>
 
