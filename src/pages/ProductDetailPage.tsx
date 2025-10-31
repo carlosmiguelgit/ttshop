@@ -120,9 +120,11 @@ const ProductDetailPage: React.FC = () => {
           <div className="flex justify-center pt-2 pb-4">
             <button 
               onClick={handleViewAllReviews}
-              className="flex items-center text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors"
+              // Adicionando w-full e justify-between para alinhar o texto à esquerda e o ícone à direita
+              className="flex items-center justify-between w-full text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors px-0"
             >
-              Avaliações da loja (9,6 mil) <ChevronRight size={18} className="ml-1" />
+              <span>Avaliações da loja (9,6 mil)</span>
+              <ChevronRight size={18} className="ml-1" />
             </button>
           </div>
         )}
