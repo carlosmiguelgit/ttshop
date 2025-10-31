@@ -7,6 +7,7 @@ import ProductReviewCard from "@/components/ProductReviewCard";
 import StoreInfoSection from "@/components/StoreInfoSection";
 import ProductReviewsList from "@/components/ProductReviewsList";
 import ProductDescription from "@/components/ProductDescription";
+import CartDrawer from "@/components/CartDrawer"; // Importando o novo componente
 import { Star, ChevronRight, CheckCircle, Truck } from "lucide-react";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Separator } from "@/components/ui/separator";
@@ -29,6 +30,7 @@ const Tab: React.FC<{ title: string; name: TabName; isActive: boolean; onClick: 
 const ProductDetailPage: React.FC = () => {
   const [showAllReviews, setShowAllReviews] = useState(false);
   const [activeTab, setActiveTab] = useState<TabName>('overview');
+  const [isCartOpen, setIsCartOpen] = useState(false); // Novo estado para o Drawer
   
   // Ref para a seção de avaliações
   const reviewsRef = useRef<HTMLDivElement>(null);
@@ -47,8 +49,14 @@ const ProductDetailPage: React.FC = () => {
     }
   };
   
-  const handleBuyNow = () => {
-    window.location.href = 'https://www.google.com';
+  const handleBuyWithCoupon = () => {
+    // Ação para Comprar com cupom
+    window.location.href = 'https://www.google.com/coupon-checkout';
+  };
+  
+  const handleAddToCart = () => {
+    // Abre o Drawer do carrinho
+    setIsCartOpen(true);
   };
 
   const renderOverviewContent = () => (
@@ -120,7 +128,6 @@ const ProductDetailPage: React.FC = () => {
           <div className="flex justify-center pt-2 pb-4">
             <button 
               onClick={handleViewAllReviews}
-              // Adicionando w-full e justify-between para alinhar o texto à esquerda e o ícone à direita
               className="flex items-center justify-between w-full text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors px-0"
             >
               <span>Avaliações da loja (9,6 mil)</span>
@@ -232,8 +239,14 @@ const ProductDetailPage: React.FC = () => {
       
       {/* Barra de Ação Fixa Inferior */}
       <ProductActionsBar 
-        onViewReviewsClick={handleScrollToReviews}
-        onBuyNowClick={handleBuyNow}
+        onAddToCartClick={handleAddToCart}
+        onBuyWithCouponClick={handleBuyWithCoupon}
+      />
+      
+      {/* Drawer do Carrinho */}
+      <CartDrawer 
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
       />
     </div>
   );
