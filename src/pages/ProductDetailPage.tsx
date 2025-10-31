@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ProductImageGallery from "@/components/ProductImageGallery";
 import FlashSaleBanner from "@/components/FlashSaleBanner";
 import DiscountBanner from "@/components/DiscountBanner";
 import ProductActionsBar from "@/components/ProductActionsBar";
 import ProductReviewCard from "@/components/ProductReviewCard";
 import StoreInfoSection from "@/components/StoreInfoSection";
-import { Star, Package, ChevronRight, CheckCircle, Trash2 } from "lucide-react";
+import ProductReviewsList from "@/components/ProductReviewsList";
+import { Star, ChevronRight, CheckCircle, Trash2 } from "lucide-react";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Separator } from "@/components/ui/separator";
 
@@ -20,6 +21,12 @@ const Tab: React.FC<{ title: string; isActive: boolean }> = ({ title, isActive }
 );
 
 const ProductDetailPage: React.FC = () => {
+  const [showAllReviews, setShowAllReviews] = useState(false);
+
+  const handleViewAllReviews = () => {
+    setShowAllReviews(true);
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Container principal limitado para simular a visualização móvel */}
@@ -109,11 +116,11 @@ const ProductDetailPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Exemplo de Avaliação */}
+          {/* Avaliação 1 (Original) */}
           <ProductReviewCard
             username="carlos.santos"
             date="15 de out"
-            avatarSrc="/placeholder.svg" // Usando placeholder
+            avatarSrc="/placeholder.svg"
             verified={true}
             attributes="Custo-benefício: excelente | Parecido com anúncio: sim"
             comment="Patinete chegou super rápido e funciona perfeitamente! A bateria dura bastante e a velocidade máxima é incrível. Bluetooth conecta fácil no celular."
@@ -121,12 +128,35 @@ const ProductDetailPage: React.FC = () => {
           
           <Separator className="my-4" />
 
-          {/* Botão Ver Avaliações */}
-          <div className="flex justify-center pt-2 pb-4">
-            <button className="flex items-center text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors">
-              Ver Avaliações <ChevronRight size={18} className="ml-1" />
-            </button>
-          </div>
+          {/* Avaliação 2 (Nova) */}
+          {!showAllReviews && (
+            <>
+              <ProductReviewCard
+                username="ana.ribeiro"
+                date="20 de out"
+                avatarSrc="/placeholder.svg"
+                verified={true}
+                attributes="Custo-benefício: ótimo | Qualidade: superior"
+                comment="Produto de altíssima qualidade, superou minhas expectativas. A montagem foi simples e o desempenho na rua é excelente. Recomendo a todos!"
+              />
+              <Separator className="my-4" />
+            </>
+          )}
+
+          {/* Lista Completa de Avaliações (Condicional) */}
+          {showAllReviews ? (
+            <ProductReviewsList />
+          ) : (
+            /* Botão Ver Avaliações */
+            <div className="flex justify-center pt-2 pb-4">
+              <button 
+                onClick={handleViewAllReviews}
+                className="flex items-center text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors"
+              >
+                Ver Avaliações <ChevronRight size={18} className="ml-1" />
+              </button>
+            </div>
+          )}
         </div>
         
         {/* Seção de Informações da Loja */}
