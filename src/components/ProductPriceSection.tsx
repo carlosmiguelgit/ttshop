@@ -1,5 +1,5 @@
 import React from 'react';
-import { Clock, ChevronRight, Star, Tag, Bookmark, Zap } from 'lucide-react';
+import { ChevronRight, Star, Tag, Bookmark, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 // Componente para exibir o tempo restante (simulado)
@@ -10,13 +10,13 @@ const FlashSaleTimer: React.FC = () => {
   const seconds = 17;
 
   const TimeSegment: React.FC<{ value: number }> = ({ value }) => (
-    <span className="text-white text-sm font-bold">
+    <span className="text-white text-lg font-bold">
       {String(value).padStart(2, '0')}
     </span>
   );
 
   return (
-    <div className="flex items-center space-x-1">
+    <div className="flex items-center space-x-0.5">
       <TimeSegment value={hours} />
       <span className="text-white font-bold">:</span>
       <TimeSegment value={minutes} />
@@ -25,15 +25,6 @@ const FlashSaleTimer: React.FC = () => {
     </div>
   );
 };
-
-const DiscountBadge: React.FC<{ text: string; className?: string }> = ({ text, className }) => (
-  <span className={cn(
-    "bg-red-600 text-white text-sm font-bold px-2 py-0.5 rounded-sm flex-shrink-0",
-    className
-  )}>
-    {text}
-  </span>
-);
 
 const CouponBadge: React.FC<{ text: string }> = ({ text }) => (
   <div className="flex items-center bg-pink-50/80 text-sm text-[#FF3399] font-semibold px-2 py-1 rounded-md whitespace-nowrap">
@@ -58,38 +49,38 @@ const ProductPriceSection: React.FC = () => {
   return (
     <div className="bg-white space-y-0">
       
-      {/* Seção de Oferta Relâmpago (Flash Sale) - Novo Design */}
-      <div className="bg-gradient-to-r from-[#FF66B2] to-[#FF3399] p-4">
-        <div className="flex justify-between items-center">
+      {/* Seção de Oferta Relâmpago (Flash Sale) - Design IDÊNTICO À IMAGEM */}
+      <div className="bg-gradient-to-r from-[#FF3399] to-[#FF6633] p-4">
+        <div className="flex justify-between items-start">
           
-          {/* Preço e Desconto */}
-          <div className="flex items-end space-x-2">
-            {/* Desconto */}
-            <span className="bg-black/20 text-white text-lg font-bold px-2 py-1 rounded-sm flex-shrink-0">
-              -{discountPercentage}%
-            </span>
-            
-            {/* Preço Atual */}
-            <span className="text-4xl font-bold text-white">
-              R$ {currentPrice}
-            </span>
-            
-            {/* Preço Original Riscado */}
-            <div className="flex flex-col justify-end h-full pb-1">
-              <span className="text-white/80 text-sm line-through">
-                R$ {originalPrice}
+          {/* Preço e Desconto (Lado Esquerdo) */}
+          <div className="flex flex-col">
+            <div className="flex items-center space-x-2 mb-1">
+              {/* Badge de Desconto Branco */}
+              <span className="bg-white text-[#FF3399] text-lg font-bold px-2 py-0.5 rounded-md flex-shrink-0">
+                -{discountPercentage}%
+              </span>
+              
+              {/* Preço Atual */}
+              <span className="text-4xl font-bold text-white">
+                R$ {currentPrice}
               </span>
             </div>
+            
+            {/* Preço Original Riscado */}
+            <span className="text-white/80 text-base line-through ml-2">
+              R$ {originalPrice}
+            </span>
           </div>
 
-          {/* Timer da Oferta */}
-          <div className="flex flex-col items-end text-white text-sm font-medium">
-            <div className="flex items-center space-x-1">
+          {/* Timer da Oferta (Lado Direito) */}
+          <div className="flex flex-col items-end text-white text-sm font-medium pt-1">
+            <div className="flex items-center space-x-1 font-bold">
                 <Zap size={16} className="text-white fill-white" />
                 <span>Oferta Relâmpago</span>
             </div>
-            <div className="mt-1">
-                <span className="text-xs">Termina em </span>
+            <div className="mt-1 text-sm">
+                <span className="text-white/80">Termina em </span>
                 <FlashSaleTimer />
             </div>
           </div>
