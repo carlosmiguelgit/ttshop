@@ -1,21 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CheckCircle, ShoppingBag, ChevronRight } from 'lucide-react';
-import { showSuccess } from '@/utils/toast';
+import InfoDrawer from './InfoDrawer';
 
-interface NavLinkProps {
+interface NavLinkData {
   title: string;
-  toastMessage: string;
+  content: string;
 }
 
-const NavLink: React.FC<NavLinkProps> = ({ title, toastMessage }) => {
-  const handleClick = () => {
-    showSuccess(toastMessage);
-  };
+const linksData: NavLinkData[] = [
+  {
+    title: "Informações da empresa",
+    content: "A Tech Mobility Brasil é líder no mercado de mobilidade elétrica, focada em inovação e sustentabilidade. Oferecemos produtos de alta qualidade e tecnologia de ponta. Nossa missão é transformar a maneira como as pessoas se movem nas cidades, promovendo um futuro mais verde e eficiente. Fundada em 2018, já atendemos mais de 500 mil clientes em todo o Brasil."
+  },
+  {
+    title: "Suporte ao cliente",
+    content: "Todo o suporte é feito pela equipe do Tiktok Shop. Para questões relacionadas a pedidos, pagamentos ou devoluções, utilize o chat de suporte dentro do aplicativo. Nossa equipe de atendimento está disponível 24 horas por dia, 7 dias por semana."
+  },
+  {
+    title: "Políticas e aspectos legais",
+    content: "Nossas políticas de privacidade e termos de serviço estão em conformidade com a legislação brasileira (LGPD). Consulte o site para detalhes sobre devoluções, garantias e direitos do consumidor. Garantimos a segurança dos seus dados e a transparência em todas as transações."
+  },
+];
 
+const NavLink: React.FC<NavLinkData & { onClick: (data: NavLinkData) => void }> = ({ title, content, onClick }) => {
   return (
     <div 
       className="flex justify-between items-center py-3 cursor-pointer hover:bg-gray-50 transition-colors"
-      onClick={handleClick}
+      onClick={() => onClick({ title, content })}
     >
       <span className="text-base text-gray-800">{title}</span>
       <ChevronRight size={20} className="text-gray-400" />
@@ -24,6 +35,14 @@ const NavLink: React.FC<NavLinkProps> = ({ title, toastMessage }) => {
 };
 
 const StoreInfoSection: React.FC = () => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [drawerContent, setDrawerContent] = useState<NavLinkData>({ title: '', content: '' });
+
+  const handleLinkClick = (data: NavLinkData) => {
+    setDrawerContent(data);
+    setIsDrawerOpen(true);
+  };
+
   return (
     <div className="bg-white p-4 space-y-4 border-t border-gray-100 mt-4">
       {/* Nome da Loja e Verificação */}
@@ -43,19 +62,23 @@ const StoreInfoSection: React.FC = () => {
 
       {/* Links de Navegação */}
       <div className="divide-y divide-gray-100">
-        <NavLink 
-          title="Informações da empresa" 
-          toastMessage="A Tech Mobility Brasil é líder no mercado de mobilidade elétrica, focada em inovação e sustentabilidade. Oferecemos produtos de alta qualidade e tecnologia de ponta."
-        />
-        <NavLink 
-          title="Suporte ao cliente" 
-          toastMessage="Todo o suporte é feito pela equipe do Tiktok Shop."
-        />
-        <NavLink 
-          title="Políticas e aspectos legais" 
-          toastMessage="Nossas políticas de privacidade e termos de serviço estão em conformidade com a legislação brasileira. Consulte o site para detalhes sobre devoluções e garantias."
-        />
+        {linksData.map((link, index) => (
+          <NavLink 
+            key={index}
+            title={link.title}
+            content={link.content}
+            onClick={handleLinkClick}
+          />
+        ))}
       </div>
+      
+      {/* Drawer de Informações */}
+      <InfoDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        title={drawerContent.title}
+        content={drawerContent.content}
+      />
     </div>
   );
 };
