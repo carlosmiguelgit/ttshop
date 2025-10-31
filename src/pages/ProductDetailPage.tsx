@@ -85,12 +85,12 @@ const ProductDetailPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Filtros de Estrelas (Apenas 5 estrelas) */}
-        <div className="flex space-x-2 mb-4">
+        {/* Filtros de Estrelas (REMOVIDO) */}
+        {/* <div className="flex space-x-2 mb-4">
           <div className="flex items-center bg-gray-100 px-3 py-1 rounded-full text-sm font-medium text-gray-800">
             5 <Star size={12} className="text-yellow-500 fill-yellow-500 ml-1 mr-1" /> (765)
           </div>
-        </div>
+        </div> */}
 
         {/* Avaliação 1 (Mais recente) */}
         <ProductReviewCard
