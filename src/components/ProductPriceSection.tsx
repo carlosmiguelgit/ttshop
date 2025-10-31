@@ -21,14 +21,12 @@ const CouponBadge: React.FC<{ text: string }> = ({ text }) => (
 const ProductPriceSection: React.FC = () => {
   // Dados simulados
   const discountPercentage = 58;
-  const currentPrice = "36,20";
-  const originalPrice = "87,00";
-  const installmentCount = 7;
-  const installmentValue = "5,64";
-  const rating = 4.8; // Nota da loja (ajustada para 4.8, como na seção de avaliações)
+  const currentPrice = "67,90"; // Preço do patinete
+  const originalPrice = "161,67"; // Preço original do patinete
+  const rating = 4.8; // Nota da loja
   const reviewCount = 9600; // 9,6 mil avaliações
   const salesCount = 4348;
-  const productTitle = "Patinete Elétrico Scooter De Alumínio Com Bluetooth 30km/h"; // Título original
+  const productTitle = "Patinete Elétrico Scooter De Alumínio Com Bluetooth 30km/h";
 
   return (
     <div className="bg-white p-4 space-y-3">
@@ -47,23 +45,15 @@ const ProductPriceSection: React.FC = () => {
         </div>
       </div>
 
-      {/* Linha 2: Parcelamento */}
-      <div className="flex items-center text-sm text-gray-700 cursor-pointer">
-        <Clock size={16} className="mr-1 text-gray-500" />
-        <span>{installmentCount}x R$ {installmentValue}</span>
-        <ChevronRight size={16} className="ml-1 text-gray-400" />
-      </div>
-      
-      {/* Linha 3: Banners de Cupom */}
+      {/* Linha 2: Banners de Cupom (Agora é a Linha 2) */}
       <div className="flex space-x-2 overflow-x-auto py-1">
         <CouponBadge text="Desconto de R$ 5" />
         <CouponBadge text="R$15 off no Google Pay" />
       </div>
 
-      {/* Linha 4: Título do Produto e Bookmark */}
+      {/* Linha 3: Título do Produto e Bookmark */}
       <div className="flex justify-between items-start pt-2">
         <div className="flex items-center">
-          {/* Removido o badge 11.11 */}
           <h2 className="text-lg font-bold text-gray-900 leading-snug line-clamp-2">
             {productTitle}
           </h2>
@@ -73,7 +63,7 @@ const ProductPriceSection: React.FC = () => {
         </button>
       </div>
       
-      {/* Linha 5: Avaliação e Vendas */}
+      {/* Linha 4: Avaliação e Vendas */}
       <div className="flex items-center space-x-3 text-sm text-gray-600">
         <div className="flex items-center">
           <Star size={16} className="text-yellow-500 fill-yellow-500 mr-1" />
