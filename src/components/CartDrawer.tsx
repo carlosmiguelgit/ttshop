@@ -15,8 +15,13 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
   };
 
   return (
-    <Drawer open={isOpen} onOpenChange={onClose}>
-      <DrawerContent className="h-[90vh] mt-24 fixed bottom-0 left-0 right-0 md:max-w-sm md:right-0 md:left-auto md:h-full rounded-t-lg md:rounded-l-lg md:rounded-t-none">
+    // Forçando o Drawer a se comportar como um Sheet lateral (direita)
+    <Drawer open={isOpen} onOpenChange={onClose} direction="right">
+      <DrawerContent 
+        // Classes para simular um painel lateral:
+        // Fixo na direita, altura total, largura máxima de 400px (sm:max-w-sm)
+        className="fixed inset-y-0 right-0 h-full w-full max-w-xs sm:max-w-sm mt-0 rounded-none border-l"
+      >
         <div className="mx-auto w-full max-w-md p-4">
           <DrawerHeader className="flex justify-between items-center">
             <DrawerTitle className="flex items-center text-xl font-bold">

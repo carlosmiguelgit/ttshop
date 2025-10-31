@@ -34,7 +34,11 @@ const Thumbnail: React.FC<ThumbnailProps> = ({ isActive, item, onClick }) => (
   </div>
 );
 
-const ProductImageGallery: React.FC = () => {
+interface ProductImageGalleryProps {
+  onCartClick: () => void;
+}
+
+const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ onCartClick }) => {
   // Definindo a lista de mídia (vídeo + imagens)
   const media: MediaItem[] = [
     { 
@@ -83,7 +87,10 @@ const ProductImageGallery: React.FC = () => {
         <button className="w-8 h-8 bg-black/30 rounded-full flex items-center justify-center text-white backdrop-blur-sm">
           <Share2 size={16} />
         </button>
-        <button className="w-8 h-8 bg-black/30 rounded-full flex items-center justify-center text-white backdrop-blur-sm">
+        <button 
+          className="w-8 h-8 bg-black/30 rounded-full flex items-center justify-center text-white backdrop-blur-sm"
+          onClick={onCartClick} // Adicionando o handler de clique
+        >
           <ShoppingCart size={16} />
         </button>
         <button className="w-8 h-8 bg-black/30 rounded-full flex items-center justify-center text-white backdrop-blur-sm">

@@ -156,7 +156,7 @@ const ProductDetailPage: React.FC = () => {
       <div className="max-w-[600px] mx-auto bg-white shadow-md">
         
         {/* Galeria de Imagens e Cabeçalho */}
-        <ProductImageGallery />
+        <ProductImageGallery onCartClick={handleAddToCart} />
         
         {/* Banner de Oferta Relâmpago */}
         <FlashSaleBanner />
