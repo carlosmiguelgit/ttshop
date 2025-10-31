@@ -41,14 +41,17 @@ interface ProductImageGalleryProps {
 }
 
 const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ onCartClick, cartItemCount }) => {
-  // Definindo a lista de mídia (apenas imagens agora)
+  // Definindo a lista de mídia (agora incluindo o vídeo)
   const media: MediaItem[] = [
-    { type: 'image', src: "https://ttshop-khaki.vercel.app/images/3773102472.webp", thumbnailSrc: "https://ttshop-khaki.vercel.app/images/3773102472.webp" },
-    { type: 'image', src: "https://ttshop-khaki.vercel.app/images/3043720495.webp", thumbnailSrc: "https://ttshop-khaki.vercel.app/images/3043720495.webp" },
-    { type: 'image', src: "https://ttshop-khaki.vercel.app/images/2878343680.webp", thumbnailSrc: "https://ttshop-khaki.vercel.app/images/2878343680.webp" },
-    { type: 'image', src: "https://ttshop-khaki.vercel.app/images/1008446112.webp", thumbnailSrc: "https://ttshop-khaki.vercel.app/images/1008446112.webp" },
-    { type: 'image', src: "https://ttshop-khaki.vercel.app/images/2829270982.webp", thumbnailSrc: "https://ttshop-khaki.vercel.app/images/2829270982.webp" },
-    { type: 'image', src: "https://ttshop-khaki.vercel.app/images/545675923.webp", thumbnailSrc: "https://ttshop-khaki.vercel.app/images/545675923.webp" },
+    { 
+      type: 'video', 
+      src: "https://down-bs-br.vod.susercontent.com/api/v4/11110105/mms/br-11110105-6kfkp-mavn8p3mknax4b.16000081749666332.mp4", 
+      thumbnailSrc: "https://down-br.img.susercontent.com/file/br-11134207-7r98o-mavn8ckqwge1ea@resize_w450_nl.webp" // Usando a primeira imagem como thumbnail do vídeo
+    },
+    { type: 'image', src: "https://down-br.img.susercontent.com/file/br-11134207-7r98o-mavn8ckqwge1ea@resize_w450_nl.webp", thumbnailSrc: "https://down-br.img.susercontent.com/file/br-11134207-7r98o-mavn8ckqwge1ea@resize_w450_nl.webp" },
+    { type: 'image', src: "https://down-br.img.susercontent.com/file/br-11134207-81z1k-mfe8oxxbchs79e@resize_w450_nl.webp", thumbnailSrc: "https://down-br.img.susercontent.com/file/br-11134207-81z1k-mfe8oxxbchs79e@resize_w450_nl.webp" },
+    { type: 'image', src: "https://down-br.img.susercontent.com/file/br-11134207-81z1k-mfe8oxx7905gfc@resize_w450_nl.webp", thumbnailSrc: "https://down-br.img.susercontent.com/file/br-11134207-81z1k-mfe8oxx7905gfc@resize_w450_nl.webp" },
+    { type: 'image', src: "https://down-br.img.susercontent.com/file/br-11134207-81z1k-mfe8oxxax1jbf3@resize_w450_nl.webp", thumbnailSrc: "https://down-br.img.susercontent.com/file/br-11134207-81z1k-mfe8oxxax1jbf3@resize_w450_nl.webp" },
   ];
   
   const [activeIndex, setActiveIndex] = useState(0);
@@ -135,12 +138,17 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ onCartClick, 
         className="relative h-[400px] flex items-center justify-center bg-white cursor-pointer"
         onClick={handleMediaClick}
       >
-        {/* Agora sempre será uma imagem */}
-        <img 
-          src={activeItem.src} 
-          alt={`Main product image ${activeIndex + 1}`} 
-          className="max-h-full object-contain w-full" 
-        />
+        {activeItem.type === 'image' ? (
+          <img 
+            src={activeItem.src} 
+            alt={`Main product image ${activeIndex + 1}`} 
+            className="max-h-full object-contain w-full" 
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-black">
+            <Play size={48} className="text-white opacity-70" />
+          </div>
+        )}
         
         {/* Navigation Arrows */}
         <button 
