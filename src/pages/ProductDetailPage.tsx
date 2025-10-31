@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import ProductImageGallery from "@/components/ProductImageGallery";
-import FlashSaleBanner from "@/components/FlashSaleBanner";
-import DiscountBanner from "@/components/DiscountBanner";
+import ProductPriceSection from "@/components/ProductPriceSection"; // Novo componente
 import ProductActionsBar from "@/components/ProductActionsBar";
 import ProductReviewCard from "@/components/ProductReviewCard";
 import StoreInfoSection from "@/components/StoreInfoSection";
@@ -11,7 +10,7 @@ import CartDrawer from "@/components/CartDrawer";
 import { Star, ChevronRight, Truck } from "lucide-react";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Separator } from "@/components/ui/separator";
-import { showSuccess } from "@/utils/toast"; // Importando showSuccess
+import { showSuccess } from "@/utils/toast";
 
 type TabName = 'overview' | 'description';
 
@@ -165,28 +164,12 @@ const ProductDetailPage: React.FC = () => {
         {/* Galeria de Imagens e Cabeçalho */}
         <ProductImageGallery onCartClick={handleOpenCartDrawer} />
         
-        {/* Banner de Oferta Relâmpago */}
-        <FlashSaleBanner />
-        
-        {/* Banner de Desconto */}
-        <DiscountBanner />
+        {/* Nova Seção de Preços e Descontos */}
+        <ProductPriceSection />
         
         <div className="bg-white p-4 space-y-4">
           
-          {/* Título do Produto */}
-          <h2 className="text-xl font-semibold text-gray-900 leading-snug">
-            Patinete Elétrico Scooter De Alumínio Com Bluetooth 30km/h
-          </h2>
-          
-          {/* Informações de Avaliação e Vendas */}
-          <div className="flex items-center space-x-2 text-sm text-gray-600">
-            <span className="font-bold text-lg text-black">4.8</span>
-            <Star size={16} className="text-yellow-500 fill-yellow-500" />
-            <span className="text-gray-500">(892)</span>
-            <span className="text-gray-500">8.547 vendidos</span>
-          </div>
-          
-          {/* Seção de Informações de Envio */}
+          {/* Informações de Envio (Mantidas) */}
           <div className="border-t border-gray-100 pt-4">
             {/* Frete Grátis (Atualizado) */}
             <div className="flex items-center justify-between py-2 cursor-pointer hover:bg-gray-50 transition-colors">
