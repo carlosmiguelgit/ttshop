@@ -89,11 +89,16 @@ export default {
           "0%, 100%": { opacity: "1" },
           "50%": { opacity: ".7" },
         },
+        "border-pulse-pink": {
+          "0%, 100%": { "border-color": "#FF3399" },
+          "50%": { "border-color": "transparent" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "pulse-slow": "pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "border-pulse-pink": "border-pulse-pink 1.5s ease-in-out infinite",
       },
     },
   },

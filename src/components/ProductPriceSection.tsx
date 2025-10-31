@@ -38,7 +38,7 @@ const FlashSaleTimer: React.FC = () => {
 const CouponBadge: React.FC<{ text: string }> = ({ text }) => (
   <div className={cn(
     "flex items-center bg-pink-50/80 text-sm text-[#FF3399] font-semibold px-2 py-1 rounded-md whitespace-nowrap",
-    "animate-pulse-slow" // Mantendo o efeito de pulso no cupom
+    "animate-pulse-slow" // Mantendo o efeito de pulso no cupom (opacidade)
   )}>
     <Tag size={14} className="mr-1 fill-[#FF3399]" />
     {text}
@@ -106,7 +106,7 @@ const ProductPriceSection: React.FC = () => {
           {/* Mensagem de Urgência com Pulse (Usando Zap) */}
           <div className={cn(
             "flex items-center bg-pink-50/80 text-sm text-[#FF3399] font-semibold px-2 py-1 rounded-md whitespace-nowrap border border-[#FF3399]",
-            "animate-pulse-slow" // Aplicando o efeito de pulso ao redor do frame
+            "animate-border-pulse-pink" // Nova animação de pulso de borda
           )}>
             <Zap size={14} className="mr-1 fill-[#FF3399]" />
             <span>ULTIMA UNIDADE</span>
