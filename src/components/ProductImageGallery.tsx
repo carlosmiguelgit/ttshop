@@ -39,13 +39,8 @@ interface ProductImageGalleryProps {
 }
 
 const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ onCartClick }) => {
-  // Definindo a lista de mídia (vídeo + imagens)
+  // Definindo a lista de mídia (apenas imagens agora)
   const media: MediaItem[] = [
-    { 
-      type: 'video', 
-      src: "https://down-zl-br.vod.susercontent.com/api/v4/11110103/mms/br-11110103-6kfko-mbpgf2ro2h5lc7.16000051751470897.mp4", 
-      thumbnailSrc: "https://ttshop-khaki.vercel.app/images/3773102472.webp" // Usando a primeira imagem como capa do vídeo
-    },
     { type: 'image', src: "https://ttshop-khaki.vercel.app/images/3773102472.webp", thumbnailSrc: "https://ttshop-khaki.vercel.app/images/3773102472.webp" },
     { type: 'image', src: "https://ttshop-khaki.vercel.app/images/3043720495.webp", thumbnailSrc: "https://ttshop-khaki.vercel.app/images/3043720495.webp" },
     { type: 'image', src: "https://ttshop-khaki.vercel.app/images/2878343680.webp", thumbnailSrc: "https://ttshop-khaki.vercel.app/images/2878343680.webp" },
@@ -103,31 +98,14 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ onCartClick }
         className="relative h-[400px] flex items-center justify-center bg-white cursor-pointer"
         onClick={handleMediaClick}
       >
-        {activeItem.type === 'image' ? (
-          /* Imagem Principal */
-          <img 
-            src={activeItem.src} 
-            alt={`Main product image ${activeIndex + 1}`} 
-            className="max-h-full object-contain w-full" 
-          />
-        ) : (
-          /* Vídeo Principal (Usando poster e garantindo que o vídeo não tente reproduzir automaticamente se o poster for o foco) */
-          <video 
-            src={activeItem.src} 
-            // Removendo autoPlay e loop aqui para garantir que o poster seja o foco inicial
-            muted 
-            className="max-h-full object-contain w-full h-full"
-            poster={activeItem.thumbnailSrc} // Usando a miniatura como poster
-          />
-        )}
+        {/* Agora sempre será uma imagem */}
+        <img 
+          src={activeItem.src} 
+          alt={`Main product image ${activeIndex + 1}`} 
+          className="max-h-full object-contain w-full" 
+        />
         
-        {/* Overlay de Play para Vídeo na Galeria */}
-        {activeItem.type === 'video' && (
-            // Tornando o overlay mais escuro para garantir que o ícone de Play se destaque
-            <div className="absolute inset-0 flex items-center justify-center bg-black/30">
-                <Play size={48} className="text-white fill-white opacity-90" />
-            </div>
-        )}
+        {/* Overlay de Play removido, pois não há mais vídeos na galeria principal */}
 
         {/* Navigation Arrows */}
         <button 
