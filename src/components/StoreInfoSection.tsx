@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { CheckCircle, ShoppingBag, ChevronRight } from 'lucide-react';
-import InfoDrawer from './InfoDrawer';
+import React from 'react';
+import { CheckCircle, ShoppingBag } from 'lucide-react';
+import StoreInfoCollapsibleItem from './StoreInfoCollapsibleItem';
 
 interface NavLinkData {
   title: string;
@@ -22,27 +22,7 @@ const linksData: NavLinkData[] = [
   },
 ];
 
-const NavLink: React.FC<NavLinkData & { onClick: (data: NavLinkData) => void }> = ({ title, content, onClick }) => {
-  return (
-    <div 
-      className="flex justify-between items-center py-3 cursor-pointer hover:bg-gray-50 transition-colors"
-      onClick={() => onClick({ title, content })}
-    >
-      <span className="text-base text-gray-800">{title}</span>
-      <ChevronRight size={20} className="text-gray-400" />
-    </div>
-  );
-};
-
 const StoreInfoSection: React.FC = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [drawerContent, setDrawerContent] = useState<NavLinkData>({ title: '', content: '' });
-
-  const handleLinkClick = (data: NavLinkData) => {
-    setDrawerContent(data);
-    setIsDrawerOpen(true);
-  };
-
   return (
     <div className="bg-white p-4 space-y-4 border-t border-gray-100 mt-4">
       {/* Nome da Loja e Verificação */}
@@ -60,25 +40,16 @@ const StoreInfoSection: React.FC = () => {
         <span className="text-lg font-bold text-gray-900">Shop</span>
       </div>
 
-      {/* Links de Navegação */}
+      {/* Links de Navegação (Collapsible Items) */}
       <div className="divide-y divide-gray-100">
         {linksData.map((link, index) => (
-          <NavLink 
+          <StoreInfoCollapsibleItem 
             key={index}
             title={link.title}
             content={link.content}
-            onClick={handleLinkClick}
           />
         ))}
       </div>
-      
-      {/* Drawer de Informações */}
-      <InfoDrawer
-        isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
-        title={drawerContent.title}
-        content={drawerContent.content}
-      />
     </div>
   );
 };
