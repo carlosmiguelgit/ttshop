@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Zap, Clock } from "lucide-react";
+import { Zap } from "lucide-react";
 
 const FlashSaleBanner: React.FC = () => {
-  // Simulação de cronômetro regressivo (começa em 5 minutos)
-  const initialTime = 5 * 60; // 5 minutes in seconds
+  // Simulação de cronômetro regressivo (começa em 10 horas, 25 minutos e 17 segundos)
+  const initialTime = 10 * 3600 + 25 * 60 + 17; 
   const [timeLeft, setTimeLeft] = useState(initialTime);
 
   useEffect(() => {
@@ -21,42 +21,40 @@ const FlashSaleBanner: React.FC = () => {
   }, []);
 
   const formatTime = (seconds: number) => {
-    const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+    const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
+    const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
     const s = String(seconds % 60).padStart(2, '0');
     
-    // Mantendo o formato MM:SS, mas adicionando 00 para simular H:MM:SS se necessário
-    return `00:${m}:${s}`;
+    return `${h}:${m}:${s}`;
   };
 
   return (
-    <div className="bg-[#FF6600] text-white p-4 flex flex-col space-y-2">
+    <div className="bg-gradient-to-r from-[#FF6600] to-[#FF3399] text-white p-3 flex justify-between items-center">
       
-      {/* Linha 1: Oferta Relâmpago e Cronômetro */}
-      <div className="flex justify-between items-center">
-        {/* Indicador de Oferta Relâmpago */}
-        <div className="flex items-center text-sm">
-            <Zap size={16} className="text-yellow-300 fill-yellow-300 mr-1" />
-            <span className="font-semibold">OFERTA RELÂMPAGO</span>
-        </div>
+      {/* Lado Esquerdo: Desconto e Preços */}
+      <div className="flex items-center space-x-2">
         
-        {/* Cronômetro */}
-        <div className="flex items-center text-sm font-medium">
-          <Clock size={16} className="mr-1" />
-          <span>Termina em {formatTime(timeLeft)}</span>
+        {/* Balão de Desconto */}
+        <span className="bg-white text-[#FF3399] text-xs font-bold px-1.5 py-0.5 rounded-sm flex-shrink-0">
+          -52%
+        </span>
+        
+        {/* Preço Atual e Preço Original */}
+        <div className="flex flex-col items-start leading-none">
+          <span className="text-xl font-bold">R$ 95,00</span>
+          <span className="text-xs opacity-70 line-through mt-0.5">R$ 198,99</span>
         </div>
       </div>
 
-      {/* Linha 2: Preços e Economia */}
-      <div className="flex justify-between items-center">
-        <div className="flex items-baseline space-x-2">
-          {/* Preço Original */}
-          <span className="text-sm opacity-70 line-through">R$ 619,90</span>
-          {/* Preço Atual */}
-          <span className="text-3xl font-bold">R$ 67,90</span>
+      {/* Lado Direito: Oferta Relâmpago e Cronômetro */}
+      <div className="flex flex-col items-end text-right leading-tight">
+        <div className="flex items-center text-sm font-semibold">
+            <Zap size={14} className="text-yellow-300 fill-yellow-300 mr-1" />
+            <span>Oferta Relâmpago</span>
         </div>
-        
-        {/* Mensagem de Economia */}
-        <span className="text-sm font-medium">Economize até 89%</span>
+        <span className="text-xs font-medium mt-0.5">
+          Termina em {formatTime(timeLeft)}
+        </span>
       </div>
     </div>
   );
