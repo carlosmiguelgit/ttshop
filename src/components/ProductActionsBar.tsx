@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, MessageSquare, ShoppingCart } from "lucide-react";
+import { Home, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface ProductActionsBarProps {
@@ -11,7 +11,7 @@ const ProductActionsBar: React.FC<ProductActionsBarProps> = ({ onAddToCartClick,
   return (
     <div className="fixed bottom-0 left-0 right-0 z-20 flex justify-center">
       <div className="w-full max-w-[600px] bg-white border-t shadow-lg p-2 flex items-center justify-around">
-        {/* Ícones da Esquerda (Loja & Chat & Carrinho) */}
+        {/* Ícones da Esquerda (Loja & Chat) */}
         <div className="flex space-x-4 sm:space-x-6">
           <button className="flex flex-col items-center text-xs text-gray-600 hover:text-primary transition-colors">
             <Home size={20} />
@@ -20,14 +20,6 @@ const ProductActionsBar: React.FC<ProductActionsBarProps> = ({ onAddToCartClick,
           <button className="flex flex-col items-center text-xs text-gray-600 hover:text-primary transition-colors">
             <MessageSquare size={20} />
             <span>Chat</span>
-          </button>
-          {/* Adicionando o ícone de carrinho que simula o clique */}
-          <button 
-            className="flex flex-col items-center text-xs text-gray-600 hover:text-primary transition-colors"
-            onClick={onAddToCartClick} // Usando o mesmo handler para abrir o drawer
-          >
-            <ShoppingCart size={20} />
-            <span>Carrinho</span>
           </button>
         </div>
 

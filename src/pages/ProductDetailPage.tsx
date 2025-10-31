@@ -7,10 +7,11 @@ import ProductReviewCard from "@/components/ProductReviewCard";
 import StoreInfoSection from "@/components/StoreInfoSection";
 import ProductReviewsList from "@/components/ProductReviewsList";
 import ProductDescription from "@/components/ProductDescription";
-import CartDrawer from "@/components/CartDrawer"; // Importando o novo componente
-import { Star, ChevronRight, CheckCircle, Truck } from "lucide-react";
+import CartDrawer from "@/components/CartDrawer";
+import { Star, ChevronRight, Truck } from "lucide-react";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Separator } from "@/components/ui/separator";
+import { showSuccess } from "@/utils/toast"; // Importando showSuccess
 
 type TabName = 'overview' | 'description';
 
@@ -30,7 +31,7 @@ const Tab: React.FC<{ title: string; name: TabName; isActive: boolean; onClick: 
 const ProductDetailPage: React.FC = () => {
   const [showAllReviews, setShowAllReviews] = useState(false);
   const [activeTab, setActiveTab] = useState<TabName>('overview');
-  const [isCartOpen, setIsCartOpen] = useState(false); // Novo estado para o Drawer
+  const [isCartOpen, setIsCartOpen] = useState(false);
   
   // Ref para a seção de avaliações
   const reviewsRef = useRef<HTMLDivElement>(null);
@@ -54,8 +55,14 @@ const ProductDetailPage: React.FC = () => {
     window.location.href = 'https://www.google.com/coupon-checkout';
   };
   
+  // Nova lógica: Adicionar ao carrinho mostra apenas um toast
   const handleAddToCart = () => {
-    // Abre o Drawer do carrinho
+    showSuccess("Produto adicionado ao carrinho!");
+    // Aqui você pode adicionar a lógica para incrementar um contador de itens no carrinho, se necessário.
+  };
+  
+  // Nova função para abrir o Drawer (usada pelo ícone no cabeçalho)
+  const handleOpenCartDrawer = () => {
     setIsCartOpen(true);
   };
 
@@ -156,7 +163,7 @@ const ProductDetailPage: React.FC = () => {
       <div className="max-w-[600px] mx-auto bg-white shadow-md">
         
         {/* Galeria de Imagens e Cabeçalho */}
-        <ProductImageGallery onCartClick={handleAddToCart} />
+        <ProductImageGallery onCartClick={handleOpenCartDrawer} />
         
         {/* Banner de Oferta Relâmpago */}
         <FlashSaleBanner />
@@ -198,8 +205,6 @@ const ProductDetailPage: React.FC = () => {
               </div>
               <ChevronRight size={20} className="text-gray-400" />
             </div>
-
-            {/* Devoluções Gratuitas em 30 dias - REMOVIDO */}
           </div>
         </div>
         

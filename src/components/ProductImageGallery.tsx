@@ -82,12 +82,19 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ onCartClick }
         <button className="w-8 h-8 bg-black/30 rounded-full flex items-center justify-center text-white backdrop-blur-sm">
           <Share2 size={16} />
         </button>
+        
+        {/* Botão do Carrinho com Badge (simulando 1 item) */}
         <button 
-          className="w-8 h-8 bg-black/30 rounded-full flex items-center justify-center text-white backdrop-blur-sm"
-          onClick={onCartClick} // Adicionando o handler de clique
+          className="w-8 h-8 bg-black/30 rounded-full flex items-center justify-center text-white backdrop-blur-sm relative"
+          onClick={onCartClick} // Este clique abre o Drawer
         >
           <ShoppingCart size={16} />
+          {/* Badge de 1 item */}
+          <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+            1
+          </span>
         </button>
+        
         <button className="w-8 h-8 bg-black/30 rounded-full flex items-center justify-center text-white backdrop-blur-sm">
           <MoreVertical size={16} />
         </button>
@@ -105,8 +112,6 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ onCartClick }
           className="max-h-full object-contain w-full" 
         />
         
-        {/* Overlay de Play removido, pois não há mais vídeos na galeria principal */}
-
         {/* Navigation Arrows */}
         <button 
           onClick={(e) => { e.stopPropagation(); handlePrev(); }}
