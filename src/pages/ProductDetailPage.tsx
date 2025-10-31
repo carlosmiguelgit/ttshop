@@ -70,7 +70,7 @@ const ProductDetailPage: React.FC = () => {
                     </span>
                     <p className="font-semibold text-gray-800">Receba até <span className="font-extrabold">AMANHÃ</span></p>
                   </div>
-                  <p className="text-xs text-gray-500 line-through mt-1">Taxa de envio: R$ 7,20</p>
+                  <p className="text-xs text-gray-500 line-through mt-1">Taxa de envio: R$ 39,45</p>
                 </div>
               </div>
               <ChevronRight size={20} className="text-gray-400" />
