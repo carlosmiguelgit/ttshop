@@ -6,7 +6,7 @@ import ProductActionsBar from "@/components/ProductActionsBar";
 import ProductReviewCard from "@/components/ProductReviewCard";
 import StoreInfoSection from "@/components/StoreInfoSection";
 import ProductReviewsList from "@/components/ProductReviewsList";
-import { Star, ChevronRight, CheckCircle, Trash2 } from "lucide-react";
+import { Star, ChevronRight, CheckCircle, Truck } from "lucide-react";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Separator } from "@/components/ui/separator";
 
@@ -58,21 +58,25 @@ const ProductDetailPage: React.FC = () => {
           
           {/* Seção de Informações de Envio */}
           <div className="border-t border-gray-100 pt-4">
-            {/* Frete Grátis (Existente) */}
+            {/* Frete Grátis (Atualizado) */}
             <div className="flex items-center justify-between py-2 cursor-pointer hover:bg-gray-50 transition-colors">
               <div className="flex items-start space-x-3">
-                {/* Ícone de Pacote (Azul/Ciano) */}
-                <Trash2 size={24} className="text-cyan-500 mt-1" /> {/* Usando Trash2 para simular o ícone de caixa/entrega */}
+                {/* Ícone de Caminhão */}
+                <Truck size={24} className="text-cyan-500 mt-1" />
                 <div>
-                  <p className="font-semibold text-gray-800">Frete grátis</p>
-                  <p className="text-sm text-gray-700">Receba até 22 de out - 25 de out</p>
-                  <p className="text-xs text-gray-500 line-through">Taxa de envio: R$ 15,90</p>
+                  <div className="flex items-center space-x-2">
+                    <span className="bg-cyan-50 text-cyan-700 px-2 py-0.5 rounded text-xs font-semibold">
+                      Frete grátis
+                    </span>
+                    <p className="font-semibold text-gray-800">Receba até <span className="font-extrabold">AMANHÃ</span></p>
+                  </div>
+                  <p className="text-xs text-gray-500 line-through mt-1">Taxa de envio: R$ 7,20</p>
                 </div>
               </div>
               <ChevronRight size={20} className="text-gray-400" />
             </div>
 
-            {/* Devoluções Gratuitas em 30 dias (Novo) */}
+            {/* Devoluções Gratuitas em 30 dias */}
             <div className="flex items-center justify-between py-2 cursor-pointer hover:bg-gray-50 transition-colors">
               <div className="flex items-start space-x-3">
                 <CheckCircle size={24} className="text-green-500 fill-white mt-1" />
