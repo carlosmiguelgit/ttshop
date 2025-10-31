@@ -58,15 +58,15 @@ const ProductPriceSection: React.FC = () => {
   return (
     <div className="bg-white space-y-0">
       
-      {/* Seção de Oferta Relâmpago (Flash Sale) */}
-      <div className="bg-gradient-to-r from-[#FF3399] to-[#FF6633] p-4">
+      {/* Seção de Oferta Relâmpago (Flash Sale) - Gradiente ajustado para vermelho mais escuro */}
+      <div className="bg-gradient-to-r from-[#D32F2F] to-[#FF5722] p-4">
         <div className="flex justify-between items-start">
           
           {/* Preço e Desconto (Lado Esquerdo) */}
           <div className="flex flex-col">
             <div className="flex items-center space-x-2 mb-1">
               {/* Badge de Desconto Branco */}
-              <span className="bg-white text-[#FF3399] text-lg font-bold px-2 py-0.5 rounded-md flex-shrink-0">
+              <span className="bg-white text-[#D32F2F] text-lg font-bold px-2 py-0.5 rounded-md flex-shrink-0">
                 -{discountPercentage}%
               </span>
               
