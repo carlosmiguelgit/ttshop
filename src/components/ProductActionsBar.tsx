@@ -2,7 +2,12 @@ import React from 'react';
 import { Home, MessageSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const ProductActionsBar: React.FC = () => {
+interface ProductActionsBarProps {
+  onViewReviewsClick: () => void;
+  onBuyNowClick: () => void;
+}
+
+const ProductActionsBar: React.FC<ProductActionsBarProps> = ({ onViewReviewsClick, onBuyNowClick }) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-20 flex justify-center">
       <div className="w-full max-w-[600px] bg-white border-t shadow-lg p-2 flex items-center justify-around">
@@ -24,12 +29,14 @@ const ProductActionsBar: React.FC = () => {
           <Button 
             variant="outline" 
             className="bg-gray-100 text-gray-800 border-none rounded-full px-4 sm:px-6 h-10 text-sm sm:text-base font-semibold hover:bg-gray-200 flex-grow"
+            onClick={onViewReviewsClick}
           >
             Ver Avaliações
           </Button>
           {/* Botão Comprar Agora (Gradiente Rosa) */}
           <Button 
             className="bg-gradient-to-r from-[#FF66B2] to-[#FF3399] text-white rounded-full px-4 sm:px-6 h-10 text-sm sm:text-base font-semibold hover:opacity-90 flex-grow"
+            onClick={onBuyNowClick}
           >
             Comprar Agora
           </Button>

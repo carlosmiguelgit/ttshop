@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import ProductImageGallery from "@/components/ProductImageGallery";
 import FlashSaleBanner from "@/components/FlashSaleBanner";
 import DiscountBanner from "@/components/DiscountBanner";
@@ -6,7 +6,7 @@ import ProductActionsBar from "@/components/ProductActionsBar";
 import ProductReviewCard from "@/components/ProductReviewCard";
 import StoreInfoSection from "@/components/StoreInfoSection";
 import ProductReviewsList from "@/components/ProductReviewsList";
-import ProductDescription from "@/components/ProductDescription"; // Importando o novo componente
+import ProductDescription from "@/components/ProductDescription";
 import { Star, ChevronRight, CheckCircle, Truck } from "lucide-react";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Separator } from "@/components/ui/separator";
@@ -29,13 +29,31 @@ const Tab: React.FC<{ title: string; name: TabName; isActive: boolean; onClick: 
 const ProductDetailPage: React.FC = () => {
   const [showAllReviews, setShowAllReviews] = useState(false);
   const [activeTab, setActiveTab] = useState<TabName>('overview');
+  
+  // Ref para a seção de avaliações
+  const reviewsRef = useRef<HTMLDivElement>(null);
 
   const handleViewAllReviews = () => {
     setShowAllReviews(true);
   };
 
+  const handleScrollToReviews = () => {
+    // Ativa a aba de Visão Geral (onde estão as avaliações)
+    setActiveTab('overview');
+    
+    // Rola para a seção de avaliações
+    if (reviewsRef.current) {
+      reviewsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+  
+  const handleBuyNow = () => {
+    window.location.href = 'https://www.google.com';
+  };
+
   const renderOverviewContent = () => (
-    <>
+    // Adicionando a ref aqui
+    <div ref={reviewsRef}> 
       {/* Seção de Avaliações */}
       <div className="p-4 bg-white">
         <h3 className="text-xl font-bold mb-4">Avaliações dos clientes (892)</h3>
@@ -111,7 +129,7 @@ const ProductDetailPage: React.FC = () => {
       
       {/* Seção de Informações da Loja */}
       <StoreInfoSection />
-    </>
+    </div>
   );
 
   const renderDescriptionContent = () => (
@@ -210,7 +228,10 @@ const ProductDetailPage: React.FC = () => {
       </div>
       
       {/* Barra de Ação Fixa Inferior */}
-      <ProductActionsBar />
+      <ProductActionsBar 
+        onViewReviewsClick={handleScrollToReviews}
+        onBuyNowClick={handleBuyNow}
+      />
     </div>
   );
 };
