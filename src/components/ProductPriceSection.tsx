@@ -109,7 +109,7 @@ const ProductPriceSection: React.FC = () => {
             "animate-border-pulse-pink" // Nova animação de pulso de borda
           )}>
             <Zap size={14} className="mr-1 fill-[#FF3399]" />
-            <span>ULTIMA UNIDADE</span>
+            <span>Restam somente 3 unidades</span>
           </div>
         </div>
 
