@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 const additionalReviews = [
   {
     username: "joao.melo",
-    date: "21 de out",
+    date: "29 de out",
     avatarSrc: "/placeholder.svg",
     verified: true,
     attributes: "Custo-benefício: excelente | Bateria: duradoura",
@@ -13,7 +13,7 @@ const additionalReviews = [
   },
   {
     username: "fernanda.paz",
-    date: "19 de out",
+    date: "29 de out",
     avatarSrc: "/placeholder.svg",
     verified: true,
     attributes: "Qualidade: muito boa | Design: moderno",
@@ -21,7 +21,7 @@ const additionalReviews = [
   },
   {
     username: "rodrigo.alves",
-    date: "18 de out",
+    date: "28 de out",
     avatarSrc: "/placeholder.svg",
     verified: false,
     attributes: "Atendimento: rápido | Entrega: pontual",
@@ -29,7 +29,7 @@ const additionalReviews = [
   },
   {
     username: "patricia.lima",
-    date: "17 de out",
+    date: "27 de out",
     avatarSrc: "/placeholder.svg",
     verified: true,
     attributes: "Velocidade: conforme o anúncio | Fácil de usar: sim",
@@ -37,7 +37,7 @@ const additionalReviews = [
   },
   {
     username: "marcos.souza",
-    date: "16 de out",
+    date: "26 de out",
     avatarSrc: "/placeholder.svg",
     verified: true,
     attributes: "Custo-benefício: imbatível | Recomendo: 100%",
@@ -48,10 +48,10 @@ const additionalReviews = [
 const ProductReviewsList: React.FC = () => {
   return (
     <>
-      {/* Avaliação 2 (que estava oculta) */}
+      {/* Avaliação 2 (que estava oculta) - Data atualizada para 30 de out */}
       <ProductReviewCard
         username="ana.ribeiro"
-        date="20 de out"
+        date="30 de out"
         avatarSrc="/placeholder.svg"
         verified={true}
         attributes="Custo-benefício: ótimo | Qualidade: superior"

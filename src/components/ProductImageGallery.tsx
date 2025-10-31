@@ -1,18 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Share2, ShoppingCart, MoreVertical, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ThumbnailProps {
   isActive: boolean;
   src: string;
+  onClick: () => void;
 }
 
-const Thumbnail: React.FC<ThumbnailProps> = ({ isActive, src }) => (
+const Thumbnail: React.FC<ThumbnailProps> = ({ isActive, src, onClick }) => (
   <div
     className={cn(
-      "w-16 h-16 p-0.5 border-2 rounded-md flex-shrink-0 transition-colors",
+      "w-16 h-16 p-0.5 border-2 rounded-md flex-shrink-0 transition-colors cursor-pointer",
       isActive ? "border-cyan-500" : "border-transparent"
     )}
+    onClick={onClick}
   >
     {/* Usando object-cover para imitar o estilo de corte da miniatura */}
     <img src={src} alt="Product thumbnail" className="w-full h-full object-cover rounded-[4px]" />
@@ -20,9 +22,26 @@ const Thumbnail: React.FC<ThumbnailProps> = ({ isActive, src }) => (
 );
 
 const ProductImageGallery: React.FC = () => {
-  // Dados de placeholder para imagens (usando public/placeholder.svg)
-  const images = Array(6).fill("/placeholder.svg");
-  const activeIndex = 0;
+  // Simulando caminhos de imagem salvos localmente (usando placeholder.svg)
+  const images = [
+    "/placeholder.svg", // main.webp
+    "/placeholder.svg", // thumb1.webp
+    "/placeholder.svg", // thumb2.webp
+    "/placeholder.svg", // thumb3.webp
+    "/placeholder.svg", // thumb4.webp
+    "/placeholder.svg", // thumb5.webp
+  ];
+  
+  const [activeIndex, setActiveIndex] = useState(0);
+  const totalImages = images.length;
+
+  const handleNext = () => {
+    setActiveIndex((prevIndex) => (prevIndex + 1) % totalImages);
+  };
+
+  const handlePrev = () => {
+    setActiveIndex((prevIndex) => (prevIndex - 1 + totalImages) % totalImages);
+  };
 
   return (
     <div className="relative bg-white">
@@ -41,38 +60,54 @@ const ProductImageGallery: React.FC = () => {
 
       {/* Main Image Area */}
       <div className="relative h-[400px] flex items-center justify-center bg-white">
-        {/* Imagem Placeholder */}
-        <img src={images[activeIndex]} alt="Main product image" className="max-h-full object-contain w-full" />
+        {/* Imagem Principal */}
+        <img src={images[activeIndex]} alt={`Main product image ${activeIndex + 1}`} className="max-h-full object-contain w-full" />
 
         {/* Navigation Arrows */}
-        <button className="absolute left-4 w-9 h-9 bg-black/30 rounded-full flex items-center justify-center text-white">
+        <button 
+          onClick={handlePrev}
+          className="absolute left-4 w-9 h-9 bg-black/30 rounded-full flex items-center justify-center text-white hover:bg-black/50 transition-colors"
+        >
           <ChevronLeft size={20} />
         </button>
-        <button className="absolute right-4 w-9 h-9 bg-black/30 rounded-full flex items-center justify-center text-white">
+        <button 
+          onClick={handleNext}
+          className="absolute right-4 w-9 h-9 bg-black/30 rounded-full flex items-center justify-center text-white hover:bg-black/50 transition-colors"
+        >
           <ChevronRight size={20} />
         </button>
 
         {/* Image Counter */}
         <div className="absolute bottom-4 right-4 bg-black/60 text-white text-xs px-2 py-0.5 rounded">
-          {activeIndex + 1}/6
+          {activeIndex + 1}/{totalImages}
         </div>
       </div>
 
       {/* Thumbnail Gallery */}
-      {/* Usando overflow-x-auto para rolagem horizontal */}
       <div className="px-4 py-2 overflow-x-auto whitespace-nowrap">
         <div className="flex space-x-2 pb-2">
           {images.map((src, index) => (
-            <Thumbnail key={index} src={src} isActive={index === activeIndex} />
+            <Thumbnail 
+              key={index} 
+              src={src} 
+              isActive={index === activeIndex} 
+              onClick={() => setActiveIndex(index)}
+            />
           ))}
         </div>
       </div>
 
-      {/* Carousel Dots */}
+      {/* Carousel Dots (Refletindo o estado ativo) */}
       <div className="flex justify-center space-x-1 py-1">
-        <div className="w-1.5 h-1.5 bg-cyan-500 rounded-full"></div>
-        <div className="w-1.5 h-1.5 bg-gray-300 rounded-full"></div>
-        <div className="w-1.5 h-1.5 bg-gray-300 rounded-full"></div>
+        {images.map((_, index) => (
+          <div 
+            key={index}
+            className={cn(
+              "w-1.5 h-1.5 rounded-full transition-colors",
+              index === activeIndex ? "bg-cyan-500" : "bg-gray-300"
+            )}
+          ></div>
+        ))}
       </div>
     </div>
   );

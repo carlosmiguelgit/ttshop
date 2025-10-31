@@ -116,10 +116,10 @@ const ProductDetailPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Avaliação 1 (Original) */}
+          {/* Avaliação 1 (Mais recente) */}
           <ProductReviewCard
             username="carlos.santos"
-            date="15 de out"
+            date="31 de out"
             avatarSrc="/placeholder.svg"
             verified={true}
             attributes="Custo-benefício: excelente | Parecido com anúncio: sim"
@@ -128,12 +128,12 @@ const ProductDetailPage: React.FC = () => {
           
           <Separator className="my-4" />
 
-          {/* Avaliação 2 (Nova) */}
+          {/* Avaliação 2 (Próxima) */}
           {!showAllReviews && (
             <>
               <ProductReviewCard
                 username="ana.ribeiro"
-                date="20 de out"
+                date="30 de out"
                 avatarSrc="/placeholder.svg"
                 verified={true}
                 attributes="Custo-benefício: ótimo | Qualidade: superior"
@@ -157,6 +157,11 @@ const ProductDetailPage: React.FC = () => {
               </button>
             </div>
           )}
+          
+          {/* Paginação (Sempre visível abaixo das avaliações) */}
+          <div className="text-center text-xs text-gray-500 pt-4">
+            1/269
+          </div>
         </div>
         
         {/* Seção de Informações da Loja */}
