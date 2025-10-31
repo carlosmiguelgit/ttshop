@@ -6,13 +6,19 @@ import ProductActionsBar from "@/components/ProductActionsBar";
 import ProductReviewCard from "@/components/ProductReviewCard";
 import StoreInfoSection from "@/components/StoreInfoSection";
 import ProductReviewsList from "@/components/ProductReviewsList";
+import ProductDescription from "@/components/ProductDescription"; // Importando o novo componente
 import { Star, ChevronRight, CheckCircle, Truck } from "lucide-react";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Separator } from "@/components/ui/separator";
 
+type TabName = 'overview' | 'description';
+
 // Componente auxiliar para as abas de navegação
-const Tab: React.FC<{ title: string; isActive: boolean }> = ({ title, isActive }) => (
-  <div className="flex flex-col items-center cursor-pointer px-4 py-3">
+const Tab: React.FC<{ title: string; name: TabName; isActive: boolean; onClick: (name: TabName) => void }> = ({ title, name, isActive, onClick }) => (
+  <div 
+    className="flex flex-col items-center cursor-pointer px-4 py-3 relative"
+    onClick={() => onClick(name)}
+  >
     <span className={`text-base font-semibold ${isActive ? 'text-gray-900' : 'text-gray-500'}`}>
       {title}
     </span>
@@ -22,10 +28,99 @@ const Tab: React.FC<{ title: string; isActive: boolean }> = ({ title, isActive }
 
 const ProductDetailPage: React.FC = () => {
   const [showAllReviews, setShowAllReviews] = useState(false);
+  const [activeTab, setActiveTab] = useState<TabName>('overview');
 
   const handleViewAllReviews = () => {
     setShowAllReviews(true);
   };
+
+  const renderOverviewContent = () => (
+    <>
+      {/* Seção de Avaliações */}
+      <div className="p-4 bg-white">
+        <h3 className="text-xl font-bold mb-4">Avaliações dos clientes (892)</h3>
+        
+        {/* Média de Avaliação */}
+        <div className="flex items-baseline mb-4">
+          <span className="text-4xl font-bold mr-1">4.8</span>
+          <span className="text-lg text-gray-500 mr-4">/5</span>
+          <div className="flex">
+            {Array(5).fill(0).map((_, i) => (
+              <Star key={i} size={20} className="text-yellow-500 fill-yellow-500" />
+            ))}
+          </div>
+        </div>
+
+        {/* Filtros de Estrelas */}
+        <div className="flex space-x-2 mb-4">
+          <div className="flex items-center bg-gray-100 px-3 py-1 rounded-full text-sm font-medium text-gray-800">
+            5 <Star size={12} className="text-yellow-500 fill-yellow-500 ml-1 mr-1" /> (765)
+          </div>
+          <div className="flex items-center bg-gray-100 px-3 py-1 rounded-full text-sm font-medium text-gray-800">
+            4 <Star size={12} className="text-yellow-500 fill-yellow-500 ml-1 mr-1" /> (102)
+          </div>
+        </div>
+
+        {/* Avaliação 1 (Mais recente) */}
+        <ProductReviewCard
+          username="carlos.santos"
+          date="31 de out"
+          avatarSrc="https://randomuser.me/api/portraits/men/7.jpg"
+          verified={true}
+          attributes="Custo-benefício: excelente | Parecido com anúncio: sim"
+          comment="Patinete chegou super rápido e funciona perfeitamente! A bateria dura bastante e a velocidade máxima é incrível. Bluetooth conecta fácil no celular."
+        />
+        
+        <Separator className="my-4" />
+
+        {/* Avaliação 2 (Próxima) */}
+        {!showAllReviews && (
+          <>
+            <ProductReviewCard
+              username="ana.ribeiro"
+              date="30 de out"
+              avatarSrc="https://randomuser.me/api/portraits/women/6.jpg"
+              verified={true}
+              attributes="Custo-benefício: ótimo | Qualidade: superior"
+              comment="Produto de altíssima qualidade, superou minhas expectativas. A montagem foi simples e o desempenho na rua é excelente. Recomendo a todos!"
+            />
+            <Separator className="my-4" />
+          </>
+        )}
+
+        {/* Lista Completa de Avaliações (Condicional) */}
+        {showAllReviews ? (
+          <ProductReviewsList />
+        ) : (
+          /* Botão Ver Avaliações */
+          <div className="flex justify-center pt-2 pb-4">
+            <button 
+              onClick={handleViewAllReviews}
+              className="flex items-center text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors"
+            >
+              Ver Avaliações <ChevronRight size={18} className="ml-1" />
+            </button>
+          </div>
+        )}
+        
+        {/* Paginação (Sempre visível abaixo das avaliações) */}
+        <div className="text-center text-xs text-gray-500 pt-4">
+          1/269
+        </div>
+      </div>
+      
+      {/* Seção de Informações da Loja */}
+      <StoreInfoSection />
+    </>
+  );
+
+  const renderDescriptionContent = () => (
+    <>
+      <ProductDescription />
+      {/* Seção de Informações da Loja (Mantida abaixo da descrição também) */}
+      <StoreInfoSection />
+    </>
+  );
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -90,87 +185,24 @@ const ProductDetailPage: React.FC = () => {
         {/* Abas de Navegação */}
         <div className="border-t border-gray-100 mt-4">
           <div className="flex justify-start relative border-b border-gray-200">
-            <Tab title="Visão geral" isActive={true} />
-            <Tab title="Descrição" isActive={false} />
+            <Tab 
+              title="Visão geral" 
+              name="overview" 
+              isActive={activeTab === 'overview'} 
+              onClick={setActiveTab} 
+            />
+            <Tab 
+              title="Descrição" 
+              name="description" 
+              isActive={activeTab === 'description'} 
+              onClick={setActiveTab} 
+            />
           </div>
         </div>
 
-        {/* Seção de Avaliações */}
-        <div className="p-4 bg-white">
-          <h3 className="text-xl font-bold mb-4">Avaliações dos clientes (892)</h3>
-          
-          {/* Média de Avaliação */}
-          <div className="flex items-baseline mb-4">
-            <span className="text-4xl font-bold mr-1">4.8</span>
-            <span className="text-lg text-gray-500 mr-4">/5</span>
-            <div className="flex">
-              {Array(5).fill(0).map((_, i) => (
-                <Star key={i} size={20} className="text-yellow-500 fill-yellow-500" />
-              ))}
-            </div>
-          </div>
-
-          {/* Filtros de Estrelas */}
-          <div className="flex space-x-2 mb-4">
-            <div className="flex items-center bg-gray-100 px-3 py-1 rounded-full text-sm font-medium text-gray-800">
-              5 <Star size={12} className="text-yellow-500 fill-yellow-500 ml-1 mr-1" /> (765)
-            </div>
-            <div className="flex items-center bg-gray-100 px-3 py-1 rounded-full text-sm font-medium text-gray-800">
-              4 <Star size={12} className="text-yellow-500 fill-yellow-500 ml-1 mr-1" /> (102)
-            </div>
-          </div>
-
-          {/* Avaliação 1 (Mais recente) */}
-          <ProductReviewCard
-            username="carlos.santos"
-            date="31 de out"
-            avatarSrc="https://randomuser.me/api/portraits/men/7.jpg"
-            verified={true}
-            attributes="Custo-benefício: excelente | Parecido com anúncio: sim"
-            comment="Patinete chegou super rápido e funciona perfeitamente! A bateria dura bastante e a velocidade máxima é incrível. Bluetooth conecta fácil no celular."
-          />
-          
-          <Separator className="my-4" />
-
-          {/* Avaliação 2 (Próxima) */}
-          {!showAllReviews && (
-            <>
-              <ProductReviewCard
-                username="ana.ribeiro"
-                date="30 de out"
-                avatarSrc="https://randomuser.me/api/portraits/women/6.jpg"
-                verified={true}
-                attributes="Custo-benefício: ótimo | Qualidade: superior"
-                comment="Produto de altíssima qualidade, superou minhas expectativas. A montagem foi simples e o desempenho na rua é excelente. Recomendo a todos!"
-              />
-              <Separator className="my-4" />
-            </>
-          )}
-
-          {/* Lista Completa de Avaliações (Condicional) */}
-          {showAllReviews ? (
-            <ProductReviewsList />
-          ) : (
-            /* Botão Ver Avaliações */
-            <div className="flex justify-center pt-2 pb-4">
-              <button 
-                onClick={handleViewAllReviews}
-                className="flex items-center text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors"
-              >
-                Ver Avaliações <ChevronRight size={18} className="ml-1" />
-              </button>
-            </div>
-          )}
-          
-          {/* Paginação (Sempre visível abaixo das avaliações) */}
-          <div className="text-center text-xs text-gray-500 pt-4">
-            1/269
-          </div>
-        </div>
+        {/* Conteúdo Principal baseado na aba ativa */}
+        {activeTab === 'overview' ? renderOverviewContent() : renderDescriptionContent()}
         
-        {/* Seção de Informações da Loja */}
-        <StoreInfoSection />
-
         {/* Preenchimento para garantir que o conteúdo acima da barra fixa seja visível */}
         <div className="h-20 bg-white"></div>
         
