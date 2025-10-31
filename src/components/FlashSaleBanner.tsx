@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Zap } from "lucide-react";
 
 const FlashSaleBanner: React.FC = () => {
-  // Simulação de cronômetro regressivo (começa em 10 horas, 25 minutos e 17 segundos)
-  const initialTime = 10 * 3600 + 25 * 60 + 17; 
+  // Inicia o cronômetro em 3 minutos (180 segundos)
+  const initialTime = 3 * 60; 
   const [timeLeft, setTimeLeft] = useState(initialTime);
 
   useEffect(() => {
@@ -21,6 +21,8 @@ const FlashSaleBanner: React.FC = () => {
   }, []);
 
   const formatTime = (seconds: number) => {
+    // O formato agora será M:SS, mas mantendo H:MM:SS para consistência visual se o tempo for maior que 1 hora.
+    // Para 3 minutos, o formato será 00:03:00 -> 00:02:59, etc.
     const h = String(Math.floor(seconds / 3600)).padStart(2, '0');
     const m = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
     const s = String(seconds % 60).padStart(2, '0');
