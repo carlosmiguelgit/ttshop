@@ -41,17 +41,14 @@ interface ProductImageGalleryProps {
 }
 
 const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ onCartClick, cartItemCount }) => {
-  // Definindo a lista de mídia (agora incluindo o vídeo)
+  // Definindo a lista de mídia (apenas imagens agora)
   const media: MediaItem[] = [
-    { 
-      type: 'video', 
-      src: "https://down-bs-br.vod.susercontent.com/api/v4/11110105/mms/br-11110105-6kfkp-mavn8p3mknax4b.16000081749666332.mp4", 
-      thumbnailSrc: "https://down-br.img.susercontent.com/file/br-11134207-7r98o-mavn8ckqwge1ea@resize_w450_nl.webp" // Usando a primeira imagem como thumbnail do vídeo
-    },
-    { type: 'image', src: "https://down-br.img.susercontent.com/file/br-11134207-7r98o-mavn8ckqwge1ea@resize_w450_nl.webp", thumbnailSrc: "https://down-br.img.susercontent.com/file/br-11134207-7r98o-mavn8ckqwge1ea@resize_w450_nl.webp" },
-    { type: 'image', src: "https://down-br.img.susercontent.com/file/br-11134207-81z1k-mfe8oxxbchs79e@resize_w450_nl.webp", thumbnailSrc: "https://down-br.img.susercontent.com/file/br-11134207-81z1k-mfe8oxxbchs79e@resize_w450_nl.webp" },
-    { type: 'image', src: "https://down-br.img.susercontent.com/file/br-11134207-81z1k-mfe8oxx7905gfc@resize_w450_nl.webp", thumbnailSrc: "https://down-br.img.susercontent.com/file/br-11134207-81z1k-mfe8oxx7905gfc@resize_w450_nl.webp" },
-    { type: 'image', src: "https://down-br.img.susercontent.com/file/br-11134207-81z1k-mfe8oxxax1jbf3@resize_w450_nl.webp", thumbnailSrc: "https://down-br.img.susercontent.com/file/br-11134207-81z1k-mfe8oxxax1jbf3@resize_w450_nl.webp" },
+    { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_971780-MLB94758468933_102025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_971780-MLB94758468933_102025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp" },
+    { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_939429-MLB92436307100_092025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_939429-MLB92436307100_092025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp" },
+    { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_694773-MLB92845535377_092025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_694773-MLB92845535377_092025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp" },
+    { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_817055-MLB92435483774_092025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_817055-MLB92435483774_092025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp" },
+    { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_707877-MLB92436356940_092025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_707877-MLB92436356940_092025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp" },
+    { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_600092-MLB92845535605_092025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_600092-MLB92845535605_092025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp" },
   ];
   
   const [activeIndex, setActiveIndex] = useState(0);
@@ -138,17 +135,12 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ onCartClick, 
         className="relative h-[400px] flex items-center justify-center bg-white cursor-pointer"
         onClick={handleMediaClick}
       >
-        {activeItem.type === 'image' ? (
-          <img 
-            src={activeItem.src} 
-            alt={`Main product image ${activeIndex + 1}`} 
-            className="max-h-full object-contain w-full" 
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center bg-black">
-            <Play size={48} className="text-white opacity-70" />
-          </div>
-        )}
+        {/* Agora sempre será uma imagem */}
+        <img 
+          src={activeItem.src} 
+          alt={`Main product image ${activeIndex + 1}`} 
+          className="max-h-full object-contain w-full" 
+        />
         
         {/* Navigation Arrows */}
         <button 
