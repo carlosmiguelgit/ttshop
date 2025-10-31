@@ -33,9 +33,9 @@ const ProductActionsBar: React.FC<ProductActionsBarProps> = ({ onAddToCartClick,
           >
             Adicionar ao carrinho
           </Button>
-          {/* Botão Comprar com Cupom (Gradiente Rosa) */}
+          {/* Botão Comprar com Cupom (Vermelho) */}
           <Button 
-            className="bg-gradient-to-r from-[#FF66B2] to-[#FF3399] text-white rounded-full px-4 sm:px-6 h-10 text-sm sm:text-base font-semibold hover:opacity-90 flex-grow"
+            className="bg-red-600 text-white rounded-full px-4 sm:px-6 h-10 text-sm sm:text-base font-semibold hover:bg-red-700 flex-grow"
             onClick={onBuyWithCouponClick}
           >
             Comprar com cupom
