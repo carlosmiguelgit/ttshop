@@ -22,14 +22,14 @@ const Thumbnail: React.FC<ThumbnailProps> = ({ isActive, src, onClick }) => (
 );
 
 const ProductImageGallery: React.FC = () => {
-  // Caminhos de imagem fornecidos pelo usuário, simulados com placeholder.svg para garantir o funcionamento local.
+  // Usando URLs externos fornecidos pelo usuário
   const images = [
-    "/placeholder.svg", // main: https://ttshop-khaki.vercel.app/images/3773102472.webp
-    "/placeholder.svg", // thumb1: https://ttshop-khaki.vercel.app/images/3043720495.webp
-    "/placeholder.svg", // thumb2: https://ttshop-khaki.vercel.app/images/2878343680.webp
-    "/placeholder.svg", // thumb3: https://ttshop-khaki.vercel.app/images/1008446112.webp
-    "/placeholder.svg", // thumb4: https://ttshop-khaki.vercel.app/images/2829270982.webp
-    "/placeholder.svg", // thumb5: https://ttshop-khaki.vercel.app/images/545675923.webp
+    "https://ttshop-khaki.vercel.app/images/3773102472.webp", // main
+    "https://ttshop-khaki.vercel.app/images/3043720495.webp", // thumb1
+    "https://ttshop-khaki.vercel.app/images/2878343680.webp", // thumb2
+    "https://ttshop-khaki.vercel.app/images/1008446112.webp", // thumb3
+    "https://ttshop-khaki.vercel.app/images/2829270982.webp", // thumb4
+    "https://ttshop-khaki.vercel.app/images/545675923.webp", // thumb5
   ];
   
   const [activeIndex, setActiveIndex] = useState(0);
