@@ -57,7 +57,7 @@ const ProductDetailPage: React.FC = () => {
       {/* Seção de Avaliações */}
       <div className="p-4 bg-white">
         {/* Título Atualizado */}
-        <h3 className="text-xl font-bold mb-4">Avaliações da loja (9,5mil)</h3>
+        <h3 className="text-xl font-bold mb-4">Avaliações da loja (9,6mil)</h3>
         
         {/* Média de Avaliação */}
         <div className="flex items-baseline mb-4">
@@ -75,7 +75,6 @@ const ProductDetailPage: React.FC = () => {
           <div className="flex items-center bg-gray-100 px-3 py-1 rounded-full text-sm font-medium text-gray-800">
             5 <Star size={12} className="text-yellow-500 fill-yellow-500 ml-1 mr-1" /> (765)
           </div>
-          {/* Filtro de 4 estrelas removido */}
         </div>
 
         {/* Avaliação 1 (Mais recente) */}
@@ -121,14 +120,12 @@ const ProductDetailPage: React.FC = () => {
           <div className="flex justify-center pt-2 pb-4">
             <button 
               onClick={handleViewAllReviews}
-              className="flex items-center text-base font-semibold text-cyan-500 hover:text-cyan-600 transition-colors"
+              className="flex items-center text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors"
             >
-              Ver Avaliações da Loja <ChevronRight size={18} className="ml-1" />
+              Avaliações da loja (9,6 mil) <ChevronRight size={18} className="ml-1" />
             </button>
           </div>
         )}
-        
-        {/* Paginação Removida */}
       </div>
       
       {/* Seção de Informações da Loja */}
