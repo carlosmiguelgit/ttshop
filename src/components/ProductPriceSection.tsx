@@ -52,8 +52,8 @@ const ProductPriceSection: React.FC = () => {
   const salesCount = 4348;
   const productTitle = "Patinete Elétrico Scooter De Alumínio Com Bluetooth 30km/h";
   
-  // Cálculo do parcelamento (não mais usado na renderização)
-  // const installmentPrice = (67.90 / 2).toFixed(2).replace('.', ',');
+  // Cálculo do desconto em reais: 619.90 - 67.90 = 552.00
+  const discountAmount = "552,00";
 
   return (
     <div className="bg-white space-y-0">
@@ -94,13 +94,11 @@ const ProductPriceSection: React.FC = () => {
         </div>
       </div>
       
-      {/* A linha de Parcelamento foi removida daqui */}
-
       <div className="p-4 space-y-3">
         {/* Linha 2: Banners de Cupom */}
         <div className="flex space-x-2 overflow-x-auto py-1 border-t border-gray-100 pt-4">
-          <CouponBadge text="R$ 5 de desconto aqui" />
-          <CouponBadge text="Desconto disponível somente no PIX" />
+          {/* Badge atualizado com o valor real do desconto */}
+          <CouponBadge text={`R$ ${discountAmount} de desconto aqui`} />
         </div>
 
         {/* Linha 3: Título do Produto e Bookmark */}
