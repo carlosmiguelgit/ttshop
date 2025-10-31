@@ -1,16 +1,16 @@
 import React from 'react';
-import { Clock, ChevronRight, Star, Tag, Bookmark } from 'lucide-react';
+import { Clock, ChevronRight, Star, Tag, Bookmark, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 // Componente para exibir o tempo restante (simulado)
 const FlashSaleTimer: React.FC = () => {
-  // Simulação de tempo restante: 1 hora, 30 minutos, 45 segundos
-  const hours = 1;
-  const minutes = 30;
-  const seconds = 45;
+  // Simulação de tempo restante: 10 horas, 25 minutos, 17 segundos (baseado na imagem)
+  const hours = 10;
+  const minutes = 25;
+  const seconds = 17;
 
   const TimeSegment: React.FC<{ value: number }> = ({ value }) => (
-    <span className="bg-black text-white text-sm font-bold px-1 py-0.5 rounded">
+    <span className="text-white text-sm font-bold">
       {String(value).padStart(2, '0')}
     </span>
   );
@@ -18,9 +18,9 @@ const FlashSaleTimer: React.FC = () => {
   return (
     <div className="flex items-center space-x-1">
       <TimeSegment value={hours} />
-      <span className="text-black font-bold">:</span>
+      <span className="text-white font-bold">:</span>
       <TimeSegment value={minutes} />
-      <span className="text-black font-bold">:</span>
+      <span className="text-white font-bold">:</span>
       <TimeSegment value={seconds} />
     </div>
   );
@@ -28,7 +28,7 @@ const FlashSaleTimer: React.FC = () => {
 
 const DiscountBadge: React.FC<{ text: string; className?: string }> = ({ text, className }) => (
   <span className={cn(
-    "bg-[#FF3399] text-white text-xs font-bold px-2 py-0.5 rounded-sm flex-shrink-0",
+    "bg-red-600 text-white text-sm font-bold px-2 py-0.5 rounded-sm flex-shrink-0",
     className
   )}>
     {text}
@@ -44,43 +44,71 @@ const CouponBadge: React.FC<{ text: string }> = ({ text }) => (
 
 const ProductPriceSection: React.FC = () => {
   // Dados simulados
-  const discountPercentage = 58;
-  const currentPrice = "67,90"; // Preço da oferta relâmpago
-  const originalPrice = "161,67"; // Preço original riscado
-  const rating = 4.8; // Nota da loja
-  const reviewCount = 9600; // 9,6 mil avaliações
+  const discountPercentage = 89; // (619.90 - 67.90) / 619.90 ≈ 89%
+  const currentPrice = "67,90"; 
+  const originalPrice = "619,90"; // Preço original riscado
+  const rating = 4.8; 
+  const reviewCount = 9600; 
   const salesCount = 4348;
   const productTitle = "Patinete Elétrico Scooter De Alumínio Com Bluetooth 30km/h";
+  
+  // Cálculo do parcelamento (2x sem juros)
+  const installmentPrice = (67.90 / 2).toFixed(2).replace('.', ',');
 
   return (
-    <div className="bg-white space-y-3">
+    <div className="bg-white space-y-0">
       
-      {/* Seção de Oferta Relâmpago (Flash Sale) */}
-      <div className="bg-yellow-400 p-4 flex justify-between items-center">
-        <div className="flex items-center space-x-2">
-          <Clock size={20} className="text-black" />
-          <span className="text-lg font-bold text-black">Oferta Relâmpago</span>
+      {/* Seção de Oferta Relâmpago (Flash Sale) - Novo Design */}
+      <div className="bg-gradient-to-r from-[#FF66B2] to-[#FF3399] p-4">
+        <div className="flex justify-between items-center">
+          
+          {/* Preço e Desconto */}
+          <div className="flex items-end space-x-2">
+            {/* Desconto */}
+            <span className="bg-black/20 text-white text-lg font-bold px-2 py-1 rounded-sm flex-shrink-0">
+              -{discountPercentage}%
+            </span>
+            
+            {/* Preço Atual */}
+            <span className="text-4xl font-bold text-white">
+              R$ {currentPrice}
+            </span>
+            
+            {/* Preço Original Riscado */}
+            <div className="flex flex-col justify-end h-full pb-1">
+              <span className="text-white/80 text-sm line-through">
+                R$ {originalPrice}
+              </span>
+            </div>
+          </div>
+
+          {/* Timer da Oferta */}
+          <div className="flex flex-col items-end text-white text-sm font-medium">
+            <div className="flex items-center space-x-1">
+                <Zap size={16} className="text-white fill-white" />
+                <span>Oferta Relâmpago</span>
+            </div>
+            <div className="mt-1">
+                <span className="text-xs">Termina em </span>
+                <FlashSaleTimer />
+            </div>
+          </div>
         </div>
-        <FlashSaleTimer />
+      </div>
+      
+      {/* Linha de Parcelamento */}
+      <div className="p-4 pt-2 pb-0">
+        <div className="flex items-center text-sm text-gray-700 cursor-pointer hover:text-gray-900">
+          <span className="mr-1">
+            2x R$ {installmentPrice} sem juros
+          </span>
+          <ChevronRight size={16} className="text-gray-400" />
+        </div>
       </div>
 
       <div className="p-4 space-y-3">
-        {/* Linha 1: Preço e Desconto */}
-        <div className="flex items-center space-x-2">
-          <DiscountBadge text={`-${discountPercentage}%`} className="bg-red-600" />
-          
-          <span className="text-3xl font-bold text-red-600">
-            R$ {currentPrice}
-          </span>
-          
-          {/* Preço Original Riscado */}
-          <div className="flex items-center text-gray-500 text-sm line-through">
-            <span className="mr-1">R$ {originalPrice}</span>
-          </div>
-        </div>
-
         {/* Linha 2: Banners de Cupom */}
-        <div className="flex space-x-2 overflow-x-auto py-1">
+        <div className="flex space-x-2 overflow-x-auto py-1 border-t border-gray-100 pt-4">
           <CouponBadge text="Desconto de R$ 5" />
           <CouponBadge text="R$15 off no Google Pay" />
         </div>
