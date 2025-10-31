@@ -31,6 +31,7 @@ const ProductDetailPage: React.FC = () => {
   const [showAllReviews, setShowAllReviews] = useState(false);
   const [activeTab, setActiveTab] = useState<TabName>('overview');
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [cartItemCount, setCartItemCount] = useState(0); // Novo estado para o contador
   
   // Ref para a seção de avaliações
   const reviewsRef = useRef<HTMLDivElement>(null);
@@ -54,10 +55,10 @@ const ProductDetailPage: React.FC = () => {
     window.location.href = 'https://www.google.com/coupon-checkout';
   };
   
-  // Nova lógica: Adicionar ao carrinho mostra apenas um toast
+  // Lógica: Adicionar ao carrinho incrementa o contador e mostra um toast
   const handleAddToCart = () => {
+    setCartItemCount(prevCount => prevCount + 1); // Incrementa o contador
     showSuccess("Produto adicionado ao carrinho!");
-    // Aqui você pode adicionar a lógica para incrementar um contador de itens no carrinho, se necessário.
   };
   
   // Nova função para abrir o Drawer (usada pelo ícone no cabeçalho)
@@ -162,7 +163,10 @@ const ProductDetailPage: React.FC = () => {
       <div className="max-w-[600px] mx-auto bg-white shadow-md">
         
         {/* Galeria de Imagens e Cabeçalho */}
-        <ProductImageGallery onCartClick={handleOpenCartDrawer} />
+        <ProductImageGallery 
+          onCartClick={handleOpenCartDrawer} 
+          cartItemCount={cartItemCount} // Passando o contador
+        />
         
         {/* Nova Seção de Preços e Descontos */}
         <ProductPriceSection />

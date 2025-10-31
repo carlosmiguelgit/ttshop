@@ -37,9 +37,10 @@ const Thumbnail: React.FC<ThumbnailProps> = ({ isActive, item, onClick }) => (
 
 interface ProductImageGalleryProps {
   onCartClick: () => void;
+  cartItemCount: number; // Novo prop
 }
 
-const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ onCartClick }) => {
+const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ onCartClick, cartItemCount }) => {
   // Definindo a lista de mídia (apenas imagens agora)
   const media: MediaItem[] = [
     { type: 'image', src: "https://ttshop-khaki.vercel.app/images/3773102472.webp", thumbnailSrc: "https://ttshop-khaki.vercel.app/images/3773102472.webp" },
@@ -105,10 +106,12 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ onCartClick }
           onClick={onCartClick} // Este clique abre o Drawer
         >
           <ShoppingCart size={16} />
-          {/* Badge de 1 item */}
-          <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
-            1
-          </span>
+          {/* Badge de contagem condicional */}
+          {cartItemCount > 0 && (
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+              {cartItemCount}
+            </span>
+          )}
         </button>
         
         <button className="w-8 h-8 bg-black/30 rounded-full flex items-center justify-center text-white backdrop-blur-sm">
