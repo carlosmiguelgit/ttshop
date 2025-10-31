@@ -124,7 +124,7 @@ const ProductDetailPage: React.FC = () => {
           <ProductReviewCard
             username="carlos.santos"
             date="31 de out"
-            avatarSrc="/placeholder.svg"
+            avatarSrc="https://randomuser.me/api/portraits/men/7.jpg"
             verified={true}
             attributes="Custo-benefício: excelente | Parecido com anúncio: sim"
             comment="Patinete chegou super rápido e funciona perfeitamente! A bateria dura bastante e a velocidade máxima é incrível. Bluetooth conecta fácil no celular."
@@ -138,7 +138,7 @@ const ProductDetailPage: React.FC = () => {
               <ProductReviewCard
                 username="ana.ribeiro"
                 date="30 de out"
-                avatarSrc="/placeholder.svg"
+                avatarSrc="https://randomuser.me/api/portraits/women/6.jpg"
                 verified={true}
                 attributes="Custo-benefício: ótimo | Qualidade: superior"
                 comment="Produto de altíssima qualidade, superou minhas expectativas. A montagem foi simples e o desempenho na rua é excelente. Recomendo a todos!"
