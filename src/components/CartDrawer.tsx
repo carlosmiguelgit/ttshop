@@ -1,7 +1,7 @@
 import React from 'react';
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerDescription } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, X } from 'lucide-react';
+import { ShoppingCart, X, ChevronRight } from 'lucide-react';
 
 interface CartDrawerProps {
   isOpen: boolean;
