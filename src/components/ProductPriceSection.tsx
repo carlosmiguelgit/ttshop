@@ -21,8 +21,8 @@ const CouponBadge: React.FC<{ text: string }> = ({ text }) => (
 const ProductPriceSection: React.FC = () => {
   // Dados simulados
   const discountPercentage = 58;
-  const currentPrice = "67,90"; // Preço do patinete
-  const originalPrice = "161,67"; // Preço original do patinete
+  const currentPrice = "619,90"; // Preço corrigido
+  const originalPrice = "161,67"; // Preço original do patinete (mantido)
   const rating = 4.8; // Nota da loja
   const reviewCount = 9600; // 9,6 mil avaliações
   const salesCount = 4348;
@@ -45,7 +45,7 @@ const ProductPriceSection: React.FC = () => {
         </div>
       </div>
 
-      {/* Linha 2: Banners de Cupom (Agora é a Linha 2) */}
+      {/* Linha 2: Banners de Cupom */}
       <div className="flex space-x-2 overflow-x-auto py-1">
         <CouponBadge text="Desconto de R$ 5" />
         <CouponBadge text="R$15 off no Google Pay" />
