@@ -11,21 +11,30 @@ interface ProductTabsProps {
 
 const ProductTabs: React.FC<ProductTabsProps> = ({ product }) => {
   return (
-    <Tabs defaultValue="description" className="w-full mt-4 bg-white">
+    <Tabs defaultValue="overview" className="w-full mt-4 bg-white">
       <TabsList className="grid w-full grid-cols-2 h-12 rounded-none border-b border-gray-100 bg-white p-0">
+        <TabsTrigger 
+          value="overview" 
+          className="text-base font-semibold data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-cyan-500 data-[state=active]:text-cyan-500 rounded-none"
+        >
+          Visão geral
+        </TabsTrigger>
         <TabsTrigger 
           value="description" 
           className="text-base font-semibold data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-cyan-500 data-[state=active]:text-cyan-500 rounded-none"
         >
           Descrição
         </TabsTrigger>
-        <TabsTrigger 
-          value="reviews" 
-          className="text-base font-semibold data-[state=active]:shadow-none data-[state=active]:border-b-2 data-[state=active]:border-cyan-500 data-[state=active]:text-cyan-500 rounded-none"
-        >
-          Avaliações
-        </TabsTrigger>
       </TabsList>
+      
+      {/* Conteúdo da Visão Geral (Avaliações) */}
+      <TabsContent value="overview" className="mt-0 p-4">
+        <ProductReviewsHeader 
+          rating={product.rating} 
+          reviewCount={product.reviewCount} 
+        />
+        <ProductReviewsList />
+      </TabsContent>
       
       {/* Conteúdo da Descrição */}
       <TabsContent value="description" className="mt-0">
@@ -33,15 +42,6 @@ const ProductTabs: React.FC<ProductTabsProps> = ({ product }) => {
           specifications={product.specifications} 
           descriptionText={product.descriptionText}
         />
-      </TabsContent>
-      
-      {/* Conteúdo das Avaliações */}
-      <TabsContent value="reviews" className="mt-0 p-4">
-        <ProductReviewsHeader 
-          rating={product.rating} 
-          reviewCount={product.reviewCount} 
-        />
-        <ProductReviewsList />
       </TabsContent>
     </Tabs>
   );
