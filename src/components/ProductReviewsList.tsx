@@ -9,7 +9,7 @@ const additionalReviews = [
     avatarSrc: "https://randomuser.me/api/portraits/men/1.jpg",
     verified: true,
     attributes: "Custo-benefício: excelente | Imagem: 4K perfeita",
-    comment: "Chegou em 3 dias! A TV é enorme e a qualidade de imagem é surreal. Não tem como bater esse preço. Recomendo a todos que aproveitem a oferta.",
+    comment: "Chegou no dia seguinte! A TV é enorme e a qualidade de imagem é surreal. Não tem como bater esse preço. Recomendo a todos que aproveitem a oferta.",
     reviewImages: [
       "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mg334ze0i29wec.webp", // Nova Imagem 5
     ],
@@ -54,7 +54,7 @@ const additionalReviews = [
     avatarSrc: "https://randomuser.me/api/portraits/men/5.jpg",
     verified: true,
     attributes: "Custo-benefício: imbatível | Recomendo: 100%",
-    comment: "Melhor compra do ano! O preço de R$ 79,90 é inacreditável para uma QLED 55 polegadas. A qualidade do material é de primeira. Chegou sem nenhum arranhão.",
+    comment: "Melhor compra do ano! O preço de R$ 75,00 é inacreditável para uma QLED 55 polegadas. A qualidade do material é de primeira. Chegou no mesmo dia!",
     reviewImages: [
       "https://down-br.img.susercontent.com/file/br-11134103-81z1k-meglivlueept94.webp", // Nova Imagem 10
       "https://down-br.img.susercontent.com/file/br-11134103-81z1k-meglivltfaio9f.webp", // Nova Imagem 11
@@ -72,7 +72,7 @@ const ProductReviewsList: React.FC = () => {
         avatarSrc="https://randomuser.me/api/portraits/women/6.jpg"
         verified={true}
         attributes="Custo-benefício: ótimo | Qualidade: superior"
-        comment="Qualidade de cinema em casa! O Google TV é muito rápido e a tela antirreflexo faz toda a diferença. Não acreditei no preço de R$ 79,90, mas é real!"
+        comment="Qualidade de cinema em casa! O Google TV é muito rápido e a tela antirreflexo faz toda a diferença. Não acreditei no preço de R$ 75,00, mas é real! Chegou no mesmo dia."
         reviewImages={[
           "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mdn2edozvd89c3.webp", // Nova Imagem 12 (última imagem fornecida)
         ]}
