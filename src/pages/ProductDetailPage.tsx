@@ -3,7 +3,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { products, Product } from '@/data/products';
 import ProductImageGallery from '@/components/ProductImageGallery';
 import ProductPriceSection from '@/components/ProductPriceSection';
-import StoreInfoSection from '@/components/StoreInfoSection';
 import ProductActionsBar from '@/components/ProductActionsBar';
 import CartDrawer from '@/components/CartDrawer';
 import { showSuccess } from '@/utils/toast';
@@ -72,10 +71,7 @@ const ProductDetailPage: React.FC = () => {
         {/* NOVO: Seção de Proteção do Cliente */}
         <CustomerProtectionSection />
         
-        {/* 3. Informações da Loja (Verificação, Suporte, etc.) */}
-        <StoreInfoSection />
-        
-        {/* 4. Abas de Descrição e Avaliações */}
+        {/* 3. Abas de Descrição e Avaliações */}
         <ProductTabs product={product} />
         
         {/* Footer Dyad */}

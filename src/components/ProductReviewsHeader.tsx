@@ -20,12 +20,12 @@ const ProductReviewsHeader: React.FC<ProductReviewsHeaderProps> = ({ rating, rev
         </div>
       </div>
       
-      {/* Botão Ver Todas */}
+      {/* Botão Ver Mais */}
       <Button 
         variant="ghost" 
         className="text-sm text-cyan-600 hover:text-cyan-700 p-0 h-auto"
       >
-        Ver todas ({reviewCount})
+        Ver mais
         <ChevronRight size={16} className="ml-1" />
       </Button>
     </div>
