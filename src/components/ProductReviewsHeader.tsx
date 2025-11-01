@@ -8,15 +8,27 @@ interface ProductReviewsHeaderProps {
 }
 
 const ProductReviewsHeader: React.FC<ProductReviewsHeaderProps> = ({ rating, reviewCount }) => {
+  
+  // Formata a contagem de avaliações para 'X mil' se for maior que 1000
+  const formatReviewCount = (count: number): string => {
+    if (count >= 1000) {
+      return `${(count / 1000).toFixed(1)} mil`;
+    }
+    return count.toString();
+  };
+
   return (
     <div className="flex justify-between items-center mb-4">
       <div className="flex items-center space-x-2">
-        <h3 className="text-xl font-bold text-gray-900">Avaliações</h3>
+        {/* Título atualizado */}
+        <h3 className="text-xl font-bold text-gray-900">Avaliações dos clientes</h3>
         
-        {/* Média de Avaliação */}
+        {/* Média de Avaliação e Contagem */}
         <div className="flex items-center bg-yellow-500/10 text-yellow-700 px-2 py-1 rounded-full text-sm font-semibold">
           <Star size={14} className="fill-yellow-500 text-yellow-500 mr-1" />
           <span>{rating.toFixed(1)}</span>
+          {/* Contagem de avaliações adicionada */}
+          <span className="ml-1 text-gray-700 font-normal">({formatReviewCount(reviewCount)})</span>
         </div>
       </div>
       
