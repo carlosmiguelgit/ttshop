@@ -52,5 +52,26 @@ export const products: Product[] = [
       { label: "ASIN", value: "B099JG7TLB" },
     ],
   },
-  // Adicione mais produtos aqui no futuro
+  {
+    slug: "airfryer-super-potente",
+    title: "Air Fryer Super Potente 5 Litros - Frita sem Óleo",
+    currentPrice: "199,90",
+    originalPrice: "499,90",
+    discountPercentage: 60,
+    discountAmount: "300,00",
+    rating: 4.5,
+    reviewCount: 1200,
+    salesCount: 850,
+    flashSaleTimeSeconds: 10 * 60, // 10 minutos
+    media: [
+      { type: 'image', src: "https://images.unsplash.com/photo-1622430858000-192222222222?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", thumbnailSrc: "https://images.unsplash.com/photo-1622430858000-192222222222?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+      { type: 'image', src: "https://images.unsplash.com/photo-1622430858000-192222222222?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", thumbnailSrc: "https://images.unsplash.com/photo-1622430858000-192222222222?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    ],
+    specifications: [
+      { label: "Capacidade", value: "5 Litros" },
+      { label: "Potência", value: "1500W" },
+      { label: "Cor", value: "Preto Fosco" },
+      { label: "Recursos", value: "Timer e Controle de Temperatura Digital" },
+    ],
+  },
 ];
