@@ -58,9 +58,9 @@ export const products: Product[] = [
     slug: "tv-tcl-55",
     title: "Smart TV TCL 55P7K 55\" QLED 4K UHD Google TV",
     currentPrice: "75,00",
-    originalPrice: "3.999,00",
-    discountPercentage: 98,
-    discountAmount: "3.919,10",
+    originalPrice: "2.279,00", // PREÇO ATUALIZADO
+    discountPercentage: 97, // PORCENTAGEM ATUALIZADA
+    discountAmount: "2.204,00", // VALOR DO DESCONTO ATUALIZADO
     rating: 4.9,
     reviewCount: 1200,
     salesCount: 3521,
