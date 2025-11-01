@@ -4,8 +4,6 @@ import { cn } from "@/lib/utils";
 import MediaViewerDialog from './MediaViewerDialog';
 import { showSuccess } from "@/utils/toast";
 import { MediaItem } from "@/types/product"; // Importando o tipo
-import { useAnalytics } from '@/hooks/useAnalytics'; // Importando useAnalytics
-import { useParams } from 'react-router-dom';
 
 interface ThumbnailProps {
   isActive: boolean;
@@ -39,9 +37,6 @@ interface ProductImageGalleryProps {
 }
 
 const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ media, onCartClick, cartItemCount }) => {
-  const { trackEvent } = useAnalytics();
-  const { slug } = useParams<{ slug: string }>();
-  
   const [activeIndex, setActiveIndex] = useState(0);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   
@@ -64,7 +59,6 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ media, onCart
   const handleMediaClick = () => {
     if (activeItem) {
       setIsViewerOpen(true);
-      trackEvent('Midia', 'Abrir_Visualizador', `${slug}_${activeItem.type}_${activeIndex}`);
     }
   };
   
@@ -73,7 +67,6 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ media, onCart
     try {
       await navigator.clipboard.writeText(url);
       showSuccess("Link da oferta copiado!");
-      trackEvent('Compartilhamento', 'Copiar_Link', slug);
     } catch (err) {
       console.error('Falha ao copiar o link:', err);
       // Fallback simples caso a API de clipboard falhe

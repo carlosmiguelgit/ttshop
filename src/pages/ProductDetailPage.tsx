@@ -10,14 +10,12 @@ import { MadeWithDyad } from '@/components/made-with-dyad';
 import CustomerProtectionSection from '@/components/CustomerProtectionSection';
 import ProductReviewsSection from '@/components/ProductReviewsSection';
 import ProductDescription from '@/components/ProductDescription';
-import { useAnalytics } from '@/hooks/useAnalytics'; // Importando useAnalytics
 
 const CHECKOUT_URL = 'https://comprasonlinedigital.top/c/461d072943';
 
 const ProductDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
-  const { trackEvent } = useAnalytics(); // Usando o hook de rastreamento
   
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0); // 0 ou 1 item (simples)
@@ -41,7 +39,6 @@ const ProductDetailPage: React.FC = () => {
     if (cartItemCount === 0) {
       setCartItemCount(1);
       showSuccess(`1 item adicionado ao carrinho: ${product.title}`);
-      trackEvent('Carrinho', 'Adicionar_Item', product.slug);
     } else {
       showSuccess(`O item já está no carrinho.`);
     }
@@ -49,13 +46,11 @@ const ProductDetailPage: React.FC = () => {
   };
 
   const handleBuyNow = () => {
-    trackEvent('Compra', 'Comprar_Agora_Barra', product.slug);
     // Redireciona para o URL externo
     window.location.href = CHECKOUT_URL;
   };
   
   const handleCheckout = () => {
-    trackEvent('Compra', 'Finalizar_Checkout_Drawer', product.slug);
     // Redireciona para o URL externo a partir do drawer
     setIsCartOpen(false);
     handleBuyNow();
@@ -72,7 +67,6 @@ const ProductDetailPage: React.FC = () => {
           media={product.media} 
           onCartClick={() => {
             setIsCartOpen(true);
-            trackEvent('Carrinho', 'Abrir_Drawer_Icone', product.slug);
           }}
           cartItemCount={cartItemCount}
         />
