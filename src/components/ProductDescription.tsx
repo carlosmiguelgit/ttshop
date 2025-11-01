@@ -7,15 +7,21 @@ interface Specification {
 
 interface ProductDescriptionProps {
   specifications: Specification[];
+  descriptionText: string; // Novo prop
 }
 
-const ProductDescription: React.FC<ProductDescriptionProps> = ({ specifications }) => {
+const ProductDescription: React.FC<ProductDescriptionProps> = ({ specifications, descriptionText }) => {
   return (
     <div className="p-4 bg-white space-y-4">
-      <h3 className="text-xl font-bold text-gray-900">Especificações do produto</h3>
+      <h3 className="text-xl font-bold text-gray-900">Descrição e ficha técnica</h3>
       
+      {/* Texto da Descrição */}
+      <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
+        {descriptionText}
+      </p>
+
       <div className="space-y-3">
-        <h4 className="text-lg font-semibold text-gray-800">Detalhes técnicos</h4>
+        <h4 className="text-lg font-semibold text-gray-800">Ficha Técnica</h4>
         
         <div className="divide-y divide-gray-100 border-t border-b border-gray-100">
           {specifications.map((spec, index) => (

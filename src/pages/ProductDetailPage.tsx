@@ -100,7 +100,7 @@ const ProductDetailPage: React.FC = () => {
           avatarSrc="https://randomuser.me/api/portraits/men/7.jpg"
           verified={true}
           attributes="Custo-benefício: excelente | Parecido com anúncio: sim"
-          comment="Patinete chegou super rápido e funciona perfeitamente! A bateria dura bastante e a velocidade máxima é incrível. Bluetooth conecta fácil no celular."
+          comment={product.slug === 'tv-tcl-55' ? "A TV é simplesmente inacreditável por esse preço! A imagem QLED é perfeita, sem vazamento de luz. Chegou em 2 dias. Melhor compra da vida!" : "Patinete chegou super rápido e funciona perfeitamente! A bateria dura bastante e a velocidade máxima é incrível. Bluetooth conecta fácil no celular."}
           reviewImages={[
             "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8fxmt12",
             "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8ej2d65",
@@ -119,7 +119,7 @@ const ProductDetailPage: React.FC = () => {
               avatarSrc="https://randomuser.me/api/portraits/women/6.jpg"
               verified={true}
               attributes="Custo-benefício: ótimo | Qualidade: superior"
-              comment="Produto de altíssima qualidade, superou minhas expectativas. A montagem foi simples e o desempenho na rua é excelente. Recomendo a todos!"
+              comment={product.slug === 'tv-tcl-55' ? "Qualidade de cinema em casa! O Google TV é muito rápido e a tela antirreflexo faz toda a diferença. Não acreditei no preço de R$ 79,90, mas é real!" : "Produto de altíssima qualidade, superou minhas expectativas. A montagem foi simples e o desempenho na rua é excelente. Recomendo a todos!"}
               reviewImages={[
                 "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mbpgcdc8rdy1b7",
               ]}
@@ -152,7 +152,10 @@ const ProductDetailPage: React.FC = () => {
 
   const renderDescriptionContent = () => (
     <>
-      <ProductDescription specifications={product.specifications} />
+      <ProductDescription 
+        specifications={product.specifications} 
+        descriptionText={product.descriptionText} // Passando o novo prop
+      />
       {/* Seção de Informações da Loja (Mantida abaixo da descrição também) */}
       <StoreInfoSection />
     </>

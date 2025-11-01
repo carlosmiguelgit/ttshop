@@ -8,10 +8,10 @@ const additionalReviews = [
     date: "29 de out",
     avatarSrc: "https://randomuser.me/api/portraits/men/1.jpg",
     verified: true,
-    attributes: "Custo-benefício: excelente | Bateria: duradoura",
-    comment: "Chegou em 3 dias! A velocidade é ótima para o dia a dia e a bateria realmente aguenta o prometido. Muito satisfeito com a compra.",
+    attributes: "Custo-benefício: excelente | Imagem: 4K perfeita",
+    comment: "Chegou em 3 dias! A TV é enorme e a qualidade de imagem é surreal. Não tem como bater esse preço. Recomendo a todos que aproveitem a oferta.",
     reviewImages: [
-      "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8fxmt12", // Imagem 1 (Removido @resize_w72_nl.webp)
+      "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8fxmt12", // Imagem 1
     ],
   },
   {
@@ -19,10 +19,10 @@ const additionalReviews = [
     date: "29 de out",
     avatarSrc: "https://randomuser.me/api/portraits/women/2.jpg",
     verified: true,
-    attributes: "Qualidade: muito boa | Design: moderno",
-    comment: "O patinete é lindo e muito robusto. O sistema de freios é seguro. Único ponto é que achei um pouco pesado, mas nada que atrapalhe.",
+    attributes: "Qualidade: QLED | Design: borda fina",
+    comment: "A TV é linda, super fina e as bordas são mínimas. O Google TV é muito intuitivo. A entrega foi rápida e o produto veio bem embalado.",
     reviewImages: [
-      "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mbpgcdc8okt50c", // Imagem 2 (Removido @resize_w72_nl.webp)
+      "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mbpgcdc8okt50c", // Imagem 2
     ],
   },
   {
@@ -31,9 +31,9 @@ const additionalReviews = [
     avatarSrc: "https://randomuser.me/api/portraits/men/3.jpg",
     verified: false,
     attributes: "Atendimento: rápido | Entrega: pontual",
-    comment: "Comprei para presentear meu filho e ele amou! O Bluetooth funciona perfeitamente para as músicas. Vendedor atencioso.",
+    comment: "Comprei para a sala e ficou perfeita! O processador AiPQ realmente faz a diferença. Vendedor atencioso e tirou todas as dúvidas.",
     reviewImages: [
-      "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mbpgcdc8rdy1b7", // Imagem 3 (Removido @resize_w72_nl.webp)
+      "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mbpgcdc8rdy1b7", // Imagem 3
     ],
   },
   {
@@ -41,10 +41,10 @@ const additionalReviews = [
     date: "27 de out",
     avatarSrc: "https://randomuser.me/api/portraits/women/4.jpg",
     verified: true,
-    attributes: "Velocidade: conforme o anúncio | Fácil de usar: sim",
-    comment: "Perfeito para ir ao trabalho. Economizei muito tempo no trânsito. A dobragem é fácil para guardar no escritório.",
+    attributes: "Velocidade: rápida | Fácil de usar: sim",
+    comment: "O sistema Google TV é muito fluido. Conectei meu console e a experiência de jogo é ótima, sem lag. A tela antirreflexo ajuda muito durante o dia.",
     reviewImages: [
-      "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mchw4fwmt5hda2", // Imagem 4 (Removido @resize_w72_nl.webp)
+      "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mchw4fwmt5hda2", // Imagem 4
     ],
   },
   {
@@ -53,9 +53,9 @@ const additionalReviews = [
     avatarSrc: "https://randomuser.me/api/portraits/men/5.jpg",
     verified: true,
     attributes: "Custo-benefício: imbatível | Recomendo: 100%",
-    comment: "Melhor compra do ano! O preço estava excelente na oferta relâmpago. A qualidade do material é de primeira. Chegou sem nenhum arranhão.",
+    comment: "Melhor compra do ano! O preço de R$ 79,90 é inacreditável para uma QLED 55 polegadas. A qualidade do material é de primeira. Chegou sem nenhum arranhão.",
     reviewImages: [
-      "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8ej2d65", // Imagem 5 (Removido @resize_w72_nl.webp)
+      "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8ej2d65", // Imagem 5
     ],
   },
 ];
@@ -70,9 +70,9 @@ const ProductReviewsList: React.FC = () => {
         avatarSrc="https://randomuser.me/api/portraits/women/6.jpg"
         verified={true}
         attributes="Custo-benefício: ótimo | Qualidade: superior"
-        comment="Produto de altíssima qualidade, superou minhas expectativas. A montagem foi simples e o desempenho na rua é excelente. Recomendo a todos!"
+        comment="Qualidade de cinema em casa! O Google TV é muito rápido e a tela antirreflexo faz toda a diferença. Não acreditei no preço de R$ 79,90, mas é real!"
         reviewImages={[
-          "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8prls27", // Imagem 6 (Removido @resize_w72_nl.webp)
+          "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8prls27", // Imagem 6
         ]}
       />
       <Separator className="my-4" />
