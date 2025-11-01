@@ -137,16 +137,28 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
           <span className="text-gray-500">|</span>
           <span className="text-gray-500">{salesCount} vendidos</span>
         </div>
-      </div>
-      
-      {/* Seção de Frete Grátis (Movida para baixo e estilizada) */}
-      <div className="flex justify-between items-center p-4 bg-green-50/50 cursor-pointer hover:bg-green-100 transition-colors border-b border-gray-100">
-        <div className="flex items-center space-x-2">
-          <Truck size={20} className="text-green-600" />
-          <span className="text-base font-semibold text-gray-900">Frete Grátis</span>
-          <span className="text-sm text-gray-600">(Entrega em 1 dia útil)</span>
+        
+        {/* Seção de Frete Grátis (Estilizada conforme a imagem) */}
+        <div className="flex justify-between items-center py-3 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors">
+          <div className="flex flex-col space-y-1">
+            <div className="flex items-center space-x-2">
+              <Truck size={20} className="text-gray-600" />
+              <div className="flex items-center space-x-2">
+                {/* Badge Frete Grátis */}
+                <span className="bg-teal-100 text-teal-700 text-sm font-semibold px-2 py-0.5 rounded-md">
+                  Frete grátis
+                </span>
+                <span className="text-sm text-gray-800 font-medium">
+                  Receba até 4–11 de nov
+                </span>
+              </div>
+            </div>
+            <span className="text-xs text-gray-500 ml-7">
+              Taxa de envio: R$ 10,80
+            </span>
+          </div>
+          <ChevronRight size={20} className="text-gray-400" />
         </div>
-        <ChevronRight size={20} className="text-gray-400" />
       </div>
     </div>
   );
