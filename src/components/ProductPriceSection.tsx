@@ -36,10 +36,11 @@ const FlashSaleTimer: React.FC<{ initialSeconds: number }> = ({ initialSeconds }
 
 const CouponBadge: React.FC<{ text: string }> = ({ text }) => (
   <div className={cn(
-    "flex items-center bg-pink-50/80 text-sm text-[#FF3399] font-semibold px-2 py-1 rounded-md whitespace-nowrap",
+    // Reduzindo de text-sm para text-xs e ajustando o padding
+    "flex items-center bg-pink-50/80 text-xs text-[#FF3399] font-semibold px-1.5 py-0.5 rounded-md whitespace-nowrap",
     "animate-pulse-slow" // Mantendo o efeito de pulso no cupom (opacidade)
   )}>
-    <Tag size={14} className="mr-1 fill-[#FF3399]" />
+    <Tag size={12} className="mr-1 fill-[#FF3399]" /> {/* Reduzindo o ícone */}
     {text}
   </div>
 );
@@ -61,6 +62,11 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
     flashSaleTimeSeconds,
     title: productTitle
   } = product;
+
+  // Formatando o valor do desconto para o badge
+  const discountText = `R$ ${discountAmount} de desconto`;
+  // Texto de urgência
+  const urgencyText = "Restam somente 3 unidades";
 
   return (
     <div className="bg-white space-y-0">
@@ -105,15 +111,16 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
         {/* Linha 2: Banners de Cupom e Urgência */}
         <div className="flex items-center space-x-2 overflow-x-auto py-1">
           {/* Badge de Cupom com Pulse */}
-          <CouponBadge text={`R$ ${discountAmount} de desconto`} />
+          <CouponBadge text={discountText} />
           
           {/* Mensagem de Urgência com Pulse */}
           <div className={cn(
-            "flex items-center bg-pink-50/80 text-sm text-[#FF3399] font-semibold px-2 py-1 rounded-md whitespace-nowrap border border-[#FF3399]",
+            // Reduzindo de text-sm para text-xs e ajustando o padding
+            "flex items-center bg-pink-50/80 text-xs text-[#FF3399] font-semibold px-1.5 py-0.5 rounded-md whitespace-nowrap border border-[#FF3399]",
             "animate-border-pulse-pink" // Nova animação de pulso de borda
           )}>
-            <Zap size={14} className="mr-1 fill-[#FF3399]" />
-            <span>Restam somente 3 unidades</span>
+            <Zap size={12} className="mr-1 fill-[#FF3399]" /> {/* Reduzindo o ícone */}
+            <span>{urgencyText}</span>
           </div>
         </div>
 
