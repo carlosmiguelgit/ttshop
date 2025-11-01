@@ -63,13 +63,8 @@ const ProductDetailPage: React.FC = () => {
   };
 
   const handleBuyWithCoupon = () => {
-    let checkoutUrl = 'https://checkout.meutiktok.shop/VCCL1O8SCFJ3'; // URL padrão (Patinete)
-    
-    if (product.slug === 'tv-tcl-55') {
-      checkoutUrl = 'https://comprasonlinedigital.top/c/461d072943'; // Nova URL para a TV
-    }
-    
-    window.location.href = checkoutUrl;
+    // Redireciona para o arquivo HTML de checkout estático na pasta public
+    window.location.href = '/checkout.html';
   };
   
   const handleAddToCart = () => {
