@@ -120,6 +120,10 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
         {/* Linha 3: Título do Produto */}
         <div className="flex justify-between items-start pt-2">
           <div className="flex items-center">
+            {/* NOVO: Badge 11.11 */}
+            <span className="bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded mr-2 flex-shrink-0">
+              11.11
+            </span>
             <h2 className="text-lg font-bold text-gray-900 leading-snug line-clamp-2">
               {productTitle}
             </h2>
