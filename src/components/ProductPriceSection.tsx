@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronRight, Star, Tag, Bookmark, Zap } from 'lucide-react';
+import { ChevronRight, Star, Tag, Bookmark, Zap, Truck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Product } from '@/data/products'; // Importando o tipo Product
 
@@ -101,13 +101,23 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
         </div>
       </div>
       
+      {/* Seção de Frete Grátis (Adicionada de volta) */}
+      <div className="flex justify-between items-center p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors">
+        <div className="flex items-center space-x-2">
+          <Truck size={20} className="text-green-600" />
+          <span className="text-base font-semibold text-gray-800">Frete Grátis</span>
+          <span className="text-sm text-gray-500">(Entrega em 1 dia útil)</span>
+        </div>
+        <ChevronRight size={20} className="text-gray-400" />
+      </div>
+
       <div className="p-4 space-y-3">
         {/* Linha 2: Banners de Cupom e Urgência */}
-        <div className="flex items-center space-x-2 overflow-x-auto py-1 border-t border-gray-100 pt-4">
+        <div className="flex items-center space-x-2 overflow-x-auto py-1">
           {/* Badge de Cupom com Pulse */}
           <CouponBadge text={`R$ ${discountAmount} de desconto`} />
           
-          {/* Mensagem de Urgência com Pulse (Usando Zap) */}
+          {/* Mensagem de Urgência com Pulse */}
           <div className={cn(
             "flex items-center bg-pink-50/80 text-sm text-[#FF3399] font-semibold px-2 py-1 rounded-md whitespace-nowrap border border-[#FF3399]",
             "animate-border-pulse-pink" // Nova animação de pulso de borda
