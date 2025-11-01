@@ -7,14 +7,15 @@ interface CartDrawerProps {
   isOpen: boolean;
   onClose: () => void;
   onCheckoutClick: () => void; // Novo prop para a ação de checkout
+  productThumbnailUrl: string; // Novo prop para a URL da imagem
 }
 
 // Componente simples para o item no carrinho
-const CartItem: React.FC = () => (
+const CartItem: React.FC<{ thumbnailUrl: string }> = ({ thumbnailUrl }) => (
   <div className="flex items-center space-x-3 p-3 border rounded-lg bg-gray-50">
     {/* Imagem do Produto (usando a thumbnail principal) */}
     <img 
-      src="https://ttshop-khaki.vercel.app/images/3773102472.webp" 
+      src={thumbnailUrl} 
       alt="Patinete Elétrico" 
       className="w-16 h-16 object-cover rounded-md flex-shrink-0"
     />
@@ -31,7 +32,7 @@ const CartItem: React.FC = () => (
   </div>
 );
 
-const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheckoutClick }) => {
+const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheckoutClick, productThumbnailUrl }) => {
   return (
     <Drawer open={isOpen} onOpenChange={onClose} direction="right">
       <DrawerContent 
@@ -52,7 +53,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheckoutClic
             <p className="text-sm text-gray-500">1 item no carrinho.</p>
 
             {/* Item do Produto */}
-            <CartItem />
+            <CartItem thumbnailUrl={productThumbnailUrl} />
             
             {/* Espaço para mais itens ou subtotal */}
             <div className="pt-4 border-t border-gray-100">

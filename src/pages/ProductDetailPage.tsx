@@ -46,6 +46,9 @@ const ProductDetailPage: React.FC = () => {
     );
   }
   
+  // Extrai a URL da thumbnail do primeiro item de mídia
+  const productThumbnailUrl = product.media[0]?.thumbnailSrc || "public/placeholder.svg";
+
   const reviewsRef = useRef<HTMLDivElement>(null);
 
   const handleViewAllReviews = () => {
@@ -227,6 +230,7 @@ const ProductDetailPage: React.FC = () => {
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
         onCheckoutClick={handleBuyWithCoupon}
+        productThumbnailUrl={productThumbnailUrl} // Passando a URL correta
       />
     </div>
   );
