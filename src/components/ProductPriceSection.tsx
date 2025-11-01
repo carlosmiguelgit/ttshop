@@ -149,12 +149,12 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
                   Frete grátis
                 </span>
                 <span className="text-sm text-gray-800 font-medium">
-                  Receba até 4–11 de nov
+                  <span className="font-bold text-red-600">RECEBA AMANHÃ</span>
                 </span>
               </div>
             </div>
             <span className="text-xs text-gray-500 ml-7">
-              Taxa de envio: R$ 10,80
+              Taxa de envio: <span className="line-through">R$ 43,60</span>
             </span>
           </div>
           <ChevronRight size={20} className="text-gray-400" />
