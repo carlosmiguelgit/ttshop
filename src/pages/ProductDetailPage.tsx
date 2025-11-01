@@ -8,9 +8,8 @@ import CartDrawer from '@/components/CartDrawer';
 import { showSuccess } from '@/utils/toast';
 import { MadeWithDyad } from '@/components/made-with-dyad';
 import CustomerProtectionSection from '@/components/CustomerProtectionSection';
-import ProductReviewsHeader from '@/components/ProductReviewsHeader'; // Novo import
-import ProductReviewsList from '@/components/ProductReviewsList'; // Novo import
-import ProductDescription from '@/components/ProductDescription'; // Novo import
+import ProductReviewsSection from '@/components/ProductReviewsSection'; // NOVO IMPORT
+import ProductDescription from '@/components/ProductDescription';
 
 const CHECKOUT_URL = 'https://comprasonlinedigital.top/c/461d072943';
 
@@ -76,14 +75,11 @@ const ProductDetailPage: React.FC = () => {
         {/* NOVO: Seção de Proteção do Cliente */}
         <CustomerProtectionSection />
         
-        {/* 3. Seção de Avaliações */}
-        <div className="bg-white p-4 mt-4">
-          <ProductReviewsHeader 
-            rating={product.rating} 
-            reviewCount={product.reviewCount} 
-          />
-          <ProductReviewsList />
-        </div>
+        {/* 3. Seção de Avaliações (Agora usando o componente de seção) */}
+        <ProductReviewsSection 
+          rating={product.rating} 
+          reviewCount={product.reviewCount} 
+        />
         
         {/* 4. Seção de Descrição */}
         <div className="mt-4">

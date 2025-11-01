@@ -5,9 +5,11 @@ import { Button } from "@/components/ui/button";
 interface ProductReviewsHeaderProps {
   rating: number; // Mantido, mas não usado visualmente nesta seção
   reviewCount: number;
+  onViewMoreClick: () => void;
+  showViewMore: boolean;
 }
 
-const ProductReviewsHeader: React.FC<ProductReviewsHeaderProps> = ({ reviewCount }) => {
+const ProductReviewsHeader: React.FC<ProductReviewsHeaderProps> = ({ reviewCount, onViewMoreClick, showViewMore }) => {
   
   // Formata a contagem de avaliações para 'X mil' se for maior que 1000
   const formatReviewCount = (count: number): string => {
@@ -45,13 +47,16 @@ const ProductReviewsHeader: React.FC<ProductReviewsHeaderProps> = ({ reviewCount
         </div>
         
         {/* Botão Ver Mais (Cor preta) */}
-        <Button 
-          variant="ghost" 
-          className="text-sm text-gray-900 hover:text-gray-700 p-0 h-auto"
-        >
-          Ver mais
-          <ChevronRight size={16} className="ml-1" />
-        </Button>
+        {showViewMore && (
+          <Button 
+            variant="ghost" 
+            className="text-sm text-gray-900 hover:text-gray-700 p-0 h-auto"
+            onClick={onViewMoreClick}
+          >
+            Ver mais
+            <ChevronRight size={16} className="ml-1" />
+          </Button>
+        )}
       </div>
       
       {/* Linha 2: Nota 5.0/5 e Estrelas */}

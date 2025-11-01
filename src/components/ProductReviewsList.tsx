@@ -2,7 +2,18 @@ import React from 'react';
 import ProductReviewCard from './ProductReviewCard';
 import { Separator } from "@/components/ui/separator";
 
-const additionalReviews = [
+const allReviews = [
+  {
+    username: "ana.ribeiro",
+    date: "30 de out",
+    avatarSrc: "https://randomuser.me/api/portraits/women/6.jpg",
+    verified: true,
+    attributes: "Custo-benefício: ótimo | Qualidade: superior",
+    comment: "Qualidade de cinema em casa! O Google TV é muito rápido e a tela antirreflexo faz toda a diferença. Não acreditei no preço de R$ 75,00, mas é real! Chegou no mesmo dia.",
+    reviewImages: [
+      "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mdn2edozvd89c3.webp", // Nova Imagem 12 (última imagem fornecida)
+    ],
+  },
   {
     username: "joao.melo",
     date: "29 de out",
@@ -62,28 +73,21 @@ const additionalReviews = [
   },
 ];
 
-const ProductReviewsList: React.FC = () => {
+interface ProductReviewsListProps {
+  showAll: boolean;
+}
+
+const ProductReviewsList: React.FC<ProductReviewsListProps> = ({ showAll }) => {
+  
+  const reviewsToDisplay = showAll ? allReviews : allReviews.slice(0, 1);
+
   return (
     <>
-      {/* Avaliação 2 (que estava oculta) - Data atualizada para 30 de out */}
-      <ProductReviewCard
-        username="ana.ribeiro"
-        date="30 de out"
-        avatarSrc="https://randomuser.me/api/portraits/women/6.jpg"
-        verified={true}
-        attributes="Custo-benefício: ótimo | Qualidade: superior"
-        comment="Qualidade de cinema em casa! O Google TV é muito rápido e a tela antirreflexo faz toda a diferença. Não acreditei no preço de R$ 75,00, mas é real! Chegou no mesmo dia."
-        reviewImages={[
-          "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mdn2edozvd89c3.webp", // Nova Imagem 12 (última imagem fornecida)
-        ]}
-      />
-      <Separator className="my-4" />
-
-      {/* 5 Avaliações Adicionais */}
-      {additionalReviews.map((review, index) => (
+      {reviewsToDisplay.map((review, index) => (
         <React.Fragment key={index}>
           <ProductReviewCard {...review} />
-          {index < additionalReviews.length - 1 && <Separator className="my-4" />}
+          {/* Adiciona separador apenas entre os itens, e não após o último */}
+          {index < reviewsToDisplay.length - 1 && <Separator className="my-4" />}
         </React.Fragment>
       ))}
     </>
