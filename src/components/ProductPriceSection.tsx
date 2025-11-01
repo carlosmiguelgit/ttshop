@@ -72,38 +72,46 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
     <div className="bg-white space-y-0">
       
       {/* Seção de Oferta Relâmpago (Flash Sale) */}
-      <div className="bg-gradient-to-r from-[#D32F2F] to-[#FF5722] p-4">
+      <div className="relative bg-gradient-to-r from-[#FF3366] to-[#FF7733] pt-3 pb-2 px-4">
         <div className="flex justify-between items-start">
           
           {/* Preço e Desconto (Lado Esquerdo) */}
           <div className="flex flex-col">
-            <div className="flex items-center space-x-2 mb-1">
-              {/* Badge de Desconto Branco */}
-              <span className="bg-white text-[#D32F2F] text-lg font-bold px-2 py-0.5 rounded-md flex-shrink-0">
+            <div className="flex items-center space-x-2 mb-0.5">
+              {/* Badge de Desconto Branco (Ajustado para ser menor e mais arredondado) */}
+              <span className="bg-white text-[#FF3366] text-sm font-bold px-2 py-0.5 rounded-lg flex-shrink-0">
                 -{discountPercentage}%
               </span>
               
-              {/* Preço Atual */}
-              <span className="text-4xl font-bold text-white">
+              {/* Preço Atual (Ajustado para R$ e valor em tamanhos diferentes) */}
+              <span className="text-2xl font-bold text-white">
                 R$ {currentPrice}
               </span>
+              {/* Ícone de cupom (simulado) */}
+              <Tag size={16} className="text-white fill-white ml-1" />
             </div>
             
-            {/* Preço Original Riscado */}
-            <span className="text-white/80 text-base line-through ml-2">
+            {/* Preço Original Riscado (Ajustado para ser menor) */}
+            <span className="text-white/80 text-sm line-through ml-2">
               R$ {originalPrice}
             </span>
           </div>
 
           {/* Timer da Oferta (Lado Direito) */}
           <div className="flex flex-col items-end text-white text-sm font-medium pt-1">
-            <div className="flex items-center space-x-1 font-bold mb-1">
+            <div className="flex items-center space-x-1 font-bold mb-0.5">
                 <Zap size={16} className="text-white fill-white" />
                 <span>Oferta Relâmpago</span>
             </div>
             {/* Exibição do Timer em uma única linha */}
             <FlashSaleTimer initialSeconds={flashSaleTimeSeconds} />
           </div>
+        </div>
+        
+        {/* Recorte Inferior (Simulação de curva) */}
+        <div className="absolute bottom-0 left-0 right-0 h-2 bg-white rounded-t-lg transform translate-y-full">
+          {/* Este div simula o recorte, mas o efeito real é mais complexo com CSS puro. 
+          Para simplificar e manter a aparência, vamos usar um truque de borda. */}
         </div>
       </div>
       
