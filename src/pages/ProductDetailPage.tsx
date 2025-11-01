@@ -51,7 +51,7 @@ const ProductDetailPage: React.FC = () => {
   };
   
   const handleBuyWithCoupon = () => {
-    // Ação para Comprar com cupom: redireciona para o checkout
+    // Ação para Comprar com cupom/Finalizar Compra: redireciona para o checkout
     window.location.href = 'https://checkout.meutiktok.shop/VCCL1O8SCFJ3';
   };
   
@@ -225,6 +225,7 @@ const ProductDetailPage: React.FC = () => {
       <CartDrawer 
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
+        onCheckoutClick={handleBuyWithCoupon} // Passando a função de redirecionamento
       />
     </div>
   );

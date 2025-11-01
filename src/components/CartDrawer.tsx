@@ -6,6 +6,7 @@ import { ShoppingCart, X } from 'lucide-react';
 interface CartDrawerProps {
   isOpen: boolean;
   onClose: () => void;
+  onCheckoutClick: () => void; // Novo prop para a ação de checkout
 }
 
 // Componente simples para o item no carrinho
@@ -30,7 +31,7 @@ const CartItem: React.FC = () => (
   </div>
 );
 
-const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
+const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose, onCheckoutClick }) => {
   return (
     <Drawer open={isOpen} onOpenChange={onClose} direction="right">
       <DrawerContent 
@@ -66,7 +67,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({ isOpen, onClose }) => {
           <div className="p-4 flex-shrink-0">
             <Button 
               className="w-full bg-red-600 hover:bg-red-700 text-white font-bold rounded-full text-lg h-12"
-              // Removendo o valor do texto do botão
+              onClick={onCheckoutClick} // Usando o novo prop
             >
               Finalizar Compra
             </Button>
