@@ -17,8 +17,8 @@ export interface Product {
 
 export const products: Product[] = [
   {
-    slug: "patinete-eletrico-scooter-bluetooth",
-    title: "Patinete Elétrico Scooter De Alumínio Com Bluetooth 30km/h",
+    slug: "patinete-eletrico", // SLUG ATUALIZADO
+    title: "Patinete Elétrico Scooter De Alumínio Com Bluetooth", // TÍTULO ATUALIZADO
     currentPrice: "67,90",
     originalPrice: "619,90",
     discountPercentage: 89,
