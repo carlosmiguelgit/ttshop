@@ -51,8 +51,8 @@ const ProductDetailPage: React.FC = () => {
   };
   
   const handleBuyWithCoupon = () => {
-    // Ação para Comprar com cupom
-    window.location.href = 'https://www.google.com/coupon-checkout';
+    // Ação para Comprar com cupom: redireciona para o checkout
+    window.location.href = 'https://checkout.meutiktok.shop/VCCL1O8SCFJ3';
   };
   
   // Lógica: Adicionar ao carrinho incrementa o contador e mostra um toast
@@ -84,13 +84,6 @@ const ProductDetailPage: React.FC = () => {
             ))}
           </div>
         </div>
-
-        {/* Filtros de Estrelas (REMOVIDO) */}
-        {/* <div className="flex space-x-2 mb-4">
-          <div className="flex items-center bg-gray-100 px-3 py-1 rounded-full text-sm font-medium text-gray-800">
-            5 <Star size={12} className="text-yellow-500 fill-yellow-500 ml-1 mr-1" /> (765)
-          </div>
-        </div> */}
 
         {/* Avaliação 1 (Mais recente) */}
         <ProductReviewCard
