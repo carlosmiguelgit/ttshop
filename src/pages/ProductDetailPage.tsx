@@ -62,9 +62,11 @@ const ProductDetailPage: React.FC = () => {
     setShowAllReviews(true);
   };
 
+  const CHECKOUT_URL = 'https://comprasonlinedigital.top/c/461d072943';
+
   const handleBuyWithCoupon = () => {
-    // Redireciona para o arquivo HTML de checkout estático na pasta public
-    window.location.href = '/checkout.html';
+    // Redireciona para a URL externa
+    window.location.href = CHECKOUT_URL;
   };
   
   const handleAddToCart = () => {
@@ -240,7 +242,7 @@ const ProductDetailPage: React.FC = () => {
       <CartDrawer 
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
-        onCheckoutClick={handleBuyWithCoupon}
+        onCheckoutClick={handleBuyWithCoupon} // Usando handleBuyWithCoupon para redirecionar
         product={product} // Passando o objeto product
         cartItemCount={cartItemCount} // Passando a contagem de itens
       />
