@@ -12,6 +12,8 @@ import CartDrawer from '@/components/CartDrawer';
 import { showSuccess } from '@/utils/toast';
 import { MadeWithDyad } from '@/components/made-with-dyad';
 
+const CHECKOUT_URL = 'https://comprasonlinedigital.top/c/461d072943';
+
 const ProductDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -42,12 +44,12 @@ const ProductDetailPage: React.FC = () => {
   };
 
   const handleBuyNow = () => {
-    // Simula o redirecionamento para o checkout
-    window.location.href = '/checkout.html';
+    // Redireciona para o URL externo
+    window.location.href = CHECKOUT_URL;
   };
   
   const handleCheckout = () => {
-    // Simula o redirecionamento para o checkout a partir do drawer
+    // Redireciona para o URL externo a partir do drawer
     setIsCartOpen(false);
     handleBuyNow();
   };
