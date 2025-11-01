@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
 export default defineConfig(() => ({
-  base: "/patinete/", // Caminho base ajustado para o subdiretório
+  base: "/", // Revertido para a raiz, pois o subdomínio age como a raiz do app
   server: {
     host: "::",
     port: 8080,
