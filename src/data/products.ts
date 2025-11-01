@@ -66,10 +66,12 @@ export const products: Product[] = [
     salesCount: 850,
     flashSaleTimeSeconds: 5 * 60, // 5 minutos
     media: [
-      // Placeholder images for TV
-      { type: 'image', src: "https://public/placeholder.svg", thumbnailSrc: "https://public/placeholder.svg" },
-      { type: 'image', src: "https://public/placeholder.svg", thumbnailSrc: "https://public/placeholder.svg" },
-      { type: 'image', src: "https://public/placeholder.svg", thumbnailSrc: "https://public/placeholder.svg" },
+      { type: 'image', src: "https://imgs.casasbahia.com.br/55069451/1xg.png?imwidth=500", thumbnailSrc: "https://imgs.casasbahia.com.br/55069451/1xg.png?imwidth=100" },
+      { type: 'image', src: "https://imgs.casasbahia.com.br/55069451/2xg.png?imwidth=500", thumbnailSrc: "https://imgs.casasbahia.com.br/55069451/2xg.png?imwidth=100" },
+      { type: 'image', src: "https://imgs.casasbahia.com.br/55069451/3xg.jpg?imwidth=500", thumbnailSrc: "https://imgs.casasbahia.com.br/55069451/3xg.jpg?imwidth=100" },
+      { type: 'image', src: "https://imgs.casasbahia.com.br/55069451/4xg.jpg?imwidth=500", thumbnailSrc: "https://imgs.casasbahia.com.br/55069451/4xg.jpg?imwidth=100" },
+      { type: 'image', src: "https://imgs.casasbahia.com.br/55069451/1c.jpg?imwidth=500", thumbnailSrc: "https://imgs.casasbahia.com.br/55069451/1c.jpg?imwidth=100" },
+      { type: 'image', src: "https://imgs.casasbahia.com.br/55069451/9xg.jpg?imwidth=500", thumbnailSrc: "https://imgs.casasbahia.com.br/55069451/9xg.jpg?imwidth=100" },
     ],
     specifications: [
       { label: "Código", value: "kbh03bg72b" },
