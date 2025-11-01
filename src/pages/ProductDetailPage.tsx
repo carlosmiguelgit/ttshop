@@ -240,7 +240,8 @@ const ProductDetailPage: React.FC = () => {
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
         onCheckoutClick={handleBuyWithCoupon}
-        productThumbnailUrl={productThumbnailUrl} // Passando a URL correta
+        product={product} // Passando o objeto product
+        cartItemCount={cartItemCount} // Passando a contagem de itens
       />
     </div>
   );
