@@ -18,7 +18,7 @@ export interface Product {
 
 export const products: Product[] = [
   {
-    slug: "patinete-eletrico", // SLUG ATUALIZADO
+    slug: "patinete-eletrico-scooter-bluetooth", // SLUG ATUALIZADO
     title: "Patinete Elétrico Scooter De Alumínio Com Bluetooth", // TÍTULO ATUALIZADO
     currentPrice: "67,90",
     originalPrice: "619,90",
