@@ -1,5 +1,6 @@
 import React from 'react';
 import { Star } from 'lucide-react';
+import ReviewImageGallery from './ReviewImageGallery'; // Importando o novo componente
 
 interface ReviewCardProps {
   username: string;
@@ -61,18 +62,9 @@ const ProductReviewCard: React.FC<ReviewCardProps> = ({
         {comment}
       </p>
       
-      {/* Galeria de Imagens da Avaliação (se houver) */}
+      {/* Galeria de Imagens da Avaliação (agora usando o novo componente) */}
       {reviewImages && reviewImages.length > 0 && (
-        <div className="flex space-x-2 overflow-x-auto py-2">
-          {reviewImages.map((src, index) => (
-            <img 
-              key={index}
-              src={src}
-              alt={`Imagem da avaliação ${index + 1}`}
-              className="w-16 h-16 object-cover rounded-md border border-gray-200 flex-shrink-0"
-            />
-          ))}
-        </div>
+        <ReviewImageGallery reviewImages={reviewImages} />
       )}
       
       {/* Compra Verificada removida */}
