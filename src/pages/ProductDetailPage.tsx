@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useParams } from 'react-router-dom'; // Importando useParams
 import ProductImageGallery from "@/components/ProductImageGallery";
 import ProductPriceSection from "@/components/ProductPriceSection";
 import ProductActionsBar from "@/components/ProductActionsBar";
@@ -29,19 +30,25 @@ const Tab: React.FC<{ title: string; name: TabName; isActive: boolean; onClick: 
 );
 
 const ProductDetailPage: React.FC = () => {
+  const { slug } = useParams<{ slug: string }>(); // Obtém o slug da URL
+  
   const [showAllReviews, setShowAllReviews] = useState(false);
   const [activeTab, setActiveTab] = useState<TabName>('overview');
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
   
-  // 1. Carregar o produto padrão (o primeiro da lista)
-  const product: Product | undefined = products[0];
+  // 1. Carregar o produto:
+  // Se houver um slug na URL, busca o produto correspondente.
+  // Se não houver slug (rota /), usa o primeiro produto como padrão.
+  const product: Product | undefined = slug 
+    ? products.find(p => p.slug === slug)
+    : products[0];
 
   // Se o produto não for encontrado, exibe um erro simples
   if (!product) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-xl text-red-500">Nenhum produto configurado.</p>
+        <p className="text-xl text-red-500">Produto não encontrado para o slug: {slug}</p>
       </div>
     );
   }
