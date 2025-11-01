@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronRight, Star, Tag, Bookmark, Zap, Truck } from 'lucide-react';
+import { ChevronRight, Star, Tag, Zap, Truck } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Product } from '@/data/products'; // Importando o tipo Product
 
@@ -101,16 +101,6 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
         </div>
       </div>
       
-      {/* Seção de Frete Grátis (Adicionada de volta) */}
-      <div className="flex justify-between items-center p-4 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors">
-        <div className="flex items-center space-x-2">
-          <Truck size={20} className="text-green-600" />
-          <span className="text-base font-semibold text-gray-800">Frete Grátis</span>
-          <span className="text-sm text-gray-500">(Entrega em 1 dia útil)</span>
-        </div>
-        <ChevronRight size={20} className="text-gray-400" />
-      </div>
-
       <div className="p-4 space-y-3">
         {/* Linha 2: Banners de Cupom e Urgência */}
         <div className="flex items-center space-x-2 overflow-x-auto py-1">
@@ -137,7 +127,7 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
         </div>
         
         {/* Linha 4: Avaliação e Vendas */}
-        <div className="flex items-center space-x-3 text-sm text-gray-600">
+        <div className="flex items-center space-x-3 text-sm text-gray-600 pb-3 border-b border-gray-100">
           <div className="flex items-center">
             <Star size={16} className="text-yellow-500 fill-yellow-500 mr-1" />
             <span className="font-bold text-gray-900">{rating.toFixed(1)}</span>
@@ -147,6 +137,16 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
           <span className="text-gray-500">|</span>
           <span className="text-gray-500">{salesCount} vendidos</span>
         </div>
+      </div>
+      
+      {/* Seção de Frete Grátis (Movida para baixo e estilizada) */}
+      <div className="flex justify-between items-center p-4 bg-green-50/50 cursor-pointer hover:bg-green-100 transition-colors border-b border-gray-100">
+        <div className="flex items-center space-x-2">
+          <Truck size={20} className="text-green-600" />
+          <span className="text-base font-semibold text-gray-900">Frete Grátis</span>
+          <span className="text-sm text-gray-600">(Entrega em 1 dia útil)</span>
+        </div>
+        <ChevronRight size={20} className="text-gray-400" />
       </div>
     </div>
   );
