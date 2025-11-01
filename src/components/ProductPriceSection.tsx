@@ -153,7 +153,7 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
                   Frete grátis
                 </span>
                 <span className="text-sm text-gray-800 font-medium">
-                  <span className="font-bold text-red-600">RECEBA AMANHÃ</span>
+                  <span className="font-bold text-gray-800">RECEBA AMANHÃ</span>
                 </span>
               </div>
             </div>
