@@ -3,14 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { products, Product } from '@/data/products';
 import ProductImageGallery from '@/components/ProductImageGallery';
 import ProductPriceSection from '@/components/ProductPriceSection';
-import ProductDescription from '@/components/ProductDescription';
 import StoreInfoSection from '@/components/StoreInfoSection';
-import ProductReviewsHeader from '@/components/ProductReviewsHeader';
-import ProductReviewsList from '@/components/ProductReviewsList';
 import ProductActionsBar from '@/components/ProductActionsBar';
 import CartDrawer from '@/components/CartDrawer';
 import { showSuccess } from '@/utils/toast';
 import { MadeWithDyad } from '@/components/made-with-dyad';
+import ProductTabs from '@/components/ProductTabs'; // Importando o novo componente
 
 const CHECKOUT_URL = 'https://comprasonlinedigital.top/c/461d072943';
 
@@ -73,17 +71,8 @@ const ProductDetailPage: React.FC = () => {
         {/* 3. Informações da Loja (Verificação, Suporte, etc.) */}
         <StoreInfoSection />
         
-        {/* 4. Descrição e Ficha Técnica */}
-        <ProductDescription 
-          specifications={product.specifications} 
-          descriptionText={product.descriptionText}
-        />
-        
-        {/* 5. Seção de Avaliações */}
-        <div className="bg-white p-4 mt-4 border-t border-gray-100">
-          <ProductReviewsHeader rating={product.rating} reviewCount={product.reviewCount} />
-          <ProductReviewsList />
-        </div>
+        {/* 4. Abas de Descrição e Avaliações */}
+        <ProductTabs product={product} />
         
         {/* Footer Dyad */}
         <MadeWithDyad />
