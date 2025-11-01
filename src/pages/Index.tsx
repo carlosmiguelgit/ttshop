@@ -1,12 +1,9 @@
 import ProductDetailPage from "./ProductDetailPage";
-import { useParams } from "react-router-dom";
 
 const Index = () => {
-  const { slug } = useParams<{ slug: string }>();
-
-  // O ProductDetailPage agora será responsável por carregar os dados com base no slug
+  // Carrega a página de detalhes do produto padrão
   return (
-    <ProductDetailPage productSlug={slug} />
+    <ProductDetailPage />
   );
 };
 

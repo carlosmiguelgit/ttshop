@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef } from 'react';
 import ProductImageGallery from "@/components/ProductImageGallery";
 import ProductPriceSection from "@/components/ProductPriceSection";
 import ProductActionsBar from "@/components/ProductActionsBar";
@@ -15,10 +15,6 @@ import { products, Product } from "@/data/products"; // Importa os dados
 
 type TabName = 'overview' | 'description';
 
-interface ProductDetailPageProps {
-  productSlug?: string;
-}
-
 // Componente auxiliar para as abas de navegação
 const Tab: React.FC<{ title: string; name: TabName; isActive: boolean; onClick: (name: TabName) => void }> = ({ title, name, isActive, onClick }) => (
   <div 
@@ -32,22 +28,20 @@ const Tab: React.FC<{ title: string; name: TabName; isActive: boolean; onClick: 
   </div>
 );
 
-const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlug }) => {
+const ProductDetailPage: React.FC = () => {
   const [showAllReviews, setShowAllReviews] = useState(false);
   const [activeTab, setActiveTab] = useState<TabName>('overview');
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
   
-  // 1. Carregar o produto com base no slug
-  const product: Product | undefined = useMemo(() => {
-    return products.find(p => p.slug === productSlug);
-  }, [productSlug]);
+  // 1. Carregar o produto padrão (o primeiro da lista)
+  const product: Product | undefined = products[0];
 
-  // Se o produto não for encontrado, exibe um erro simples (ou redireciona para 404)
+  // Se o produto não for encontrado, exibe um erro simples
   if (!product) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-xl text-red-500">Produto não encontrado.</p>
+        <p className="text-xl text-red-500">Nenhum produto configurado.</p>
       </div>
     );
   }
