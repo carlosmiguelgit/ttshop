@@ -20,12 +20,16 @@ const ProductReviewsHeader: React.FC<ProductReviewsHeaderProps> = ({ reviewCount
   return (
     <div className="flex justify-between items-center mb-4">
       <div className="flex items-center space-x-2">
-        {/* Título com fonte menor */}
-        <h3 className="text-lg font-bold text-gray-900">Avaliações dos clientes</h3>
+        {/* Título com fonte menor (text-base) */}
+        <h3 className="text-base font-bold text-gray-900">Avaliações dos clientes</h3>
         
-        {/* Contagem de Avaliações (sem badge de nota) */}
-        <span className="text-lg font-normal text-gray-500">
-          ({formatReviewCount(reviewCount)})
+        {/* Contagem de Avaliações (text-base e negrito no número) */}
+        <span className="text-base text-gray-500">
+          (
+          <span className="font-bold">
+            {formatReviewCount(reviewCount)}
+          </span>
+          )
         </span>
       </div>
       
