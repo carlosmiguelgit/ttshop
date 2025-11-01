@@ -11,7 +11,7 @@ const additionalReviews = [
     attributes: "Custo-benefício: excelente | Bateria: duradoura",
     comment: "Chegou em 3 dias! A velocidade é ótima para o dia a dia e a bateria realmente aguenta o prometido. Muito satisfeito com a compra.",
     reviewImages: [
-      "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8fxmt12@resize_w72_nl.webp", // Imagem 1
+      "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8fxmt12", // Imagem 1 (Removido @resize_w72_nl.webp)
     ],
   },
   {
@@ -22,7 +22,7 @@ const additionalReviews = [
     attributes: "Qualidade: muito boa | Design: moderno",
     comment: "O patinete é lindo e muito robusto. O sistema de freios é seguro. Único ponto é que achei um pouco pesado, mas nada que atrapalhe.",
     reviewImages: [
-      "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mbpgcdc8okt50c@resize_w72_nl.webp", // Imagem 2
+      "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mbpgcdc8okt50c", // Imagem 2 (Removido @resize_w72_nl.webp)
     ],
   },
   {
@@ -33,7 +33,7 @@ const additionalReviews = [
     attributes: "Atendimento: rápido | Entrega: pontual",
     comment: "Comprei para presentear meu filho e ele amou! O Bluetooth funciona perfeitamente para as músicas. Vendedor atencioso.",
     reviewImages: [
-      "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mbpgcdc8rdy1b7@resize_w72_nl.webp", // Imagem 3
+      "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mbpgcdc8rdy1b7", // Imagem 3 (Removido @resize_w72_nl.webp)
     ],
   },
   {
@@ -44,7 +44,7 @@ const additionalReviews = [
     attributes: "Velocidade: conforme o anúncio | Fácil de usar: sim",
     comment: "Perfeito para ir ao trabalho. Economizei muito tempo no trânsito. A dobragem é fácil para guardar no escritório.",
     reviewImages: [
-      "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mchw4fwmt5hda2@resize_w72_nl.webp", // Imagem 4
+      "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mchw4fwmt5hda2", // Imagem 4 (Removido @resize_w72_nl.webp)
     ],
   },
   {
@@ -55,7 +55,7 @@ const additionalReviews = [
     attributes: "Custo-benefício: imbatível | Recomendo: 100%",
     comment: "Melhor compra do ano! O preço estava excelente na oferta relâmpago. A qualidade do material é de primeira. Chegou sem nenhum arranhão.",
     reviewImages: [
-      "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8ej2d65@resize_w72_nl.webp", // Imagem 5
+      "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8ej2d65", // Imagem 5 (Removido @resize_w72_nl.webp)
     ],
   },
 ];
@@ -72,7 +72,7 @@ const ProductReviewsList: React.FC = () => {
         attributes="Custo-benefício: ótimo | Qualidade: superior"
         comment="Produto de altíssima qualidade, superou minhas expectativas. A montagem foi simples e o desempenho na rua é excelente. Recomendo a todos!"
         reviewImages={[
-          "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8prls27@resize_w72_nl.webp", // Imagem 6
+          "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8prls27", // Imagem 6 (Removido @resize_w72_nl.webp)
         ]}
       />
       <Separator className="my-4" />
