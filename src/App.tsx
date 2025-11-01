@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -15,11 +15,11 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          {/* Rota dinâmica para a página de detalhes do produto */}
-          <Route path="/produto/:slug" element={<Index />} />
+          {/* Rota raiz agora carrega a página principal diretamente */}
+          <Route path="/" element={<Index />} />
           
-          {/* Redireciona a rota raiz para o produto padrão (patinete) */}
-          <Route path="/" element={<Navigate replace to="/produto/patinete-eletrico-scooter-bluetooth" />} />
+          {/* Rota dinâmica para a página de detalhes do produto (mantida para compatibilidade) */}
+          <Route path="/produto/:slug" element={<Index />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
