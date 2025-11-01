@@ -87,8 +87,7 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
               <span className="text-2xl font-bold text-white">
                 R$ {currentPrice}
               </span>
-              {/* Ícone de cupom (simulado) */}
-              <Tag size={16} className="text-white fill-white ml-1" />
+              {/* Ícone de cupom removido daqui */}
             </div>
             
             {/* Preço Original Riscado (Ajustado para ser menor) */}
