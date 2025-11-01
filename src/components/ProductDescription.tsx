@@ -7,14 +7,25 @@ interface Specification {
 
 interface ProductDescriptionProps {
   specifications: Specification[];
-  descriptionText: string; // Novo prop
+  descriptionText: string;
+  firstImageSrc: string; // Novo prop para a primeira imagem
 }
 
-const ProductDescription: React.FC<ProductDescriptionProps> = ({ specifications, descriptionText }) => {
+const ProductDescription: React.FC<ProductDescriptionProps> = ({ specifications, descriptionText, firstImageSrc }) => {
   return (
     <div className="p-4 bg-white space-y-4">
-      <h3 className="text-xl font-bold text-gray-900">Descrição e ficha técnica</h3>
+      {/* Título ajustado para 'Sobre o produto' e fonte menor (text-base) */}
+      <h3 className="text-base font-bold text-gray-900">Sobre o produto</h3>
       
+      {/* Imagem do Produto */}
+      <div className="w-full h-auto max-h-[300px] flex justify-center overflow-hidden rounded-lg">
+        <img 
+          src={firstImageSrc} 
+          alt="Imagem do produto" 
+          className="w-full h-full object-contain" 
+        />
+      </div>
+
       {/* Texto da Descrição */}
       <p className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
         {descriptionText}

@@ -31,6 +31,9 @@ const ProductDetailPage: React.FC = () => {
     // Se o slug não for encontrado, redireciona para a página 404
     return <div className="p-4 text-center text-red-500">Produto não encontrado.</div>;
   }
+  
+  // Obter a URL da primeira imagem para a seção de descrição
+  const firstImageSrc = product.media[0]?.src || 'public/placeholder.svg';
 
   // 2. Handlers de Ação
   const handleAddToCart = () => {
@@ -87,6 +90,7 @@ const ProductDetailPage: React.FC = () => {
           <ProductDescription 
             specifications={product.specifications} 
             descriptionText={product.descriptionText}
+            firstImageSrc={firstImageSrc}
           />
         </div>
         
