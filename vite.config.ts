@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
 export default defineConfig(() => ({
-  base: "/", // Revertido para a raiz, pois o subdomínio age como a raiz do app
+  base: "./", // Usando caminho relativo para garantir que os assets carreguem corretamente no subdomínio/subdiretório
   server: {
     host: "::",
     port: 8080,
