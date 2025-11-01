@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
 export default defineConfig(() => ({
-  base: "./", // Usando caminho relativo para garantir que os assets carreguem corretamente no subdomínio/subdiretório
+  base: "/", // Padrão para Vercel/Netlify
   server: {
     host: "::",
     port: 8080,
