@@ -2,13 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Share2, ShoppingCart, MoreVertical, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 import MediaViewerDialog from './MediaViewerDialog';
-import { showSuccess } from "@/utils/toast"; // Importando showSuccess
-
-interface MediaItem {
-  type: 'image' | 'video';
-  src: string;
-  thumbnailSrc: string; // Usado para a miniatura, mesmo que seja um vídeo
-}
+import { showSuccess } from "@/utils/toast";
+import { MediaItem } from "@/types/product"; // Importando o tipo
 
 interface ThumbnailProps {
   isActive: boolean;
@@ -36,26 +31,23 @@ const Thumbnail: React.FC<ThumbnailProps> = ({ isActive, item, onClick }) => (
 );
 
 interface ProductImageGalleryProps {
+  media: MediaItem[]; // Novo prop
   onCartClick: () => void;
-  cartItemCount: number; // Novo prop
+  cartItemCount: number;
 }
 
-const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ onCartClick, cartItemCount }) => {
-  // Definindo a lista de mídia (apenas imagens agora)
-  const media: MediaItem[] = [
-    { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_971780-MLB94758468933_102025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_971780-MLB94758468933_102025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp" },
-    { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_939429-MLB92436307100_092025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_939429-MLB92436307100_092025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp" },
-    { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_694773-MLB92845535377_092025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_694773-MLB92845535377_092025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp" },
-    { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_817055-MLB92435483774_092025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_817055-MLB92435483774_092025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp" },
-    { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_707877-MLB92436356940_092025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_707877-MLB92436356940_092025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp" },
-    { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_600092-MLB92845535605_092025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_600092-MLB92845535605_092025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp" },
-  ];
+const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ media, onCartClick, cartItemCount }) => {
   
   const [activeIndex, setActiveIndex] = useState(0);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   
   const totalMedia = media.length;
   const activeItem = media[activeIndex];
+
+  // Resetar o índice ativo se a lista de mídia mudar (ao trocar de produto)
+  useEffect(() => {
+    setActiveIndex(0);
+  }, [media]);
 
   const handleNext = () => {
     setActiveIndex((prevIndex) => (prevIndex + 1) % totalMedia);
@@ -66,7 +58,9 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ onCartClick, 
   };
   
   const handleMediaClick = () => {
-    setIsViewerOpen(true);
+    if (activeItem) {
+      setIsViewerOpen(true);
+    }
   };
   
   const handleShare = async () => {
@@ -83,13 +77,16 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ onCartClick, 
   
   // Efeito de carrossel automático
   useEffect(() => {
+    if (totalMedia === 0) return;
+    
     const interval = setInterval(() => {
       setActiveIndex((prevIndex) => (prevIndex + 1) % totalMedia);
-    }, 3000); // Muda a cada 3 segundos
+    }, 3000);
 
-    // Limpa o intervalo quando o componente é desmontado ou o totalMedia muda
     return () => clearInterval(interval);
   }, [totalMedia]);
+
+  if (totalMedia === 0) return null;
 
 
   return (
@@ -106,15 +103,15 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ onCartClick, 
       <div className="absolute top-0 right-0 p-4 flex space-x-2 z-10">
         <button 
           className="w-8 h-8 bg-black/30 rounded-full flex items-center justify-center text-white backdrop-blur-sm"
-          onClick={handleShare} // Agora copia o link
+          onClick={handleShare}
         >
           <Share2 size={16} />
         </button>
         
-        {/* Botão do Carrinho com Badge (simulando 1 item) */}
+        {/* Botão do Carrinho com Badge */}
         <button 
           className="w-8 h-8 bg-black/30 rounded-full flex items-center justify-center text-white backdrop-blur-sm relative"
-          onClick={onCartClick} // Este clique abre o Drawer
+          onClick={onCartClick}
         >
           <ShoppingCart size={16} />
           {/* Badge de contagem condicional */}

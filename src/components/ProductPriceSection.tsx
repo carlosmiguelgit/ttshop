@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronRight, Star, Tag, Bookmark, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Product } from '@/data/products'; // Importando o tipo Product
 
 // Componente para exibir o tempo restante (com contagem regressiva simulada)
-const FlashSaleTimer: React.FC = () => {
-  // Começa em 3 minutos (180 segundos)
-  const initialTime = 3 * 60; 
-  const [timeRemaining, setTimeRemaining] = useState(initialTime);
+const FlashSaleTimer: React.FC<{ initialSeconds: number }> = ({ initialSeconds }) => {
+  const [timeRemaining, setTimeRemaining] = useState(initialSeconds);
 
   useEffect(() => {
     // Se o tempo for 0 ou menos, para o timer
@@ -45,18 +44,23 @@ const CouponBadge: React.FC<{ text: string }> = ({ text }) => (
   </div>
 );
 
-const ProductPriceSection: React.FC = () => {
-  // Dados simulados
-  const discountPercentage = 89; // (619.90 - 67.90) / 619.90 ≈ 89%
-  const currentPrice = "67,90"; 
-  const originalPrice = "619,90"; // Preço original riscado
-  const rating = 4.8; 
-  const reviewCount = 9600; 
-  const salesCount = 4348;
-  const productTitle = "Patinete Elétrico Scooter De Alumínio Com Bluetooth 30km/h";
+interface ProductPriceSectionProps {
+  product: Product;
+}
+
+const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) => {
   
-  // Cálculo do desconto em reais: 619.90 - 67.90 = 552.00
-  const discountAmount = "552,00";
+  const { 
+    currentPrice, 
+    originalPrice, 
+    discountPercentage, 
+    discountAmount, 
+    rating, 
+    reviewCount, 
+    salesCount, 
+    flashSaleTimeSeconds,
+    title: productTitle
+  } = product;
 
   return (
     <div className="bg-white space-y-0">
@@ -92,7 +96,7 @@ const ProductPriceSection: React.FC = () => {
                 <span>Oferta Relâmpago</span>
             </div>
             {/* Exibição do Timer em uma única linha */}
-            <FlashSaleTimer />
+            <FlashSaleTimer initialSeconds={flashSaleTimeSeconds} />
           </div>
         </div>
       </div>

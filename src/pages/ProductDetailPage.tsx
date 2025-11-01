@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import ProductImageGallery from "@/components/ProductImageGallery";
-import ProductPriceSection from "@/components/ProductPriceSection"; // Novo componente
+import ProductPriceSection from "@/components/ProductPriceSection";
 import ProductActionsBar from "@/components/ProductActionsBar";
 import ProductReviewCard from "@/components/ProductReviewCard";
 import StoreInfoSection from "@/components/StoreInfoSection";
@@ -11,8 +11,13 @@ import { Star, ChevronRight, Truck } from "lucide-react";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Separator } from "@/components/ui/separator";
 import { showSuccess } from "@/utils/toast";
+import { products, Product } from "@/data/products"; // Importa os dados
 
 type TabName = 'overview' | 'description';
+
+interface ProductDetailPageProps {
+  productSlug?: string;
+}
 
 // Componente auxiliar para as abas de navegação
 const Tab: React.FC<{ title: string; name: TabName; isActive: boolean; onClick: (name: TabName) => void }> = ({ title, name, isActive, onClick }) => (
@@ -27,56 +32,55 @@ const Tab: React.FC<{ title: string; name: TabName; isActive: boolean; onClick: 
   </div>
 );
 
-const ProductDetailPage: React.FC = () => {
+const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlug }) => {
   const [showAllReviews, setShowAllReviews] = useState(false);
   const [activeTab, setActiveTab] = useState<TabName>('overview');
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItemCount, setCartItemCount] = useState(0); // Novo estado para o contador
+  const [cartItemCount, setCartItemCount] = useState(0);
   
-  // Ref para a seção de avaliações
+  // 1. Carregar o produto com base no slug
+  const product: Product | undefined = useMemo(() => {
+    return products.find(p => p.slug === productSlug);
+  }, [productSlug]);
+
+  // Se o produto não for encontrado, exibe um erro simples (ou redireciona para 404)
+  if (!product) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-xl text-red-500">Produto não encontrado.</p>
+      </div>
+    );
+  }
+  
   const reviewsRef = useRef<HTMLDivElement>(null);
 
   const handleViewAllReviews = () => {
     setShowAllReviews(true);
   };
 
-  const handleScrollToReviews = () => {
-    // Ativa a aba de Visão Geral (onde estão as avaliações)
-    setActiveTab('overview');
-    
-    // Rola para a seção de avaliações
-    if (reviewsRef.current) {
-      reviewsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-  
   const handleBuyWithCoupon = () => {
-    // Ação para Comprar com cupom/Finalizar Compra: redireciona para o checkout
     window.location.href = 'https://checkout.meutiktok.shop/VCCL1O8SCFJ3';
   };
   
-  // Lógica: Adicionar ao carrinho incrementa o contador e mostra um toast
   const handleAddToCart = () => {
-    setCartItemCount(prevCount => prevCount + 1); // Incrementa o contador
+    setCartItemCount(prevCount => prevCount + 1);
     showSuccess("Produto adicionado ao carrinho!");
   };
   
-  // Nova função para abrir o Drawer (usada pelo ícone no cabeçalho)
   const handleOpenCartDrawer = () => {
     setIsCartOpen(true);
   };
 
   const renderOverviewContent = () => (
-    // Adicionando a ref aqui
     <div ref={reviewsRef}> 
       {/* Seção de Avaliações */}
       <div className="p-4 bg-white">
         {/* Título Atualizado */}
-        <h3 className="text-xl font-bold mb-4">Avaliações da loja (9,6mil)</h3>
+        <h3 className="text-xl font-bold mb-4">Avaliações da loja ({(product.reviewCount / 1000).toFixed(1)} mil)</h3>
         
         {/* Média de Avaliação */}
         <div className="flex items-baseline mb-4">
-          <span className="text-4xl font-bold mr-1">4.8</span>
+          <span className="text-4xl font-bold mr-1">{product.rating.toFixed(1)}</span>
           <span className="text-lg text-gray-500 mr-4">/5</span>
           <div className="flex">
             {Array(5).fill(0).map((_, i) => (
@@ -85,7 +89,7 @@ const ProductDetailPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Avaliação 1 (Mais recente) */}
+        {/* Avaliação 1 (Mais recente) - Mantendo dados fixos para reviews por enquanto */}
         <ProductReviewCard
           username="carlos.santos"
           date="31 de out"
@@ -94,9 +98,9 @@ const ProductDetailPage: React.FC = () => {
           attributes="Custo-benefício: excelente | Parecido com anúncio: sim"
           comment="Patinete chegou super rápido e funciona perfeitamente! A bateria dura bastante e a velocidade máxima é incrível. Bluetooth conecta fácil no celular."
           reviewImages={[
-            "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8fxmt12@resize_w72_nl.webp", // Imagem 1 (já usada na lista completa, mas ok para a primeira)
-            "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8ej2d65@resize_w72_nl.webp", // Imagem 5
-            "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mbpgcdc8okt50c@resize_w72_nl.webp", // Imagem 2
+            "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8fxmt12@resize_w72_nl.webp",
+            "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8ej2d65@resize_w72_nl.webp",
+            "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mbpgcdc8okt50c@resize_w72_nl.webp",
           ]}
         />
         
@@ -113,7 +117,7 @@ const ProductDetailPage: React.FC = () => {
               attributes="Custo-benefício: ótimo | Qualidade: superior"
               comment="Produto de altíssima qualidade, superou minhas expectativas. A montagem foi simples e o desempenho na rua é excelente. Recomendo a todos!"
               reviewImages={[
-                "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mbpgcdc8rdy1b7@resize_w72_nl.webp", // Imagem 3
+                "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mbpgcdc8rdy1b7@resize_w72_nl.webp",
               ]}
             />
             <Separator className="my-4" />
@@ -130,7 +134,7 @@ const ProductDetailPage: React.FC = () => {
               onClick={handleViewAllReviews}
               className="flex items-center justify-between w-full text-base font-semibold text-gray-700 hover:text-gray-900 transition-colors px-0"
             >
-              <span>Avaliações da loja (9,6 mil)</span>
+              <span>Avaliações da loja ({(product.reviewCount / 1000).toFixed(1)} mil)</span>
               <ChevronRight size={18} className="ml-1" />
             </button>
           </div>
@@ -144,7 +148,7 @@ const ProductDetailPage: React.FC = () => {
 
   const renderDescriptionContent = () => (
     <>
-      <ProductDescription />
+      <ProductDescription specifications={product.specifications} />
       {/* Seção de Informações da Loja (Mantida abaixo da descrição também) */}
       <StoreInfoSection />
     </>
@@ -157,12 +161,15 @@ const ProductDetailPage: React.FC = () => {
         
         {/* Galeria de Imagens e Cabeçalho */}
         <ProductImageGallery 
+          media={product.media} // Passando a mídia
           onCartClick={handleOpenCartDrawer} 
-          cartItemCount={cartItemCount} // Passando o contador
+          cartItemCount={cartItemCount}
         />
         
         {/* Nova Seção de Preços e Descontos */}
-        <ProductPriceSection />
+        <ProductPriceSection 
+          product={product} // Passando o objeto produto
+        />
         
         <div className="bg-white p-4 space-y-4">
           
@@ -225,7 +232,7 @@ const ProductDetailPage: React.FC = () => {
       <CartDrawer 
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
-        onCheckoutClick={handleBuyWithCoupon} // Passando a função de redirecionamento
+        onCheckoutClick={handleBuyWithCoupon}
       />
     </div>
   );
