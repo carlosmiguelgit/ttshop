@@ -56,7 +56,10 @@ const ProductReviewsHeader: React.FC<ProductReviewsHeaderProps> = ({ reviewCount
       
       {/* Linha 2: Nota 5.0/5 e Estrelas */}
       <div className="flex items-center mt-2 space-x-2">
-        <span className="text-2xl font-bold text-gray-900">5.0/5</span>
+        {/* 5.0 em negrito e grande */}
+        <span className="text-2xl font-bold text-gray-900">5.0</span>
+        {/* /5 em fonte menor e normal */}
+        <span className="text-base text-gray-500 font-normal">/5</span>
         {renderStars()}
       </div>
     </div>

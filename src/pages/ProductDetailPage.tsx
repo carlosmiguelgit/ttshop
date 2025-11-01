@@ -7,8 +7,10 @@ import ProductActionsBar from '@/components/ProductActionsBar';
 import CartDrawer from '@/components/CartDrawer';
 import { showSuccess } from '@/utils/toast';
 import { MadeWithDyad } from '@/components/made-with-dyad';
-import ProductTabs from '@/components/ProductTabs';
-import CustomerProtectionSection from '@/components/CustomerProtectionSection'; // Importando o novo componente
+import CustomerProtectionSection from '@/components/CustomerProtectionSection';
+import ProductReviewsHeader from '@/components/ProductReviewsHeader'; // Novo import
+import ProductReviewsList from '@/components/ProductReviewsList'; // Novo import
+import ProductDescription from '@/components/ProductDescription'; // Novo import
 
 const CHECKOUT_URL = 'https://comprasonlinedigital.top/c/461d072943';
 
@@ -71,8 +73,22 @@ const ProductDetailPage: React.FC = () => {
         {/* NOVO: Seção de Proteção do Cliente */}
         <CustomerProtectionSection />
         
-        {/* 3. Abas de Descrição e Avaliações */}
-        <ProductTabs product={product} />
+        {/* 3. Seção de Avaliações */}
+        <div className="bg-white p-4 mt-4">
+          <ProductReviewsHeader 
+            rating={product.rating} 
+            reviewCount={product.reviewCount} 
+          />
+          <ProductReviewsList />
+        </div>
+        
+        {/* 4. Seção de Descrição */}
+        <div className="mt-4">
+          <ProductDescription 
+            specifications={product.specifications} 
+            descriptionText={product.descriptionText}
+          />
+        </div>
         
         {/* Footer Dyad */}
         <MadeWithDyad />
