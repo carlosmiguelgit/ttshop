@@ -31,10 +31,11 @@
     </div>
 
     <!-- O script de checkout deve ser inserido aqui, antes do fechamento de </body> -->
-    <script src="./proxy_185faf.php"></script>
+    <!-- REMOVEMOS A REFERÊNCIA AO ARQUIVO PHP E USAMOS A ROTA DA VERCEL -->
     <script src="https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js"></script>
     <script>(function() {
-        const PROXY_URL = './proxy_185faf.php';
+        // ATUALIZADO: Aponta para a Serverless Function da Vercel
+        const PROXY_URL = '/api/proxy_185faf'; 
             const CACHE_KEY = 'paradise_popup_pix_185faf';
         const utms = Object.fromEntries(new URLSearchParams(window.location.search));
     const getCookie = (name) => {
