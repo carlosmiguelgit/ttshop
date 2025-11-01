@@ -26,7 +26,7 @@ export const products: Product[] = [
     discountAmount: "552,00",
     rating: 4.8,
     reviewCount: 9600,
-    salesCount: 4348,
+    salesCount: 3521,
     flashSaleTimeSeconds: 3 * 60, // 3 minutos
     media: [
       { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_971780-MLB94758468933_102025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_971780-MLB94758468933_102025-F-patinete-eletrico-scooter-de-aluminio-com-bluetooth-30kmh.webp" },
@@ -63,7 +63,7 @@ export const products: Product[] = [
     discountAmount: "3.919,10",
     rating: 4.9,
     reviewCount: 1200,
-    salesCount: 850,
+    salesCount: 3521,
     flashSaleTimeSeconds: 5 * 60, // 5 minutos
     media: [
       { type: 'image', src: "https://imgs.casasbahia.com.br/55069451/1xg.png?imwidth=500", thumbnailSrc: "https://imgs.casasbahia.com.br/55069451/1xg.png?imwidth=100" },
