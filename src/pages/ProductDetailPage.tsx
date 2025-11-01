@@ -8,7 +8,8 @@ import ProductActionsBar from '@/components/ProductActionsBar';
 import CartDrawer from '@/components/CartDrawer';
 import { showSuccess } from '@/utils/toast';
 import { MadeWithDyad } from '@/components/made-with-dyad';
-import ProductTabs from '@/components/ProductTabs'; // Importando o novo componente
+import ProductTabs from '@/components/ProductTabs';
+import CustomerProtectionSection from '@/components/CustomerProtectionSection'; // Importando o novo componente
 
 const CHECKOUT_URL = 'https://comprasonlinedigital.top/c/461d072943';
 
@@ -67,6 +68,9 @@ const ProductDetailPage: React.FC = () => {
         
         {/* 2. Seção de Preço e Título */}
         <ProductPriceSection product={product} />
+        
+        {/* NOVO: Seção de Proteção do Cliente */}
+        <CustomerProtectionSection />
         
         {/* 3. Informações da Loja (Verificação, Suporte, etc.) */}
         <StoreInfoSection />
