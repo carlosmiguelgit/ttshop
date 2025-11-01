@@ -93,7 +93,7 @@ const ProductDetailPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Avaliação 1 (Mais recente) - Mantendo dados fixos para reviews por enquanto */}
+        {/* Avaliação 1 (Mais recente) - carlos.santos */}
         <ProductReviewCard
           username="carlos.santos"
           date="31 de out"
@@ -102,15 +102,15 @@ const ProductDetailPage: React.FC = () => {
           attributes="Custo-benefício: excelente | Parecido com anúncio: sim"
           comment={product.slug === 'tv-tcl-55' ? "A TV é simplesmente inacreditável por esse preço! A imagem QLED é perfeita, sem vazamento de luz. Chegou em 2 dias. Melhor compra da vida!" : "Patinete chegou super rápido e funciona perfeitamente! A bateria dura bastante e a velocidade máxima é incrível. Bluetooth conecta fácil no celular."}
           reviewImages={[
-            "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8fxmt12",
-            "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8ej2d65",
-            "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mbpgcdc8okt50c",
+            "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mg334zdzpyx0b2.webp", // Nova Imagem 1
+            "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mg334ze040lg97.webp", // Nova Imagem 2
+            "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mg334zdund3958.webp", // Nova Imagem 3
           ]}
         />
         
         <Separator className="my-4" />
 
-        {/* Avaliação 2 (Próxima) */}
+        {/* Avaliação 2 (Próxima) - ana.ribeiro */}
         {!showAllReviews && (
           <>
             <ProductReviewCard
@@ -121,7 +121,7 @@ const ProductDetailPage: React.FC = () => {
               attributes="Custo-benefício: ótimo | Qualidade: superior"
               comment={product.slug === 'tv-tcl-55' ? "Qualidade de cinema em casa! O Google TV é muito rápido e a tela antirreflexo faz toda a diferença. Não acreditei no preço de R$ 79,90, mas é real!" : "Produto de altíssima qualidade, superou minhas expectativas. A montagem foi simples e o desempenho na rua é excelente. Recomendo a todos!"}
               reviewImages={[
-                "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mbpgcdc8rdy1b7",
+                "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mg334zeax3wke5.webp", // Nova Imagem 4
               ]}
             />
             <Separator className="my-4" />

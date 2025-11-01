@@ -11,7 +11,7 @@ const additionalReviews = [
     attributes: "Custo-benefício: excelente | Imagem: 4K perfeita",
     comment: "Chegou em 3 dias! A TV é enorme e a qualidade de imagem é surreal. Não tem como bater esse preço. Recomendo a todos que aproveitem a oferta.",
     reviewImages: [
-      "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8fxmt12", // Imagem 1
+      "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mg334ze0i29wec.webp", // Nova Imagem 5
     ],
   },
   {
@@ -22,7 +22,7 @@ const additionalReviews = [
     attributes: "Qualidade: QLED | Design: borda fina",
     comment: "A TV é linda, super fina e as bordas são mínimas. O Google TV é muito intuitivo. A entrega foi rápida e o produto veio bem embalado.",
     reviewImages: [
-      "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mbpgcdc8okt50c", // Imagem 2
+      "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfznw4a84oao4e@resize_w72_nl.webp", // Nova Imagem 6
     ],
   },
   {
@@ -33,7 +33,7 @@ const additionalReviews = [
     attributes: "Atendimento: rápido | Entrega: pontual",
     comment: "Comprei para a sala e ficou perfeita! O processador AiPQ realmente faz a diferença. Vendedor atencioso e tirou todas as dúvidas.",
     reviewImages: [
-      "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mbpgcdc8rdy1b7", // Imagem 3
+      "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfx0s8jtqu4k12.webp", // Nova Imagem 7
     ],
   },
   {
@@ -44,7 +44,8 @@ const additionalReviews = [
     attributes: "Velocidade: rápida | Fácil de usar: sim",
     comment: "O sistema Google TV é muito fluido. Conectei meu console e a experiência de jogo é ótima, sem lag. A tela antirreflexo ajuda muito durante o dia.",
     reviewImages: [
-      "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mchw4fwmt5hda2", // Imagem 4
+      "https://down-br.img.susercontent.com/file/br-11134103-81z1k-meglivlzz9xedc.webp", // Nova Imagem 8
+      "https://down-br.img.susercontent.com/file/br-11134103-81z1k-meglivlpy9z6e2.webp", // Nova Imagem 9
     ],
   },
   {
@@ -55,7 +56,8 @@ const additionalReviews = [
     attributes: "Custo-benefício: imbatível | Recomendo: 100%",
     comment: "Melhor compra do ano! O preço de R$ 79,90 é inacreditável para uma QLED 55 polegadas. A qualidade do material é de primeira. Chegou sem nenhum arranhão.",
     reviewImages: [
-      "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8ej2d65", // Imagem 5
+      "https://down-br.img.susercontent.com/file/br-11134103-81z1k-meglivlueept94.webp", // Nova Imagem 10
+      "https://down-br.img.susercontent.com/file/br-11134103-81z1k-meglivltfaio9f.webp", // Nova Imagem 11
     ],
   },
 ];
@@ -72,7 +74,7 @@ const ProductReviewsList: React.FC = () => {
         attributes="Custo-benefício: ótimo | Qualidade: superior"
         comment="Qualidade de cinema em casa! O Google TV é muito rápido e a tela antirreflexo faz toda a diferença. Não acreditei no preço de R$ 79,90, mas é real!"
         reviewImages={[
-          "https://down-br.img.susercontent.com/file/br-11134103-81z1k-mfgt1hd8prls27", // Imagem 6
+          "https://down-br.img.susercontent.com/file/br-11134103-7r98o-mdn2edozvd89c3.webp", // Nova Imagem 12 (última imagem fornecida)
         ]}
       />
       <Separator className="my-4" />
