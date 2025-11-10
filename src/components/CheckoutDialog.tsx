@@ -142,7 +142,7 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({ isOpen, onClose, produc
             onClick={handleFinalizeClick}
             disabled={!isFormValid}
           >
-            Finalizar Compra
+            Prosseguir para pagamento
           </Button>
         </DialogFooter>
       </DialogContent>

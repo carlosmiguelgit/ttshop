@@ -19,7 +19,7 @@ export interface Product {
 export const products: Product[] = [
   {
     slug: "iphone-13",
-    title: "iPhone 13 Apple (128GB) Estelar, Tela de 6,1\", Câmera Dupla de 12MP",
+    title: "iPhone 13 Apple, Tela de 6,1\", Câmera Dupla de 12MP",
     currentPrice: "97,50",
     originalPrice: "3.999,00",
     discountPercentage: 98,
