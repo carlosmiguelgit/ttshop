@@ -14,7 +14,7 @@ import CheckoutDialog from '@/components/CheckoutDialog';
 
 // Links de checkout por capacidade
 const CHECKOUT_URLS: { [key: string]: string } = {
-  "128GB": "https://hub.payevo.com.br/pay/128gb-link-generico", // Mantido como genérico
+  "128GB": "https://hub.payevo.com.br/pay/57c8467a-beea-4d2e-aa9a-46e7466ff2d8",
   "256GB": "https://hub.payevo.com.br/pay/bb1caf00-f168-488d-85d6-37331858e0eb",
   "512GB": "https://hub.payevo.com.br/pay/1dbaedd6-c3bd-4764-b951-92ce382b6242",
   "1TB": "https://hub.payevo.com.br/pay/759c3d53-5ce9-44ca-988c-a1a071f06fbd",
