@@ -18,6 +18,37 @@ export interface Product {
 
 export const products: Product[] = [
   {
+    slug: "iphone-13",
+    title: "iPhone 13 Apple (128GB) Estelar, Tela de 6,1\", Câmera Dupla de 12MP",
+    currentPrice: "97,00",
+    originalPrice: "4.799,00",
+    discountPercentage: 98,
+    discountAmount: "4.702,00",
+    rating: 4.9,
+    reviewCount: 15000,
+    salesCount: 5287,
+    flashSaleTimeSeconds: 4 * 60, // 4 minutos
+    media: [
+      { type: 'image', src: "https://m.media-amazon.com/images/I/412CKVTe8dL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/412CKVTe8dL._AC_SX679_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/513d300-MFL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/513d300-MFL._AC_SX679_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/51Y-PAQ-yNL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/51Y-PAQ-yNL._AC_SX679_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/61-r9zOKnYL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61-r9zOKnYL._AC_SX679_.jpg" },
+    ],
+    specifications: [
+      { label: "Marca", value: "Apple" },
+      { label: "Modelo", value: "iPhone 13" },
+      { label: "Cor", value: "Estelar" },
+      { label: "Tela", value: "Super Retina XDR de 6,1 polegadas" },
+      { label: "Câmera", value: "Sistema de câmera dupla de 12 MP" },
+      { label: "Câmera Frontal", value: "TrueDepth de 12 MP" },
+      { label: "Chip", value: "A15 Bionic" },
+      { label: "Resistência", value: "Ceramic Shield, IP68 (água e poeira)" },
+      { label: "Conectividade", value: "5G" },
+      { label: "Capacidade", value: "128 GB" },
+    ],
+    descriptionText: "O iPhone 13 traz inovações poderosas, como o sistema de câmera dupla mais avançado em um iPhone, um salto gigante na duração da bateria e o chip A15 Bionic, que é ultrarrápido. Com um design elegante e resistente e 5G super-rápido, é uma experiência que você só encontra no iPhone.",
+  },
+  {
     slug: "patinete-eletrico-scooter-bluetooth", // SLUG ATUALIZADO
     title: "Patinete Elétrico Scooter De Alumínio Com Bluetooth", // TÍTULO ATUALIZADO
     currentPrice: "67,90",

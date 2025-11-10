@@ -18,8 +18,8 @@ const App = () => (
           {/* Rota dinâmica para a página de detalhes do produto */}
           <Route path="/produto/:slug" element={<Index />} />
           
-          {/* Redireciona a rota raiz para o produto padrão (TV) */}
-          <Route path="/" element={<Navigate replace to="/produto/tv-tcl-55" />} />
+          {/* Redireciona a rota raiz para o produto padrão (iPhone 13) */}
+          <Route path="/" element={<Navigate replace to="/produto/iphone-13" />} />
           
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
