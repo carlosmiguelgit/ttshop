@@ -17,6 +17,14 @@ interface CheckoutDialogProps {
 const colorNames = ["Preto", "Azul", "Rosa", "Verde"];
 const storageOptions = ["128GB", "256GB", "512GB", "1TB"];
 
+// Mapeamento dos preços por capacidade
+const storagePrices: { [key: string]: string } = {
+  "128GB": "97,50",
+  "256GB": "147,90",
+  "512GB": "179,90",
+  "1TB": "199,90",
+};
+
 const CheckoutDialog: React.FC<CheckoutDialogProps> = ({ isOpen, onClose, product, onFinalize }) => {
   const [selectedColorIndex, setSelectedColorIndex] = useState<number | null>(null);
   const [selectedStorage, setSelectedStorage] = useState<string | null>(null);
@@ -57,6 +65,14 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({ isOpen, onClose, produc
       onFinalize(selectedStorage);
     }
   };
+
+  // Texto dinâmico para o botão de checkout
+  const checkoutButtonText = useMemo(() => {
+    if (selectedStorage && storagePrices[selectedStorage]) {
+      return `Ir para checkout R$ ${storagePrices[selectedStorage]}`;
+    }
+    return "Prosseguir para pagamento";
+  }, [selectedStorage]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -167,7 +183,7 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({ isOpen, onClose, produc
             onClick={handleFinalizeClick}
             disabled={!isFormValid}
           >
-            Prosseguir para pagamento
+            {checkoutButtonText}
           </Button>
         </DialogFooter>
       </DialogContent>
