@@ -85,7 +85,9 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
               
               {/* Preço Atual (Ajustado para R$ e valor em tamanhos diferentes) */}
               <span className="text-2xl font-bold text-white">
-                R$ {currentPrice}
+                {currentPrice.includes('-') 
+                  ? `R$ ${currentPrice.replace(' - ', ' - R$ ')}` 
+                  : `R$ ${currentPrice}`}
               </span>
               {/* Ícone de cupom removido daqui */}
             </div>
