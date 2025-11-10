@@ -29,10 +29,10 @@ export const products: Product[] = [
     salesCount: 5287,
     flashSaleTimeSeconds: 4 * 60, // 4 minutos
     media: [
-      { type: 'image', src: "https://m.media-amazon.com/images/I/412CKVTe8dL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/412CKVTe8dL._AC_SX679_.jpg" },
-      { type: 'image', src: "https://m.media-amazon.com/images/I/513d300-MFL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/513d300-MFL._AC_SX679_.jpg" },
-      { type: 'image', src: "https://m.media-amazon.com/images/I/51Y-PAQ-yNL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/51Y-PAQ-yNL._AC_SX679_.jpg" },
-      { type: 'image', src: "https://m.media-amazon.com/images/I/61-r9zOKnYL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61-r9zOKnYL._AC_SX679_.jpg" },
+      { type: 'image', src: "https://evento-ttk.shop/assets/iphone13-preto-D4y5eHnV.png", thumbnailSrc: "https://evento-ttk.shop/assets/iphone13-preto-D4y5eHnV.png" },
+      { type: 'image', src: "https://evento-ttk.shop/assets/iphone13-azul-Cvk1XKya.png", thumbnailSrc: "https://evento-ttk.shop/assets/iphone13-azul-Cvk1XKya.png" },
+      { type: 'image', src: "https://evento-ttk.shop/assets/iphone13-rosa-BeQ9qyF4.png", thumbnailSrc: "https://evento-ttk.shop/assets/iphone13-rosa-BeQ9qyF4.png" },
+      { type: 'image', src: "https://evento-ttk.shop/assets/iphone13-verde-BybGV3uE.png", thumbnailSrc: "https://evento-ttk.shop/assets/iphone13-verde-BybGV3uE.png" },
     ],
     specifications: [
       { label: "Marca", value: "Apple" },
