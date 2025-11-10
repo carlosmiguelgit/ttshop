@@ -20,7 +20,7 @@ export const products: Product[] = [
   {
     slug: "iphone-13",
     title: "iPhone 13 Apple, Tela de 6,1\", Câmera Dupla de 12MP",
-    currentPrice: "97,50",
+    currentPrice: "97,50 - 199,70",
     originalPrice: "3.999,00",
     discountPercentage: 98,
     discountAmount: "3.901,50",
@@ -46,7 +46,7 @@ export const products: Product[] = [
       { label: "Conectividade", value: "5G" },
       { label: "Capacidade", value: "128 GB" },
     ],
-    descriptionText: "O iPhone 13 traz inovações poderosas, como o sistema de câmera dupla mais avançado em um iPhone, um salto gigante na duração da bateria e o chip A15 Bionic, que é ultrarrápido. Com um design elegante e resistente e 5G super-rápido, é uma experiência que você só encontra no iPhone.",
+    descriptionText: "O iPhone 13 traz inovações poderosas, como o sistema de câmera dupla mais avançado em um iPhone, um salto gigante na duração da bateria e o chip A15 Bionic, que é ultrápido. Com um design elegante e resistente e 5G super-rápido, é uma experiência que você só encontra no iPhone.",
   },
   {
     slug: "patinete-eletrico-scooter-bluetooth", // SLUG ATUALIZADO
