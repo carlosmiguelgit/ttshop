@@ -10,16 +10,22 @@ import { MadeWithDyad } from '@/components/made-with-dyad';
 import CustomerProtectionSection from '@/components/CustomerProtectionSection';
 import ProductReviewsSection from '@/components/ProductReviewsSection';
 import ProductDescription from '@/components/ProductDescription';
-import CheckoutDialog from '@/components/CheckoutDialog'; // Import the new component
+import CheckoutDialog from '@/components/CheckoutDialog';
 
-const CHECKOUT_URL = 'https://hub.payevo.com.br/pay/57c8467a-beea-4d2e-aa9a-46e7466ff2d8';
+// Links de checkout genéricos por capacidade
+const CHECKOUT_URLS: { [key: string]: string } = {
+  "128GB": "https://hub.payevo.com.br/pay/128gb-link-generico",
+  "256GB": "https://hub.payevo.com.br/pay/256gb-link-generico",
+  "512GB": "https://hub.payevo.com.br/pay/512gb-link-generico",
+  "1TB": "https://hub.payevo.com.br/pay/1tb-link-generico",
+};
 
 const ProductDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
-  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false); // New state for the modal
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
 
   const product: Product | undefined = useMemo(() => {
     return products.find(p => p.slug === slug);
@@ -41,20 +47,19 @@ const ProductDetailPage: React.FC = () => {
     setIsCartOpen(true);
   };
 
-  // Opens the checkout modal
   const handleBuyNow = () => {
     setIsCheckoutModalOpen(true);
   };
   
-  // Opens the checkout modal from the cart
   const handleCheckout = () => {
     setIsCartOpen(false);
     setIsCheckoutModalOpen(true);
   };
 
-  // Finalizes the purchase by redirecting
-  const handleFinalizePurchase = () => {
-    window.location.href = CHECKOUT_URL;
+  // Redireciona para o link correto com base na capacidade
+  const handleFinalizePurchase = (capacity: string) => {
+    const url = CHECKOUT_URLS[capacity] || CHECKOUT_URLS["128GB"]; // Usa 128GB como padrão
+    window.location.href = url;
   };
 
   return (
@@ -101,7 +106,6 @@ const ProductDetailPage: React.FC = () => {
         cartItemCount={cartItemCount}
       />
 
-      {/* Render the new Checkout Dialog */}
       <CheckoutDialog
         isOpen={isCheckoutModalOpen}
         onClose={() => setIsCheckoutModalOpen(false)}
