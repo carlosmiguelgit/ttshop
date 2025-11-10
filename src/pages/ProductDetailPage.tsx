@@ -12,12 +12,12 @@ import ProductReviewsSection from '@/components/ProductReviewsSection';
 import ProductDescription from '@/components/ProductDescription';
 import CheckoutDialog from '@/components/CheckoutDialog';
 
-// Links de checkout genéricos por capacidade
+// Links de checkout por capacidade
 const CHECKOUT_URLS: { [key: string]: string } = {
-  "128GB": "https://hub.payevo.com.br/pay/128gb-link-generico",
-  "256GB": "https://hub.payevo.com.br/pay/256gb-link-generico",
-  "512GB": "https://hub.payevo.com.br/pay/512gb-link-generico",
-  "1TB": "https://hub.payevo.com.br/pay/1tb-link-generico",
+  "128GB": "https://hub.payevo.com.br/pay/128gb-link-generico", // Mantido como genérico
+  "256GB": "https://hub.payevo.com.br/pay/bb1caf00-f168-488d-85d6-37331858e0eb",
+  "512GB": "https://hub.payevo.com.br/pay/1dbaedd6-c3bd-4764-b951-92ce382b6242",
+  "1TB": "https://hub.payevo.com.br/pay/759c3d53-5ce9-44ca-988c-a1a071f06fbd",
 };
 
 const ProductDetailPage: React.FC = () => {
