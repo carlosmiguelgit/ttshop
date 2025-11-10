@@ -44,7 +44,7 @@ const allReviews = [
     attributes: "Entrega: pontual | Qualidade: Apple",
     comment: "Qualidade Apple por um preço que nunca imaginei. O celular voa, os apps abrem na hora. A entrega foi super rápida. Muito satisfeito com a compra.",
     reviewImages: [
-      "https://evento-ttk.shop/assets/review-iphone13-photo-4-real-D-Wyh9vZ.jpg",
+      "https://www.actualidadiphone.com/wp-content/uploads/2021/09/iPhone-13-Pro-Max-02-1024x555.jpg.webp",
     ],
   },
 ];
