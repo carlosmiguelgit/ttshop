@@ -50,7 +50,7 @@ interface ProductPriceSectionProps {
 }
 
 const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) => {
-  
+
   const { 
     currentPrice, 
     originalPrice, 
@@ -70,11 +70,11 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
 
   return (
     <div className="bg-white space-y-0">
-      
+
       {/* Seção de Oferta Relâmpago (Flash Sale) */}
       <div className="relative bg-gradient-to-r from-[#FF3366] to-[#FF7733] pt-3 pb-2 px-4">
         <div className="flex justify-between items-start">
-          
+
           {/* Preço e Desconto (Lado Esquerdo) */}
           <div className="flex flex-col">
             <div className="flex items-center space-x-2 mb-0.5">
@@ -82,16 +82,16 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
               <span className="bg-white text-[#FF3366] text-sm font-bold px-2 py-0.5 rounded-lg flex-shrink-0">
                 -{discountPercentage}%
               </span>
-              
+
               {/* Preço Atual (Ajustado para R$ e valor em tamanhos diferentes) */}
               <span className="text-2xl font-bold text-white">
-                {currentPrice.includes('-') 
-                  ? `R$ ${currentPrice.replace(' - ', ' - R$ ')}` 
+                {currentPrice.includes('-')
+                  ? `R$ ${currentPrice.replace(' - ', ' - R$ ')}`
                   : `R$ ${currentPrice}`}
               </span>
               {/* Ícone de cupom removido daqui */}
             </div>
-            
+
             {/* Preço Original Riscado (Ajustado para ser menor) */}
             <span className="text-white/80 text-sm line-through ml-2">
               R$ {originalPrice}
@@ -105,23 +105,23 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
                 <span>Oferta Relâmpago</span>
             </div>
             {/* Exibição do Timer em uma única linha */}
-            <FlashSaleTimer initialSeconds={flashSaleTimeSeconds} />
+            <FlashSaleTimer initialSeconds={2 * 60 * 60} /> {/* 2 horas em segundos */}
           </div>
         </div>
-        
+
         {/* Recorte Inferior (Simulação de curva) */}
         <div className="absolute bottom-0 left-0 right-0 h-2 bg-white rounded-t-lg transform translate-y-full">
-          {/* Este div simula o recorte, mas o efeito real é mais complexo com CSS puro. 
+          {/* Este div simula o recorte, mas o efeito real é mais complexo com CSS puro.
           Para simplificar e manter a aparência, vamos usar um truque de borda. */}
         </div>
       </div>
-      
+
       <div className="p-4 space-y-3">
         {/* Linha 2: Banners de Cupom e Urgência */}
         <div className="flex items-center space-x-2 overflow-x-auto py-1">
           {/* Badge de Cupom com Pulse */}
           <CouponBadge text={discountText} />
-          
+
           {/* Mensagem de Urgência com Pulse */}
           <div className={cn(
             // Reduzindo de text-sm para text-xs e ajustando o padding
@@ -136,16 +136,13 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
         {/* Linha 3: Título do Produto */}
         <div className="flex justify-between items-start pt-2">
           <div className="flex items-center">
-            {/* NOVO: Badge 11.11 */}
-            <span className="bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded mr-2 flex-shrink-0">
-              11.11
-            </span>
+            {/* NOVO: Badge 11.11 REMOVIDO */}
             <h2 className="text-lg font-bold text-gray-900 leading-snug line-clamp-2">
               {productTitle}
             </h2>
           </div>
         </div>
-        
+
         {/* Linha 4: Avaliação e Vendas */}
         <div className="flex items-center space-x-3 text-sm text-gray-600 pb-3 border-b border-gray-100">
           <div className="flex items-center">
@@ -157,7 +154,7 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
           <span className="text-gray-500">|</span>
           <span className="text-gray-500">{salesCount} vendidos</span>
         </div>
-        
+
         {/* Seção de Frete Grátis (Estilizada conforme a imagem) */}
         <div className="flex justify-between items-center py-3 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors">
           <div className="flex flex-col space-y-1">
