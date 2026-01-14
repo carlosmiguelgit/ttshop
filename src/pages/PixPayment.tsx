@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Copy, Check, Loader2, ArrowLeft, QrCode } from 'lucide-react';
+import { Copy, Check, Loader2, ArrowLeft, QrCode, ShieldCheck } from 'lucide-react';
 import { QRCodeSVG } from "qrcode.react";
 import { Product } from '@/data/products';
 
@@ -232,12 +232,12 @@ const PixPayment: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col relative overflow-hidden bg-gray-900">
+    <div className="min-h-screen bg-gray-50 pb-24">
       {/* Header com botão de voltar */}
-      <div className="p-4 bg-black/80 backdrop-blur-md">
+      <div className="p-4 bg-white border-b">
         <button
           onClick={handleBack}
-          className="flex items-center text-white hover:text-gray-300 transition-colors"
+          className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
         >
           <ArrowLeft className="mr-2" size={20} />
           <span>Voltar</span>
@@ -245,33 +245,28 @@ const PixPayment: React.FC = () => {
       </div>
 
       {/* Conteúdo Principal */}
-      <main className="flex flex-grow items-center justify-center relative">
-        <div className="w-full max-w-md mx-auto p-6 relative z-10">
-          {/* Card do QR Code - Estilo Verde */}
-          <div
-            className={cn(
-              "w-full p-6 rounded-lg shadow-lg text-center",
-              "bg-black/70 backdrop-blur-xl border-2 border-green-500/50 text-white shadow-2xl"
-            )}
-          >
+      <main className="flex flex-grow items-center justify-center">
+        <div className="w-full max-w-md mx-auto p-6">
+          {/* Card do QR Code - Estilo Branco com bordas */}
+          <div className="w-full p-6 rounded-lg shadow-lg text-center bg-white border">
             {/* Título */}
-            <h2 className="text-2xl font-bold text-white mb-4">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
               {paymentApproved ? "Pagamento Confirmado! ✅" : "PIX QRCODE"}
             </h2>
 
             {loading && (
               <div className="flex flex-col items-center justify-center py-12">
-                <Loader2 className="w-8 h-8 animate-spin text-green-500 mb-4" />
-                <p className="text-gray-300">Gerando código PIX...</p>
+                <Loader2 className="w-8 h-8 animate-spin text-red-600 mb-4" />
+                <p className="text-gray-600">Gerando código PIX...</p>
               </div>
             )}
 
             {error && (
               <div className="py-8">
-                <p className="text-red-400 mb-4">❌ {error}</p>
+                <p className="text-red-600 mb-4">❌ {error}</p>
                 <Button
                   onClick={createPixPayment}
-                  className="bg-green-600 hover:bg-green-700 text-white"
+                  className="bg-red-600 hover:bg-red-700 text-white"
                 >
                   Tentar Novamente
                 </Button>
@@ -284,14 +279,14 @@ const PixPayment: React.FC = () => {
                   /* Mensagem de Sucesso */
                   <div className="py-8">
                     <div className="text-6xl mb-4">💚</div>
-                    <h3 className="text-2xl font-bold text-green-400 mb-4">
+                    <h3 className="text-2xl font-bold text-green-600 mb-4">
                       Pagamento Aprovado!
                     </h3>
-                    <p className="text-gray-300 mb-4">
+                    <p className="text-gray-600 mb-4">
                       Seu pagamento foi processado com sucesso. Obrigado pela compra!
                     </p>
-                    <div className="bg-green-500/20 border border-green-500/50 rounded-lg p-4 mb-4">
-                      <p className="text-green-300 text-sm">
+                    <div className="bg-green-100 border border-green-200 rounded-lg p-4 mb-4">
+                      <p className="text-green-700 text-sm">
                         ✅ Transação confirmada
                         <br />
                         Seu pedido será processado em breve
@@ -302,22 +297,22 @@ const PixPayment: React.FC = () => {
                   /* Mensagem de Expiração */
                   <div className="py-8">
                     <div className="text-6xl mb-4">⚠️</div>
-                    <h3 className="text-2xl font-bold text-red-400 mb-4">
+                    <h3 className="text-2xl font-bold text-red-600 mb-4">
                       Código PIX Expirado
                     </h3>
-                    <p className="text-gray-300 mb-4">
+                    <p className="text-gray-600 mb-4">
                       O tempo limite para pagamento foi atingido. Por favor, gere um novo código.
                     </p>
                     <Button
                       onClick={createPixPayment}
-                      className="bg-green-600 hover:bg-green-700 text-white"
+                      className="bg-red-600 hover:bg-red-700 text-white"
                     >
                       Gerar Novo PIX
                     </Button>
                   </div>
                 ) : (
                   /* QR Code */
-                  <div className="bg-white p-4 rounded-lg mb-6 mx-auto inline-block">
+                  <div className="bg-white p-4 rounded-lg mb-6 mx-auto inline-block border">
                     {pixData.qrcode ? (
                       <QRCodeSVG
                         value={pixData.qrcode}
@@ -336,10 +331,20 @@ const PixPayment: React.FC = () => {
 
                 {!paymentApproved && !isExpired && (
                   <>
+                    {/* Shield Check - PAGAMENTO SEGURO */}
+                    <div className="mb-4">
+                      <div className="flex items-center justify-center mb-2">
+                        <ShieldCheck className="text-green-600 mr-2" size={20} />
+                        <span className="text-green-600 font-semibold text-sm">
+                          PAGAMENTO SEGURO
+                        </span>
+                      </div>
+                    </div>
+
                     {/* Status do Pagamento */}
                     {paymentStatus && (
                       <div className="mb-4">
-                        <p className="text-blue-400 text-sm">
+                        <p className="text-blue-600 text-sm">
                           Status: {paymentStatus}
                         </p>
                       </div>
@@ -347,7 +352,7 @@ const PixPayment: React.FC = () => {
 
                     {/* Mensagem de Expiração Regressiva */}
                     <div className="mb-6">
-                      <p className="text-yellow-400 text-lg font-semibold">
+                      <p className="text-yellow-600 text-lg font-semibold">
                         ⏰ Expira em: {formatTime(timeLeft)}
                       </p>
                     </div>
@@ -356,8 +361,8 @@ const PixPayment: React.FC = () => {
 
                 {/* Valor */}
                 <div className="mb-6">
-                  <p className="text-gray-400 text-sm mb-1">Valor do Pedido:</p>
-                  <p className="text-green-400 text-3xl font-bold">
+                  <p className="text-gray-600 text-sm mb-1">Valor do Pedido:</p>
+                  <p className="text-red-600 text-3xl font-bold">
                     {formatCurrency(47.00)}
                   </p>
                 </div>
@@ -366,7 +371,7 @@ const PixPayment: React.FC = () => {
                   <>
                     {/* Instruções */}
                     <div className="mb-6 text-left">
-                      <p className="text-gray-300 text-sm leading-relaxed">
+                      <p className="text-gray-600 text-sm leading-relaxed">
                         • Abra o app do seu banco
                         <br />
                         • Escolha a opção PIX
@@ -381,7 +386,7 @@ const PixPayment: React.FC = () => {
                       onClick={handleCopyPixCode}
                       className={cn(
                         "w-full text-white font-bold py-3 rounded-md inline-flex items-center justify-center mb-4",
-                        "bg-green-600 hover:bg-green-700 transition-colors",
+                        "bg-red-600 hover:bg-red-700 transition-colors",
                         "h-12 px-4 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
                       )}
                     >
