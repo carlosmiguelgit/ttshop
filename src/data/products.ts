@@ -29,12 +29,12 @@ export const products: Product[] = [
     salesCount: 5287,
     flashSaleTimeSeconds: 4 * 60, // 4 minutos
     media: [
-      { type: 'image', src: "https://m.media-amazon.com/images/I/61nvMlGuy6L._AC_SX569_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61nvMlGuy6L._AC_SX569_.jpg" },
-      { type: 'image', src: "https://m.media-amazon.com/images/I/61vTBgOHCEL._AC_SX569_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61vTBgOHCEL._AC_SX569_.jpg" },
-      { type: 'image', src: "https://m.media-amazon.com/images/I/51quf3wBKNL._AC_US100_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/51quf3wBKNL._AC_US100_.jpg" },
-      { type: 'image', src: "https://m.media-amazon.com/images/I/71ctpDQEP3L._AC_SX569_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/71ctpDQEP3L._AC_SX569_.jpg" },
-      { type: 'image', src: "https://m.media-amazon.com/images/I/61PAAjEZWcL._AC_SX569_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61PAAjEZWcL._AC_SX569_.jpg" },
-      { type: 'image', src: "https://m.media-amazon.com/images/I/61rwOtF+X+L._AC_SX569_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61rwOtF+X+L._AC_SX569_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/71IkV-JO1AL._AC_SX569_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/71IkV-JO1AL._AC_SX569_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/61MK6YHkNUL._AC_SX569_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61MK6YHkNUL._AC_SX569_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/61UVqQqA3yL._AC_SX569_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61UVqQqA3yL._AC_SX569_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/71y8MFy+2CL._AC_SX569_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/71y8MFy+2CL._AC_SX569_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/51pSY9nmu6L._AC_SX569_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/51pSY9nmu6L._AC_SX569_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/61aEc1+4tYL._AC_SL1200_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61aEc1+4tYL._AC_SL1200_.jpg" },
     ],
     specifications: [
       { label: "Marca", value: "Bosch" },
