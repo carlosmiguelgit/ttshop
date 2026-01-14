@@ -1,9 +1,9 @@
-import ProductDetailPage from "./ProductDetailPage";
+import React from 'react';
 
 const Index = () => {
-  // Carrega a página de detalhes do produto padrão
+  // Temporary blank page
   return (
-    <ProductDetailPage />
+    <div className="min-h-screen bg-white"></div>
   );
 };
 
