@@ -37,7 +37,7 @@ export const products: Product[] = [
       { type: 'image', src: "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/931e7b76b8264713abfd055a7e41f921~tplv-o3syd03w52-resize-webp:800:1443.webp?dr=15584&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=e1be8f53&idc=my&from=1826719393", thumbnailSrc: "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/931e7b76b8264713abfd055a7e41f921~tplv-o3syd03w52-resize-webp:800:1443.webp?dr=15584&t=555f072d&ps=933b5bde&shp=6ce186a1&shcp=e1be8f53&idc=my&from=1826719393" },
     ],
     specifications: [
-      { label: "Marca", value: "Bosch" },
+      { label: "Marca", value: "SOARFLY" },
       { label: "Modelo", value: "GSB 18V-60 C" },
       { label: "Voltagem", value: "Bi-volt (110V/220V)" },
       { label: "Tensão da bateria", value: "48V" },

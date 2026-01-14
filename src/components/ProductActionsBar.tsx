@@ -15,7 +15,7 @@ const ProductActionsBar: React.FC<ProductActionsBarProps> = ({ onAddToCartClick,
     <Button
       variant="outline"
       className={cn(
-        "bg-gray-100 text-gray-900 border-none rounded-xl h-12 text-sm font-bold hover:bg-gray-200", // Reduzido de h-14 para h-12 e text-base para text-sm
+        "bg-gray-100 text-gray-900 border-none rounded-xl h-10 text-sm font-bold hover:bg-gray-200", // Reduzido de h-12 para h-10
         "flex-grow w-full max-w-[135px] whitespace-normal leading-snug py-2" // Reduzido de 150px para 135px
       )}
       onClick={onAddToCartClick}
@@ -28,7 +28,7 @@ const ProductActionsBar: React.FC<ProductActionsBarProps> = ({ onAddToCartClick,
   const BuyNowButton = (
     <Button
       className={cn(
-        "bg-[#FF3366] text-white rounded-xl h-12 text-base font-bold hover:bg-[#E02E5C]", // Reduzido de h-14 para h-12
+        "bg-[#FF3366] text-white rounded-xl h-10 text-base font-bold hover:bg-[#E02E5C]", // Reduzido de h-12 para h-10
         "flex-grow w-full max-w-[135px] whitespace-nowrap" // Reduzido de 150px para 135px
       )}
       onClick={onBuyWithCouponClick}
@@ -44,11 +44,11 @@ const ProductActionsBar: React.FC<ProductActionsBarProps> = ({ onAddToCartClick,
         {/* Ícones da Esquerda (Loja & Chat) */}
         <div className="flex space-x-4 sm:space-x-6 px-2">
           <button className="flex flex-col items-center text-xs text-gray-600 hover:text-primary transition-colors">
-            <Home size={24} className="mb-1" />
+            <Home size={20} className="mb-1" /> {/* Reduzido de 24 para 20 */}
             <span>Loja</span>
           </button>
           <button className="flex flex-col items-center text-xs text-gray-600 hover:text-primary transition-colors">
-            <MessageSquare size={24} className="mb-1" />
+            <MessageSquare size={20} className="mb-1" /> {/* Reduzido de 24 para 20 */}
             <span>Chat</span>
           </button>
         </div>
