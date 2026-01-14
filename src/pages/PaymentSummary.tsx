@@ -25,6 +25,17 @@ const PaymentSummary: React.FC = () => {
     return <div className="p-4 text-center">Carregando...</div>;
   }
 
+  // Calculate final price based on payment method
+  const getFinalPrice = () => {
+    if (paymentMethod === 'pix') {
+      return '47,00'; // PIX price
+    } else {
+      return product.originalPrice; // Credit card/boleto price (249,00)
+    }
+  };
+
+  const finalPrice = getFinalPrice();
+
   const handleGeneratePayment = () => {
     showSuccess("Pagamento gerado com sucesso! Redirecionando para checkout...");
     // Redirect to checkout page
@@ -53,11 +64,13 @@ const PaymentSummary: React.FC = () => {
                 </h2>
                 <div className="mt-2">
                   <span className="text-lg font-bold text-red-600">
-                    R$ {product.currentPrice}
+                    R$ {finalPrice}
                   </span>
-                  <span className="text-sm text-gray-500 line-through ml-2">
-                    R$ {product.originalPrice}
-                  </span>
+                  {paymentMethod !== 'pix' && (
+                    <span className="text-sm text-gray-500 line-through ml-2">
+                      R$ {product.originalPrice}
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -73,14 +86,16 @@ const PaymentSummary: React.FC = () => {
                 <span className="text-gray-600">R$ {product.originalPrice}</span>
               </div>
 
-              <div className="flex justify-between">
-                <span className="text-gray-600">Desconto</span>
-                <span className="text-green-600">-R$ {product.discountAmount}</span>
-              </div>
+              {paymentMethod === 'pix' && (
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Desconto PIX</span>
+                  <span className="text-green-600">-R$ {product.discountAmount}</span>
+                </div>
+              )}
 
               <div className="flex justify-between font-bold text-lg mt-3 pt-2 border-t">
                 <span className="text-gray-900">Total</span>
-                <span className="text-red-600">R$ {product.currentPrice}</span>
+                <span className="text-red-600">R$ {finalPrice}</span>
               </div>
             </div>
           </div>
@@ -99,7 +114,10 @@ const PaymentSummary: React.FC = () => {
               >
                 <div className="flex items-center">
                   <QrCode className="mr-3 text-red-500" size={20} />
-                  <span className="font-medium">PIX</span>
+                  <div className="flex flex-col">
+                    <span className="font-medium">PIX</span>
+                    <span className="text-sm text-gray-500">R$ 47,00 (melhor preço)</span>
+                  </div>
                 </div>
                 {paymentMethod === 'pix' && <Check className="text-red-500" size={20} />}
               </div>
@@ -113,7 +131,10 @@ const PaymentSummary: React.FC = () => {
               >
                 <div className="flex items-center">
                   <CreditCard className="mr-3 text-gray-500" size={20} />
-                  <span className="font-medium">Cartão de Crédito</span>
+                  <div className="flex flex-col">
+                    <span className="font-medium">Cartão de Crédito</span>
+                    <span className="text-sm text-gray-500">R$ 249,00</span>
+                  </div>
                 </div>
                 {paymentMethod === 'credit_card' && <Check className="text-red-500" size={20} />}
               </div>
@@ -127,7 +148,10 @@ const PaymentSummary: React.FC = () => {
               >
                 <div className="flex items-center">
                   <Barcode className="mr-3 text-gray-500" size={20} />
-                  <span className="font-medium">Boleto Bancário</span>
+                  <div className="flex flex-col">
+                    <span className="font-medium">Boleto Bancário</span>
+                    <span className="text-sm text-gray-500">R$ 249,00</span>
+                  </div>
                 </div>
                 {paymentMethod === 'boleto' && <Check className="text-red-500" size={20} />}
               </div>
