@@ -13,12 +13,12 @@ export interface Product {
   flashSaleTimeSeconds: number;
   media: MediaItem[];
   specifications: { label: string; value: string }[];
-  descriptionText: string; // Novo campo para a descrição longa
+  descriptionText: string;
 }
 
 export const products: Product[] = [
   {
-    slug: "furadeira-parafusadeira",
+    slug: "parafusadeira-furadeira-completa-com-maleta-2-baterias",
     title: "Furadeira e Parafusadeira de Impacto Sem Fio 48V com LED 2 Baterias Recarregáveis Bi-volt e Acessórios Maleta Completa para Uso Profissional e Doméstico",
     currentPrice: "97,50 - 199,70",
     originalPrice: "3.999,00",
@@ -37,18 +37,19 @@ export const products: Product[] = [
       { type: 'image', src: "https://m.media-amazon.com/images/I/61rwOtF+X+L._AC_SX569_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61rwOtF+X+L._AC_SX569_.jpg" },
     ],
     specifications: [
-      { label: "Marca", value: "Apple" },
-      { label: "Modelo", value: "iPhone 13" },
-      { label: "Cor", value: "Estelar" },
-      { label: "Tela", value: "Super Retina XDR de 6,1 polegadas" },
-      { label: "Câmera", value: "Sistema de câmera dupla de 12 MP" },
-      { label: "Câmera Frontal", value: "TrueDepth de 12 MP" },
-      { label: "Chip", value: "A15 Bionic" },
-      { label: "Resistência", value: "Ceramic Shield, IP68 (água e poeira)" },
-      { label: "Conectividade", value: "5G" },
-      { label: "Capacidade", value: "128 GB" },
+      { label: "Marca", value: "Bosch" },
+      { label: "Modelo", value: "GSB 18V-60 C" },
+      { label: "Voltagem", value: "Bi-volt (110V/220V)" },
+      { label: "Tensão da bateria", value: "48V" },
+      { label: "Capacidade da bateria", value: "2.0Ah" },
+      { label: "Torque máximo", value: "60 Nm" },
+      { label: "Velocidade sem carga", value: "0-400 / 0-1.500 rpm" },
+      { label: "Funções", value: "Perfuração, parafusamento, impacto" },
+      { label: "Níveis de torque", value: "25 + 1" },
+      { label: "Peso", value: "1,8 kg (com bateria)" },
+      { label: "Inclui", value: "2 baterias, carregador, maleta, acessórios" },
     ],
-    descriptionText: "O iPhone 13 traz inovações poderosas, como o sistema de câmera dupla mais avançado em um iPhone, um salto gigante na duração da bateria e o chip A15 Bionic, que é ultrápido. Com um design elegante e resistente e 5G super-rápido, é uma experiência que você só encontra no iPhone.",
+    descriptionText: "🚀 Potente, Leve e Ergonômica! Design compacto e confortável, ideal para longas jornadas de trabalho. Oferece potência e praticidade em qualquer ambiente — perfeita para uso doméstico, oficinas e serviços gerais.\n\n🛠️ 3 Funções em 1 – Perfura, Parafusa e Impacta! Versátil e eficiente, essa ferramenta atua com precisão em madeira, metal e alvenaria. Substitui várias ferramentas em uma única solução completa.\n\n⚙️ Torque Ajustável + 2 Velocidades! Tenha controle total sobre força e rotação. São 25 níveis de torque, seletor de impacto e função reversa para máxima precisão em cada tarefa.\n\n🔋 2 Baterias 48V – Muito Mais Autonomia! Acompanha duas baterias recarregáveis de alta capacidade para você trabalhar por mais tempo, sem interrupções ou perda de desempenho.\n\n🎯 Maleta Completa com Acessórios! Tudo o que você precisa em um só kit: soquetes, bits, mandril adaptador, carregador e uma maleta rígida para transporte e organização prática.\n\n⚡ Bi-volt Automático (110V/220V)! Use em qualquer tomada, sem se preocupar com a voltagem. Liberdade total para trabalhar em casa, na oficina ou em qualquer lugar.",
   },
   {
     slug: "patinete-eletrico-scooter-bluetooth",

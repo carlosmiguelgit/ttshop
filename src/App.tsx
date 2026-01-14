@@ -18,8 +18,8 @@ const App = () => (
           {/* Rota dinâmica para a página de detalhes do produto */}
           <Route path="/produto/:slug" element={<Index />} />
 
-          {/* Redireciona a rota raiz para o produto padrão (patinete) */}
-          <Route path="/" element={<Navigate replace to="/produto/patinete-eletrico-scooter-bluetooth" />} />
+          {/* Redireciona a rota raiz para o novo produto padrão (furadeira/parafusadeira) */}
+          <Route path="/" element={<Navigate replace to="/produto/parafusadeira-furadeira-completa-com-maleta-2-baterias" />} />
 
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
