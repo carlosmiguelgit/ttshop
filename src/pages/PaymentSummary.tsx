@@ -96,7 +96,31 @@ const PaymentSummary: React.FC = () => {
             </div>
           </div>
 
-          {/* Shipping Address Container - Now using real data from checkout */}
+          {/* Price Details */}
+          <div className="bg-white rounded-lg p-4 mb-4 border">
+            <h3 className="text-base font-semibold text-gray-900 mb-3">Detalhes do Pedido</h3>
+
+            <div className="space-y-2">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Valor original</span>
+                <span className="text-gray-600">R$ {product.originalPrice}</span>
+              </div>
+
+              {paymentMethod === 'pix' && (
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Desconto PIX</span>
+                  <span className="text-green-600">-R$ {product.discountAmount}</span>
+                </div>
+              )}
+
+              <div className="flex justify-between font-bold text-lg mt-3 pt-2 border-t">
+                <span className="text-gray-900">Total</span>
+                <span className="text-red-600">R$ {finalPrice}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Shipping Address Container - Now below order details */}
           <div className="bg-white rounded-lg p-4 mb-4 border">
             <h3 className="text-base font-semibold text-gray-900 mb-3">Endereço de Entrega</h3>
 
@@ -126,30 +150,6 @@ const PaymentSummary: React.FC = () => {
               <div className="flex items-center">
                 <span className="font-medium text-gray-800">Cidade/Estado:</span>
                 <span className="ml-2 text-gray-600">{shippingInfo.city}, {shippingInfo.state}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Price Details */}
-          <div className="bg-white rounded-lg p-4 mb-4 border">
-            <h3 className="text-base font-semibold text-gray-900 mb-3">Detalhes do Pedido</h3>
-
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="text-gray-600">Valor original</span>
-                <span className="text-gray-600">R$ {product.originalPrice}</span>
-              </div>
-
-              {paymentMethod === 'pix' && (
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Desconto PIX</span>
-                  <span className="text-green-600">-R$ {product.discountAmount}</span>
-                </div>
-              )}
-
-              <div className="flex justify-between font-bold text-lg mt-3 pt-2 border-t">
-                <span className="text-gray-900">Total</span>
-                <span className="text-red-600">R$ {finalPrice}</span>
               </div>
             </div>
           </div>
