@@ -233,8 +233,8 @@ const PixPayment: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 pb-24">
-      {/* Header com botão de voltar */}
-      <div className="p-4 bg-white border-b">
+      {/* Header com imagem e botão de voltar */}
+      <div className="p-4 bg-white border-b flex items-center justify-between">
         <button
           onClick={handleBack}
           className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
@@ -242,6 +242,13 @@ const PixPayment: React.FC = () => {
           <ArrowLeft className="mr-2" size={20} />
           <span>Voltar</span>
         </button>
+
+        {/* Imagem do cabeçalho */}
+        <img
+          src="https://i.ibb.co/5XD03DhM/Captura-de-tela-2026-01-14-121827-1.png"
+          alt="TikTok Shop"
+          className="h-8 object-contain"
+        />
       </div>
 
       {/* Conteúdo Principal */}
@@ -249,11 +256,6 @@ const PixPayment: React.FC = () => {
         <div className="w-full max-w-md mx-auto p-6">
           {/* Card do QR Code - Estilo Branco com bordas */}
           <div className="w-full p-6 rounded-lg shadow-lg text-center bg-white border">
-            {/* Título */}
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">
-              {paymentApproved ? "Pagamento Confirmado! ✅" : "PIX QRCODE"}
-            </h2>
-
             {loading && (
               <div className="flex flex-col items-center justify-center py-12">
                 <Loader2 className="w-8 h-8 animate-spin text-red-600 mb-4" />
@@ -331,6 +333,15 @@ const PixPayment: React.FC = () => {
 
                 {!paymentApproved && !isExpired && (
                   <>
+                    {/* Status do Pagamento - agora no lugar do título */}
+                    {paymentStatus && (
+                      <div className="mb-4">
+                        <p className="text-blue-600 text-lg font-semibold">
+                          Status: {paymentStatus}
+                        </p>
+                      </div>
+                    )}
+
                     {/* Shield Check - PAGAMENTO SEGURO */}
                     <div className="mb-4">
                       <div className="flex items-center justify-center mb-2">
@@ -340,15 +351,6 @@ const PixPayment: React.FC = () => {
                         </span>
                       </div>
                     </div>
-
-                    {/* Status do Pagamento */}
-                    {paymentStatus && (
-                      <div className="mb-4">
-                        <p className="text-blue-600 text-sm">
-                          Status: {paymentStatus}
-                        </p>
-                      </div>
-                    )}
 
                     {/* Mensagem de Expiração Regressiva */}
                     <div className="mb-6">
