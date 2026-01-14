@@ -5,11 +5,11 @@ import ReviewImageGallery from './ReviewImageGallery'; // Importando o novo comp
 interface ReviewCardProps {
   username: string;
   date: string;
-  avatarSrc: string;
+  avatarSrc?: string; // Made optional
   verified: boolean;
   attributes: string; // Mantido, mas não será exibido
   comment: string;
-  reviewImages?: string[];
+  reviewImages?: string[]; // Made optional
 }
 
 // Função para mascarar o nome de usuário (ex: carlos.santos -> c**s)
@@ -23,12 +23,12 @@ const maskUsername = (username: string): string => {
 const ProductReviewCard: React.FC<ReviewCardProps> = ({
   username,
   date,
-  avatarSrc,
+  avatarSrc = "https://evento-ttk.shop/assets/review-profile-default.jpg", // Default avatar
   comment,
   reviewImages,
 }) => {
   const maskedUsername = maskUsername(username);
-  
+
   // Renderiza 5 estrelas amarelas fixas
   const renderStars = () => (
     <div className="flex mb-1">
@@ -61,12 +61,12 @@ const ProductReviewCard: React.FC<ReviewCardProps> = ({
       <p className="text-sm text-gray-700 leading-relaxed mb-3">
         {comment}
       </p>
-      
+
       {/* Galeria de Imagens da Avaliação (agora usando o novo componente) */}
       {reviewImages && reviewImages.length > 0 && (
         <ReviewImageGallery reviewImages={reviewImages} />
       )}
-      
+
       {/* Compra Verificada removida */}
     </div>
   );

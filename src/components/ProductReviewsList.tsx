@@ -26,26 +26,22 @@ const allReviews = [
     ],
   },
   {
-    username: "fernanda.paz",
-    date: "29 de out",
-    avatarSrc: "https://evento-ttk.shop/assets/review-profile-3-DIYsgiJG.jpg",
+    username: "carlos.silva",
+    date: "28 de out",
+    avatarSrc: "https://m.media-amazon.com/images/I/71F4B+Zt-9L.jpg",
     verified: true,
-    attributes: "Câmera: modo cinema | Design: lindo",
-    comment: "Chegou perfeito, na caixa lacrada. O design é lindo e o celular é super potente. O modo cinema da câmera é incrível. Recomendo demais, podem comprar sem medo.",
+    attributes: "Potência: impressionante | Durabilidade: excelente",
+    comment: "Fiquei impressionado com a potência desta furadeira! Consegui fazer furos em alvenaria com facilidade, algo que minha antiga ferramenta não conseguia. As baterias duram o dia todo de trabalho e o carregamento é rápido. A maleta é resistente e organiza todos os acessórios perfeitamente.",
     reviewImages: [
-      "https://evento-ttk.shop/assets/review-iphone13-photo-3-real-CoFlflMf.jpg",
+      "https://m.media-amazon.com/images/I/61UVqQqA3yL._AC_SX569_.jpg",
     ],
   },
   {
-    username: "rodrigo.alves",
-    date: "28 de out",
-    avatarSrc: "https://evento-ttk.shop/assets/review-profile-4-CeGu1IFj.jpg",
-    verified: false,
-    attributes: "Entrega: pontual | Qualidade: Apple",
-    comment: "Qualidade Apple por um preço que nunca imaginei. O celular voa, os apps abrem na hora. A entrega foi super rápida. Muito satisfeito com a compra.",
-    reviewImages: [
-      "https://www.actualidadiphone.com/wp-content/uploads/2021/09/iPhone-13-Pro-Max-02-1024x555.jpg.webp",
-    ],
+    username: "maria.oliveira",
+    date: "27 de out",
+    verified: true,
+    attributes: "Versatilidade: incrível | Preço: imbatível",
+    comment: "Comprei para uso doméstico e estou encantada! A furadeira é leve, fácil de manusear e tem força suficiente para todos os trabalhos em casa. O fato de ser bi-volt é um grande vantagem. Os acessórios que acompanham são de ótima qualidade. Super recomendo!",
   },
 ];
 
