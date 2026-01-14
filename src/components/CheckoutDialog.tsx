@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Product } from '@/data/products';
-import { showError, showLoading, dismissToast } from '@/utils/toast';
+import { showError } from '@/utils/toast';
 
 interface CheckoutDialogProps {
   isOpen: boolean;
@@ -48,7 +48,6 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({ isOpen, onClose, produc
     if (cep.length !== 8) return;
 
     setIsLoading(true);
-    const loadingToast = showLoading("Buscando endereço...");
 
     try {
       // Using ViaCEP - free Brazilian CEP API
@@ -75,9 +74,6 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({ isOpen, onClose, produc
       console.error("CEP API error:", error);
     } finally {
       setIsLoading(false);
-      if (typeof loadingToast === 'string') {
-        dismissToast(loadingToast);
-      }
     }
   };
 
