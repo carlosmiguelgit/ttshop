@@ -29,10 +29,12 @@ export const products: Product[] = [
     salesCount: 5287,
     flashSaleTimeSeconds: 4 * 60, // 4 minutos
     media: [
-      { type: 'image', src: "https://evento-ttk.shop/assets/iphone13-preto-D4y5eHnV.png", thumbnailSrc: "https://evento-ttk.shop/assets/iphone13-preto-D4y5eHnV.png" },
-      { type: 'image', src: "https://evento-ttk.shop/assets/iphone13-azul-Cvk1XKya.png", thumbnailSrc: "https://evento-ttk.shop/assets/iphone13-azul-Cvk1XKya.png" },
-      { type: 'image', src: "https://evento-ttk.shop/assets/iphone13-rosa-BeQ9qyF4.png", thumbnailSrc: "https://evento-ttk.shop/assets/iphone13-rosa-BeQ9qyF4.png" },
-      { type: 'image', src: "https://evento-ttk.shop/assets/iphone13-verde-BybGV3uE.png", thumbnailSrc: "https://evento-ttk.shop/assets/iphone13-verde-BybGV3uE.png" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/61nvMlGuy6L._AC_SX569_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61nvMlGuy6L._AC_SX569_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/61vTBgOHCEL._AC_SX569_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61vTBgOHCEL._AC_SX569_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/51quf3wBKNL._AC_US100_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/51quf3wBKNL._AC_US100_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/71ctpDQEP3L._AC_SX569_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/71ctpDQEP3L._AC_SX569_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/61PAAjEZWcL._AC_SX569_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61PAAjEZWcL._AC_SX569_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/61rwOtF+X+L._AC_SX569_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61rwOtF+X+L._AC_SX569_.jpg" },
     ],
     specifications: [
       { label: "Marca", value: "Apple" },
@@ -49,8 +51,8 @@ export const products: Product[] = [
     descriptionText: "O iPhone 13 traz inovações poderosas, como o sistema de câmera dupla mais avançado em um iPhone, um salto gigante na duração da bateria e o chip A15 Bionic, que é ultrápido. Com um design elegante e resistente e 5G super-rápido, é uma experiência que você só encontra no iPhone.",
   },
   {
-    slug: "patinete-eletrico-scooter-bluetooth", // SLUG ATUALIZADO
-    title: "Patinete Elétrico Scooter De Alumínio Com Bluetooth", // TÍTULO ATUALIZADO
+    slug: "patinete-eletrico-scooter-bluetooth",
+    title: "Patinete Elétrico Scooter De Alumínio Com Bluetooth",
     currentPrice: "67,90",
     originalPrice: "619,90",
     discountPercentage: 89,
@@ -89,9 +91,9 @@ export const products: Product[] = [
     slug: "tv-tcl-55",
     title: "Smart TV TCL 55P7K 55\" QLED 4K UHD Google TV",
     currentPrice: "75,00",
-    originalPrice: "2.279,00", // PREÇO ATUALIZADO
-    discountPercentage: 97, // PORCENTAGEM ATUALIZADA
-    discountAmount: "2.204,00", // VALOR DO DESCONTO ATUALIZADO
+    originalPrice: "2.279,00",
+    discountPercentage: 97,
+    discountAmount: "2.204,00",
     rating: 4.9,
     reviewCount: 1200,
     salesCount: 3521,
