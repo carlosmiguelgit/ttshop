@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Product } from '@/data/products';
-import { cn } from '@/lib/utils';
 import { showError } from '@/utils/toast';
 
 interface CheckoutDialogProps {
@@ -14,20 +13,7 @@ interface CheckoutDialogProps {
   onFinalize: (capacity: string) => void;
 }
 
-const colorNames = ["Preto", "Azul", "Rosa", "Verde"];
-const storageOptions = ["128GB", "256GB", "512GB", "1TB"];
-
-// Mapeamento dos preços por capacidade
-const storagePrices: { [key: string]: string } = {
-  "128GB": "97,50",
-  "256GB": "147,90",
-  "512GB": "179,90",
-  "1TB": "199,90",
-};
-
 const CheckoutDialog: React.FC<CheckoutDialogProps> = ({ isOpen, onClose, product, onFinalize }) => {
-  const [selectedColorIndex, setSelectedColorIndex] = useState<number | null>(null);
-  const [selectedStorage, setSelectedStorage] = useState<string | null>(null);
   const [shippingInfo, setShippingInfo] = useState({
     cep: '',
     address: '',
@@ -45,8 +31,6 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({ isOpen, onClose, produc
 
   const isFormValid = useMemo(() => {
     return (
-      selectedColorIndex !== null &&
-      selectedStorage !== null &&
       shippingInfo.cep.trim() !== '' &&
       shippingInfo.address.trim() !== '' &&
       shippingInfo.number.trim() !== '' &&
@@ -54,25 +38,16 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({ isOpen, onClose, produc
       shippingInfo.city.trim() !== '' &&
       shippingInfo.state.trim() !== ''
     );
-  }, [selectedColorIndex, selectedStorage, shippingInfo]);
+  }, [shippingInfo]);
 
   const handleFinalizeClick = () => {
     if (!isFormValid) {
       showError("Por favor, preencha todos os campos obrigatórios.");
       return;
     }
-    if (selectedStorage) {
-      onFinalize(selectedStorage);
-    }
+    // Default capacity for finalization
+    onFinalize("128GB");
   };
-
-  // Texto dinâmico para o botão de checkout
-  const checkoutButtonText = useMemo(() => {
-    if (selectedStorage && storagePrices[selectedStorage]) {
-      return `Ir para checkout R$ ${storagePrices[selectedStorage]}`;
-    }
-    return "Prosseguir para pagamento";
-  }, [selectedStorage]);
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -80,65 +55,14 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({ isOpen, onClose, produc
         <DialogHeader>
           <DialogTitle>Finalizar Compra</DialogTitle>
           <DialogDescription>
-            Selecione as opções e preencha suas informações de entrega para continuar.
+            Preencha suas informações de entrega para continuar.
           </DialogDescription>
         </DialogHeader>
-        
+
         <div className="grid gap-4 py-4">
-          {/* 1. Color Selection */}
+          {/* Shipping Info */}
           <div>
-            <Label className="text-base font-semibold">1. Selecione a cor</Label>
-            <div className="grid grid-cols-4 gap-2 mt-2">
-              {product.media.map((item, index) => (
-                <div 
-                  key={index} 
-                  className="flex flex-col items-center cursor-pointer"
-                  onClick={() => setSelectedColorIndex(index)}
-                >
-                  <div className={cn(
-                    "p-1 border-2 rounded-md transition-colors",
-                    selectedColorIndex === index ? 'border-cyan-500' : 'border-transparent'
-                  )}>
-                    <img 
-                      src={item.thumbnailSrc} 
-                      alt={colorNames[index]} 
-                      className="w-16 h-16 object-cover rounded-sm"
-                    />
-                  </div>
-                  <span className={cn(
-                    "text-xs mt-1",
-                    selectedColorIndex === index ? 'font-bold text-cyan-600' : 'text-gray-600'
-                  )}>
-                    {colorNames[index]}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* 2. Storage Selection */}
-          <div>
-            <Label className="text-base font-semibold">2. Selecione a capacidade</Label>
-            <div className="grid grid-cols-4 gap-2 mt-2">
-              {storageOptions.map((storage) => (
-                <Button
-                  key={storage}
-                  variant="outline"
-                  className={cn(
-                    "h-auto py-2",
-                    selectedStorage === storage ? 'border-cyan-500 text-cyan-600 bg-cyan-50' : ''
-                  )}
-                  onClick={() => setSelectedStorage(storage)}
-                >
-                  {storage}
-                </Button>
-              ))}
-            </div>
-          </div>
-
-          {/* 3. Shipping Info */}
-          <div>
-            <Label className="text-base font-semibold">3. Informações de Entrega</Label>
+            <Label className="text-base font-semibold">Informações de Entrega</Label>
             <div className="space-y-3 mt-2">
               <div className="grid grid-cols-1 gap-2">
                 <Label htmlFor="cep">CEP</Label>
@@ -177,13 +101,13 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({ isOpen, onClose, produc
         </div>
 
         <DialogFooter>
-          <Button 
-            type="button" 
+          <Button
+            type="button"
             className="w-full bg-red-600 hover:bg-red-700 text-white font-bold"
             onClick={handleFinalizeClick}
             disabled={!isFormValid}
           >
-            {checkoutButtonText}
+            Prosseguir para pagamento
           </Button>
         </DialogFooter>
       </DialogContent>
