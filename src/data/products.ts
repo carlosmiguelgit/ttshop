@@ -18,8 +18,8 @@ export interface Product {
 
 export const products: Product[] = [
   {
-    slug: "iphone-13",
-    title: "iPhone 13 Apple, Tela de 6,1\", Câmera Dupla de 12MP",
+    slug: "furadeira-parafusadeira",
+    title: "Furadeira e Parafusadeira de Impacto Sem Fio 48V com LED 2 Baterias Recarregáveis Bi-volt e Acessórios Maleta Completa para Uso Profissional e Doméstico",
     currentPrice: "97,50 - 199,70",
     originalPrice: "3.999,00",
     discountPercentage: 98,
