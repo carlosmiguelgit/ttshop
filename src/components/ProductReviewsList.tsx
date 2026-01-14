@@ -39,6 +39,7 @@ const allReviews = [
   {
     username: "maria.oliveira",
     date: "27 de out",
+    avatarSrc: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZPUX5MyuIknIZpMkEL8ENkdfOpeTTxxrcZQ&sa",
     verified: true,
     attributes: "Versatilidade: incrível | Preço: imbatível",
     comment: "Comprei para uso doméstico e estou encantada! A furadeira é leve, fácil de manusear e tem força suficiente para todos os trabalhos em casa. O fato de ser bi-volt é um grande vantagem. Os acessórios que acompanham são de ótima qualidade. Super recomendo!",
