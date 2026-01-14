@@ -243,9 +243,9 @@ const PixPayment: React.FC = () => {
           <span>Voltar</span>
         </button>
 
-        {/* Imagem do cabeçalho */}
+        {/* Imagem do cabeçalho - Novo logo TikTok */}
         <img
-          src="https://i.ibb.co/5XD03DhM/Captura-de-tela-2026-01-14-121827-1.png"
+          src="https://i.ibb.co/TD1mSYdD/tiktok-1.png"
           alt="TikTok Shop"
           className="h-8 object-contain"
         />
