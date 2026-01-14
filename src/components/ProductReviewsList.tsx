@@ -6,23 +6,23 @@ const allReviews = [
   {
     username: "ana.ribeiro",
     date: "30 de out",
-    avatarSrc: "https://evento-ttk.shop/assets/review-profile-1-BXM-iyaP.jpg",
+    avatarSrc: "https://m.media-amazon.com/images/I/71GnxWXeaPL._AC_UC154,154_CACC,154,154_QL85_.jpg?aicid=community-reviews",
     verified: true,
     attributes: "Custo-benefício: ótimo | Qualidade: superior",
-    comment: "Inacreditável! Um iPhone 13 por esse preço? Pensei que era golpe, mas chegou tudo certo e no dia seguinte. A câmera é espetacular, as fotos ficam profissionais. Melhor compra que já fiz!",
+    comment: "Inacreditável! Esta furadeira/parafusadeira é simplesmente incrível! Pensei que por esse preço não teria qualidade, mas me surpreendi. A potência é excelente, as baterias duram muito e o conjunto completo com maleta é perfeito para quem precisa de uma ferramenta versátil. Melhor compra que já fiz!",
     reviewImages: [
-      "https://evento-ttk.shop/assets/review-iphone13-photo-1-real-Cgm1jsLz.jpg",
+      "https://m.media-amazon.com/images/I/71IkV-JO1AL._AC_SX569_.jpg",
     ],
   },
   {
     username: "joao.melo",
     date: "29 de out",
-    avatarSrc: "https://evento-ttk.shop/assets/review-profile-2-CPHO2E74.jpg",
+    avatarSrc: "https://m.media-amazon.com/images/I/61PoLDvYhGL._AC_UC154,154_CACC,154,154_QL85_.jpg?aicid=community-reviews",
     verified: true,
-    attributes: "Bateria: dura o dia todo | Desempenho: excelente",
-    comment: "A bateria dura o dia todo, mesmo usando bastante. O celular é muito rápido, não trava nada. A tela tem uma qualidade de imagem impressionante. Valeu cada centavo, a promoção é real!",
+    attributes: "Bateria: dura muito | Desempenho: excelente",
+    comment: "A bateria dura muito mais do que eu imaginava, mesmo usando bastante. O torque é excelente e a ferramenta é muito versátil. A maleta com todos os acessórios é um grande diferencial. Valeu cada centavo, a promoção é real e a qualidade é profissional!",
     reviewImages: [
-      "https://evento-ttk.shop/assets/review-iphone13-photo-2-real-YCTmOGhd.jpg",
+      "https://m.media-amazon.com/images/I/61MK6YHkNUL._AC_SX569_.jpg",
     ],
   },
   {
@@ -54,7 +54,7 @@ interface ProductReviewsListProps {
 }
 
 const ProductReviewsList: React.FC<ProductReviewsListProps> = ({ showAll }) => {
-  
+
   const reviewsToDisplay = showAll ? allReviews : allReviews.slice(0, 1);
 
   return (
