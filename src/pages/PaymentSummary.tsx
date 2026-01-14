@@ -5,34 +5,38 @@ import { Button } from "@/components/ui/button";
 import { Check, CreditCard, Barcode, QrCode } from 'lucide-react';
 import { showSuccess } from '@/utils/toast';
 
+interface ShippingInfo {
+  cep: string;
+  address: string;
+  number: string;
+  complement: string;
+  neighborhood: string;
+  city: string;
+  state: string;
+}
+
 const PaymentSummary: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<'pix' | 'credit_card' | 'boleto'>('pix');
-
-  // Mock shipping address data (in a real app, this would come from the checkout form)
-  const [shippingAddress, setShippingAddress] = useState({
-    cep: '12345-678',
-    address: 'Rua Exemplo, 123',
-    number: '123',
-    complement: 'Apto 45',
-    neighborhood: 'Bairro Exemplo',
-    city: 'São Paulo',
-    state: 'SP'
-  });
+  const [shippingInfo, setShippingInfo] = useState<ShippingInfo | null>(null);
 
   useEffect(() => {
-    // Get product data from location state
+    // Get product data and shipping info from location state
     if (location.state?.product) {
       setProduct(location.state.product);
+    }
+
+    if (location.state?.shippingInfo) {
+      setShippingInfo(location.state.shippingInfo);
     } else {
       // If no product data, redirect back to product page
       navigate('/');
     }
   }, [location.state, navigate]);
 
-  if (!product) {
+  if (!product || !shippingInfo) {
     return <div className="p-4 text-center">Carregando...</div>;
   }
 
@@ -49,8 +53,8 @@ const PaymentSummary: React.FC = () => {
 
   const handleGeneratePayment = () => {
     if (paymentMethod === 'pix') {
-      // Navigate to PIX payment page
-      navigate('/pix-pagamento', { state: { product } });
+      // Navigate to PIX payment page with product and shipping info
+      navigate('/pix-pagamento', { state: { product, shippingInfo } });
     } else {
       showSuccess("Pagamento gerado com sucesso! Redirecionando para checkout...");
       // Redirect to checkout page for other payment methods
@@ -92,36 +96,36 @@ const PaymentSummary: React.FC = () => {
             </div>
           </div>
 
-          {/* Shipping Address Container - Added for credibility */}
+          {/* Shipping Address Container - Now using real data from checkout */}
           <div className="bg-white rounded-lg p-4 mb-4 border">
             <h3 className="text-base font-semibold text-gray-900 mb-3">Endereço de Entrega</h3>
 
             <div className="space-y-2 text-sm">
               <div className="flex items-center">
                 <span className="font-medium text-gray-800">CEP:</span>
-                <span className="ml-2 text-gray-600">{shippingAddress.cep}</span>
+                <span className="ml-2 text-gray-600">{shippingInfo.cep}</span>
               </div>
 
               <div className="flex items-center">
                 <span className="font-medium text-gray-800">Endereço:</span>
-                <span className="ml-2 text-gray-600">{shippingAddress.address}, {shippingAddress.number}</span>
+                <span className="ml-2 text-gray-600">{shippingInfo.address}, {shippingInfo.number}</span>
               </div>
 
-              {shippingAddress.complement && (
+              {shippingInfo.complement && (
                 <div className="flex items-center">
                   <span className="font-medium text-gray-800">Complemento:</span>
-                  <span className="ml-2 text-gray-600">{shippingAddress.complement}</span>
+                  <span className="ml-2 text-gray-600">{shippingInfo.complement}</span>
                 </div>
               )}
 
               <div className="flex items-center">
                 <span className="font-medium text-gray-800">Bairro:</span>
-                <span className="ml-2 text-gray-600">{shippingAddress.neighborhood}</span>
+                <span className="ml-2 text-gray-600">{shippingInfo.neighborhood}</span>
               </div>
 
               <div className="flex items-center">
                 <span className="font-medium text-gray-800">Cidade/Estado:</span>
-                <span className="ml-2 text-gray-600">{shippingAddress.city}, {shippingAddress.state}</span>
+                <span className="ml-2 text-gray-600">{shippingInfo.city}, {shippingInfo.state}</span>
               </div>
             </div>
           </div>

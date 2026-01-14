@@ -95,8 +95,8 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({ isOpen, onClose, produc
       showError("Por favor, preencha todos os campos obrigatórios.");
       return;
     }
-    // Navigate to payment summary page with product data
-    navigate('/resumo-pagamento', { state: { product } });
+    // Navigate to payment summary page with product data and shipping info
+    navigate('/resumo-pagamento', { state: { product, shippingInfo } });
   };
 
   return (
