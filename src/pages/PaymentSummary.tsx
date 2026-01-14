@@ -11,6 +11,17 @@ const PaymentSummary: React.FC = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<'pix' | 'credit_card' | 'boleto'>('pix');
 
+  // Mock shipping address data (in a real app, this would come from the checkout form)
+  const [shippingAddress, setShippingAddress] = useState({
+    cep: '12345-678',
+    address: 'Rua Exemplo, 123',
+    number: '123',
+    complement: 'Apto 45',
+    neighborhood: 'Bairro Exemplo',
+    city: 'São Paulo',
+    state: 'SP'
+  });
+
   useEffect(() => {
     // Get product data from location state
     if (location.state?.product) {
@@ -77,6 +88,40 @@ const PaymentSummary: React.FC = () => {
                     </span>
                   )}
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Shipping Address Container - Added for credibility */}
+          <div className="bg-white rounded-lg p-4 mb-4 border">
+            <h3 className="text-base font-semibold text-gray-900 mb-3">Endereço de Entrega</h3>
+
+            <div className="space-y-2 text-sm">
+              <div className="flex items-center">
+                <span className="font-medium text-gray-800">CEP:</span>
+                <span className="ml-2 text-gray-600">{shippingAddress.cep}</span>
+              </div>
+
+              <div className="flex items-center">
+                <span className="font-medium text-gray-800">Endereço:</span>
+                <span className="ml-2 text-gray-600">{shippingAddress.address}, {shippingAddress.number}</span>
+              </div>
+
+              {shippingAddress.complement && (
+                <div className="flex items-center">
+                  <span className="font-medium text-gray-800">Complemento:</span>
+                  <span className="ml-2 text-gray-600">{shippingAddress.complement}</span>
+                </div>
+              )}
+
+              <div className="flex items-center">
+                <span className="font-medium text-gray-800">Bairro:</span>
+                <span className="ml-2 text-gray-600">{shippingAddress.neighborhood}</span>
+              </div>
+
+              <div className="flex items-center">
+                <span className="font-medium text-gray-800">Cidade/Estado:</span>
+                <span className="ml-2 text-gray-600">{shippingAddress.city}, {shippingAddress.state}</span>
               </div>
             </div>
           </div>
