@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import PaymentSummary from "./pages/PaymentSummary";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,9 @@ const App = () => (
         <Routes>
           {/* Rota dinâmica para a página de detalhes do produto */}
           <Route path="/produto/:slug" element={<Index />} />
+
+          {/* Rota para o resumo de pagamento */}
+          <Route path="/resumo-pagamento" element={<PaymentSummary />} />
 
           {/* Redireciona a rota raiz para o novo produto padrão (furadeira/parafusadeira) */}
           <Route path="/" element={<Navigate replace to="/produto/parafusadeira-furadeira-completa-com-maleta-2-baterias" />} />

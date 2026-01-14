@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Product } from '@/data/products';
 import { showError } from '@/utils/toast';
+import { useNavigate } from 'react-router-dom';
 
 interface CheckoutDialogProps {
   isOpen: boolean;
@@ -25,6 +26,7 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({ isOpen, onClose, produc
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -93,8 +95,8 @@ const CheckoutDialog: React.FC<CheckoutDialogProps> = ({ isOpen, onClose, produc
       showError("Por favor, preencha todos os campos obrigatórios.");
       return;
     }
-    // Default capacity for finalization
-    onFinalize("128GB");
+    // Navigate to payment summary page with product data
+    navigate('/resumo-pagamento', { state: { product } });
   };
 
   return (
