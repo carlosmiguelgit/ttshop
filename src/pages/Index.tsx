@@ -1,9 +1,9 @@
 import React from 'react';
+import ProductDetailPage from './ProductDetailPage';
 
 const Index = () => {
-  // Temporary blank page
   return (
-    <div className="min-h-screen bg-white"></div>
+    <ProductDetailPage />
   );
 };
 
