@@ -17,6 +17,32 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
     title: productTitle
   } = product;
 
+  // Função para calcular a data de entrega
+  const getDeliveryDateRange = () => {
+    const today = new Date();
+    
+    const start = new Date(today);
+    start.setDate(today.getDate() + 3);
+    
+    const end = new Date(today);
+    end.setDate(today.getDate() + 9);
+    
+    const startDay = start.getDate();
+    const endDay = end.getDate();
+    
+    const months = [
+      "jan", "fev", "mar", "abr", "mai", "jun",
+      "jul", "ago", "set", "out", "nov", "dez"
+    ];
+    
+    const endMonth = months[end.getMonth()];
+    
+    // Formato: Receba até DD-DD de MMM
+    return `Receba até ${startDay}-${endDay} de ${endMonth}`;
+  };
+
+  const deliveryText = getDeliveryDateRange();
+
   return (
     <div className="bg-white">
       <div className="p-4 space-y-2">
@@ -27,30 +53,30 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
             -{discountPercentage}%
           </span>
           
-          {/* Preço Atual (Reduzido para 2xl) */}
+          {/* Preço Atual */}
           <span className="text-2xl font-bold text-red-600">
             R$ {currentPrice}
           </span>
           
-          {/* Preço Original (Reduzido para sm) */}
+          {/* Preço Original */}
           <span className="text-sm text-gray-400 line-through">
             R$ {originalPrice}
           </span>
         </div>
 
-        {/* Título do Produto (Reduzido para base) */}
+        {/* Título do Produto */}
         <div className="flex justify-between items-start">
           <h2 className="text-base font-bold text-gray-900 leading-snug line-clamp-2">
             {productTitle}
           </h2>
         </div>
 
-        {/* Vendas (Reduzido para xs) */}
+        {/* Vendas */}
         <div className="flex items-center text-xs text-gray-500 pb-2 border-b border-gray-100">
           <span>{salesCount} vendidos</span>
         </div>
 
-        {/* Seção de Frete Grátis */}
+        {/* Seção de Frete Grátis com data dinâmica */}
         <div className="flex justify-between items-center py-2 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors">
           <div className="flex flex-col">
             <div className="flex items-center space-x-2">
@@ -59,8 +85,8 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
                 <span className="bg-teal-100 text-teal-700 text-xs font-semibold px-2 py-0.5 rounded">
                   Frete grátis
                 </span>
-                <span className="text-xs text-gray-800 font-bold">
-                  RECEBA AMANHÃ
+                <span className="text-xs text-gray-800 font-bold uppercase">
+                  {deliveryText}
                 </span>
               </div>
             </div>
