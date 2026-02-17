@@ -38,8 +38,9 @@ const ProductActionsBar: React.FC<ProductActionsBarProps> = ({ onAddToCartClick,
             className="flex flex-col items-center justify-center bg-[#FF2C55] text-white rounded-full h-10 flex-1 hover:bg-[#E0254B] transition-colors px-1"
             onClick={onBuyWithCouponClick}
           >
-            <span className="text-[12px] font-bold leading-[1.0]">Comprar Agora</span>
-            <span className="text-[9px] font-medium leading-[1.0] mt-0.5 opacity-90">Frete grátis</span>
+            {/* Reduzi mt de 0.5 para 0 e ajustei line-height para aproximar os textos */}
+            <span className="text-[12px] font-bold leading-none">Comprar Agora</span>
+            <span className="text-[9px] font-medium leading-none mt-0 opacity-90">Frete grátis</span>
           </Button>
         </div>
       </div>

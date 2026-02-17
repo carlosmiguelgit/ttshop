@@ -31,13 +31,25 @@
   * {
     @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground;
-    /* Oculta a barra de rolagem mas mantém a rolagem funcional */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
+  
+  /* Esconde barras de rolagem globalmente */
+  html, body {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
+
   body::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
+    display: none;
+  }
+}
+
+@layer utilities {
+  /* Classe específica para esconder barras de rolagem em elementos com overflow */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
