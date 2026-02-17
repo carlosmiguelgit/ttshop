@@ -19,7 +19,6 @@ const ProductActionsBar: React.FC<ProductActionsBarProps> = ({ onAddToCartClick,
             <span className="mt-0.5">Loja</span>
           </button>
           <button className="flex flex-col items-center text-[10px] text-gray-600">
-            {/* Ícone de chat bubble redondo com ponta na direita */}
             <MessageCircle size={22} className="text-gray-800 transform scale-x-[-1]" />
             <span className="mt-0.5">Chat</span>
           </button>
@@ -39,8 +38,8 @@ const ProductActionsBar: React.FC<ProductActionsBarProps> = ({ onAddToCartClick,
             className="flex flex-col items-center justify-center bg-[#FF2C55] text-white rounded-full h-10 flex-1 hover:bg-[#E0254B] transition-colors px-1"
             onClick={onBuyWithCouponClick}
           >
-            <span className="text-[12px] font-bold leading-none">Comprar Agora</span>
-            <span className="text-[9px] font-medium leading-none mt-0.5 opacity-90">Frete grátis</span>
+            <span className="text-[12px] font-bold leading-[1.0]">Comprar Agora</span>
+            <span className="text-[9px] font-medium leading-[1.0] mt-0.5 opacity-90">Frete grátis</span>
           </Button>
         </div>
       </div>

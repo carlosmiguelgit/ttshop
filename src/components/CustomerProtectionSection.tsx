@@ -2,40 +2,33 @@ import React from 'react';
 import { ShieldCheck, ChevronRight, Check } from 'lucide-react';
 
 const CustomerProtectionSection: React.FC = () => {
-  // Cor marrom/dourada para ícones e texto principal
   const primaryColor = "text-[#A0783A]"; 
-  // Cor de fundo bege claro
   const backgroundColor = "bg-[#FDF8F0]"; 
-  // Cor do texto das vantagens
-  const detailColor = "text-gray-700";
 
   const protectionItems = [
     "Devolução gratuita",
-    "Reembolso automático por danos",
+    "Reembolso danos",
     "Pagamento seguro",
-    "Cupom por atraso na coleta",
   ];
 
   return (
-    <div className={`p-4 ${backgroundColor} cursor-pointer hover:bg-[#FDF5E8] transition-colors`}>
-      
-      {/* Header: Título e Ícone de Navegação */}
-      <div className="flex justify-between items-center mb-3">
+    <div className={`p-4 ${backgroundColor} cursor-pointer`}>
+      <div className="flex justify-between items-center mb-2">
         <div className="flex items-center space-x-2">
-          <ShieldCheck size={20} className={`${primaryColor} fill-transparent`} />
-          <h3 className={`text-base font-semibold ${primaryColor}`}>
+          <ShieldCheck size={18} className={`${primaryColor}`} />
+          <h3 className={`text-sm font-bold ${primaryColor}`}>
             Proteção do cliente
           </h3>
         </div>
-        <ChevronRight size={20} className={primaryColor} />
+        <ChevronRight size={16} className={primaryColor} />
       </div>
 
-      {/* Detalhes da Proteção (Grid de 2 colunas) */}
-      <div className="grid grid-cols-2 gap-y-2 text-sm">
+      {/* Itens em linha única com recuo à direita do escudo */}
+      <div className="flex items-center overflow-x-auto no-scrollbar pl-5 space-x-3">
         {protectionItems.map((item, index) => (
-          <div key={index} className="flex items-start">
-            <Check size={16} className={`mt-0.5 mr-2 ${primaryColor}`} />
-            <span className={detailColor}>{item}</span>
+          <div key={index} className="flex items-center flex-shrink-0">
+            <Check size={12} className={`${primaryColor} mr-1`} />
+            <span className="text-[11px] text-gray-700 font-medium whitespace-nowrap">{item}</span>
           </div>
         ))}
       </div>
