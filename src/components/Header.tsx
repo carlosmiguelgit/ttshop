@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Search, Share2, ShoppingCart, MoreHorizontal, Redo2 } from "lucide-react";
+import { ArrowLeft, Search, ShoppingCart, MoreHorizontal, Redo2 } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { showSuccess } from "@/utils/toast";
 
@@ -23,45 +23,44 @@ const Header: React.FC<HeaderProps> = ({ productTitle, cartItemCount, onCartClic
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex justify-center">
-      {/* Reduzindo py de 1.5 para 1 para diminuir a altura em ~20% */}
-      <div className="w-full max-w-[600px] bg-white border-b px-2 py-1 flex items-center space-x-2">
-        {/* Botão Voltar */}
-        <button 
-          onClick={() => navigate(-1)}
-          className="p-1.5 hover:bg-gray-100 rounded-full transition-colors"
-        >
-          <ArrowLeft size={20} className="text-gray-700" />
-        </button>
+      {/* Altura reduzida para h-11 e paddings mínimos para ser bem fino */}
+      <div className="w-full max-w-[600px] bg-white border-b px-3 h-11 flex items-center justify-between">
+        
+        <div className="flex items-center flex-1">
+          {/* Botão Voltar */}
+          <button 
+            onClick={() => navigate(-1)}
+            className="p-1 -ml-1 mr-1"
+          >
+            <ArrowLeft size={22} className="text-gray-800" strokeWidth={1.5} />
+          </button>
 
-        {/* Barra de Busca Simbolizada */}
-        <div className="flex-grow flex items-center bg-gray-100 rounded-full px-3 py-1 space-x-2">
-          <Search size={14} className="text-gray-400" />
-          <input 
-            type="text" 
-            readOnly
-            value={productTitle}
-            className="bg-transparent border-none text-[11px] text-gray-700 w-full focus:outline-none overflow-hidden text-ellipsis whitespace-nowrap"
-          />
+          {/* Barra de Busca estilo Pílula */}
+          <div className="flex-grow max-w-[220px] flex items-center bg-[#F2F3F5] rounded-full px-3 h-7 space-x-2">
+            <Search size={14} className="text-gray-400" />
+            <span className="text-[12px] text-gray-500 overflow-hidden text-ellipsis whitespace-nowrap">
+              {productTitle}
+            </span>
+          </div>
         </div>
 
-        {/* Ícones de Ação */}
-        <div className="flex items-center space-x-0.5">
-          {/* Seta curva para compartilhar */}
-          <button onClick={handleShare} className="p-1.5 hover:bg-gray-100 rounded-full">
-            <Redo2 size={20} className="text-gray-700" />
+        {/* Ícones de Ação da Direita */}
+        <div className="flex items-center space-x-3 ml-2">
+          <button onClick={handleShare} className="p-1">
+            <Redo2 size={20} className="text-gray-800" />
           </button>
           
-          <button onClick={onCartClick} className="p-1.5 hover:bg-gray-100 rounded-full relative">
-            <ShoppingCart size={18} className="text-gray-700" />
+          <button onClick={onCartClick} className="p-1 relative">
+            <ShoppingCart size={20} className="text-gray-800" />
             {cartItemCount > 0 && (
-              <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-red-600 text-white text-[8px] font-bold rounded-full flex items-center justify-center border border-white">
+              <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-600 text-white text-[9px] font-bold rounded-full flex items-center justify-center border border-white">
                 {cartItemCount}
               </span>
             )}
           </button>
 
-          <button className="p-1.5 hover:bg-gray-100 rounded-full">
-            <MoreHorizontal size={18} className="text-gray-700" />
+          <button className="p-1">
+            <MoreHorizontal size={20} className="text-gray-800" />
           </button>
         </div>
       </div>
