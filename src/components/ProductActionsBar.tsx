@@ -25,28 +25,24 @@ const ProductActionsBar: React.FC<ProductActionsBarProps> = ({ onAddToCartClick,
         </div>
 
         {/* Botões de Ação */}
-        <div className="flex items-start space-x-2 flex-grow justify-end pr-2">
+        <div className="flex items-center space-x-2 flex-grow justify-end pr-2">
           {/* Adicionar ao Carrinho */}
           <Button
             variant="outline"
-            className="bg-gray-100 text-gray-900 border-none rounded-xl h-11 text-[13px] font-bold hover:bg-gray-200 leading-tight flex-1 max-w-[140px]"
+            className="bg-gray-100 text-gray-900 border-none rounded-xl h-11 text-[12px] font-bold hover:bg-gray-200 leading-tight flex-1 max-w-[140px] px-1"
             onClick={onAddToCartClick}
           >
             Adicionar ao<br />carrinho
           </Button>
 
-          {/* Comprar Agora com Frete Grátis abaixo */}
-          <div className="flex flex-col items-center flex-1 max-w-[140px]">
-            <Button
-              className="w-full bg-[#FF3366] text-white rounded-xl h-11 text-[13px] font-bold hover:bg-[#E02E5C]"
-              onClick={onBuyWithCouponClick}
-            >
-              Comprar Agora
-            </Button>
-            <span className="text-[10px] text-red-500 font-medium mt-1">
-              Frete grátis
-            </span>
-          </div>
+          {/* Comprar Agora com Frete Grátis dentro */}
+          <Button
+            className="flex flex-col items-center justify-center bg-[#FF3366] text-white rounded-xl h-11 flex-1 max-w-[140px] hover:bg-[#E02E5C] transition-colors"
+            onClick={onBuyWithCouponClick}
+          >
+            <span className="text-[12px] font-bold leading-tight">Comprar Agora</span>
+            <span className="text-[10px] font-medium leading-tight opacity-90">Frete grátis</span>
+          </Button>
         </div>
       </div>
     </div>
