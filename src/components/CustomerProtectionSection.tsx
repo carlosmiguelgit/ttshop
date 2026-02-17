@@ -13,7 +13,8 @@ const CustomerProtectionSection: React.FC = () => {
 
   return (
     <div className={`p-4 ${backgroundColor} cursor-pointer`}>
-      <div className="flex justify-between items-center mb-2">
+      {/* Linha 1: Título e Ícones principais */}
+      <div className="flex justify-between items-center mb-1">
         <div className="flex items-center space-x-2">
           <ShieldCheck size={18} className={`${primaryColor}`} />
           <h3 className={`text-sm font-bold ${primaryColor}`}>
@@ -23,12 +24,14 @@ const CustomerProtectionSection: React.FC = () => {
         <ChevronRight size={16} className={primaryColor} />
       </div>
 
-      {/* Itens em linha única com recuo à direita do escudo */}
-      <div className="flex items-center overflow-x-auto no-scrollbar pl-5 space-x-3">
+      {/* Linha 2: Itens com recuo à direita (pl-7) e bem próximos (space-x-2) */}
+      <div className="flex items-center overflow-x-auto no-scrollbar pl-7 space-x-2">
         {protectionItems.map((item, index) => (
           <div key={index} className="flex items-center flex-shrink-0">
-            <Check size={12} className={`${primaryColor} mr-1`} />
-            <span className="text-[11px] text-gray-700 font-medium whitespace-nowrap">{item}</span>
+            <Check size={10} className={`${primaryColor} mr-0.5`} />
+            <span className="text-[11px] text-gray-700 font-medium whitespace-nowrap">
+              {item}
+            </span>
           </div>
         ))}
       </div>
