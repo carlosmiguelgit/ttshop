@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { products, Product } from '@/data/products';
+import Header from '@/components/Header';
 import ProductImageGallery from '@/components/ProductImageGallery';
 import ProductPriceSection from '@/components/ProductPriceSection';
 import ProductActionsBar from '@/components/ProductActionsBar';
@@ -11,14 +12,6 @@ import CustomerProtectionSection from '@/components/CustomerProtectionSection';
 import ProductReviewsSection from '@/components/ProductReviewsSection';
 import ProductDescription from '@/components/ProductDescription';
 import CheckoutDialog from '@/components/CheckoutDialog';
-
-// Links de checkout por capacidade
-const CHECKOUT_URLS: { [key: string]: string } = {
-  "128GB": "https://hub.payevo.com.br/pay/57c8467a-beea-4d2e-aa9a-46e7466ff2d8",
-  "256GB": "https://hub.payevo.com.br/pay/bb1caf00-f168-488d-85d6-37331858e0eb",
-  "512GB": "https://hub.payevo.com.br/pay/1dbaedd6-c3bd-4764-b951-92ce382b6242",
-  "1TB": "https://hub.payevo.com.br/pay/759c3d53-5ce9-44ca-988c-a1a071f06fbd",
-};
 
 const ProductDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -40,7 +33,7 @@ const ProductDetailPage: React.FC = () => {
   const handleAddToCart = () => {
     if (cartItemCount === 0) {
       setCartItemCount(1);
-      showSuccess(`1 item adicionado ao carrinho: ${product.title}`);
+      showSuccess(`Item adicionado ao carrinho`);
     } else {
       showSuccess(`O item já está no carrinho.`);
     }
@@ -56,17 +49,16 @@ const ProductDetailPage: React.FC = () => {
     setIsCheckoutModalOpen(true);
   };
 
-  // Redireciona para o link correto com base na capacidade
-  const handleFinalizePurchase = (capacity: string) => {
-    const url = CHECKOUT_URLS[capacity] || CHECKOUT_URLS["128GB"]; // Usa 128GB como padrão
-    window.location.href = url;
-  };
-
   return (
     <div className="min-h-screen bg-gray-50 pb-24">
+      {/* Header Fixo */}
+      <Header 
+        productTitle={product.title}
+        cartItemCount={cartItemCount}
+        onCartClick={() => setIsCartOpen(true)}
+      />
       
       <div className="max-w-[600px] mx-auto bg-white shadow-md">
-        
         <ProductImageGallery 
           media={product.media} 
           onCartClick={() => setIsCartOpen(true)}
@@ -110,7 +102,7 @@ const ProductDetailPage: React.FC = () => {
         isOpen={isCheckoutModalOpen}
         onClose={() => setIsCheckoutModalOpen(false)}
         product={product}
-        onFinalize={handleFinalizePurchase}
+        onFinalize={() => {}}
       />
     </div>
   );
