@@ -46,33 +46,33 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
   return (
     <div className="bg-white">
       <div className="p-4 space-y-2">
-        {/* Preço e Desconto em uma única linha */}
-        <div className="flex items-center space-x-2 mb-1">
-          {/* Porcentagem de desconto com fundo vermelho e texto branco */}
-          <span className="bg-red-600 text-white text-lg font-bold px-1.5 py-0.5 rounded">
+        {/* Preço e Desconto alinhados pela base (items-baseline) */}
+        <div className="flex items-baseline space-x-1.5 mb-1">
+          {/* Porcentagem de desconto (Reduzido para base) */}
+          <span className="bg-red-600 text-white text-base font-bold px-1 py-0.5 rounded leading-none">
             -{discountPercentage}%
           </span>
           
-          {/* Preço Atual */}
-          <span className="text-2xl font-bold text-red-600">
+          {/* Preço Atual (Reduzido para xl) */}
+          <span className="text-xl font-bold text-red-600 leading-none">
             R$ {currentPrice}
           </span>
           
-          {/* Preço Original */}
-          <span className="text-sm text-gray-400 line-through">
+          {/* Preço Original (Reduzido para xs e alinhado pela base) */}
+          <span className="text-xs text-gray-400 line-through leading-none">
             R$ {originalPrice}
           </span>
         </div>
 
         {/* Título do Produto */}
         <div className="flex justify-between items-start">
-          <h2 className="text-base font-bold text-gray-900 leading-snug line-clamp-2">
+          <h2 className="text-sm font-bold text-gray-900 leading-snug line-clamp-2">
             {productTitle}
           </h2>
         </div>
 
         {/* Vendas */}
-        <div className="flex items-center text-xs text-gray-500 pb-2 border-b border-gray-100">
+        <div className="flex items-center text-[10px] text-gray-500 pb-2 border-b border-gray-100">
           <span>{salesCount} vendidos</span>
         </div>
 
@@ -80,21 +80,21 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
         <div className="flex justify-between items-center py-2 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors">
           <div className="flex flex-col">
             <div className="flex items-center space-x-2">
-              <Truck size={18} className="text-gray-600" />
+              <Truck size={16} className="text-gray-600" />
               <div className="flex items-center space-x-2">
-                <span className="bg-teal-100 text-teal-700 text-xs font-semibold px-2 py-0.5 rounded">
+                <span className="bg-teal-100 text-teal-700 text-[10px] font-semibold px-1.5 py-0.5 rounded">
                   Frete grátis
                 </span>
-                <span className="text-xs text-gray-800 font-bold uppercase">
+                <span className="text-[11px] text-gray-800 font-bold">
                   {deliveryText}
                 </span>
               </div>
             </div>
-            <span className="text-[10px] text-gray-500 ml-6 mt-1">
+            <span className="text-[9px] text-gray-500 ml-6 mt-0.5">
               Taxa de envio: <span className="line-through">R$ 43,60</span>
             </span>
           </div>
-          <ChevronRight size={18} className="text-gray-400" />
+          <ChevronRight size={16} className="text-gray-400" />
         </div>
       </div>
     </div>
