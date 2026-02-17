@@ -1,19 +1,8 @@
 "use client";
 
 import React from 'react';
-import { ChevronRight, Tag, Zap, Truck, Star } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { ChevronRight, Truck } from 'lucide-react';
 import { Product } from '@/data/products';
-
-const CouponBadge: React.FC<{ text: string }> = ({ text }) => (
-  <div className={cn(
-    "flex items-center bg-pink-50/80 text-xs text-[#FF3399] font-semibold px-1.5 py-0.5 rounded-md whitespace-nowrap",
-    "animate-pulse-slow"
-  )}>
-    <Tag size={12} className="mr-1 fill-[#FF3399]" />
-    {text}
-  </div>
-);
 
 interface ProductPriceSectionProps {
   product: Product;
@@ -24,45 +13,29 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
     currentPrice, 
     originalPrice, 
     discountPercentage, 
-    discountAmount, 
-    rating, 
-    reviewCount, 
     salesCount,
     title: productTitle
   } = product;
 
-  const discountText = `R$ ${discountAmount} de desconto`;
-  const urgencyText = "Restam somente 3 unidades";
-
   return (
     <div className="bg-white">
       <div className="p-4 space-y-3">
-        {/* Preço e Desconto integrados */}
-        <div className="flex flex-col mb-1">
-          <div className="flex items-center space-x-2">
-            <span className="text-3xl font-bold text-red-600">
-              R$ {currentPrice}
-            </span>
-            <span className="bg-red-600 text-white text-sm font-bold px-2 py-0.5 rounded-lg">
-              -{discountPercentage}%
-            </span>
-          </div>
-          <span className="text-gray-400 text-sm line-through ml-1">
+        {/* Preço e Desconto em uma única linha */}
+        <div className="flex items-baseline space-x-2 mb-1">
+          {/* Porcentagem de desconto (2px menor que o preço principal) */}
+          <span className="text-2xl font-bold text-red-600">
+            -{discountPercentage}%
+          </span>
+          
+          {/* Preço Atual */}
+          <span className="text-3xl font-bold text-red-600">
+            R$ {currentPrice}
+          </span>
+          
+          {/* Preço Original (fonte menor, riscado) */}
+          <span className="text-base text-gray-400 line-through">
             R$ {originalPrice}
           </span>
-        </div>
-
-        {/* Banners de Cupom e Urgência */}
-        <div className="flex items-center space-x-2 overflow-x-auto py-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          <CouponBadge text={discountText} />
-
-          <div className={cn(
-            "flex items-center bg-pink-50/80 text-xs text-[#FF3399] font-semibold px-1.5 py-0.5 rounded-md whitespace-nowrap border border-[#FF3399]",
-            "animate-border-pulse-pink"
-          )}>
-            <Zap size={12} className="mr-1 fill-[#FF3399]" />
-            <span>{urgencyText}</span>
-          </div>
         </div>
 
         {/* Título do Produto */}
@@ -72,15 +45,9 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
           </h2>
         </div>
 
-        {/* Avaliação e Vendas */}
-        <div className="flex items-center space-x-3 text-sm text-gray-600 pb-3 border-b border-gray-100">
-          <div className="flex items-center">
-            <Star size={16} className="text-yellow-500 fill-yellow-500 mr-1" />
-            <span className="font-bold text-gray-900">{rating.toFixed(1)}</span>
-            <span className="text-gray-500 ml-1">({(reviewCount / 1000).toFixed(1)} mil)</span>
-          </div>
-          <span className="text-gray-500">|</span>
-          <span className="text-gray-500">{salesCount} vendidos</span>
+        {/* Vendas (Estrelas removidas) */}
+        <div className="flex items-center text-sm text-gray-500 pb-3 border-b border-gray-100">
+          <span>{salesCount} vendidos</span>
         </div>
 
         {/* Seção de Frete Grátis */}
