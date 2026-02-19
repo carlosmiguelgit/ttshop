@@ -14,6 +14,7 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
     originalPrice, 
     discountPercentage, 
     salesCount,
+    reviewCount,
     title: productTitle,
     flashSaleTimeSeconds
   } = product;
@@ -85,7 +86,7 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
             <span className="font-bold text-black text-[11px]">5.0</span>
           </div>
           <span className="text-gray-500 ml-1 text-[11px]">
-            (162) | {salesCount} vendidos
+            ({reviewCount}) | {salesCount} vendidos
           </span>
         </div>
 

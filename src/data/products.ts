@@ -25,7 +25,7 @@ export const products: Product[] = [
     discountPercentage: 81,
     discountAmount: "202,00",
     rating: 4.9,
-    reviewCount: 15000,
+    reviewCount: 5118,
     salesCount: 5287,
     flashSaleTimeSeconds: 4 * 60, // 4 minutos
     media: [

@@ -3,7 +3,7 @@ import { ChevronRight, Star } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 interface ProductReviewsHeaderProps {
-  rating: number; // Mantido, mas não usado visualmente nesta seção
+  rating: number; 
   reviewCount: number;
   onViewMoreClick: () => void;
   showViewMore: boolean;
@@ -11,11 +11,8 @@ interface ProductReviewsHeaderProps {
 
 const ProductReviewsHeader: React.FC<ProductReviewsHeaderProps> = ({ reviewCount, onViewMoreClick, showViewMore }) => {
   
-  // Formata a contagem de avaliações para 'X mil' se for maior que 1000
+  // Exibe o número bruto conforme solicitado
   const formatReviewCount = (count: number): string => {
-    if (count >= 1000) {
-      return `${(count / 1000).toFixed(1)} mil`;
-    }
     return count.toString();
   };
   
@@ -36,7 +33,7 @@ const ProductReviewsHeader: React.FC<ProductReviewsHeaderProps> = ({ reviewCount
           {/* Título com fonte menor (text-base) */}
           <h3 className="text-base font-bold text-gray-900">Avaliações dos clientes</h3>
           
-          {/* Contagem de Avaliações (text-base e negrito no número) */}
+          {/* Contagem de Avaliações (exibindo 5118) */}
           <span className="text-base text-gray-500">
             (
             <span className="font-bold">
