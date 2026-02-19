@@ -1,7 +1,7 @@
 "use client";
 
-import React from 'react';
-import { ChevronRight, Truck } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ChevronRight, Truck, Timer } from 'lucide-react';
 import { Product } from '@/data/products';
 
 interface ProductPriceSectionProps {
@@ -14,69 +14,75 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
     originalPrice, 
     discountPercentage, 
     salesCount,
-    title: productTitle
+    title: productTitle,
+    flashSaleTimeSeconds
   } = product;
 
-  // Função para calcular a data de entrega
-  const getDeliveryDateRange = () => {
-    const today = new Date();
-    
-    const start = new Date(today);
-    start.setDate(today.getDate() + 3);
-    
-    const end = new Date(today);
-    end.setDate(today.getDate() + 9);
-    
-    const startDay = start.getDate();
-    const endDay = end.getDate();
-    
-    const months = [
-      "jan", "fev", "mar", "abr", "mai", "jun",
-      "jul", "ago", "set", "out", "nov", "dez"
-    ];
-    
-    const endMonth = months[end.getMonth()];
-    
-    // Formato: Receba até DD-DD de MMM
-    return `Receba até ${startDay}-${endDay} de ${endMonth}`;
+  const [timeLeft, setTimeLeft] = useState(flashSaleTimeSeconds);
+
+  useEffect(() => {
+    if (timeLeft <= 0) return;
+    const timer = setInterval(() => {
+      setTimeLeft(prev => prev - 1);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [timeLeft]);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const deliveryText = getDeliveryDateRange();
+  const getDeliveryDateRange = () => {
+    const today = new Date();
+    const start = new Date(today);
+    start.setDate(today.getDate() + 3);
+    const end = new Date(today);
+    end.setDate(today.getDate() + 9);
+    const months = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+    return `Receba até ${start.getDate()}-${end.getDate()} de ${months[end.getMonth()]}`;
+  };
 
   return (
     <div className="bg-white">
+      {/* Faixa de Oferta Relâmpago Laranja */}
+      <div className="bg-[#FF7A00] px-4 py-2 flex justify-between items-center text-white">
+        <div className="flex items-center space-x-2">
+          <Timer size={18} className="animate-pulse" />
+          <span className="font-bold text-sm uppercase tracking-tight">Oferta Relâmpago</span>
+        </div>
+        <div className="flex items-center space-x-2">
+          <span className="text-[11px] font-medium opacity-90">Termina em</span>
+          <span className="bg-white text-[#FF7A00] px-1.5 py-0.5 rounded font-bold text-xs tabular-nums">
+            {formatTime(timeLeft)}
+          </span>
+        </div>
+      </div>
+
       <div className="p-4 space-y-2">
-        {/* Preço e Desconto alinhados pela base (items-baseline) */}
         <div className="flex items-baseline space-x-1.5 mb-1">
-          {/* Porcentagem de desconto (Reduzido para base) */}
           <span className="bg-red-600 text-white text-base font-bold px-1 py-0.5 rounded leading-none">
             -{discountPercentage}%
           </span>
-          
-          {/* Preço Atual (Reduzido para xl) */}
           <span className="text-xl font-bold text-red-600 leading-none">
             R$ {currentPrice}
           </span>
-          
-          {/* Preço Original (Reduzido para xs e alinhado pela base) */}
           <span className="text-xs text-gray-400 line-through leading-none">
             R$ {originalPrice}
           </span>
         </div>
 
-        {/* Título do Produto */}
         <div className="flex justify-between items-start">
           <h2 className="text-sm font-bold text-gray-900 leading-snug line-clamp-2">
             {productTitle}
           </h2>
         </div>
 
-        {/* Vendas */}
         <div className="flex items-center text-[10px] text-gray-500 pb-2 border-b border-gray-100">
           <span>{salesCount} vendidos</span>
         </div>
 
-        {/* Seção de Frete Grátis com data dinâmica */}
         <div className="flex justify-between items-center py-2 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors">
           <div className="flex flex-col">
             <div className="flex items-center space-x-2">
@@ -86,7 +92,7 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
                   Frete grátis
                 </span>
                 <span className="text-[11px] text-gray-800 font-bold">
-                  {deliveryText}
+                  {getDeliveryDateRange()}
                 </span>
               </div>
             </div>
