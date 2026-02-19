@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { ChevronRight, Truck, Timer } from 'lucide-react';
+import { ChevronRight, Truck, Timer, Star } from 'lucide-react';
 import { Product } from '@/data/products';
 
 interface ProductPriceSectionProps {
@@ -79,7 +79,11 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
           </h2>
         </div>
 
-        <div className="flex items-center text-[10px] text-gray-500 pb-2 border-b border-gray-100">
+        <div className="flex items-center text-[10px] text-gray-500 pb-2 border-b border-gray-100 space-x-3">
+          <div className="flex items-center space-x-1">
+            <Star size={11} className="text-yellow-500 fill-yellow-500" />
+            <span className="font-bold text-black text-[11px]">5</span>
+          </div>
           <span>{salesCount} vendidos</span>
         </div>
 
