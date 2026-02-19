@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { ChevronRight, Truck, Timer, Zap, TicketCheck } from 'lucide-react';
+import { ChevronRight, Truck, Timer } from 'lucide-react';
 import { Product } from '@/data/products';
 
 interface ProductPriceSectionProps {
@@ -29,10 +29,9 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
   }, [timeLeft]);
 
   const formatTime = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600);
-    const mins = Math.floor((seconds % 3600) / 60);
+    const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
   const getDeliveryDateRange = () => {
@@ -47,57 +46,43 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
 
   return (
     <div className="bg-white">
-      {/* Banner de Oferta Relâmpago Estilo TikTok */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[#FF3B30] to-[#FF2C55] h-[85px] flex items-center px-4 text-white">
-        
-        {/* Raio Decorativo no Fundo */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20 pointer-events-none">
-          <Zap size={100} fill="white" stroke="none" />
+      {/* Faixa de Oferta Relâmpago Laranja */}
+      <div className="bg-[#FF7A00] px-4 py-2 flex justify-between items-center text-white">
+        <div className="flex items-center space-x-2">
+          <Timer size={18} className="animate-pulse" />
+          <span className="font-bold text-sm uppercase tracking-tight">Oferta Relâmpago</span>
         </div>
-
-        <div className="relative z-10 w-full flex items-center justify-between">
-          {/* Esquerda: Tag de Desconto e Preço Original */}
-          <div className="flex flex-col">
-            <div className="bg-white rounded-[4px] px-2 py-0.5 w-fit">
-              <span className="text-[#FF2C55] text-sm font-bold">-{discountPercentage}%</span>
-            </div>
-            <span className="text-white/90 text-sm line-through mt-1">
-              R$ {originalPrice}
-            </span>
-          </div>
-
-          {/* Centro: Preço Atual (Grande) */}
-          <div className="flex items-baseline font-bold">
-            <span className="text-xl mr-0.5">R$</span>
-            <span className="text-4xl tracking-tighter">{currentPrice}</span>
-          </div>
-
-          {/* Direita: Título Oferta e Contador */}
-          <div className="flex flex-col items-end">
-            <div className="flex flex-col items-center mb-1">
-              <TicketCheck size={18} className="mb-0.5" />
-              <span className="text-[10px] font-bold uppercase leading-none">Oferta Relâmpago</span>
-            </div>
-            <div className="flex items-center space-x-1 text-[11px]">
-              <span className="opacity-90">Termina em</span>
-              <span className="font-bold tabular-nums">{formatTime(timeLeft)}</span>
-            </div>
-          </div>
+        <div className="flex items-center space-x-2">
+          <span className="text-[11px] font-medium opacity-90">Termina em</span>
+          <span className="bg-white text-[#FF7A00] px-1.5 py-0.5 rounded font-bold text-xs tabular-nums">
+            {formatTime(timeLeft)}
+          </span>
         </div>
       </div>
 
       <div className="p-4 space-y-2">
-        {/* Título do Produto */}
-        <h2 className="text-sm font-bold text-gray-900 leading-snug line-clamp-2">
-          {productTitle}
-        </h2>
+        <div className="flex items-baseline space-x-1.5 mb-1">
+          <span className="bg-red-600 text-white text-base font-bold px-1 py-0.5 rounded leading-none">
+            -{discountPercentage}%
+          </span>
+          <span className="text-xl font-bold text-red-600 leading-none">
+            R$ {currentPrice}
+          </span>
+          <span className="text-xs text-gray-400 line-through leading-none">
+            R$ {originalPrice}
+          </span>
+        </div>
 
-        {/* Quantidade de Vendidos */}
-        <div className="flex items-center text-[11px] text-gray-500 pb-2 border-b border-gray-100">
+        <div className="flex justify-between items-start">
+          <h2 className="text-sm font-bold text-gray-900 leading-snug line-clamp-2">
+            {productTitle}
+          </h2>
+        </div>
+
+        <div className="flex items-center text-[10px] text-gray-500 pb-2 border-b border-gray-100">
           <span>{salesCount} vendidos</span>
         </div>
 
-        {/* Seção de Frete */}
         <div className="flex justify-between items-center py-2 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors">
           <div className="flex flex-col">
             <div className="flex items-center space-x-2">
