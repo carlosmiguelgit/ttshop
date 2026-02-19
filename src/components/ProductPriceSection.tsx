@@ -79,12 +79,14 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
           </h2>
         </div>
 
-        <div className="flex items-center text-[10px] text-gray-500 pb-2 border-b border-gray-100 space-x-3">
+        <div className="flex items-center text-[10px] pb-2 border-b border-gray-100">
           <div className="flex items-center space-x-1">
             <Star size={11} className="text-yellow-500 fill-yellow-500" />
-            <span className="font-bold text-black text-[11px]">5.0/5</span>
+            <span className="font-bold text-black text-[11px]">5.0</span>
           </div>
-          <span>{salesCount} vendidos</span>
+          <span className="text-gray-500 ml-1 text-[11px]">
+            (162) | {salesCount} vendidos
+          </span>
         </div>
 
         <div className="flex justify-between items-center py-2 border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors">
