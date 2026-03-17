@@ -85,8 +85,8 @@ const CustomerProtectionDrawer: React.FC<CustomerProtectionDrawerProps> = ({ isO
                   <p className="text-[12px] font-medium text-gray-800">Aceitamos pagamento de:</p>
                   <div className="flex flex-wrap gap-2">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-6 px-1 border rounded bg-white" alt="Mastercard" />
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/d/d6/Visa_2014_logo_detail.svg" className="h-6 px-1 border rounded bg-white" alt="Visa" />
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Logo_Elo.svg" className="h-6 px-1 border rounded bg-white" alt="Elo" />
+                    <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-6 px-1 border rounded bg-white" alt="Visa" />
+                    <img src="https://images.seeklogo.com/logo-png/20/1/elo-logo-png_seeklogo-205447.png" className="h-6 px-1 border rounded bg-white" alt="Elo" />
                     <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg" className="h-6 px-1 border rounded bg-white" alt="Amex" />
                     <div className="h-6 px-2 border rounded bg-white flex items-center justify-center">
                       <img src="https://logospng.org/download/pix/logo-pix-icone-512.png" className="h-4" alt="Pix" />
