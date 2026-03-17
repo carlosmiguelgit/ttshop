@@ -16,6 +16,7 @@ import VariationSelectorDrawer from '@/components/VariationSelectorDrawer';
 import CouponsDrawer from '@/components/CouponsDrawer';
 import ShippingDrawer from '@/components/ShippingDrawer';
 import CreatorVideosSection from '@/components/CreatorVideosSection';
+import CustomerProtectionDrawer from '@/components/CustomerProtectionDrawer';
 import { LayoutGrid, ChevronRight, Truck, X } from 'lucide-react';
 import { addDays, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -29,6 +30,7 @@ const ProductDetailPage: React.FC = () => {
   const [isVariationDrawerOpen, setIsVariationDrawerOpen] = useState(false);
   const [isCouponsDrawerOpen, setIsCouponsDrawerOpen] = useState(false);
   const [isShippingDrawerOpen, setIsShippingDrawerOpen] = useState(false);
+  const [isProtectionDrawerOpen, setIsProtectionDrawerOpen] = useState(false);
 
   // Timer regressivo de 5 minutos (300 segundos)
   const [timeLeft, setTimeLeft] = useState(300);
@@ -80,14 +82,13 @@ const ProductDetailPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F8F8] pb-[104px]"> {/* Espaço para barra fixa + footer */}
+    <div className="min-h-screen bg-[#F8F8F8] pb-[104px]">
       <Header 
         productTitle={product.title}
         cartItemCount={cartItemCount}
         onCartClick={() => setIsCartOpen(true)}
       />
       
-      {/* Abas do Header conforme imagem */}
       <div className="fixed top-12 left-0 right-0 z-40 bg-white border-b flex justify-center">
         <div className="w-full max-w-[600px] flex px-4">
           {['Visão geral', 'Avaliações', 'Descrição', 'Recomendações'].map((tab, i) => (
@@ -125,21 +126,14 @@ const ProductDetailPage: React.FC = () => {
           </div>
           <ChevronRight size={18} className="text-gray-400" />
         </div>
-
-        {/* Mensagem de Convite IDENTICA À FOTO */}
-        <div className="px-4 py-3 border-t border-gray-50 flex items-center space-x-2 text-[#E62E5D]">
-          <span className="text-lg">🎯</span>
-          <span className="text-[13px] font-medium">Convide para baixar o preço e compre por R$ 1,00</span>
-        </div>
         
-        <CustomerProtectionSection />
+        <CustomerProtectionSection onClick={() => setIsProtectionDrawerOpen(true)} />
 
         <div className="bg-white p-4 border-t border-gray-50 flex justify-between items-center cursor-pointer">
           <h3 className="text-[15px] font-bold text-gray-900">Ofertas</h3>
           <ChevronRight size={16} className="text-gray-300" />
         </div>
 
-        {/* Cards de Oferta Horizontais fiel à imagem */}
         <div className="px-4 pb-4 flex space-x-3 overflow-x-auto no-scrollbar bg-white">
           <div className="min-w-[200px] bg-[#EFFFFD] border border-[#CCF7F2] rounded-xl p-3 relative overflow-hidden">
              <div className="flex justify-between items-start mb-1">
@@ -171,7 +165,6 @@ const ProductDetailPage: React.FC = () => {
         <MadeWithDyad />
       </div>
 
-      {/* BARRA DE FRETE FIXA ACIMA DO RODAPÉ (Cor Azul/Cyan fiel à foto) */}
       <div className="fixed bottom-[60px] left-0 right-0 z-20 flex justify-center">
         <div className="w-full max-w-[600px] bg-white border-t border-gray-100 h-10 px-4 flex items-center justify-between shadow-[0_-2px_5px_rgba(0,0,0,0.02)]">
           <div className="flex items-center space-x-2 text-[#00BFA5]">
@@ -215,6 +208,11 @@ const ProductDetailPage: React.FC = () => {
         isOpen={isShippingDrawerOpen}
         onClose={() => setIsShippingDrawerOpen(false)}
         deliveryDate={deliveryDateRange}
+      />
+
+      <CustomerProtectionDrawer
+        isOpen={isProtectionDrawerOpen}
+        onClose={() => setIsProtectionDrawerOpen(false)}
       />
 
       <CheckoutDialog

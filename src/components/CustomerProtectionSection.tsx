@@ -1,13 +1,14 @@
 import React from 'react';
 import { ShieldCheck, ChevronRight, Check } from 'lucide-react';
 
-const CustomerProtectionSection: React.FC = () => {
-  // Cores baseadas na nova imagem (marrom/dourado)
-  const primaryColor = "#A0783A"; 
+interface CustomerProtectionSectionProps {
+  onClick: () => void;
+}
 
+const CustomerProtectionSection: React.FC<CustomerProtectionSectionProps> = ({ onClick }) => {
   return (
-    <div className="p-4 bg-white border-t border-gray-50 cursor-pointer">
-      {/* Linha 1: Título e Ícone de Escudo Sólido (Menores) */}
+    <div className="p-4 bg-white border-t border-gray-50 cursor-pointer" onClick={onClick}>
+      {/* Linha 1: Título e Ícone */}
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center space-x-2">
           <div className="relative flex items-center justify-center">
@@ -21,23 +22,26 @@ const CustomerProtectionSection: React.FC = () => {
         <ChevronRight size={14} className="text-gray-300" />
       </div>
 
-      {/* Grid de benefícios fiel à imagem */}
+      {/* Grid de benefícios com fontes reduzidas e efeito de fade no último item */}
       <div className="grid grid-cols-2 gap-y-1.5 pl-6">
-        <div className="flex items-center space-x-1.5">
-          <Check size={12} className="text-[#A0783A]" />
-          <span className="text-[11px] text-gray-700">Devolução gratuita</span>
+        <div className="flex items-center space-x-1.5 overflow-hidden whitespace-nowrap">
+          <Check size={12} className="text-[#A0783A] flex-shrink-0" />
+          <span className="text-[10px] text-gray-700">Devolução gratuita</span>
         </div>
-        <div className="flex items-center space-x-1.5">
-          <Check size={12} className="text-[#A0783A]" />
-          <span className="text-[11px] text-gray-700">Reembolso automático por danos</span>
+        <div className="flex items-center space-x-1.5 overflow-hidden whitespace-nowrap">
+          <Check size={12} className="text-[#A0783A] flex-shrink-0" />
+          <span className="text-[10px] text-gray-700">Reembolso automático por danos</span>
         </div>
-        <div className="flex items-center space-x-1.5">
-          <Check size={12} className="text-[#A0783A]" />
-          <span className="text-[11px] text-gray-700">Pagamento seguro</span>
+        <div className="flex items-center space-x-1.5 overflow-hidden whitespace-nowrap">
+          <Check size={12} className="text-[#A0783A] flex-shrink-0" />
+          <span className="text-[10px] text-gray-700">Pagamento seguro</span>
         </div>
-        <div className="flex items-center space-x-1.5">
-          <Check size={12} className="text-[#A0783A]" />
-          <span className="text-[11px] text-gray-700">Reembolso automático por atraso...</span>
+        <div className="flex items-center space-x-1.5 overflow-hidden whitespace-nowrap relative">
+          <Check size={12} className="text-[#A0783A] flex-shrink-0" />
+          <span className="text-[10px] text-gray-700 truncate pr-4">
+            Reembolso automático por atras...
+          </span>
+          <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent"></div>
         </div>
       </div>
     </div>
