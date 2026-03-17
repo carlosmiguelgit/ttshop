@@ -10,7 +10,6 @@ interface CustomerProtectionDrawerProps {
 const CustomerProtectionDrawer: React.FC<CustomerProtectionDrawerProps> = ({ isOpen, onClose }) => {
   const brownColor = "#8B5E3C";
 
-  // Ícones personalizados redesenhados em SVG conforme a imagem
   const IconReturn = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect x="2" y="6" width="20" height="14" rx="3" fill={brownColor} />
@@ -56,7 +55,6 @@ const CustomerProtectionDrawer: React.FC<CustomerProtectionDrawerProps> = ({ isO
               Proteção do cliente
             </h2>
 
-            {/* Devoluções */}
             <div className="flex items-start space-x-3">
               <div className="mt-1 flex-shrink-0">
                 <IconReturn />
@@ -69,7 +67,6 @@ const CustomerProtectionDrawer: React.FC<CustomerProtectionDrawerProps> = ({ isO
               </div>
             </div>
 
-            {/* Pagamento Seguro */}
             <div className="flex items-start space-x-3">
               <div className="mt-1 flex-shrink-0">
                 <IconCardCheck />
@@ -91,7 +88,7 @@ const CustomerProtectionDrawer: React.FC<CustomerProtectionDrawerProps> = ({ isO
                     <div className="h-6 px-2 border rounded bg-white flex items-center justify-center">
                       <img src="https://logospng.org/download/pix/logo-pix-icone-512.png" className="h-4" alt="Pix" />
                     </div>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Pay_Logo.svg" className="h-6 px-1 border rounded bg-white" alt="GPay" />
+                    <img src="https://images.seeklogo.com/logo-png/32/1/google-pay-logo-png_seeklogo-324563.png" className="h-6 px-1 border rounded bg-white" alt="GPay" />
                   </div>
                 </div>
 
@@ -99,18 +96,10 @@ const CustomerProtectionDrawer: React.FC<CustomerProtectionDrawerProps> = ({ isO
                   <p className="text-[12px] font-medium text-gray-800">Certificações de segurança:</p>
                   <div className="flex gap-2">
                     <div className="h-10 border rounded overflow-hidden bg-white">
-                      <img 
-                        src="https://logowik.com/content/uploads/images/mastercard-securecode6659.jpg" 
-                        className="h-full w-auto object-contain" 
-                        alt="Mastercard SecureCode" 
-                      />
+                      <img src="https://logowik.com/content/uploads/images/mastercard-securecode6659.jpg" className="h-full w-auto object-contain" alt="Mastercard SecureCode" />
                     </div>
                     <div className="h-10 border rounded overflow-hidden bg-white">
-                      <img 
-                        src="https://www.3dsecure.com.br/wp-content/uploads/2023/05/verified-by-visa-3d-secure-3ds-autenticacao-150x150.webp" 
-                        className="h-full w-auto object-contain" 
-                        alt="Verified by Visa" 
-                      />
+                      <img src="https://www.3dsecure.com.br/wp-content/uploads/2023/05/verified-by-visa-3d-secure-3ds-autenticacao-150x150.webp" className="h-full w-auto object-contain" alt="Verified by Visa" />
                     </div>
                   </div>
                 </div>
@@ -121,7 +110,6 @@ const CustomerProtectionDrawer: React.FC<CustomerProtectionDrawerProps> = ({ isO
               </div>
             </div>
 
-            {/* Reembolso Danos */}
             <div className="flex items-start space-x-3">
               <div className="mt-1 flex-shrink-0">
                 <IconBoxDollar />
@@ -134,7 +122,6 @@ const CustomerProtectionDrawer: React.FC<CustomerProtectionDrawerProps> = ({ isO
               </div>
             </div>
 
-            {/* Reembolso Atraso */}
             <div className="flex items-start space-x-3">
               <div className="mt-1 flex-shrink-0">
                 <IconRefreshDollar />

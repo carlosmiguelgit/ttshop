@@ -4,57 +4,33 @@ import { Separator } from "@/components/ui/separator";
 
 const allReviews = [
   {
-    username: "ana.ribeiro",
-    date: "30 de out",
-    avatarSrc: "https://randomuser.me/api/portraits/women/44.jpg",
-    verified: true,
-    attributes: "Custo-benefício: ótimo | Qualidade: superior",
-    comment: "Inacreditável! Esta furadeira/parafusadeira é simplesmente incrível! Pensei que por esse preço não teria qualidade, mas me surpreendi. A potência é excelente, as baterias duram muito e o conjunto completo com maleta é perfeito para quem precisa de uma ferramenta versátil. Melhor compra que já fiz!",
-    reviewImages: [
-      "https://m.media-amazon.com/images/I/71IkV-JO1AL._AC_SX569_.jpg",
-      "https://m.media-amazon.com/images/I/61MK6YHkNUL._AC_SX569_.jpg",
-      "https://m.media-amazon.com/images/I/61UVqQqA3yL._AC_SX569_.jpg",
-    ],
+    username: "Ricardo Silva",
+    avatarSrc: "public/homem/imgi_12_468027410_1887532388321590_4211239713202834932_n.jpg",
+    comment: "Produto excelente! A bateria dura muito e tem bastante força. Recomendo demais, chegou rápido em casa.",
+    variation: "2 Baterias",
+    reviewImages: ["https://m.media-amazon.com/images/I/71IkV-JO1AL._AC_SX569_.jpg"]
   },
   {
-    username: "joao.melo",
-    date: "29 de out",
-    avatarSrc: "https://randomuser.me/api/portraits/men/32.jpg",
-    verified: true,
-    attributes: "Bateria: dura muito | Desempenho: excelente",
-    comment: "A bateria dura muito mais do que eu imaginava, mesmo usando bastante. O torque é excelente e a ferramenta é muito versátil. A maleta com todos os acessórios é um grande diferencial. Valeu cada centavo, a promoção é real e a qualidade é profissional!",
-    reviewImages: [
-      "https://m.media-amazon.com/images/I/71y8MFy+2CL._AC_SX569_.jpg",
-      "https://m.media-amazon.com/images/I/51pSY9nmu6L._AC_SX569_.jpg",
-      "https://m.media-amazon.com/images/I/61aEc1+4tYL._AC_SL1200_.jpg",
-    ],
+    username: "Amanda Souza",
+    avatarSrc: "public/mulher/imgi_42_613309228_17853960396603612_221627828203468728_n.jpg",
+    comment: "Fiquei surpresa com a qualidade. O kit é muito completo e a maleta ajuda muito na organização. Super prático!",
+    variation: "1 Bateria",
+    reviewImages: ["https://m.media-amazon.com/images/I/71y8MFy+2CL._AC_SX569_.jpg"]
   },
   {
-    username: "carlos.silva",
-    date: "28 de out",
-    avatarSrc: "https://randomuser.me/api/portraits/men/65.jpg",
-    verified: true,
-    attributes: "Potência: impressionante | Durabilidade: excelente",
-    comment: "Fiquei impressionado com a potência desta furadeira! Consegui fazer furos em alvenaria com facilidade, algo que minha antiga ferramenta não conseguia. As baterias duram o dia todo de trabalho e o carregamento é rápido. A maleta é resistente e organiza todos os acessórios perfeitamente.",
-    reviewImages: [
-      "https://m.media-amazon.com/images/I/71IkV-JO1AL._AC_SX569_.jpg",
-      "https://m.media-amazon.com/images/I/61MK6YHkNUL._AC_SX569_.jpg",
-      "https://m.media-amazon.com/images/I/61UVqQqA3yL._AC_SX569_.jpg",
-    ],
+    username: "Carlos Alberto",
+    avatarSrc: "public/homem/imgi_11_468340318_18473303854011790_4217472225478858480_n.jpg",
+    comment: "Melhor custo benefício que já vi. A entrega foi muito rápida e o produto é de primeira linha.",
+    variation: "2 Baterias",
+    reviewImages: ["https://m.media-amazon.com/images/I/61MK6YHkNUL._AC_SX569_.jpg"]
   },
   {
-    username: "maria.oliveira",
-    date: "27 de out",
-    avatarSrc: "https://randomuser.me/api/portraits/women/28.jpg",
-    verified: true,
-    attributes: "Versatilidade: incrível | Preço: imbatível",
-    comment: "Comprei para uso doméstico e estou encantada! A furadeira é leve, fácil de manusear e tem força suficiente para todos os trabalhos em casa. O fato de ser bi-volt é um grande vantagem. Os acessórios que acompanham são de ótima qualidade. Super recomendo!",
-    reviewImages: [
-      "https://m.media-amazon.com/images/I/71y8MFy+2CL._AC_SX569_.jpg",
-      "https://m.media-amazon.com/images/I/51pSY9nmu6L._AC_SX569_.jpg",
-      "https://m.media-amazon.com/images/I/61aEc1+4tYL._AC_SL1200_.jpg",
-    ],
-  },
+    username: "Beatriz Lima",
+    avatarSrc: "public/mulher/imgi_36_610810492_18549935995062790_7169237004236532779_n.jpg",
+    comment: "Comprei para meu marido e ele adorou. Usa todos os dias no trabalho e não teve problemas.",
+    variation: "2 Baterias",
+    reviewImages: ["https://m.media-amazon.com/images/I/51pSY9nmu6L._AC_SX569_.jpg"]
+  }
 ];
 
 interface ProductReviewsListProps {
@@ -62,7 +38,6 @@ interface ProductReviewsListProps {
 }
 
 const ProductReviewsList: React.FC<ProductReviewsListProps> = ({ showAll }) => {
-
   const reviewsToDisplay = showAll ? allReviews : allReviews.slice(0, 1);
 
   return (
@@ -70,7 +45,6 @@ const ProductReviewsList: React.FC<ProductReviewsListProps> = ({ showAll }) => {
       {reviewsToDisplay.map((review, index) => (
         <React.Fragment key={index}>
           <ProductReviewCard {...review} />
-          {/* Adiciona separador apenas entre os itens, e não após o último */}
           {index < reviewsToDisplay.length - 1 && <Separator className="my-4" />}
         </React.Fragment>
       ))}

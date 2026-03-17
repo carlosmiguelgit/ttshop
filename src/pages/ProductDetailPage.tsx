@@ -32,7 +32,6 @@ const ProductDetailPage: React.FC = () => {
   const [isShippingDrawerOpen, setIsShippingDrawerOpen] = useState(false);
   const [isProtectionDrawerOpen, setIsProtectionDrawerOpen] = useState(false);
 
-  // Timer regressivo de 5 minutos (300 segundos)
   const [timeLeft, setTimeLeft] = useState(300);
 
   useEffect(() => {
@@ -129,23 +128,37 @@ const ProductDetailPage: React.FC = () => {
         
         <CustomerProtectionSection onClick={() => setIsProtectionDrawerOpen(true)} />
 
-        <div className="bg-white p-4 border-t border-gray-50 flex justify-between items-center cursor-pointer">
-          <h3 className="text-[15px] font-bold text-gray-900">Ofertas</h3>
-          <ChevronRight size={16} className="text-gray-300" />
-        </div>
-
-        <div className="px-4 pb-4 flex space-x-3 overflow-x-auto no-scrollbar bg-white">
-          <div className="min-w-[200px] bg-[#EFFFFD] border border-[#CCF7F2] rounded-xl p-3 relative overflow-hidden">
-             <div className="flex justify-between items-start mb-1">
-               <span className="text-[14px] font-bold text-gray-900">Cupom de envio</span>
-               <div className="bg-[#00BFA5] text-white text-[9px] font-bold px-1 rounded-sm">x12</div>
-             </div>
-             <p className="text-[11px] text-gray-500 leading-tight">Desconto de R$ 10 no frete em pedidos acima de R$ 15</p>
-             <button className="absolute right-3 bottom-3 border border-[#00BFA5] text-[#00BFA5] text-[12px] font-bold px-4 py-1 rounded-full">Usar</button>
+        {/* Seção OFERTAS Redesenhada - Réplica da Imagem */}
+        <div className="bg-white border-t border-gray-50">
+          <div className="px-4 pt-4 flex justify-between items-center cursor-pointer" onClick={() => setIsCouponsDrawerOpen(true)}>
+            <h3 className="text-[15px] font-bold text-gray-900">Ofertas</h3>
+            <ChevronRight size={16} className="text-gray-300" />
           </div>
-          <div className="min-w-[200px] bg-[#FFF8F9] border border-[#FFD9E0] rounded-xl p-3">
-             <span className="text-[14px] font-bold text-gray-900">Desconto de R$ 5</span>
-             <p className="text-[11px] text-gray-500 mt-1 leading-tight">nos pedidos acima de R$ 80</p>
+
+          <div className="px-4 py-4 flex space-x-3 overflow-x-auto no-scrollbar scroll-smooth">
+            {/* Cupom de Envio */}
+            <div className="min-w-[240px] bg-[#EFFFFD] border border-[#CCF7F2] rounded-xl p-3 relative flex flex-col justify-between">
+              <div className="absolute -top-1 -right-1 bg-[#00BFA5] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-bl-lg rounded-tr-lg">x12</div>
+              <div>
+                <span className="text-[15px] font-bold text-gray-900 block">Cupom de envio</span>
+                <p className="text-[11px] text-gray-500 mt-1 leading-tight">Desconto de R$ 10 no frete em pedidos acima de R$ 15</p>
+              </div>
+              <div className="flex justify-end mt-2">
+                <button className="border border-[#00BFA5] text-[#00BFA5] text-[12px] font-bold px-5 py-1 rounded-full bg-white">Usar</button>
+              </div>
+            </div>
+
+            {/* Cupom de R$ 5 */}
+            <div className="min-w-[200px] bg-[#FFF8F9] border border-[#FFD9E0] rounded-xl p-3 flex flex-col justify-center">
+              <span className="text-[15px] font-bold text-gray-900 block">Desconto de R$ 5</span>
+              <p className="text-[11px] text-gray-500 mt-1 leading-tight">nos pedidos acima de R$ 80</p>
+            </div>
+
+            {/* Cupom de R$ 15 */}
+            <div className="min-w-[200px] bg-[#FFF8F9] border border-[#FFD9E0] rounded-xl p-3 flex flex-col justify-center">
+              <span className="text-[15px] font-bold text-gray-900 block">Desconto de R$ 15</span>
+              <p className="text-[11px] text-gray-500 mt-1 leading-tight">nos pedidos acima de R$ 200</p>
+            </div>
           </div>
         </div>
 
