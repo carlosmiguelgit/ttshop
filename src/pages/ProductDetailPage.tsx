@@ -14,7 +14,10 @@ import ProductDescription from '@/components/ProductDescription';
 import CheckoutDialog from '@/components/CheckoutDialog';
 import VariationSelectorDrawer from '@/components/VariationSelectorDrawer';
 import CouponsDrawer from '@/components/CouponsDrawer';
+import ShippingDrawer from '@/components/ShippingDrawer';
 import { LayoutGrid, ChevronRight, Truck, X } from 'lucide-react';
+import { addDays, format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 const ProductDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -24,10 +27,18 @@ const ProductDetailPage: React.FC = () => {
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
   const [isVariationDrawerOpen, setIsVariationDrawerOpen] = useState(false);
   const [isCouponsDrawerOpen, setIsCouponsDrawerOpen] = useState(false);
+  const [isShippingDrawerOpen, setIsShippingDrawerOpen] = useState(false);
 
   const product: Product | undefined = useMemo(() => {
     return products.find(p => p.slug === slug);
   }, [slug]);
+
+  const deliveryDateRange = useMemo(() => {
+    const today = new Date();
+    const start = addDays(today, 2);
+    const end = addDays(today, 7);
+    return `${format(start, 'dd')} – ${format(end, 'dd')} de ${format(end, 'MMM', { locale: ptBR })}`;
+  }, []);
 
   if (!product) {
     return <div className="p-4 text-center text-red-500">Produto não encontrado.</div>;
@@ -51,12 +62,6 @@ const ProductDetailPage: React.FC = () => {
     }
   };
 
-  const handleClaimCoupon = (amount: number) => {
-    showSuccess(`Cupom de R$ ${amount} resgatado com sucesso!`);
-    setIsCouponsDrawerOpen(false);
-    // Nota: Em um app real, aqui aplicaríamos o desconto ao objeto de preço
-  };
-
   return (
     <div className="min-h-screen bg-[#F8F8F8] pb-24">
       <Header 
@@ -75,9 +80,9 @@ const ProductDetailPage: React.FC = () => {
         <ProductPriceSection 
           product={product} 
           onCouponsClick={() => setIsCouponsDrawerOpen(true)}
+          onShippingClick={() => setIsShippingDrawerOpen(true)}
         />
 
-        {/* Seção de Variações */}
         <div 
           className="bg-white p-4 border-t border-gray-50 flex items-center justify-between cursor-pointer"
           onClick={handleOpenVariations}
@@ -93,7 +98,6 @@ const ProductDetailPage: React.FC = () => {
           <ChevronRight size={18} className="text-gray-400" />
         </div>
 
-        {/* Banner de Frete Grátis IDENTICO À FOTO */}
         <div className="bg-[#EFFFFD] px-4 py-2 flex justify-between items-center text-[#00BFA5] border-t border-gray-50">
           <div className="flex items-center space-x-2">
             <Truck size={18} />
@@ -144,7 +148,16 @@ const ProductDetailPage: React.FC = () => {
       <CouponsDrawer
         isOpen={isCouponsDrawerOpen}
         onClose={() => setIsCouponsDrawerOpen(false)}
-        onClaim={handleClaimCoupon}
+        onClaim={(amt) => {
+          showSuccess(`Cupom de R$ ${amt} resgatado!`);
+          setIsCouponsDrawerOpen(false);
+        }}
+      />
+
+      <ShippingDrawer
+        isOpen={isShippingDrawerOpen}
+        onClose={() => setIsShippingDrawerOpen(false)}
+        deliveryDate={deliveryDateRange}
       />
 
       <CheckoutDialog

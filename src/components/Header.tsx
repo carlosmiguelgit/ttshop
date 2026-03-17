@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Search, ShoppingCart, MoreHorizontal, Share2 } from "lucide-react";
+import { ArrowLeft, Search, ShoppingCart, MoreHorizontal, Redo2 } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { showSuccess } from "@/utils/toast";
 
@@ -29,7 +29,7 @@ const Header: React.FC<HeaderProps> = ({ productTitle, cartItemCount, onCartClic
           <ArrowLeft size={24} className="text-gray-900" />
         </button>
 
-        {/* Barra de Busca - Placeholder da imagem */}
+        {/* Barra de Busca */}
         <div className="flex-grow flex items-center bg-[#F1F1F1] rounded-lg px-3 h-9 mx-2">
           <Search size={18} className="text-gray-400 mr-2" />
           <span className="text-sm text-gray-500 overflow-hidden text-ellipsis whitespace-nowrap">
@@ -37,10 +37,10 @@ const Header: React.FC<HeaderProps> = ({ productTitle, cartItemCount, onCartClic
           </span>
         </div>
 
-        {/* Ícones da Direita */}
+        {/* Ícones da Direita com SETA CURVA de compartilhar */}
         <div className="flex items-center space-x-2">
           <button onClick={handleShare} className="p-1 relative">
-            <Share2 size={24} className="text-gray-900" />
+            <Redo2 size={24} className="text-gray-900" />
             <div className="absolute -bottom-1 -right-4 bg-[#FF2C55] text-white text-[8px] px-1 rounded-sm whitespace-nowrap">
               Compre p...
             </div>
