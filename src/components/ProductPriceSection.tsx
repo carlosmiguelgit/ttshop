@@ -1,7 +1,7 @@
 "use client";
 
-import React from 'react';
-import { ChevronRight, Truck, Star, CreditCard, Bookmark } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ChevronRight, Truck, Star, CreditCard, Bookmark, Zap } from 'lucide-react';
 import { Product } from '@/data/products';
 
 interface ProductPriceSectionProps {
@@ -11,10 +11,28 @@ interface ProductPriceSectionProps {
 const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) => {
   const { 
     currentPrice, 
+    originalPrice,
+    discountPercentage,
     salesCount,
     reviewCount,
     title: productTitle,
   } = product;
+
+  // Contador para 15 minutos (900 segundos)
+  const [seconds, setSeconds] = useState(900);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSeconds(prev => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (totalSeconds: number) => {
+    const m = Math.floor(totalSeconds / 60);
+    const s = totalSeconds % 60;
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  };
 
   const getDeliveryDateRange = () => {
     const today = new Date();
@@ -28,7 +46,31 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
 
   return (
     <div className="bg-white">
-      {/* Seção de Preço (Omitindo a barra laranja conforme solicitado anteriormente) */}
+      {/* Faixa Oferta Relâmpago Laranja */}
+      <div className="bg-gradient-to-r from-[#FF5C00] to-[#FF8A00] h-14 flex items-center justify-between px-4 text-white">
+        <div className="flex items-center">
+          <div className="bg-white text-[#FF5C00] font-bold text-sm px-1.5 py-0.5 rounded mr-2">
+            -{discountPercentage}%
+          </div>
+          <div className="flex flex-col">
+            <div className="flex items-baseline space-x-1">
+              <span className="text-xs font-medium">A partir de</span>
+              <span className="text-xl font-bold">R$ {currentPrice}</span>
+            </div>
+            <span className="text-[10px] line-through opacity-80">R$ {originalPrice}</span>
+          </div>
+        </div>
+        <div className="flex flex-col items-end">
+          <div className="flex items-center text-[11px] font-bold">
+            <Zap size={14} className="fill-white mr-1" />
+            Oferta Relâmpago
+          </div>
+          <div className="text-[11px] mt-0.5">
+            Termina em <span className="font-bold">{formatTime(seconds)}</span>
+          </div>
+        </div>
+      </div>
+
       <div className="p-4 space-y-3">
         {/* Parcelamento e Cupons */}
         <div className="flex flex-col space-y-2">
@@ -45,7 +87,6 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
             <div className="bg-[#FFF1F3] text-[#FF2C55] text-[10px] px-2 py-0.5 rounded border border-[#FFD9E0] whitespace-nowrap">
               Economize 3% com b...
             </div>
-            <ChevronRight size={14} className="text-gray-400 flex-shrink-0" />
           </div>
         </div>
 

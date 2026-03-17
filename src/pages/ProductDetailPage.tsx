@@ -12,6 +12,7 @@ import CustomerProtectionSection from '@/components/CustomerProtectionSection';
 import ProductReviewsSection from '@/components/ProductReviewsSection';
 import ProductDescription from '@/components/ProductDescription';
 import CheckoutDialog from '@/components/CheckoutDialog';
+import VariationSelectorDrawer from '@/components/VariationSelectorDrawer';
 import { LayoutGrid, ChevronRight, Truck, X } from 'lucide-react';
 
 const ProductDetailPage: React.FC = () => {
@@ -20,6 +21,7 @@ const ProductDetailPage: React.FC = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
+  const [isVariationDrawerOpen, setIsVariationDrawerOpen] = useState(false);
 
   const product: Product | undefined = useMemo(() => {
     return products.find(p => p.slug === slug);
@@ -32,19 +34,18 @@ const ProductDetailPage: React.FC = () => {
   const firstImageSrc = product.media[0]?.src || 'public/placeholder.svg';
 
   const handleAddToCart = () => {
-    if (cartItemCount === 0) {
-      setCartItemCount(1);
-      showSuccess(`Item adicionado ao carrinho`);
-    }
-    setIsCartOpen(true);
+    setIsVariationDrawerOpen(true);
   };
 
   const handleBuyNow = () => {
-    setIsCheckoutModalOpen(true);
+    setIsVariationDrawerOpen(true);
   };
   
-  const handleCheckout = () => {
-    setIsCartOpen(false);
+  const handleVariationConfirm = (qty: number) => {
+    if (cartItemCount === 0) {
+      setCartItemCount(qty);
+      showSuccess(`Item adicionado ao carrinho`);
+    }
     setIsCheckoutModalOpen(true);
   };
 
@@ -66,7 +67,10 @@ const ProductDetailPage: React.FC = () => {
         <ProductPriceSection product={product} />
 
         {/* Opções de Variação (Layout da Imagem) */}
-        <div className="bg-white p-4 border-t border-gray-50 flex items-center justify-between cursor-pointer">
+        <div 
+          className="bg-white p-4 border-t border-gray-50 flex items-center justify-between cursor-pointer"
+          onClick={() => setIsVariationDrawerOpen(true)}
+        >
           <div className="flex items-center space-x-3">
             <LayoutGrid size={20} className="text-gray-900" />
             <div className="flex space-x-1">
@@ -114,9 +118,16 @@ const ProductDetailPage: React.FC = () => {
       <CartDrawer 
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
-        onCheckoutClick={handleCheckout}
+        onCheckoutClick={() => setIsCheckoutModalOpen(true)}
         product={product}
         cartItemCount={cartItemCount}
+      />
+
+      <VariationSelectorDrawer 
+        isOpen={isVariationDrawerOpen}
+        onClose={() => setIsVariationDrawerOpen(false)}
+        product={product}
+        onConfirm={handleVariationConfirm}
       />
 
       <CheckoutDialog
