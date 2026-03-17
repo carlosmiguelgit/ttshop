@@ -6,9 +6,10 @@ import { Product } from '@/data/products';
 
 interface ProductPriceSectionProps {
   product: Product;
+  onCouponsClick: () => void;
 }
 
-const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) => {
+const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product, onCouponsClick }) => {
   const { 
     currentPrice, 
     originalPrice,
@@ -82,8 +83,11 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product }) =>
           <ChevronRight size={14} className="text-gray-300 ml-1" />
         </div>
 
-        {/* Cupons */}
-        <div className="flex items-center space-x-2 overflow-x-auto no-scrollbar">
+        {/* Cupons Clicáveis */}
+        <div 
+          className="flex items-center space-x-2 overflow-x-auto no-scrollbar cursor-pointer"
+          onClick={onCouponsClick}
+        >
           <div className="bg-[#FFF1F3] text-[#FF2C55] text-[10px] px-2 py-0.5 rounded-sm border border-[#FFD9E0] flex items-center whitespace-nowrap">
             <span className="mr-1 text-[12px]">🧧</span> Compre R$ 80 e ganhe R$ 5 de desconto
           </div>

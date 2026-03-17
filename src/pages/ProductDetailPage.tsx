@@ -13,6 +13,7 @@ import ProductReviewsSection from '@/components/ProductReviewsSection';
 import ProductDescription from '@/components/ProductDescription';
 import CheckoutDialog from '@/components/CheckoutDialog';
 import VariationSelectorDrawer from '@/components/VariationSelectorDrawer';
+import CouponsDrawer from '@/components/CouponsDrawer';
 import { LayoutGrid, ChevronRight, Truck, X } from 'lucide-react';
 
 const ProductDetailPage: React.FC = () => {
@@ -22,6 +23,7 @@ const ProductDetailPage: React.FC = () => {
   const [cartItemCount, setCartItemCount] = useState(0);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
   const [isVariationDrawerOpen, setIsVariationDrawerOpen] = useState(false);
+  const [isCouponsDrawerOpen, setIsCouponsDrawerOpen] = useState(false);
 
   const product: Product | undefined = useMemo(() => {
     return products.find(p => p.slug === slug);
@@ -49,6 +51,12 @@ const ProductDetailPage: React.FC = () => {
     }
   };
 
+  const handleClaimCoupon = (amount: number) => {
+    showSuccess(`Cupom de R$ ${amount} resgatado com sucesso!`);
+    setIsCouponsDrawerOpen(false);
+    // Nota: Em um app real, aqui aplicaríamos o desconto ao objeto de preço
+  };
+
   return (
     <div className="min-h-screen bg-[#F8F8F8] pb-24">
       <Header 
@@ -64,7 +72,10 @@ const ProductDetailPage: React.FC = () => {
           cartItemCount={cartItemCount}
         />
         
-        <ProductPriceSection product={product} />
+        <ProductPriceSection 
+          product={product} 
+          onCouponsClick={() => setIsCouponsDrawerOpen(true)}
+        />
 
         {/* Seção de Variações */}
         <div 
@@ -128,6 +139,12 @@ const ProductDetailPage: React.FC = () => {
         onClose={() => setIsVariationDrawerOpen(false)}
         product={product}
         onConfirm={handleVariationConfirm}
+      />
+
+      <CouponsDrawer
+        isOpen={isCouponsDrawerOpen}
+        onClose={() => setIsCouponsDrawerOpen(false)}
+        onClaim={handleClaimCoupon}
       />
 
       <CheckoutDialog
