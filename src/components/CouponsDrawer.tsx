@@ -1,4 +1,3 @@
-Usar com cor cinza e mensagem centralizada.">
 import React, { useState } from 'react';
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { X, Info } from 'lucide-react';
