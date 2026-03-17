@@ -33,20 +33,20 @@ const ProductDetailPage: React.FC = () => {
   
   const firstImageSrc = product.media[0]?.src || 'public/placeholder.svg';
 
-  const handleAddToCart = () => {
-    setIsVariationDrawerOpen(true);
-  };
-
-  const handleBuyNow = () => {
+  const handleOpenVariations = () => {
     setIsVariationDrawerOpen(true);
   };
   
-  const handleVariationConfirm = (qty: number) => {
-    if (cartItemCount === 0) {
-      setCartItemCount(qty);
-      showSuccess(`Item adicionado ao carrinho`);
+  const handleVariationConfirm = (qty: number, action: 'cart' | 'buy') => {
+    if (action === 'cart') {
+      setCartItemCount(prev => prev + qty);
+      showSuccess(`Adicionado ao carrinho`);
+      setIsVariationDrawerOpen(false);
+    } else {
+      setCartItemCount(prev => (prev === 0 ? qty : prev));
+      setIsVariationDrawerOpen(false);
+      setIsCheckoutModalOpen(true);
     }
-    setIsCheckoutModalOpen(true);
   };
 
   return (
@@ -66,30 +66,30 @@ const ProductDetailPage: React.FC = () => {
         
         <ProductPriceSection product={product} />
 
-        {/* Opções de Variação (Layout da Imagem) */}
+        {/* Seção de Variações */}
         <div 
           className="bg-white p-4 border-t border-gray-50 flex items-center justify-between cursor-pointer"
-          onClick={() => setIsVariationDrawerOpen(true)}
+          onClick={handleOpenVariations}
         >
           <div className="flex items-center space-x-3">
             <LayoutGrid size={20} className="text-gray-900" />
             <div className="flex space-x-1">
-              <img src={firstImageSrc} className="w-8 h-8 rounded border object-cover" />
-              <img src={product.media[1]?.src} className="w-8 h-8 rounded border object-cover" />
+              <img src={firstImageSrc} className="w-8 h-8 rounded border border-gray-100 object-cover" />
+              {product.media[1] && <img src={product.media[1].src} className="w-8 h-8 rounded border border-gray-100 object-cover" />}
             </div>
-            <span className="text-xs text-gray-500">2 opções disponíveis</span>
+            <span className="text-[12px] text-gray-500">2 opções disponíveis</span>
           </div>
           <ChevronRight size={18} className="text-gray-400" />
         </div>
 
-        {/* Banner de Frete Grátis Expirando */}
+        {/* Banner de Frete Grátis IDENTICO À FOTO */}
         <div className="bg-[#EFFFFD] px-4 py-2 flex justify-between items-center text-[#00BFA5] border-t border-gray-50">
           <div className="flex items-center space-x-2">
             <Truck size={18} />
-            <span className="text-xs font-bold">O frete grátis expira em breve</span>
+            <span className="text-[11px] font-bold">O frete grátis expira em breve</span>
           </div>
           <div className="flex items-center space-x-2">
-            <span className="text-xs font-bold font-mono">03:58:39</span>
+            <span className="text-[12px] font-bold font-mono">03:58:39</span>
             <X size={14} className="text-gray-400" />
           </div>
         </div>
@@ -111,8 +111,8 @@ const ProductDetailPage: React.FC = () => {
       </div>
       
       <ProductActionsBar 
-        onAddToCartClick={handleAddToCart}
-        onBuyWithCouponClick={handleBuyNow}
+        onAddToCartClick={handleOpenVariations}
+        onBuyWithCouponClick={handleOpenVariations}
       />
       
       <CartDrawer 
