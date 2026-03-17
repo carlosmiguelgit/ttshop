@@ -10,37 +10,35 @@ interface ProductActionsBarProps {
 const ProductActionsBar: React.FC<ProductActionsBarProps> = ({ onAddToCartClick, onBuyWithCouponClick }) => {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-20 flex justify-center">
-      <div className="w-full max-w-[600px] bg-white border-t shadow-lg px-3 py-2 flex items-center justify-between">
+      <div className="w-full max-w-[600px] bg-white border-t px-3 py-2 flex items-center justify-between shadow-[0_-2px_10px_rgba(0,0,0,0.05)]">
         
         {/* Ícones da Esquerda */}
-        <div className="flex space-x-6 mr-4">
-          <button className="flex flex-col items-center text-[10px] text-gray-600">
-            <Home size={22} className="text-gray-800" />
+        <div className="flex space-x-4 mr-4">
+          <button className="flex flex-col items-center text-[10px] text-gray-700">
+            <Home size={24} className="text-gray-900" />
             <span className="mt-0.5">Loja</span>
           </button>
-          <button className="flex flex-col items-center text-[10px] text-gray-600">
-            <MessageCircle size={22} className="text-gray-800 transform scale-x-[-1]" />
+          <button className="flex flex-col items-center text-[10px] text-gray-700">
+            <MessageCircle size={24} className="text-gray-900" />
             <span className="mt-0.5">Chat</span>
           </button>
         </div>
 
-        {/* Botões de Ação estilo Pílula */}
+        {/* Botões de Ação */}
         <div className="flex items-center space-x-2 flex-grow">
           <Button
-            variant="outline"
-            className="bg-[#F2F3F5] text-gray-900 border-none rounded-full h-10 text-[12px] font-bold hover:bg-gray-200 leading-[1.1] flex-1 px-1"
+            className="bg-[#F1F1F1] text-gray-900 border-none rounded-full h-11 text-sm font-bold hover:bg-gray-200 flex-1 px-1"
             onClick={onAddToCartClick}
           >
             Adicionar ao<br />carrinho
           </Button>
 
           <Button
-            className="flex flex-col items-center justify-center bg-[#FF2C55] text-white rounded-full h-10 flex-1 hover:bg-[#E0254B] transition-colors px-1"
+            className="flex flex-col items-center justify-center bg-[#FF2C55] text-white rounded-full h-11 flex-1 hover:bg-[#E0254B] transition-colors px-1"
             onClick={onBuyWithCouponClick}
           >
-            {/* Reduzi mt de 0.5 para 0 e ajustei line-height para aproximar os textos */}
-            <span className="text-[12px] font-bold leading-none">Comprar Agora</span>
-            <span className="text-[9px] font-medium leading-none mt-0 opacity-90">Frete grátis</span>
+            <span className="text-sm font-bold leading-none">Comprar agora</span>
+            <span className="text-[10px] font-medium leading-none mt-0.5">Frete grátis</span>
           </Button>
         </div>
       </div>

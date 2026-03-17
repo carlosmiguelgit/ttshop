@@ -12,6 +12,7 @@ import CustomerProtectionSection from '@/components/CustomerProtectionSection';
 import ProductReviewsSection from '@/components/ProductReviewsSection';
 import ProductDescription from '@/components/ProductDescription';
 import CheckoutDialog from '@/components/CheckoutDialog';
+import { LayoutGrid, ChevronRight, Truck, X } from 'lucide-react';
 
 const ProductDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -34,8 +35,6 @@ const ProductDetailPage: React.FC = () => {
     if (cartItemCount === 0) {
       setCartItemCount(1);
       showSuccess(`Item adicionado ao carrinho`);
-    } else {
-      showSuccess(`O item já está no carrinho.`);
     }
     setIsCartOpen(true);
   };
@@ -50,15 +49,14 @@ const ProductDetailPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
-      {/* Header Fixo */}
+    <div className="min-h-screen bg-[#F8F8F8] pb-24">
       <Header 
         productTitle={product.title}
         cartItemCount={cartItemCount}
         onCartClick={() => setIsCartOpen(true)}
       />
       
-      <div className="max-w-[600px] mx-auto bg-white shadow-md">
+      <div className="max-w-[600px] mx-auto bg-white shadow-sm">
         <ProductImageGallery 
           media={product.media} 
           onCartClick={() => setIsCartOpen(true)}
@@ -66,6 +64,31 @@ const ProductDetailPage: React.FC = () => {
         />
         
         <ProductPriceSection product={product} />
+
+        {/* Opções de Variação (Layout da Imagem) */}
+        <div className="bg-white p-4 border-t border-gray-50 flex items-center justify-between cursor-pointer">
+          <div className="flex items-center space-x-3">
+            <LayoutGrid size={20} className="text-gray-900" />
+            <div className="flex space-x-1">
+              <img src={firstImageSrc} className="w-8 h-8 rounded border object-cover" />
+              <img src={product.media[1]?.src} className="w-8 h-8 rounded border object-cover" />
+            </div>
+            <span className="text-xs text-gray-500">2 opções disponíveis</span>
+          </div>
+          <ChevronRight size={18} className="text-gray-400" />
+        </div>
+
+        {/* Banner de Frete Grátis Expirando */}
+        <div className="bg-[#EFFFFD] px-4 py-2 flex justify-between items-center text-[#00BFA5] border-t border-gray-50">
+          <div className="flex items-center space-x-2">
+            <Truck size={18} />
+            <span className="text-xs font-bold">O frete grátis expira em breve</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span className="text-xs font-bold font-mono">03:58:39</span>
+            <X size={14} className="text-gray-400" />
+          </div>
+        </div>
         
         <CustomerProtectionSection />
         
@@ -74,13 +97,11 @@ const ProductDetailPage: React.FC = () => {
           reviewCount={product.reviewCount} 
         />
         
-        <div className="mt-4">
-          <ProductDescription 
-            specifications={product.specifications} 
-            descriptionText={product.descriptionText}
-            firstImageSrc={firstImageSrc}
-          />
-        </div>
+        <ProductDescription 
+          specifications={product.specifications} 
+          descriptionText={product.descriptionText}
+          firstImageSrc={firstImageSrc}
+        />
         
         <MadeWithDyad />
       </div>
