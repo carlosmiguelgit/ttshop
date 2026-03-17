@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { products, Product } from '@/data/products';
 import Header from '@/components/Header';
@@ -15,6 +15,7 @@ import CheckoutDialog from '@/components/CheckoutDialog';
 import VariationSelectorDrawer from '@/components/VariationSelectorDrawer';
 import CouponsDrawer from '@/components/CouponsDrawer';
 import ShippingDrawer from '@/components/ShippingDrawer';
+import CreatorVideosSection from '@/components/CreatorVideosSection';
 import { LayoutGrid, ChevronRight, Truck, X } from 'lucide-react';
 import { addDays, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -28,6 +29,22 @@ const ProductDetailPage: React.FC = () => {
   const [isVariationDrawerOpen, setIsVariationDrawerOpen] = useState(false);
   const [isCouponsDrawerOpen, setIsCouponsDrawerOpen] = useState(false);
   const [isShippingDrawerOpen, setIsShippingDrawerOpen] = useState(false);
+
+  // Timer regressivo de 5 minutos (300 segundos)
+  const [timeLeft, setTimeLeft] = useState(300);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(prev => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTimer = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}:${(Math.floor(Math.random() * 99)).toString().padStart(2, '0')}`;
+  };
 
   const product: Product | undefined = useMemo(() => {
     return products.find(p => p.slug === slug);
@@ -63,14 +80,25 @@ const ProductDetailPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F8F8] pb-24">
+    <div className="min-h-screen bg-[#F8F8F8] pb-[104px]"> {/* Espaço para barra fixa + footer */}
       <Header 
         productTitle={product.title}
         cartItemCount={cartItemCount}
         onCartClick={() => setIsCartOpen(true)}
       />
       
-      <div className="max-w-[600px] mx-auto bg-white shadow-sm">
+      {/* Abas do Header conforme imagem */}
+      <div className="fixed top-12 left-0 right-0 z-40 bg-white border-b flex justify-center">
+        <div className="w-full max-w-[600px] flex px-4">
+          {['Visão geral', 'Avaliações', 'Descrição', 'Recomendações'].map((tab, i) => (
+            <button key={tab} className={`flex-1 py-3 text-[14px] font-bold ${i === 0 ? 'text-black border-b-2 border-black' : 'text-gray-400'}`}>
+              {tab}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="max-w-[600px] mx-auto bg-white shadow-sm mt-[48px]">
         <ProductImageGallery 
           media={product.media} 
           onCartClick={() => setIsCartOpen(true)}
@@ -98,18 +126,36 @@ const ProductDetailPage: React.FC = () => {
           <ChevronRight size={18} className="text-gray-400" />
         </div>
 
-        <div className="bg-[#EFFFFD] px-4 py-2 flex justify-between items-center text-[#00BFA5] border-t border-gray-50">
-          <div className="flex items-center space-x-2">
-            <Truck size={18} />
-            <span className="text-[11px] font-bold">O frete grátis expira em breve</span>
-          </div>
-          <div className="flex items-center space-x-2">
-            <span className="text-[12px] font-bold font-mono">03:58:39</span>
-            <X size={14} className="text-gray-400" />
-          </div>
+        {/* Mensagem de Convite IDENTICA À FOTO */}
+        <div className="px-4 py-3 border-t border-gray-50 flex items-center space-x-2 text-[#E62E5D]">
+          <span className="text-lg">🎯</span>
+          <span className="text-[13px] font-medium">Convide para baixar o preço e compre por R$ 1,00</span>
         </div>
         
         <CustomerProtectionSection />
+
+        <div className="bg-white p-4 border-t border-gray-50 flex justify-between items-center cursor-pointer">
+          <h3 className="text-[15px] font-bold text-gray-900">Ofertas</h3>
+          <ChevronRight size={16} className="text-gray-300" />
+        </div>
+
+        {/* Cards de Oferta Horizontais fiel à imagem */}
+        <div className="px-4 pb-4 flex space-x-3 overflow-x-auto no-scrollbar bg-white">
+          <div className="min-w-[200px] bg-[#EFFFFD] border border-[#CCF7F2] rounded-xl p-3 relative overflow-hidden">
+             <div className="flex justify-between items-start mb-1">
+               <span className="text-[14px] font-bold text-gray-900">Cupom de envio</span>
+               <div className="bg-[#00BFA5] text-white text-[9px] font-bold px-1 rounded-sm">x12</div>
+             </div>
+             <p className="text-[11px] text-gray-500 leading-tight">Desconto de R$ 10 no frete em pedidos acima de R$ 15</p>
+             <button className="absolute right-3 bottom-3 border border-[#00BFA5] text-[#00BFA5] text-[12px] font-bold px-4 py-1 rounded-full">Usar</button>
+          </div>
+          <div className="min-w-[200px] bg-[#FFF8F9] border border-[#FFD9E0] rounded-xl p-3">
+             <span className="text-[14px] font-bold text-gray-900">Desconto de R$ 5</span>
+             <p className="text-[11px] text-gray-500 mt-1 leading-tight">nos pedidos acima de R$ 80</p>
+          </div>
+        </div>
+
+        <CreatorVideosSection />
         
         <ProductReviewsSection 
           rating={product.rating} 
@@ -123,6 +169,20 @@ const ProductDetailPage: React.FC = () => {
         />
         
         <MadeWithDyad />
+      </div>
+
+      {/* BARRA DE FRETE FIXA ACIMA DO RODAPÉ (Cor Azul/Cyan fiel à foto) */}
+      <div className="fixed bottom-[60px] left-0 right-0 z-20 flex justify-center">
+        <div className="w-full max-w-[600px] bg-white border-t border-gray-100 h-10 px-4 flex items-center justify-between shadow-[0_-2px_5px_rgba(0,0,0,0.02)]">
+          <div className="flex items-center space-x-2 text-[#00BFA5]">
+            <Truck size={16} className="fill-[#00BFA5]/10" />
+            <span className="text-[12px] font-medium">O <span className="font-bold">frete grátis</span> expira em breve</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span className="text-[#00BFA5] text-[13px] font-bold font-mono">{formatTimer(timeLeft)}</span>
+            <X size={16} className="text-gray-300" />
+          </div>
+        </div>
       </div>
       
       <ProductActionsBar 
@@ -148,10 +208,7 @@ const ProductDetailPage: React.FC = () => {
       <CouponsDrawer
         isOpen={isCouponsDrawerOpen}
         onClose={() => setIsCouponsDrawerOpen(false)}
-        onClaim={(amt) => {
-          showSuccess(`Cupom de R$ ${amt} resgatado!`);
-          setIsCouponsDrawerOpen(false);
-        }}
+        onClaim={(amt) => {}}
       />
 
       <ShippingDrawer
