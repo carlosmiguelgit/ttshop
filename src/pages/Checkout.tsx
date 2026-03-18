@@ -15,7 +15,7 @@ import {
   Ticket,
   CreditCard
 } from 'lucide-react';
-import { Product } from '@/data/products';
+import { products, Product } from '@/data/products';
 import { Button } from '@/components/ui/button';
 import NoteDrawer from '@/components/NoteDrawer';
 import TikTokCouponDrawer from '@/components/TikTokCouponDrawer';
@@ -73,7 +73,8 @@ const Checkout: React.FC = () => {
       if (location.state.initialQuantity) setQuantity(location.state.initialQuantity);
       if (location.state.selectedVariation) setSelectedVar(location.state.selectedVariation);
     } else {
-      navigate('/');
+      // Fallback para o produto principal caso o estado seja perdido
+      setProduct(products[0]);
     }
 
     fetchData();
@@ -89,7 +90,6 @@ const Checkout: React.FC = () => {
   const finalTotal = subtotal - couponAmount;
   const finalTotalStr = finalTotal.toFixed(2).replace('.', ',');
 
-  // Funções para navegar mantendo o estado
   const goToAddAddress = () => {
     navigate('/adicionar-endereco', { 
       state: { product, initialQuantity: quantity, selectedVariation: selectedVar } 

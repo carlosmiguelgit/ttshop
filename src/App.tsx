@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import PaymentSummary from "./pages/PaymentSummary";
@@ -37,14 +37,14 @@ const App = () => (
       />
       <BrowserRouter>
         <Routes>
+          {/* A raiz agora é a página do produto principal */}
+          <Route path="/" element={<Index />} />
           <Route path="/produto/:slug" element={<Index />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/adicionar-cartao" element={<AddCard />} />
           <Route path="/adicionar-endereco" element={<AddAddress />} />
           <Route path="/resumo-pagamento" element={<PaymentSummary />} />
           <Route path="/pix-pagamento" element={<PixPayment />} />
-          {/* Redireciona a raiz para a página do produto específico */}
-          <Route path="/" element={<Navigate replace to="/produto/parafusadeira-furadeira-completa-com-maleta-2-baterias" />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

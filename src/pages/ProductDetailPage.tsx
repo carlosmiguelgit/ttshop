@@ -24,6 +24,9 @@ import { ptBR } from 'date-fns/locale';
 const ProductDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
   
+  // Produto padrão caso a rota seja apenas '/'
+  const defaultSlug = "parafusadeira-furadeira-completa-com-maleta-2-baterias";
+  
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
@@ -76,7 +79,7 @@ const ProductDetailPage: React.FC = () => {
   };
 
   const product: Product | undefined = useMemo(() => {
-    return products.find(p => p.slug === slug);
+    return products.find(p => p.slug === (slug || defaultSlug));
   }, [slug]);
 
   const deliveryDateRange = useMemo(() => {
@@ -175,7 +178,6 @@ const ProductDetailPage: React.FC = () => {
             onClick={() => handleOpenVariations('cart')}
           >
             <div className="flex items-center space-x-3">
-              <LayoutGrid size={20} className="text-gray-900" />
               <div className="flex space-x-1">
                 <img src={firstImageSrc} className="w-8 h-8 rounded border border-gray-100 object-cover" />
                 {product.media[1] && <img src={product.media[1].src} className="w-8 h-8 rounded border border-gray-100 object-cover" />}
