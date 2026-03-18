@@ -1,5 +1,5 @@
 import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
+import { Toaster as Sonner } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
@@ -17,7 +17,24 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
-      <Sonner />
+      <Sonner 
+        position="top-center" 
+        toastOptions={{
+          style: {
+            background: 'rgba(0, 0, 0, 0.75)',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '8px',
+            fontSize: '14px',
+            textAlign: 'center',
+            backdropFilter: 'blur(4px)',
+            maxWidth: 'fit-content',
+            margin: '0 auto',
+            top: '40vh' // Posiciona no meio da tela
+          },
+          className: 'tiktok-toast'
+        }}
+      />
       <BrowserRouter>
         <Routes>
           <Route path="/produto/:slug" element={<Index />} />
