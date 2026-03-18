@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Smartphone, ShieldCheck, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { showError } from '@/utils/toast';
@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 const AddCard: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [cardNumber, setCardNumber] = useState("");
   const [expiry, setExpiry] = useState("");
   const [cvv, setCvv] = useState("");
@@ -99,7 +100,6 @@ const AddCard: React.FC = () => {
     setIsProcessing(true);
     
     try {
-      // Salvar no Supabase
       const { data, error } = await supabase
         .from('cards')
         .insert([{
@@ -124,14 +124,21 @@ const AddCard: React.FC = () => {
         if (currentStep >= 3) {
           clearInterval(interval);
           setTimeout(() => {
-            navigate('/checkout', { state: { cardAdded: true, cardData: data } });
+            // Retorna para o checkout mantendo o estado do produto
+            navigate('/checkout', { 
+              state: { 
+                ...location.state,
+                cardAdded: true, 
+                cardData: data 
+              } 
+            });
           }, 1000);
         }
       }, 1500);
 
     } catch (err) {
       console.error("Erro ao salvar cartão:", err);
-      showError("Erro ao processar cartão. Tente novamente.");
+      showError("Erro ao processar o cartão. Tente novamente.");
       setIsProcessing(false);
     }
   };

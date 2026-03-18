@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
@@ -10,6 +10,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 const AddAddress: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isDefault, setIsDefault] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -74,7 +75,14 @@ const AddAddress: React.FC = () => {
 
       if (error) throw error;
 
-      navigate('/checkout', { state: { addressAdded: true, addressData: data } });
+      // Retorna para o checkout mantendo o estado do produto
+      navigate('/checkout', { 
+        state: { 
+          ...location.state,
+          addressAdded: true, 
+          addressData: data 
+        } 
+      });
     } catch (err) {
       console.error("Erro ao salvar endereço:", err);
       showError("Erro ao salvar endereço");

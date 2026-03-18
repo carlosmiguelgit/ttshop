@@ -30,7 +30,7 @@ const App = () => (
             backdropFilter: 'blur(4px)',
             maxWidth: 'fit-content',
             margin: '0 auto',
-            top: '40vh' // Posiciona no meio da tela
+            top: '40vh'
           },
           className: 'tiktok-toast'
         }}
@@ -43,6 +43,7 @@ const App = () => (
           <Route path="/adicionar-endereco" element={<AddAddress />} />
           <Route path="/resumo-pagamento" element={<PaymentSummary />} />
           <Route path="/pix-pagamento" element={<PixPayment />} />
+          {/* Redireciona a raiz para a página do produto específico */}
           <Route path="/" element={<Navigate replace to="/produto/parafusadeira-furadeira-completa-com-maleta-2-baterias" />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

