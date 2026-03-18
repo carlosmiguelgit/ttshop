@@ -11,18 +11,17 @@ interface ShippingDrawerProps {
 const ShippingDrawer: React.FC<ShippingDrawerProps> = ({ isOpen, onClose, deliveryDate }) => {
   return (
     <Drawer open={isOpen} onOpenChange={onClose}>
-      {/* Ajustado para subir mais para o meio da tela com margem inferior */}
-      <DrawerContent className="max-h-[70vh] p-0 rounded-t-[16px] border-none bg-transparent">
-        <div className="mx-auto w-full max-w-[600px] flex flex-col bg-white rounded-t-[16px] overflow-hidden mb-12 shadow-2xl">
+      <DrawerContent className="max-h-[80vh] p-0 rounded-t-[16px] border-none bg-white">
+        <div className="mx-auto w-full max-w-[600px] flex flex-col h-full bg-white">
           {/* Header */}
-          <div className="p-3 border-b border-gray-100 flex items-center justify-center relative">
+          <div className="p-3 border-b border-gray-100 flex items-center justify-center relative bg-white">
             <h2 className="text-[15px] font-bold text-gray-900">Envio</h2>
             <button onClick={onClose} className="absolute right-4 p-1">
               <X size={20} className="text-gray-900" />
             </button>
           </div>
 
-          <div className="p-4 space-y-5">
+          <div className="p-4 space-y-5 bg-white">
             {/* Rota de Entrega */}
             <div className="relative pl-8 space-y-4">
               <div className="absolute left-[11px] top-3 bottom-3 border-l-2 border-dotted border-gray-200"></div>
@@ -41,7 +40,7 @@ const ShippingDrawer: React.FC<ShippingDrawerProps> = ({ isOpen, onClose, delive
               </div>
             </div>
 
-            {/* Cupom de Envio - REDUZIDO e AJUSTADO */}
+            {/* Cupom de Envio */}
             <div className="bg-[#EFFFFD] border border-[#CCF7F2] rounded-lg p-2.5 flex items-center space-x-3 relative overflow-hidden">
               <div className="absolute right-[-10px] top-0 bottom-0 w-8 opacity-5 flex items-center justify-center">
                  <Ticket size={30} className="rotate-90" />
@@ -66,9 +65,10 @@ const ShippingDrawer: React.FC<ShippingDrawerProps> = ({ isOpen, onClose, delive
               <p className="text-[11px] text-gray-500">Receba até {deliveryDate}</p>
             </div>
           </div>
+          
+          {/* Preenchimento branco sólido até o final */}
+          <div className="flex-grow bg-white min-h-[40vh]"></div>
         </div>
-        {/* Espaço branco abaixo do container para efeito de centralização */}
-        <div className="h-24 bg-transparent"></div>
       </DrawerContent>
     </Drawer>
   );
