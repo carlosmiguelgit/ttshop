@@ -35,19 +35,27 @@ const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, product }) => 
     }
   }, [messages]);
 
-  const handleSendMessage = (text?: string) => {
+  const handleSendMessage = (text?: string, isProductShare: boolean = false) => {
     const msgText = text || inputValue;
     if (!msgText.trim()) return;
 
-    const newMsg = { type: 'user', text: msgText, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) };
+    const newMsg = { 
+      type: 'user', 
+      text: msgText, 
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) 
+    };
     setMessages(prev => [...prev, newMsg]);
     setInputValue("");
 
-    // Resposta automática
+    // Resposta automática baseada no contexto (Compartilhamento vs Mensagem Comum)
     setTimeout(() => {
+      const responseText = isProductShare 
+        ? 'Obrigado por teres partilhado este artigo. Em que posso ajudar-te?'
+        : 'Obrigado pela mensagem e pelo seu interesse, retornaremos assim que possível.';
+
       setMessages(prev => [...prev, {
         type: 'bot',
-        text: 'Obrigado pela mensagem e pelo seu interesse, retornaremos assim que possível.',
+        text: responseText,
         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       }]);
     }, 1000);
@@ -138,7 +146,7 @@ const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, product }) => 
               </div>
               <Button 
                 className="bg-[#FF2C55] hover:bg-[#E0254B] text-white text-[12px] font-bold h-7 px-4 rounded-md"
-                onClick={() => handleSendMessage(`Tenho interesse no produto: ${product.title}`)}
+                onClick={() => handleSendMessage(`Tenho interesse no produto: ${product.title}`, true)}
               >
                 Enviar
               </Button>
