@@ -18,6 +18,42 @@ const AddCard: React.FC = () => {
   const [brand, setBrand] = useState<'visa' | 'mastercard' | 'unknown'>('unknown');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
+  // Monitoramento de erros em tempo real
+  useEffect(() => {
+    const cleanCard = cardNumber.replace(/\s/g, '');
+    const cleanCpf = cpf.replace(/\D/g, '');
+    const cleanExpiry = expiry.replace(/\D/g, '');
+
+    if (cleanCard.length > 0 && cleanCard.length < 16 && cleanCard.length % 4 !== 0) {
+      // Apenas um check visual, o erro real vem no final ou se a BIN for errada
+    }
+
+    if (cleanCard.length >= 4 && brand === 'unknown') {
+      setErrorMsg("Bandeira não reconhecida. Use Visa ou Mastercard.");
+      return;
+    }
+
+    if (cleanExpiry.length === 4) {
+      const mm = parseInt(cleanExpiry.slice(0, 2));
+      const aa = parseInt(cleanExpiry.slice(2));
+      if (mm < 1 || mm > 12) {
+        setErrorMsg("Mês de validade inválido (01-12).");
+        return;
+      }
+      if (aa < 26) {
+        setErrorMsg("Ano de validade inválido (mínimo 26).");
+        return;
+      }
+    }
+
+    if (cleanCpf.length === 11 && !validateCPF(cleanCpf)) {
+      setErrorMsg("CPF inválido. Verifique os números.");
+      return;
+    }
+
+    setErrorMsg(null);
+  }, [cardNumber, expiry, cpf, brand]);
+
   const detectBrand = (number: string) => {
     const clean = number.replace(/\s/g, '');
     if (clean.startsWith('4')) return 'visa';
@@ -30,43 +66,33 @@ const AddCard: React.FC = () => {
     const formatted = digits.match(/.{1,4}/g)?.join(' ') || digits;
     
     if (digits.length >= 4) {
-      const detected = detectBrand(digits);
-      setBrand(detected);
-      if (detected === 'unknown') {
-        setErrorMsg("Bandeira não reconhecida. Use Visa ou Mastercard.");
-      } else {
-        setErrorMsg(null);
-      }
+      setBrand(detectBrand(digits));
     } else {
       setBrand('unknown');
-      setErrorMsg(null);
     }
     
     return formatted;
   };
 
   const formatExpiry = (val: string) => {
-    const v = val.replace(/\D/g, '').slice(0, 4);
-    if (v.length >= 3) {
-      return `${v.slice(0, 2)}/${v.slice(2)}`;
+    const digits = val.replace(/\D/g, '').slice(0, 4);
+    
+    if (digits.length >= 2) {
+      const mm = digits.slice(0, 2);
+      if (digits.length > 2) {
+        return `${mm}/${digits.slice(2)}`;
+      }
+      return mm;
     }
-    return v;
+    return digits;
   };
 
   const formatCpf = (val: string) => {
     const digits = val.replace(/\D/g, '').slice(0, 11);
-    const formatted = digits
+    return digits
       .replace(/(\d{3})(\d)/, '$1.$2')
       .replace(/(\d{3})(\d)/, '$1.$2')
       .replace(/(\d{3})(\d{1,2})/, '$1-$2');
-    
-    if (digits.length === 11 && !validateCPF(digits)) {
-      setErrorMsg("CPF inválido. Verifique os números.");
-    } else {
-      setErrorMsg(null);
-    }
-    
-    return formatted;
   };
 
   const validateCPF = (cpf: string) => {
@@ -79,19 +105,32 @@ const AddCard: React.FC = () => {
   const handleContinue = () => {
     const cleanNumber = cardNumber.replace(/\s/g, '');
     const cleanCpf = cpf.replace(/\D/g, '');
+    const cleanExpiry = expiry.replace(/\D/g, '');
 
     if (cleanNumber.length < 16) {
-      showError("Digite os 16 números do cartão.");
+      setErrorMsg("O número do cartão deve ter exatamente 16 dígitos.");
       return;
     }
 
     if (brand === 'unknown') {
-      showError("Bandeira do cartão não suportada.");
+      setErrorMsg("Bandeira não suportada.");
+      return;
+    }
+
+    if (cleanExpiry.length < 4) {
+      setErrorMsg("Preencha a validade completa (MM/AA).");
+      return;
+    }
+
+    const mm = parseInt(cleanExpiry.slice(0, 2));
+    const aa = parseInt(cleanExpiry.slice(2));
+    if (mm < 1 || mm > 12 || aa < 26) {
+      setErrorMsg("Validade inválida.");
       return;
     }
 
     if (cleanCpf.length < 11 || !validateCPF(cleanCpf)) {
-      showError("CPF inválido.");
+      setErrorMsg("CPF inválido.");
       return;
     }
 
@@ -148,7 +187,7 @@ const AddCard: React.FC = () => {
         <h1 className="flex-grow text-center text-[16px] font-bold mr-6">Adicionar cartão</h1>
       </div>
 
-      {/* Real-time Error Alert at the top */}
+      {/* Real-time Error Alert */}
       {errorMsg && (
         <div className="bg-red-50 p-3 flex items-center space-x-2 border-b border-red-100 animate-in fade-in slide-in-from-top duration-300">
           <AlertCircle size={16} className="text-red-500 shrink-0" />
@@ -185,6 +224,7 @@ const AddCard: React.FC = () => {
             <div className={`border-2 rounded-xl h-14 flex items-center px-4 transition-colors ${brand === 'unknown' && cardNumber.replace(/\s/g, '').length >= 4 ? 'border-red-500 bg-red-50/10' : 'border-[#F1F1F1]'}`}>
               <input 
                 type="text" 
+                inputMode="numeric"
                 placeholder="0000 0000 0000 0000" 
                 className="w-full bg-transparent outline-none text-[16px] font-mono"
                 value={cardNumber}
@@ -199,6 +239,7 @@ const AddCard: React.FC = () => {
               <label className="text-[14px] font-bold text-gray-900">Validade (MM/AA)</label>
               <input 
                 type="text" 
+                inputMode="numeric"
                 placeholder="MM/AA" 
                 className="w-full bg-[#F8F8F8] rounded-xl h-14 px-4 outline-none text-[16px]"
                 value={expiry}
@@ -210,6 +251,7 @@ const AddCard: React.FC = () => {
               <label className="text-[14px] font-bold text-gray-900">CVV</label>
               <input 
                 type="text" 
+                inputMode="numeric"
                 placeholder="000" 
                 className="w-full bg-[#F8F8F8] rounded-xl h-14 px-4 outline-none text-[16px]"
                 value={cvv}
@@ -236,6 +278,7 @@ const AddCard: React.FC = () => {
             <label className="text-[14px] font-bold text-gray-900">CPF do titular</label>
             <input 
               type="text" 
+              inputMode="numeric"
               placeholder="000.000.000-00" 
               className="w-full bg-[#F8F8F8] rounded-xl h-14 px-4 outline-none text-[16px]"
               value={cpf}
