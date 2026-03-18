@@ -37,15 +37,20 @@ const Header: React.FC<HeaderProps> = ({ productTitle, cartItemCount, onCartClic
           </span>
         </div>
 
-        {/* Ícones da Direita com imagem customizada de compartilhar */}
-        <div className="flex items-center space-x-2">
-          <button onClick={handleShare} className="p-1 relative flex items-center justify-center">
+        {/* Ícones da Direita */}
+        <div className="flex items-center space-x-1.5">
+          {/* Botão Compartilhar Ajustado */}
+          <button 
+            onClick={handleShare} 
+            className="relative flex flex-col items-center justify-center p-1 translate-x-1 -translate-y-0.5"
+          >
             <img src="/seta.png" alt="Compartilhar" className="w-6 h-6 object-contain" />
-            <div className="absolute -bottom-1 -right-4 bg-[#FF2C55] text-white text-[8px] px-1 rounded-sm whitespace-nowrap">
+            <div className="absolute -bottom-1.5 bg-[#FF2C55] text-white text-[7px] px-1.5 py-0.5 rounded-full whitespace-nowrap font-medium">
               Compre p...
             </div>
           </button>
           
+          {/* Carrinho */}
           <button onClick={onCartClick} className="p-1 relative">
             <ShoppingCart size={24} className="text-gray-900" />
             {cartItemCount > 0 && (
@@ -55,6 +60,7 @@ const Header: React.FC<HeaderProps> = ({ productTitle, cartItemCount, onCartClic
             )}
           </button>
 
+          {/* Menu */}
           <button className="p-1">
             <MoreHorizontal size={24} className="text-gray-900" />
           </button>
