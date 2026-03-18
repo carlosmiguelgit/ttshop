@@ -19,9 +19,13 @@ const NoteDrawer: React.FC<NoteDrawerProps> = ({ isOpen, onClose, onSave, initia
     <Drawer open={isOpen} onOpenChange={onClose}>
       <DrawerContent className="max-h-[92vh] p-0 rounded-t-[20px] border-none bg-white">
         <div className="mx-auto w-full max-w-[600px] flex flex-col h-full">
-          <div className="p-4 border-b flex items-center justify-between">
-            <h2 className="text-[16px] font-bold text-gray-900">Nota</h2>
-            <button onClick={onClose}>
+          {/* Header Centralizado */}
+          <div className="p-4 border-b relative flex flex-col items-center">
+            <h2 className="text-[16px] font-bold text-gray-900">Nota do pedido</h2>
+            <p className="text-[11px] text-gray-400 mt-0.5 text-center">
+              Forneça ao vendedor mais informações sobre seu pedido (opcional)
+            </p>
+            <button onClick={onClose} className="absolute right-4 top-1/2 -translate-y-1/2">
               <X size={24} className="text-gray-900" />
             </button>
           </div>

@@ -76,7 +76,7 @@ const Checkout: React.FC = () => {
       </div>
 
       <div className="max-w-[600px] mx-auto">
-        {/* Seção Endereço 1:1 */}
+        {/* Seção Endereço */}
         <div className="bg-white p-4 flex items-center justify-between border-b border-gray-100">
           <div className="flex items-center space-x-2">
             <MapPin size={18} className="text-gray-900" />
@@ -87,7 +87,7 @@ const Checkout: React.FC = () => {
           </button>
         </div>
 
-        {/* Detalhes da Loja e Produto 1:1 */}
+        {/* Detalhes da Loja e Produto */}
         <div className="bg-white mt-3 p-4">
           <div className="flex justify-between items-center mb-3">
             <span className="text-[14px] font-bold text-gray-900 uppercase">MAIS MAKE BRASIL</span>
@@ -107,13 +107,18 @@ const Checkout: React.FC = () => {
             </div>
             <div className="flex-grow flex flex-col justify-start space-y-1">
               <h4 className="text-[13px] font-medium text-gray-900 line-clamp-2 leading-tight">{product.title}</h4>
-              <p className="text-[11px] text-gray-400">SEM faixa e polvo</p>
-              <div className="flex items-center space-x-2 mt-1">
-                <div className="bg-[#FFF1F3] text-[#FF2C55] text-[10px] font-bold px-1.5 py-0.5 rounded-sm">
-                  ⚡ Oferta Relâmpago
+              <p className="text-[11px] text-gray-400 mb-1">SEM faixa e polvo</p>
+              
+              {/* Badges Stacked Vertical 1:1 */}
+              <div className="flex flex-col space-y-1 mt-0.5">
+                <div className="bg-[#FFF1F3] text-[#FF2C55] text-[10px] font-bold px-1.5 py-0.5 rounded-sm flex items-center w-fit">
+                  <Zap size={10} className="mr-1 fill-[#FF2C55]" /> Oferta Relâmpago
                 </div>
-                <div className="bg-[#F8F8F8] text-gray-500 text-[10px] font-medium px-1.5 py-0.5 rounded-sm flex items-center">
-                  <ShieldCheck size={10} className="mr-1" /> Devolução gratuita
+                <div className="bg-[#F8F8F8] text-gray-500 text-[10px] font-medium px-1.5 py-0.5 rounded-sm flex items-center w-fit">
+                  <div className="mr-1 w-3 h-3 border border-gray-400 rounded-full flex items-center justify-center">
+                    <div className="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
+                  </div>
+                  Devolução gratuita
                 </div>
               </div>
               
@@ -129,7 +134,7 @@ const Checkout: React.FC = () => {
                    </div>
                  </div>
                  
-                 {/* Seletor de Quantidade 1:1 */}
+                 {/* Seletor de Quantidade */}
                  <div className="flex items-center bg-[#F1F1F1] rounded-sm h-8">
                     <button className="w-9 h-full flex items-center justify-center text-gray-600" onClick={() => setQuantity(q => Math.max(1, q - 1))}>
                       <Minus size={14} />
@@ -144,7 +149,7 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Cupom TikTok Shop 1:1 */}
+        {/* Cupom TikTok Shop */}
         <div 
           className="bg-white mt-3 p-4 flex items-center justify-between cursor-pointer"
           onClick={() => setIsCouponDrawerOpen(true)}
@@ -161,7 +166,7 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Resumo do Pedido / Preços 1:1 */}
+        {/* Resumo do Pedido */}
         <div className="bg-white mt-3 p-4">
           <h3 className="text-[15px] font-bold text-gray-900 mb-5">Resumo do Pedido</h3>
           <div className="space-y-4">
@@ -196,7 +201,7 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Forma de Pagamento 1:1 */}
+        {/* Forma de Pagamento */}
         <div className="bg-white mt-3 p-4">
           <h3 className="text-[14px] font-bold text-gray-900 mb-5">Forma de pagamento</h3>
           
@@ -234,7 +239,7 @@ const Checkout: React.FC = () => {
               </div>
             )}
 
-            {/* Banner de Economia 1:1 */}
+            {/* Banner de Economia */}
             <div className="bg-[#FFF1F3] p-3 flex items-center space-x-2 rounded-sm">
               <span className="text-[16px]">😊</span>
               <span className="text-[12px] text-[#FF2C55] font-medium leading-tight">
@@ -245,7 +250,7 @@ const Checkout: React.FC = () => {
         </div>
       </div>
 
-      {/* Footer Fixo 1:1 Clone */}
+      {/* Footer Fixo */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 z-50">
         <div className="max-w-[600px] mx-auto">
           <div className="flex justify-between items-center mb-3 px-1">
