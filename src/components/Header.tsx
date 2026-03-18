@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Search, ShoppingCart, MoreHorizontal, Redo2 } from "lucide-react";
+import { ArrowLeft, Search, ShoppingCart, MoreHorizontal } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { showSuccess } from "@/utils/toast";
 
@@ -37,10 +37,10 @@ const Header: React.FC<HeaderProps> = ({ productTitle, cartItemCount, onCartClic
           </span>
         </div>
 
-        {/* Ícones da Direita com SETA CURVA de compartilhar */}
+        {/* Ícones da Direita com imagem customizada de compartilhar */}
         <div className="flex items-center space-x-2">
-          <button onClick={handleShare} className="p-1 relative">
-            <Redo2 size={24} className="text-gray-900 stroke-[2.5]" />
+          <button onClick={handleShare} className="p-1 relative flex items-center justify-center">
+            <img src="/seta.png" alt="Compartilhar" className="w-6 h-6 object-contain" />
             <div className="absolute -bottom-1 -right-4 bg-[#FF2C55] text-white text-[8px] px-1 rounded-sm whitespace-nowrap">
               Compre p...
             </div>
