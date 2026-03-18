@@ -73,7 +73,7 @@ const Checkout: React.FC = () => {
       if (location.state.initialQuantity) setQuantity(location.state.initialQuantity);
       if (location.state.selectedVariation) setSelectedVar(location.state.selectedVariation);
     } else {
-      // Fallback para o produto principal caso o estado seja perdido
+      // Fallback para o produto principal ou redirecionamento para /produto
       setProduct(products[0]);
     }
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { useParams } from 'react-router-dom';
 import { products, Product } from '@/data/products';
 import Header from '@/components/Header';
 import ProductImageGallery from '@/components/ProductImageGallery';
@@ -22,10 +21,8 @@ import { addDays, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 const ProductDetailPage: React.FC = () => {
-  const { slug } = useParams<{ slug: string }>();
-  
-  // Produto padrão caso a rota seja apenas '/'
-  const defaultSlug = "parafusadeira-furadeira-completa-com-maleta-2-baterias";
+  // Agora carregamos sempre o primeiro produto da lista por padrão
+  const product: Product = products[0];
   
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
@@ -78,10 +75,6 @@ const ProductDetailPage: React.FC = () => {
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}:${(Math.floor(Math.random() * 99)).toString().padStart(2, '0')}`;
   };
 
-  const product: Product | undefined = useMemo(() => {
-    return products.find(p => p.slug === (slug || defaultSlug));
-  }, [slug]);
-
   const deliveryDateRange = useMemo(() => {
     const today = new Date();
     const start = addDays(today, 2);
@@ -89,10 +82,6 @@ const ProductDetailPage: React.FC = () => {
     return `${format(start, 'dd')} – ${format(end, 'dd')} de ${format(end, 'MMM', { locale: ptBR })}`;
   }, []);
 
-  if (!product) {
-    return <div className="p-4 text-center text-red-500">Produto não encontrado.</div>;
-  }
-  
   const firstImageSrc = product.media[0]?.src || 'public/placeholder.svg';
 
   const handleOpenVariations = (mode: 'cart' | 'buy') => {
