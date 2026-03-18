@@ -9,9 +9,10 @@ import {
   ChevronUp,
   ChevronDown,
   Plus,
-  Ticket,
-  CreditCard,
-  CheckCircle2
+  Minus,
+  Star,
+  Zap,
+  ShieldCheck
 } from 'lucide-react';
 import { Product } from '@/data/products';
 import { Button } from '@/components/ui/button';
@@ -27,7 +28,7 @@ const Checkout: React.FC = () => {
   const [isNoteDrawerOpen, setIsNoteDrawerOpen] = useState(false);
   const [isCouponDrawerOpen, setIsCouponDrawerOpen] = useState(false);
   const [orderNote, setOrderNote] = useState("");
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(3); // Valor da foto
   const [couponAmount, setCouponAmount] = useState(5);
   const [cardData, setCardData] = useState<any>(null);
   const [shippingAddress, setShippingAddress] = useState<any>(null);
@@ -52,11 +53,12 @@ const Checkout: React.FC = () => {
 
   if (!product) return null;
 
-  // Valores exatos para bater com a lógica da imagem (simulando os cálculos da foto)
+  // Valores exatos da foto
   const currentTotal = 113.47;
   const originalPrice = 171.36;
   const discountOnProduct = 52.89;
-  const totalSaving = discountOnProduct + couponAmount;
+  const pricePerUnit = 37.82;
+  const oldPricePerUnit = 57.12;
 
   const handleFinalizeOrder = async () => {
     if (!shippingAddress) {
@@ -110,69 +112,125 @@ const Checkout: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F8F8F8] pb-[160px] font-sans">
-      {/* Header - Conforme Imagem */}
-      <div className="bg-white border-b sticky top-0 z-50 pt-2 pb-3">
-        <div className="flex items-center px-4 relative h-10">
+      {/* Header 1:1 */}
+      <div className="bg-white border-b sticky top-0 z-50 pt-3 pb-3">
+        <div className="flex items-center px-4 relative h-8">
           <button onClick={() => navigate(-1)} className="absolute left-4">
             <ArrowLeft size={24} className="text-gray-900" />
           </button>
           <h1 className="w-full text-center text-[18px] font-bold text-gray-900">Resumo do Pedido</h1>
         </div>
-        <div className="flex items-center justify-center text-[#00BFA5] text-[12px] mt-0.5 font-medium">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="mr-1.5">
-            <rect x="2" y="5" width="20" height="14" rx="2" />
-            <line x1="2" y1="10" x2="22" y2="10" />
-          </svg>
-          <span>Planos sem juros disponíveis</span>
+        <div className="flex items-center justify-center text-[#00BFA5] text-[11px] mt-1 font-medium">
+          <ShieldCheck size={14} className="mr-1" />
+          <span>Seus dados estão seguros conosco</span>
         </div>
       </div>
 
-      <div className="max-w-[600px] mx-auto space-y-[10px] mt-[10px]">
-        {/* Bloco Endereço (Mantido para fluxo, mas estilo TikTok) */}
-        {shippingAddress ? (
-          <div className="bg-white p-4 flex items-center justify-between border-b border-gray-100">
-            <div className="flex items-center space-x-2">
-              <MapPin size={18} className="text-gray-900" />
-              <div className="flex flex-col">
-                <span className="text-[14px] text-gray-900 font-medium">{shippingAddress.address}, {shippingAddress.number}</span>
-                <span className="text-[12px] text-gray-400">{shippingAddress.city} - {shippingAddress.state}</span>
+      <div className="max-w-[600px] mx-auto space-y-[8px] mt-[8px]">
+        {/* Endereço de envio 1:1 */}
+        <div className="bg-white p-4 flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <MapPin size={18} className="text-gray-900" />
+            <span className="text-[15px] text-gray-900 font-medium">
+              {shippingAddress ? `${shippingAddress.address}, ${shippingAddress.number}` : "Endereço de envio"}
+            </span>
+          </div>
+          <button 
+            className="text-[#FF2C55] text-[15px] font-medium" 
+            onClick={() => navigate('/adicionar-endereco')}
+          >
+            {shippingAddress ? "Alterar" : "+ Adicionar endereço"}
+          </button>
+        </div>
+
+        {/* Bloco do Produto 1:1 */}
+        <div className="bg-white p-4">
+          <div className="flex justify-between items-center mb-3">
+            <span className="text-[14px] font-bold text-gray-900 uppercase">MAIS MAKE BRASIL</span>
+            <button 
+              className="text-[12px] text-gray-400 flex items-center" 
+              onClick={() => setIsNoteDrawerOpen(true)}
+            >
+              Adicionar nota <ChevronRight size={14} className="ml-0.5" />
+            </button>
+          </div>
+
+          <div className="flex items-center space-x-1 mb-4">
+            <Star size={14} className="text-[#FFB800] fill-[#FFB800]" />
+            <span className="text-[12px] text-[#A0783A] font-bold">Melhor escolha! 28.0K vendido(s) e com nota 4.8/5,0</span>
+          </div>
+
+          <div className="flex space-x-3">
+            <div className="w-[90px] h-[90px] bg-[#F8F8F8] rounded-lg overflow-hidden border border-gray-50 flex-shrink-0">
+              <img src={product.media[0].src} className="w-full h-full object-contain" alt="Thumb" />
+            </div>
+            <div className="flex-grow flex flex-col justify-between">
+              <div>
+                <h4 className="text-[13px] font-medium text-gray-900 line-clamp-1 leading-tight">{product.title}</h4>
+                <p className="text-[11px] text-gray-400 mt-0.5">SEM faixa e polvo</p>
+                
+                <div className="flex items-center space-x-2 mt-1">
+                  <div className="bg-[#FFF1F3] text-[#FF2C55] text-[10px] font-bold px-1.5 py-0.5 rounded-sm flex items-center">
+                    <Zap size={10} className="fill-[#FF2C55] mr-0.5" />
+                    Oferta Relâmpago
+                  </div>
+                  <div className="flex items-center text-[10px] text-gray-400 bg-gray-50 px-1.5 py-0.5 rounded-sm">
+                    <div className="w-3 h-3 rounded-full bg-yellow-400 flex items-center justify-center mr-1">
+                      <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
+                    </div>
+                    Devolução gratuita
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-between items-end mt-2">
+                <div className="flex flex-col">
+                  <div className="flex items-center space-x-1">
+                    <span className="text-[16px] font-bold text-[#FF2C55]">R$ {pricePerUnit.toFixed(2).replace('.', ',')}</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#FF2C55" strokeWidth="2" className="mt-0.5">
+                       <path d="M15 5v2M15 11v2M15 17v2M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z" />
+                    </svg>
+                  </div>
+                  <div className="flex items-center space-x-1 text-[11px] text-gray-400">
+                    <span className="line-through">R$ {oldPricePerUnit.toFixed(2).replace('.', ',')}</span>
+                    <span className="bg-[#FFF1F3] text-[#FF2C55] px-1 rounded-sm">-34%</span>
+                  </div>
+                </div>
+
+                <div className="flex items-center bg-[#F1F1F1] rounded-sm h-7">
+                  <button className="w-8 h-full flex items-center justify-center text-gray-400" onClick={() => setQuantity(q => Math.max(1, q - 1))}>
+                    <Minus size={14} />
+                  </button>
+                  <span className="w-8 text-center text-[13px] font-bold text-gray-900 border-x border-gray-200/50">{quantity}</span>
+                  <button className="w-8 h-full flex items-center justify-center text-gray-400" onClick={() => setQuantity(q => q + 1)}>
+                    <Plus size={14} />
+                  </button>
+                </div>
               </div>
             </div>
-            <button className="text-[#FF2C55] text-[14px] font-medium" onClick={() => navigate('/adicionar-endereco')}>Alterar</button>
           </div>
-        ) : (
-          <div className="bg-white p-4 flex items-center justify-between" onClick={() => navigate('/adicionar-endereco')}>
-            <div className="flex items-center space-x-2">
-              <MapPin size={18} className="text-gray-900" />
-              <span className="text-[14px] text-gray-900 font-medium">Adicionar endereço de entrega</span>
-            </div>
-            <ChevronRight size={18} className="text-gray-300" />
-          </div>
-        )}
+        </div>
 
-        {/* Desconto do TikTok Shop - Conforme Imagem */}
+        {/* Desconto do TikTok Shop 1:1 */}
         <div 
           className="bg-white p-4 flex items-center justify-between cursor-pointer"
           onClick={() => setIsCouponDrawerOpen(true)}
         >
           <div className="flex items-center space-x-2">
-            <div className="text-[#FF2C55]">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M15 5v2M15 11v2M15 17v2M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z" />
-                <path d="M15 12h.01" />
-              </svg>
-            </div>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF2C55" strokeWidth="2.5">
+              <path d="M15 5v2M15 11v2M15 17v2M5 5h14a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2z" />
+            </svg>
             <span className="text-[15px] font-bold text-gray-900">Desconto do TikTok Shop</span>
           </div>
           <div className="flex items-center space-x-1.5">
-            <span className="text-[13px] font-bold text-[#FF2C55] bg-[#FFF1F3] px-3 py-1 rounded-full border border-[#FFD9E0]/50">
+            <span className="text-[13px] font-bold text-[#FF2C55] bg-[#FFF1F3] px-3 py-1 rounded-full">
               - R$ {couponAmount.toFixed(2).replace('.', ',')}
             </span>
             <ChevronRight size={18} className="text-gray-300" />
           </div>
         </div>
 
-        {/* Resumo do Pedido - Conforme Imagem */}
+        {/* Resumo do Pedido 1:1 */}
         <div className="bg-white p-4">
           <h3 className="text-[16px] font-bold text-gray-900 mb-5">Resumo do Pedido</h3>
           
@@ -214,90 +272,9 @@ const Checkout: React.FC = () => {
             </div>
           </div>
         </div>
-
-        {/* Forma de Pagamento - Conforme Imagem */}
-        <div className="bg-white p-4 space-y-6">
-          <h3 className="text-[16px] font-bold text-gray-900">Forma de pagamento</h3>
-          
-          <div className="space-y-6">
-            {/* Cartão de Crédito */}
-            <div className="space-y-3">
-              <div 
-                className="flex items-center justify-between cursor-pointer"
-                onClick={() => navigate('/adicionar-cartao')}
-              >
-                <div className="flex items-center space-x-3">
-                  <div className="w-6 h-6 bg-[#F8F8F8] border border-gray-200 rounded-sm flex items-center justify-center">
-                    {cardData ? <CheckCircle2 size={14} className="text-[#00BFA5]" /> : <Plus size={16} className="text-gray-500" />}
-                  </div>
-                  <span className="text-[15px] font-bold text-gray-900">
-                    {cardData ? `Cartão final ${cardData.last4}` : "Cartão de crédito"}
-                  </span>
-                </div>
-                <ChevronRight size={18} className="text-gray-300" />
-              </div>
-              
-              <div className="flex items-center space-x-2 pl-9">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-5" />
-                <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-5" />
-                <img src="https://images.seeklogo.com/logo-png/20/1/elo-logo-png_seeklogo-205447.png" className="h-5" />
-                <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg" className="h-5" />
-              </div>
-
-              <div className="pl-9 space-y-2">
-                <div className="bg-[#FFF1F3] text-[#FF2C55] text-[12px] font-bold px-2.5 py-1 rounded-sm inline-flex items-center cursor-pointer border border-[#FFD9E0]/50">
-                  Sem juros em até 3 parcelas <ChevronRight size={14} className="ml-1" />
-                </div>
-                <p className="text-[13px] text-gray-400">Pague em até 12 parcelas</p>
-              </div>
-            </div>
-
-            {/* Pix */}
-            <div 
-              className="flex items-center justify-between cursor-pointer border-t border-gray-50 pt-6"
-              onClick={() => setPaymentMethod('pix')}
-            >
-              <div className="flex items-center space-x-3">
-                <div className="bg-[#EFFFFD] p-1 rounded-sm">
-                  <img src="https://logospng.org/download/pix/logo-pix-icone-512.png" className="h-5 w-5" />
-                </div>
-                <span className="text-[15px] font-bold text-gray-900">Pix</span>
-              </div>
-              <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${paymentMethod === 'pix' ? 'border-[#FF2C55]' : 'border-gray-200'}`}>
-                {paymentMethod === 'pix' && <div className="w-3 h-3 bg-[#FF2C55] rounded-full" />}
-              </div>
-            </div>
-
-            {/* Ver todos */}
-            <div className="flex items-center justify-between border-t border-gray-50 pt-6">
-              <div className="flex items-center space-x-2">
-                <div className="h-6 px-1.5 border border-gray-100 rounded flex items-center bg-white shadow-sm">
-                  <img src="https://images.seeklogo.com/logo-png/32/1/google-pay-logo-png_seeklogo-324563.png" className="h-3" />
-                </div>
-              </div>
-              <div className="flex items-center text-[15px] font-bold text-gray-900 cursor-pointer">
-                Ver todos <ChevronRight size={18} className="ml-0.5 text-gray-300" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Termos Legais - Conforme Imagem */}
-        <div className="p-4 pt-2">
-          <p className="text-[13px] text-gray-600 leading-[1.4]">
-            Ao fazer um pedido, você concorda com <span className="font-bold text-gray-900">Termos de uso e venda do TikTok Shop</span> e reconhece que leu e concordou com a <span className="font-bold text-gray-900">Política de privacidade do TikTok</span>.
-          </p>
-
-          <div className="mt-6 bg-[#FFF1F3] p-2.5 flex items-center space-x-2 rounded-sm w-fit">
-            <span className="text-[16px]">😆</span>
-            <span className="text-[13px] text-[#FF2C55] font-medium">
-              Você está economizando R$ {totalSaving.toFixed(2).replace('.', ',')} nesse pedido.
-            </span>
-          </div>
-        </div>
       </div>
 
-      {/* Footer Fixo - Conforme Imagem */}
+      {/* Footer Fixo 1:1 */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 z-50">
         <div className="max-w-[600px] mx-auto">
           <div className="flex justify-between items-center mb-4 px-1">
