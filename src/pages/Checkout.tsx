@@ -33,6 +33,7 @@ const Checkout: React.FC = () => {
   const [isPaymentDrawerOpen, setIsPaymentDrawerOpen] = useState(false);
   const [orderNote, setOrderNote] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [selectedVar, setSelectedVar] = useState("SEM faixa e polvo");
   const [couponAmount, setCouponAmount] = useState(5);
   const [cardData, setCardData] = useState<any>(null);
   const [addressData, setAddressData] = useState<any>(null);
@@ -43,6 +44,13 @@ const Checkout: React.FC = () => {
   useEffect(() => {
     if (location.state?.product) {
       setProduct(location.state.product);
+      // Pega a quantidade inicial se existir
+      if (location.state.initialQuantity) {
+        setQuantity(location.state.initialQuantity);
+      }
+      if (location.state.selectedVariation) {
+        setSelectedVar(location.state.selectedVariation);
+      }
     } else {
       navigate('/');
     }
@@ -55,7 +63,7 @@ const Checkout: React.FC = () => {
     if (location.state?.addressAdded && location.state?.addressData) {
       setAddressData(location.state.addressData);
     }
-  }, [location, navigate]);
+  }, [location.state, navigate]);
 
   if (!product) return null;
 
@@ -156,7 +164,7 @@ const Checkout: React.FC = () => {
             </div>
             <div className="flex-grow flex flex-col justify-start space-y-1">
               <h4 className="text-[13px] font-medium text-gray-900 line-clamp-2 leading-tight">{product.title}</h4>
-              <p className="text-[11px] text-gray-400 mb-1">SEM faixa e polvo</p>
+              <p className="text-[11px] text-gray-400 mb-1">{selectedVar}</p>
               
               <div className="flex flex-col space-y-1 mt-0.5">
                 <div className="bg-[#FFF1F3] text-[#FF2C55] text-[10px] font-bold px-1.5 py-0.5 rounded-sm flex items-center w-fit">
@@ -325,7 +333,7 @@ const Checkout: React.FC = () => {
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 z-50">
         <div className="max-w-[600px] mx-auto">
           <div className="flex justify-between items-center mb-3 px-1">
-            <span className="text-[16px] font-bold text-gray-900">Total (1 item)</span>
+            <span className="text-[16px] font-bold text-gray-900">Total ({quantity} item{quantity > 1 ? 's' : ''})</span>
             <span className="text-[19px] font-bold text-[#FF2C55]">R$ {finalTotalStr}</span>
           </div>
           <Button 

@@ -21,7 +21,8 @@ const VariationSelectorDrawer: React.FC<VariationSelectorDrawerProps> = ({ isOpe
 
   const handleConfirmAction = () => {
     if (mode === 'buy') {
-      navigate('/checkout', { state: { product } });
+      // Passando a quantidade selecionada no state para o checkout
+      navigate('/checkout', { state: { product, initialQuantity: quantity, selectedVariation: variations[selectedVariation] } });
       onClose();
     } else {
       onConfirm(quantity, mode, variations[selectedVariation]);
@@ -50,11 +51,11 @@ const VariationSelectorDrawer: React.FC<VariationSelectorDrawerProps> = ({ isOpe
                 </div>
                 <div className="text-[#FF2C55] font-bold flex items-baseline">
                   <span className="text-[14px] mr-1">R$</span>
-                  <span className="text-[26px] leading-none">39,49</span>
+                  <span className="text-[26px] leading-none">47,00</span>
                 </div>
               </div>
               
-              <div className="text-[12px] text-gray-400 line-through">R$ 57,12</div>
+              <div className="text-[12px] text-gray-400 line-through">R$ {product.originalPrice}</div>
               
               <div className="bg-[#E6F9F6] text-[#00BFA5] text-[10px] font-bold px-2 py-1 rounded-sm flex items-center w-fit mt-1">
                 <Truck size={12} className="mr-1 fill-[#00BFA5]/10" />
