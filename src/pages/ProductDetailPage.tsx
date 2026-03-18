@@ -17,6 +17,7 @@ import CouponsDrawer from '@/components/CouponsDrawer';
 import ShippingDrawer from '@/components/ShippingDrawer';
 import CreatorVideosSection from '@/components/CreatorVideosSection';
 import CustomerProtectionDrawer from '@/components/CustomerProtectionDrawer';
+import ChatDrawer from '@/components/ChatDrawer';
 import { LayoutGrid, ChevronRight, Truck, X } from 'lucide-react';
 import { addDays, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -31,6 +32,7 @@ const ProductDetailPage: React.FC = () => {
   const [isCouponsDrawerOpen, setIsCouponsDrawerOpen] = useState(false);
   const [isShippingDrawerOpen, setIsShippingDrawerOpen] = useState(false);
   const [isProtectionDrawerOpen, setIsProtectionDrawerOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const [showShippingMsg, setShowShippingMsg] = useState(false);
 
   const [timeLeft, setTimeLeft] = useState(300);
@@ -95,7 +97,6 @@ const ProductDetailPage: React.FC = () => {
         onCartClick={() => setIsCartOpen(true)}
       />
       
-      {/* Mensagem centralizada para cupom de envio */}
       {showShippingMsg && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none">
           <div className="bg-black/80 text-white px-6 py-3 rounded-lg text-sm font-bold animate-in fade-in zoom-in duration-300">
@@ -144,39 +145,51 @@ const ProductDetailPage: React.FC = () => {
         
         <CustomerProtectionSection onClick={() => setIsProtectionDrawerOpen(true)} />
 
-        {/* Seção OFERTAS Redesenhada - Réplica 1:1 com cartões 50% menores */}
-        <div className="bg-white border-t border-gray-50">
+        {/* Seção OFERTAS - Design Idêntico 1:1 */}
+        <div className="bg-white border-t border-gray-50 overflow-hidden">
           <div className="px-4 pt-4 flex justify-between items-center cursor-pointer" onClick={() => setIsCouponsDrawerOpen(true)}>
             <h3 className="text-[15px] font-bold text-gray-900">Ofertas</h3>
             <ChevronRight size={16} className="text-gray-300" />
           </div>
 
           <div className="px-4 py-4 flex space-x-3 overflow-x-auto no-scrollbar scroll-smooth">
-            {/* Cupom de Envio - Compacto com botão à direita */}
+            {/* Cupom de Envio - Replica Fiel */}
             <div 
-              className="min-w-[180px] bg-[#EFFFFD] border border-[#CCF7F2] rounded-xl p-3 relative flex items-center justify-between cursor-pointer"
+              className="min-w-[240px] bg-[#EFFFFD] border border-[#CCF7F2] rounded-xl p-3 relative flex items-center justify-between cursor-pointer"
               onClick={handleShippingCouponClick}
             >
-              <div className="absolute -top-1 -right-1 bg-[#00BFA5] text-white text-[8px] font-bold px-1 py-0.5 rounded-bl-md rounded-tr-md">x12</div>
-              <div className="flex-grow pr-2">
-                <span className="text-[13px] font-bold text-gray-900 block">Cupom de envio</span>
-                <p className="text-[9px] text-gray-500 mt-0.5 leading-tight">Desconto de R$ 10...</p>
+              <div className="absolute -top-1.5 -right-1.5 bg-[#00BFA5] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-bl-lg rounded-tr-lg border border-white">x12</div>
+              {/* Recortes laterais do cupom */}
+              <div className="absolute left-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border border-r-[#CCF7F2]"></div>
+              <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border border-l-[#CCF7F2]"></div>
+
+              <div className="flex-grow pr-3">
+                <span className="text-[15px] font-bold text-gray-900 block leading-none mb-1">Cupom de envio</span>
+                <p className="text-[10px] text-gray-500 leading-tight">Desconto de R$ 10 no frete<br/>em pedidos acima de R$ 15</p>
               </div>
-              <button className="border border-[#00BFA5] text-[#00BFA5] text-[10px] font-bold px-3 py-1 rounded-full bg-white flex-shrink-0">
+              <button className="border border-[#00BFA5] text-[#00BFA5] text-[13px] font-medium h-8 px-5 rounded-full bg-white flex-shrink-0">
                 Usar
               </button>
             </div>
 
-            {/* Cupom de R$ 5 - Compacto */}
-            <div className="min-w-[140px] bg-[#FFF8F9] border border-[#FFD9E0] rounded-xl p-3 flex flex-col justify-center">
-              <span className="text-[13px] font-bold text-gray-900 block">Desconto de R$ 5</span>
-              <p className="text-[9px] text-gray-500 mt-0.5 leading-tight">pedidos acima de R$ 80</p>
+            {/* Cupom R$ 5 - Replica Fiel */}
+            <div className="min-w-[180px] bg-[#FFF8F9] border border-[#FFD9E0] rounded-xl p-3 relative flex items-center justify-between">
+              <div className="absolute left-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border border-r-[#FFD9E0]"></div>
+              <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border border-l-[#FFD9E0]"></div>
+              <div className="flex-grow">
+                <span className="text-[15px] font-bold text-gray-900 block leading-none mb-1">Desconto de R$ 5</span>
+                <p className="text-[10px] text-gray-500 leading-tight">nos pedidos acima de R$ 80</p>
+              </div>
             </div>
 
-            {/* Cupom de R$ 15 - Compacto */}
-            <div className="min-w-[140px] bg-[#FFF8F9] border border-[#FFD9E0] rounded-xl p-3 flex flex-col justify-center">
-              <span className="text-[13px] font-bold text-gray-900 block">Desconto de R$ 15</span>
-              <p className="text-[9px] text-gray-500 mt-0.5 leading-tight">pedidos acima de R$ 200</p>
+            {/* Cupom R$ 15 */}
+            <div className="min-w-[180px] bg-[#FFF8F9] border border-[#FFD9E0] rounded-xl p-3 relative flex items-center justify-between">
+              <div className="absolute left-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border border-r-[#FFD9E0]"></div>
+              <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border border-l-[#FFD9E0]"></div>
+              <div className="flex-grow">
+                <span className="text-[15px] font-bold text-gray-900 block leading-none mb-1">Desconto de R$ 15</span>
+                <p className="text-[10px] text-gray-500 leading-tight">nos pedidos acima de R$ 200</p>
+              </div>
             </div>
           </div>
         </div>
@@ -213,6 +226,7 @@ const ProductDetailPage: React.FC = () => {
       <ProductActionsBar 
         onAddToCartClick={handleOpenVariations}
         onBuyWithCouponClick={handleOpenVariations}
+        onChatClick={() => setIsChatOpen(true)}
       />
       
       <CartDrawer 
@@ -221,6 +235,12 @@ const ProductDetailPage: React.FC = () => {
         onCheckoutClick={() => setIsCheckoutModalOpen(true)}
         product={product}
         cartItemCount={cartItemCount}
+      />
+
+      <ChatDrawer 
+        isOpen={isChatOpen}
+        onClose={() => setIsChatOpen(false)}
+        product={product}
       />
 
       <VariationSelectorDrawer 
