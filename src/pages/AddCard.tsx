@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Smartphone, Info, ShieldCheck, Loader2 } from 'lucide-react';
+import { ArrowLeft, Smartphone, Info, ShieldCheck, Loader2, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { showError } from '@/utils/toast';
 
@@ -16,6 +16,7 @@ const AddCard: React.FC = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [step, setStep] = useState(0);
   const [brand, setBrand] = useState<'visa' | 'mastercard' | 'unknown'>('unknown');
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const detectBrand = (number: string) => {
     const clean = number.replace(/\s/g, '');
@@ -28,11 +29,17 @@ const AddCard: React.FC = () => {
     const digits = val.replace(/\D/g, '').slice(0, 16);
     const formatted = digits.match(/.{1,4}/g)?.join(' ') || digits;
     
-    // Detecta a bandeira a partir dos 4 primeiros dígitos
     if (digits.length >= 4) {
-      setBrand(detectBrand(digits));
+      const detected = detectBrand(digits);
+      setBrand(detected);
+      if (detected === 'unknown') {
+        setErrorMsg("Bandeira não reconhecida. Use Visa ou Mastercard.");
+      } else {
+        setErrorMsg(null);
+      }
     } else {
       setBrand('unknown');
+      setErrorMsg(null);
     }
     
     return formatted;
@@ -48,28 +55,43 @@ const AddCard: React.FC = () => {
 
   const formatCpf = (val: string) => {
     const digits = val.replace(/\D/g, '').slice(0, 11);
-    return digits
+    const formatted = digits
       .replace(/(\d{3})(\d)/, '$1.$2')
       .replace(/(\d{3})(\d)/, '$1.$2')
       .replace(/(\d{3})(\d{1,2})/, '$1-$2');
+    
+    if (digits.length === 11 && !validateCPF(digits)) {
+      setErrorMsg("CPF inválido. Verifique os números.");
+    } else {
+      setErrorMsg(null);
+    }
+    
+    return formatted;
+  };
+
+  const validateCPF = (cpf: string) => {
+    if (cpf.length !== 11 || !!cpf.match(/(\d)\1{10}/)) return false;
+    const digits = cpf.split('').map(Number);
+    const calc = (n: number) => digits.slice(0, n).reduce((acc, digit, idx) => acc + digit * (n + 1 - idx), 0) * 10 % 11 % 10;
+    return calc(9) === digits[9] && calc(10) === digits[10];
   };
 
   const handleContinue = () => {
     const cleanNumber = cardNumber.replace(/\s/g, '');
-    
-    // Verificador de BIN Rígido
-    if (brand === 'unknown' && cleanNumber.length >= 4) {
-      showError("Número de cartão ou bandeira inválida.");
-      return;
-    }
+    const cleanCpf = cpf.replace(/\D/g, '');
 
     if (cleanNumber.length < 16) {
-      showError("O cartão deve ter 16 dígitos.");
+      showError("Digite os 16 números do cartão.");
       return;
     }
 
-    if (cpf.replace(/\D/g, '').length < 11) {
-      showError("CPF incompleto.");
+    if (brand === 'unknown') {
+      showError("Bandeira do cartão não suportada.");
+      return;
+    }
+
+    if (cleanCpf.length < 11 || !validateCPF(cleanCpf)) {
+      showError("CPF inválido.");
       return;
     }
 
@@ -126,6 +148,14 @@ const AddCard: React.FC = () => {
         <h1 className="flex-grow text-center text-[16px] font-bold mr-6">Adicionar cartão</h1>
       </div>
 
+      {/* Real-time Error Alert at the top */}
+      {errorMsg && (
+        <div className="bg-red-50 p-3 flex items-center space-x-2 border-b border-red-100 animate-in fade-in slide-in-from-top duration-300">
+          <AlertCircle size={16} className="text-red-500 shrink-0" />
+          <p className="text-[12px] text-red-600 font-medium">{errorMsg}</p>
+        </div>
+      )}
+
       <div className="p-4 space-y-6">
         {/* Info Bar */}
         <div className="flex items-center justify-between text-[13px]">
@@ -152,20 +182,15 @@ const AddCard: React.FC = () => {
                 />
               </div>
             </div>
-            <div className={`border-2 rounded-xl h-14 flex items-center px-4 ${brand === 'unknown' && cardNumber.length >= 4 ? 'border-red-500' : 'border-[#F1F1F1]'}`}>
+            <div className={`border-2 rounded-xl h-14 flex items-center px-4 transition-colors ${brand === 'unknown' && cardNumber.replace(/\s/g, '').length >= 4 ? 'border-red-500 bg-red-50/10' : 'border-[#F1F1F1]'}`}>
               <input 
                 type="text" 
                 placeholder="0000 0000 0000 0000" 
-                className="w-full bg-transparent outline-none text-[16px]"
+                className="w-full bg-transparent outline-none text-[16px] font-mono"
                 value={cardNumber}
                 onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
               />
             </div>
-            {brand === 'unknown' && cardNumber.length >= 4 && (
-              <p className="text-red-500 text-[11px] font-medium flex items-center">
-                <Info size={12} className="mr-1" /> Bandeira não suportada ou número inválido.
-              </p>
-            )}
           </div>
 
           {/* Expiry and CVV */}
@@ -233,7 +258,7 @@ const AddCard: React.FC = () => {
         <Button 
           className="w-full h-12 rounded-full font-bold text-[16px] bg-[#FF2C55]"
           onClick={handleContinue}
-          disabled={!cardNumber || !expiry || !cvv || !name || !cpf}
+          disabled={!cardNumber || !expiry || !cvv || !name || !cpf || !!errorMsg}
         >
           Continuar
         </Button>

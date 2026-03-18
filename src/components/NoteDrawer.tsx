@@ -33,7 +33,7 @@ const NoteDrawer: React.FC<NoteDrawerProps> = ({ isOpen, onClose, onSave, initia
           <div className="p-4 flex-grow">
             <textarea
               className="w-full h-40 p-4 bg-[#F8F8F8] rounded-xl border-none outline-none text-[14px] resize-none"
-              placeholder="Escreva sua nota aqui..."
+              placeholder="Forneça ao vendedor mais informações sobre seu pedido (opcional)"
               value={note}
               onChange={(e) => setNote(e.target.value)}
               maxLength={200}
