@@ -9,11 +9,12 @@ interface VariationSelectorDrawerProps {
   onClose: () => void;
   product: Product;
   onConfirm: (quantity: number, action: 'cart' | 'buy', variation: string) => void;
+  mode: 'cart' | 'buy';
 }
 
-const VariationSelectorDrawer: React.FC<VariationSelectorDrawerProps> = ({ isOpen, onClose, product, onConfirm }) => {
+const VariationSelectorDrawer: React.FC<VariationSelectorDrawerProps> = ({ isOpen, onClose, product, onConfirm, mode }) => {
   const [quantity, setQuantity] = useState(1);
-  const [selectedVariation, setSelectedVariation] = useState(1); // Iniciando na segunda como na foto
+  const [selectedVariation, setSelectedVariation] = useState(1);
   const variations = ["COM faixa e polvo", "SEM faixa e polvo"];
 
   return (
@@ -125,14 +126,20 @@ const VariationSelectorDrawer: React.FC<VariationSelectorDrawerProps> = ({ isOpe
           {/* Footer Button */}
           <div className="p-4 bg-white">
             <Button
-              className="w-full bg-[#FF2C55] hover:bg-[#E0254B] text-white font-bold rounded-full h-[52px] text-[16px] shadow-none border-none"
-              onClick={() => onConfirm(quantity, 'cart', variations[selectedVariation])}
+              className="w-full bg-[#FF2C55] hover:bg-[#E0254B] text-white font-bold rounded-full h-[52px] flex flex-col items-center justify-center shadow-none border-none"
+              onClick={() => onConfirm(quantity, mode, variations[selectedVariation])}
             >
-              Adicionar ao carrinho
+              {mode === 'cart' ? (
+                <span className="text-[16px]">Adicionar ao carrinho</span>
+              ) : (
+                <>
+                  <span className="text-[16px] leading-none">Comprar agora</span>
+                  <span className="text-[11px] font-medium opacity-90 mt-0.5">Frete grátis</span>
+                </>
+              )}
             </Button>
           </div>
           
-          {/* Bottom indicator space */}
           <div className="h-4 bg-white"></div>
         </div>
       </DrawerContent>

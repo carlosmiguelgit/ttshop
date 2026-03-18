@@ -29,6 +29,7 @@ const ProductDetailPage: React.FC = () => {
   const [cartItemCount, setCartItemCount] = useState(0);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
   const [isVariationDrawerOpen, setIsVariationDrawerOpen] = useState(false);
+  const [variationDrawerMode, setVariationDrawerMode] = useState<'cart' | 'buy'>('cart');
   const [isCouponsDrawerOpen, setIsCouponsDrawerOpen] = useState(false);
   const [isShippingDrawerOpen, setIsShippingDrawerOpen] = useState(false);
   const [isProtectionDrawerOpen, setIsProtectionDrawerOpen] = useState(false);
@@ -38,7 +39,6 @@ const ProductDetailPage: React.FC = () => {
 
   const [timeLeft, setTimeLeft] = useState(300);
 
-  // Refs para as seções
   const sectionRefs = {
     'Visão geral': useRef<HTMLDivElement>(null),
     'Avaliações': useRef<HTMLDivElement>(null),
@@ -48,8 +48,7 @@ const ProductDetailPage: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollPos = window.scrollY + 150; // Offset para o cabeçalho fixo
-
+      const scrollPos = window.scrollY + 150;
       if (sectionRefs['Recomendações'].current && scrollPos >= sectionRefs['Recomendações'].current.offsetTop) {
         setActiveTab('Recomendações');
       } else if (sectionRefs['Descrição'].current && scrollPos >= sectionRefs['Descrição'].current.offsetTop) {
@@ -60,7 +59,6 @@ const ProductDetailPage: React.FC = () => {
         setActiveTab('Visão geral');
       }
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -95,7 +93,8 @@ const ProductDetailPage: React.FC = () => {
   
   const firstImageSrc = product.media[0]?.src || 'public/placeholder.svg';
 
-  const handleOpenVariations = () => {
+  const handleOpenVariations = (mode: 'cart' | 'buy') => {
+    setVariationDrawerMode(mode);
     setIsVariationDrawerOpen(true);
   };
   
@@ -143,7 +142,6 @@ const ProductDetailPage: React.FC = () => {
         </div>
       )}
 
-      {/* Tabs com Scroll Spy */}
       <div className="fixed top-12 left-0 right-0 z-40 bg-white border-b flex justify-center">
         <div className="w-full max-w-[600px] flex px-4">
           {['Visão geral', 'Avaliações', 'Descrição', 'Recomendações'].map((tab) => (
@@ -161,7 +159,6 @@ const ProductDetailPage: React.FC = () => {
       </div>
 
       <div className="max-w-[600px] mx-auto bg-white shadow-sm mt-[48px]">
-        {/* Seção: Visão Geral */}
         <div ref={sectionRefs['Visão geral']}>
           <ProductImageGallery 
             media={product.media} 
@@ -177,7 +174,7 @@ const ProductDetailPage: React.FC = () => {
 
           <div 
             className="bg-white p-4 border-t border-gray-50 flex items-center justify-between cursor-pointer"
-            onClick={handleOpenVariations}
+            onClick={() => handleOpenVariations('cart')}
           >
             <div className="flex items-center space-x-3">
               <LayoutGrid size={20} className="text-gray-900" />
@@ -204,8 +201,11 @@ const ProductDetailPage: React.FC = () => {
                 onClick={handleShippingCouponClick}
               >
                 <div className="absolute -top-1.5 -right-1.5 bg-[#00BFA5] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-bl-lg rounded-tr-lg border border-white">x12</div>
-                <div className="absolute left-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border border-r-[#CCF7F2]"></div>
-                <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border border-l-[#CCF7F2]"></div>
+                
+                {/* Rasgos laterais (Meia-lua) */}
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-4 bg-[#F8F8F8] rounded-r-full border-y border-r border-[#CCF7F2] -ml-[1px]"></div>
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-4 bg-[#F8F8F8] rounded-l-full border-y border-l border-[#CCF7F2] -mr-[1px]"></div>
+
                 <div className="flex-grow pr-3">
                   <span className="text-[15px] font-bold text-gray-900 block leading-none mb-1">Cupom de envio</span>
                   <p className="text-[10px] text-gray-500 leading-tight">Desconto de R$ 10 no frete<br/>em pedidos acima de R$ 15</p>
@@ -216,20 +216,11 @@ const ProductDetailPage: React.FC = () => {
               </div>
 
               <div className="min-w-[180px] bg-[#FFF8F9] border border-[#FFD9E0] rounded-xl p-3 relative flex items-center justify-between">
-                <div className="absolute left-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border border-r-[#FFD9E0]"></div>
-                <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border border-l-[#FFD9E0]"></div>
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-4 bg-[#F8F8F8] rounded-r-full border-y border-r border-[#FFD9E0] -ml-[1px]"></div>
+                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-4 bg-[#F8F8F8] rounded-l-full border-y border-l border-[#FFD9E0] -mr-[1px]"></div>
                 <div className="flex-grow">
                   <span className="text-[15px] font-bold text-gray-900 block leading-none mb-1">Desconto de R$ 5</span>
                   <p className="text-[10px] text-gray-500 leading-tight">nos pedidos acima de R$ 80</p>
-                </div>
-              </div>
-
-              <div className="min-w-[180px] bg-[#FFF8F9] border border-[#FFD9E0] rounded-xl p-3 relative flex items-center justify-between">
-                <div className="absolute left-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border border-r-[#FFD9E0]"></div>
-                <div className="absolute right-[-6px] top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border border-l-[#FFD9E0]"></div>
-                <div className="flex-grow">
-                  <span className="text-[15px] font-bold text-gray-900 block leading-none mb-1">Desconto de R$ 15</span>
-                  <p className="text-[10px] text-gray-500 leading-tight">nos pedidos acima de R$ 200</p>
                 </div>
               </div>
             </div>
@@ -237,24 +228,14 @@ const ProductDetailPage: React.FC = () => {
           <CreatorVideosSection />
         </div>
         
-        {/* Seção: Avaliações */}
         <div ref={sectionRefs['Avaliações']}>
-          <ProductReviewsSection 
-            rating={product.rating} 
-            reviewCount={product.reviewCount} 
-          />
+          <ProductReviewsSection rating={product.rating} reviewCount={product.reviewCount} />
         </div>
         
-        {/* Seção: Descrição */}
         <div ref={sectionRefs['Descrição']}>
-          <ProductDescription 
-            specifications={product.specifications} 
-            descriptionText={product.descriptionText}
-            firstImageSrc={firstImageSrc}
-          />
+          <ProductDescription specifications={product.specifications} descriptionText={product.descriptionText} firstImageSrc={firstImageSrc} />
         </div>
         
-        {/* Seção: Recomendações (Fim da página) */}
         <div ref={sectionRefs['Recomendações']}>
           <MadeWithDyad />
         </div>
@@ -274,55 +255,18 @@ const ProductDetailPage: React.FC = () => {
       </div>
       
       <ProductActionsBar 
-        onAddToCartClick={handleOpenVariations}
-        onBuyWithCouponClick={handleOpenVariations}
+        onAddToCartClick={() => handleOpenVariations('cart')}
+        onBuyWithCouponClick={() => handleOpenVariations('buy')}
         onChatClick={() => setIsChatOpen(true)}
       />
       
-      <CartDrawer 
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        onCheckoutClick={() => setIsCheckoutModalOpen(true)}
-        product={product}
-        cartItemCount={cartItemCount}
-      />
-
-      <ChatDrawer 
-        isOpen={isChatOpen}
-        onClose={() => setIsChatOpen(false)}
-        product={product}
-      />
-
-      <VariationSelectorDrawer 
-        isOpen={isVariationDrawerOpen}
-        onClose={() => setIsVariationDrawerOpen(false)}
-        product={product}
-        onConfirm={handleVariationConfirm}
-      />
-
-      <CouponsDrawer
-        isOpen={isCouponsDrawerOpen}
-        onClose={() => setIsCouponsDrawerOpen(false)}
-        onClaim={(amt) => {}}
-      />
-
-      <ShippingDrawer
-        isOpen={isShippingDrawerOpen}
-        onClose={() => setIsShippingDrawerOpen(false)}
-        deliveryDate={deliveryDateRange}
-      />
-
-      <CustomerProtectionDrawer
-        isOpen={isProtectionDrawerOpen}
-        onClose={() => setIsProtectionDrawerOpen(false)}
-      />
-
-      <CheckoutDialog
-        isOpen={isCheckoutModalOpen}
-        onClose={() => setIsCheckoutModalOpen(false)}
-        product={product}
-        onFinalize={() => {}}
-      />
+      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} onCheckoutClick={() => setIsCheckoutModalOpen(true)} product={product} cartItemCount={cartItemCount} />
+      <ChatDrawer isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} product={product} />
+      <VariationSelectorDrawer isOpen={isVariationDrawerOpen} onClose={() => setIsVariationDrawerOpen(false)} product={product} onConfirm={handleVariationConfirm} mode={variationDrawerMode} />
+      <CouponsDrawer isOpen={isCouponsDrawerOpen} onClose={() => setIsCouponsDrawerOpen(false)} onClaim={(amt) => {}} />
+      <ShippingDrawer isOpen={isShippingDrawerOpen} onClose={() => setIsShippingDrawerOpen(false)} deliveryDate={deliveryDateRange} />
+      <CustomerProtectionDrawer isOpen={isProtectionDrawerOpen} onClose={() => setIsProtectionDrawerOpen(false)} />
+      <CheckoutDialog isOpen={isCheckoutModalOpen} onClose={() => setIsCheckoutModalOpen(false)} product={product} onFinalize={() => {}} />
     </div>
   );
 };

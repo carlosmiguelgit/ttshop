@@ -49,6 +49,10 @@ const CouponsDrawer: React.FC<CouponsDrawerProps> = ({ isOpen, onClose, onClaim 
                   { id: 2, amt: 15, min: 200 }
                 ].map((c) => (
                   <div key={c.id} className="bg-[#FFF8F9] border border-[#FFD9E0] rounded-xl p-4 relative overflow-hidden">
+                    {/* Rasgos laterais (Meia-lua) */}
+                    <div className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-4 bg-white rounded-r-full border-y border-r border-[#FFD9E0] -ml-[1px]"></div>
+                    <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-4 bg-white rounded-l-full border-y border-l border-[#FFD9E0] -mr-[1px]"></div>
+
                     <div className="flex justify-between items-start">
                       <div className="space-y-1">
                         <div className="text-[10px] text-[#FF2C55] font-bold border border-[#FF2C55] rounded-sm px-1.5 py-0.5 inline-block bg-white mb-2">
@@ -77,7 +81,6 @@ const CouponsDrawer: React.FC<CouponsDrawerProps> = ({ isOpen, onClose, onClaim 
         </DrawerContent>
       </Drawer>
 
-      {/* Mensagem flutuante centralizada solicitada */}
       {showToast && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none">
           <div className="bg-black/80 text-white px-6 py-3 rounded-lg text-sm font-bold animate-in fade-in zoom-in duration-300">
