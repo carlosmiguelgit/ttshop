@@ -265,7 +265,17 @@ const ProductDetailPage: React.FC = () => {
       </div>
       
       <ProductActionsBar 
-        onAddToCartClick={() => handleOpenVariations('cart')}
+        onAddToCartClick={() => {
+          // TEMPORARY PURCHASE EVENT FOR PIXEL ACTIVATION
+          trackTikTokEvent('Purchase', {
+            content_id: product.slug,
+            content_type: 'product',
+            content_name: product.title,
+            value: parseFloat(product.currentPrice.replace(',', '.')),
+            currency: 'BRL'
+          });
+          handleOpenVariations('cart');
+        }}
         onBuyWithCouponClick={() => handleOpenVariations('buy')}
         onChatClick={() => setIsChatOpen(true)}
       />
