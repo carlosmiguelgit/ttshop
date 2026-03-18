@@ -9,6 +9,7 @@ import PaymentSummary from "./pages/PaymentSummary";
 import PixPayment from "./pages/PixPayment";
 import Checkout from "./pages/Checkout";
 import AddCard from "./pages/AddCard";
+import AddAddress from "./pages/AddAddress";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/produto/:slug" element={<Index />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/adicionar-cartao" element={<AddCard />} />
+          <Route path="/adicionar-endereco" element={<AddAddress />} />
           <Route path="/resumo-pagamento" element={<PaymentSummary />} />
           <Route path="/pix-pagamento" element={<PixPayment />} />
           <Route path="/" element={<Navigate replace to="/produto/parafusadeira-furadeira-completa-com-maleta-2-baterias" />} />
