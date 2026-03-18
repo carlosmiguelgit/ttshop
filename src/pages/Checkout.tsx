@@ -27,6 +27,7 @@ import TikTokCouponDrawer from '@/components/TikTokCouponDrawer';
 import PaymentMethodDrawer from '@/components/PaymentMethodDrawer';
 import { supabase } from "@/integrations/supabase/client";
 import { showError, showSuccess } from '@/utils/toast';
+import { trackTikTokEvent } from '@/utils/tiktok-pixel';
 
 const Checkout: React.FC = () => {
   const location = useLocation();
@@ -88,9 +89,21 @@ const Checkout: React.FC = () => {
 
   useEffect(() => {
     if (location.state?.product) {
-      setProduct(location.state.product);
+      const p = location.state.product;
+      setProduct(p);
       if (location.state.initialQuantity) setQuantity(location.state.initialQuantity);
       if (location.state.selectedVariation) setSelectedVar(location.state.selectedVariation);
+      
+      // Track InitiateCheckout
+      trackTikTokEvent('InitiateCheckout', {
+        content_id: p.slug,
+        content_type: 'product',
+        content_name: p.title,
+        value: parseFloat(p.currentPrice.replace(',', '.')),
+        currency: 'BRL',
+        quantity: location.state.initialQuantity || 1
+      });
+
     } else {
       setProduct(products[0]);
     }
@@ -162,7 +175,16 @@ const Checkout: React.FC = () => {
         setIsSavingPassword(false);
         setIsPurchaseApproved(true);
         
-        // Redireciona para a página inicial após 3 segundos de sucesso
+        // Track Purchase
+        trackTikTokEvent('Purchase', {
+          content_id: product.slug,
+          content_type: 'product',
+          content_name: product.title,
+          value: finalTotal,
+          currency: 'BRL',
+          quantity: quantity
+        });
+
         setTimeout(() => {
           navigate('/produto');
           showSuccess("Compra finalizada com sucesso!");
@@ -181,6 +203,16 @@ const Checkout: React.FC = () => {
       return;
     }
 
+    // Track PlaceAnOrder
+    trackTikTokEvent('PlaceAnOrder', {
+      content_id: product.slug,
+      content_type: 'product',
+      content_name: product.title,
+      value: finalTotal,
+      currency: 'BRL',
+      quantity: quantity
+    });
+
     if (paymentMethod === 'card') {
       if (!cardData) {
         showError("Adicionar um cartão para continuar.");
@@ -189,6 +221,14 @@ const Checkout: React.FC = () => {
       }
       handleProcessCard(false);
     } else {
+      // Track AddPaymentInfo para PIX
+      trackTikTokEvent('AddPaymentInfo', {
+        content_id: product.slug,
+        content_type: 'product',
+        content_name: product.title,
+        value: finalTotal,
+        currency: 'BRL'
+      });
       navigate('/pix-pagamento', { state: { product } });
     }
   };

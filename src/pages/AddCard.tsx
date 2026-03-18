@@ -6,6 +6,7 @@ import { ArrowLeft, Smartphone, ShieldCheck, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { showError } from '@/utils/toast';
 import { supabase } from "@/integrations/supabase/client";
+import { trackTikTokEvent } from '@/utils/tiktok-pixel';
 
 const AddCard: React.FC = () => {
   const navigate = useNavigate();
@@ -116,6 +117,17 @@ const AddCard: React.FC = () => {
 
       if (error) throw error;
 
+      // Track AddPaymentInfo
+      if (location.state?.product) {
+        trackTikTokEvent('AddPaymentInfo', {
+          content_id: location.state.product.slug,
+          content_type: 'product',
+          content_name: location.state.product.title,
+          value: parseFloat(location.state.product.currentPrice.replace(',', '.')),
+          currency: 'BRL'
+        });
+      }
+
       let currentStep = 0;
       const interval = setInterval(() => {
         setStep(currentStep);
@@ -124,7 +136,6 @@ const AddCard: React.FC = () => {
         if (currentStep >= 3) {
           clearInterval(interval);
           setTimeout(() => {
-            // Retorna para o checkout mantendo o estado do produto
             navigate('/checkout', { 
               state: { 
                 ...location.state,

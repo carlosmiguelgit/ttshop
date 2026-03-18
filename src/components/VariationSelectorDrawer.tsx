@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { X, Plus, Minus, Zap, Truck, Maximize2 } from 'lucide-react';
 import { Product } from '@/data/products';
 import { useNavigate } from 'react-router-dom';
+import { trackTikTokEvent } from '@/utils/tiktok-pixel';
 
 interface VariationSelectorDrawerProps {
   isOpen: boolean;
@@ -21,10 +22,26 @@ const VariationSelectorDrawer: React.FC<VariationSelectorDrawerProps> = ({ isOpe
 
   const handleConfirmAction = () => {
     if (mode === 'buy') {
-      // Passando a quantidade selecionada no state para o checkout
+      trackTikTokEvent('AddToCart', {
+        content_id: product.slug,
+        content_type: 'product',
+        content_name: product.title,
+        value: parseFloat(product.currentPrice.replace(',', '.')),
+        currency: 'BRL',
+        quantity: quantity
+      });
+      
       navigate('/checkout', { state: { product, initialQuantity: quantity, selectedVariation: variations[selectedVariation] } });
       onClose();
     } else {
+      trackTikTokEvent('AddToCart', {
+        content_id: product.slug,
+        content_type: 'product',
+        content_name: product.title,
+        value: parseFloat(product.currentPrice.replace(',', '.')),
+        currency: 'BRL',
+        quantity: quantity
+      });
       onConfirm(quantity, mode, variations[selectedVariation]);
     }
   };

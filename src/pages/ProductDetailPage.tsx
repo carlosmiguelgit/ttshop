@@ -20,6 +20,7 @@ import ChatDrawer from '@/components/ChatDrawer';
 import { LayoutGrid, ChevronRight, Truck, X } from 'lucide-react';
 import { addDays, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { trackTikTokEvent } from '@/utils/tiktok-pixel';
 
 const ProductDetailPage: React.FC = () => {
   const { slug } = useParams();
@@ -30,6 +31,19 @@ const ProductDetailPage: React.FC = () => {
     const found = products.find(p => p.slug === slug);
     return found || products[0];
   }, [slug]);
+
+  // Track ViewContent
+  useEffect(() => {
+    if (product) {
+      trackTikTokEvent('ViewContent', {
+        content_id: product.slug,
+        content_type: 'product',
+        content_name: product.title,
+        value: parseFloat(product.currentPrice.replace(',', '.')),
+        currency: 'BRL'
+      });
+    }
+  }, [product]);
 
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);

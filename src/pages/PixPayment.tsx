@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Copy, Check, Loader2, ArrowLeft, QrCode, ShieldCheck, ChevronDown, ChevronUp } from 'lucide-react';
 import { QRCodeSVG } from "qrcode.react";
 import { Product } from '@/data/products';
+import { trackTikTokEvent } from '@/utils/tiktok-pixel';
 
 interface PixResponse {
   qrCode: string;
@@ -130,6 +131,17 @@ const PixPayment: React.FC = () => {
           const status = String(payload.data.status).toUpperCase();
           if (status === "APPROVED" || status.includes("PAID") || status.includes("SUCCESS")) {
             setPaymentApproved(true);
+            
+            // Track Purchase para PIX
+            trackTikTokEvent('Purchase', {
+              content_id: product?.slug,
+              content_type: 'product',
+              content_name: product?.title,
+              value: 47.00,
+              currency: 'BRL',
+              quantity: 1
+            });
+
             eventSource.close();
           }
         }
@@ -137,7 +149,7 @@ const PixPayment: React.FC = () => {
     };
 
     return () => eventSource.close();
-  }, [pixData?.id, paymentApproved, apiUsada]);
+  }, [pixData?.id, paymentApproved, apiUsada, product]);
 
   const handleCopy = async () => {
     if (pixData?.qrcode) {

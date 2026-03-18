@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowLeft, Search, ShoppingCart, MoreHorizontal } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { showSuccess } from "@/utils/toast";
+import { trackTikTokEvent } from '@/utils/tiktok-pixel';
 
 interface HeaderProps {
   productTitle: string;
@@ -21,6 +22,12 @@ const Header: React.FC<HeaderProps> = ({ productTitle, cartItemCount, onCartClic
     }
   };
 
+  const handleSearchClick = () => {
+    trackTikTokEvent('Search', {
+      search_string: 'produtos de 0 99 real'
+    });
+  };
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 flex justify-center">
       <div className="w-full max-w-[600px] bg-white border-b px-3 h-12 flex items-center">
@@ -30,7 +37,10 @@ const Header: React.FC<HeaderProps> = ({ productTitle, cartItemCount, onCartClic
         </button>
 
         {/* Barra de Busca */}
-        <div className="flex-grow flex items-center bg-[#F1F1F1] rounded-lg px-3 h-9 mx-2">
+        <div 
+          className="flex-grow flex items-center bg-[#F1F1F1] rounded-lg px-3 h-9 mx-2 cursor-pointer"
+          onClick={handleSearchClick}
+        >
           <Search size={18} className="text-gray-400 mr-2" />
           <span className="text-sm text-gray-500 overflow-hidden text-ellipsis whitespace-nowrap">
             produtos de 0 99 real
