@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { products, Product } from '@/data/products';
 import Header from '@/components/Header';
 import ProductImageGallery from '@/components/ProductImageGallery';
@@ -21,8 +22,14 @@ import { addDays, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 const ProductDetailPage: React.FC = () => {
-  // Agora carregamos sempre o primeiro produto da lista por padrão
-  const product: Product = products[0];
+  const { slug } = useParams();
+  const navigate = useNavigate();
+
+  // Encontra o produto pelo slug ou usa o primeiro como fallback
+  const product: Product = useMemo(() => {
+    const found = products.find(p => p.slug === slug);
+    return found || products[0];
+  }, [slug]);
   
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
@@ -72,7 +79,8 @@ const ProductDetailPage: React.FC = () => {
   const formatTimer = (seconds: number) => {
     const m = Math.floor(seconds / 60);
     const s = seconds % 60;
-    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}:${(Math.floor(Math.random() * 99)).toString().padStart(2, '0')}`;
+    const ms = Math.floor(Math.random() * 99);
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}:${ms.toString().padStart(2, '0')}`;
   };
 
   const deliveryDateRange = useMemo(() => {
@@ -171,7 +179,7 @@ const ProductDetailPage: React.FC = () => {
                 <img src={firstImageSrc} className="w-8 h-8 rounded border border-gray-100 object-cover" />
                 {product.media[1] && <img src={product.media[1].src} className="w-8 h-8 rounded border border-gray-100 object-cover" />}
               </div>
-              <span className="text-[12px] text-gray-500">2 opções disponíveis</span>
+              <span className="text-[12px] text-gray-500">{product.media.length} fotos disponíveis</span>
             </div>
             <ChevronRight size={18} className="text-gray-400" />
           </div>

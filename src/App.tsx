@@ -37,7 +37,8 @@ const App = () => (
       />
       <BrowserRouter>
         <Routes>
-          {/* Rota principal definida como /produto */}
+          {/* Rota principal agora suporta slug dinâmico */}
+          <Route path="/:slug" element={<Index />} />
           <Route path="/produto" element={<Index />} />
           
           <Route path="/checkout" element={<Checkout />} />
@@ -46,8 +47,8 @@ const App = () => (
           <Route path="/resumo-pagamento" element={<PaymentSummary />} />
           <Route path="/pix-pagamento" element={<PixPayment />} />
           
-          {/* Redireciona a raiz para /produto */}
-          <Route path="/" element={<Navigate replace to="/produto" />} />
+          {/* Redireciona a raiz para a furadeira por padrão */}
+          <Route path="/" element={<Navigate replace to="/furadeira" />} />
           
           <Route path="*" element={<NotFound />} />
         </Routes>
