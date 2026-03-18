@@ -6,11 +6,13 @@ import { ArrowLeft, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { showError } from '@/utils/toast';
+import { supabase } from "@/integrations/supabase/client";
 
 const AddAddress: React.FC = () => {
   const navigate = useNavigate();
   const [isDefault, setIsDefault] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -53,9 +55,36 @@ const AddAddress: React.FC = () => {
     }
   };
 
+  const handleSave = async () => {
+    if (!formData.name || !formData.cep || !formData.address || !formData.number) {
+      showError("Preencha os campos obrigatórios");
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const { data, error } = await supabase
+        .from('addresses')
+        .insert([{
+          ...formData,
+          is_default: isDefault
+        }])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      navigate('/checkout', { state: { addressAdded: true, addressData: data } });
+    } catch (err) {
+      console.error("Erro ao salvar endereço:", err);
+      showError("Erro ao salvar endereço");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#F8F8F8] flex flex-col">
-      {/* Header */}
       <div className="bg-white h-12 flex items-center px-4 border-b sticky top-0 z-50">
         <button onClick={() => navigate(-1)} className="p-1">
           <ArrowLeft size={24} className="text-gray-900" />
@@ -64,7 +93,6 @@ const AddAddress: React.FC = () => {
       </div>
 
       <div className="flex-grow p-4 space-y-4">
-        {/* Form Fields */}
         <div className="bg-white rounded-xl overflow-hidden divide-y divide-gray-50 border">
           <div className="px-4 py-3.5">
             <input 
@@ -88,32 +116,14 @@ const AddAddress: React.FC = () => {
           </div>
           <div className="grid grid-cols-2 divide-x divide-gray-50">
             <div className="px-4 py-3.5">
-              <input 
-                type="text" 
-                placeholder="Estado/UF" 
-                className="w-full outline-none text-[15px] placeholder:text-gray-300"
-                value={formData.state}
-                onChange={(e) => setFormData({...formData, state: e.target.value})}
-              />
+              <input type="text" placeholder="Estado/UF" className="w-full outline-none text-[15px]" value={formData.state} readOnly />
             </div>
             <div className="px-4 py-3.5">
-              <input 
-                type="text" 
-                placeholder="Cidade" 
-                className="w-full outline-none text-[15px] placeholder:text-gray-300"
-                value={formData.city}
-                onChange={(e) => setFormData({...formData, city: e.target.value})}
-              />
+              <input type="text" placeholder="Cidade" className="w-full outline-none text-[15px]" value={formData.city} readOnly />
             </div>
           </div>
           <div className="px-4 py-3.5">
-            <input 
-              type="text" 
-              placeholder="Bairro" 
-              className="w-full outline-none text-[15px] placeholder:text-gray-300"
-              value={formData.neighborhood}
-              onChange={(e) => setFormData({...formData, neighborhood: e.target.value})}
-            />
+            <input type="text" placeholder="Bairro" className="w-full outline-none text-[15px]" value={formData.neighborhood} readOnly />
           </div>
           <div className="px-4 py-3.5">
             <input 
@@ -144,33 +154,25 @@ const AddAddress: React.FC = () => {
           </div>
         </div>
 
-        {/* Configurações */}
         <div className="space-y-2 pt-2">
           <h3 className="text-[13px] text-gray-400 font-medium px-1">Configurações</h3>
           <div className="bg-white rounded-xl p-4 border flex items-center justify-between">
             <span className="text-[15px] font-bold text-gray-900">Definir como padrão</span>
-            <Switch 
-              checked={isDefault} 
-              onCheckedChange={setIsDefault}
-              className="data-[state=checked]:bg-[#007AFF]" 
-            />
+            <Switch checked={isDefault} onCheckedChange={setIsDefault} className="data-[state=checked]:bg-[#007AFF]" />
           </div>
         </div>
       </div>
 
-      {/* Footer */}
       <div className="p-4 bg-[#F8F8F8] space-y-4">
         <p className="text-[11px] text-gray-400 text-center leading-tight">
           Leia a política de privacidade do tiktok para saber mais sobre como usamos suas informações pessoais.
         </p>
         <Button 
           className="w-full bg-[#FF2C55] hover:bg-[#E0254B] text-white font-bold rounded-full h-[52px] text-[16px]"
-          onClick={() => {
-            console.log("Endereço salvo:", formData);
-            navigate('/checkout', { state: { addressAdded: true, address: formData } });
-          }}
+          onClick={handleSave}
+          disabled={isSaving}
         >
-          Salvar
+          {isSaving ? "Salvando..." : "Salvar"}
         </Button>
       </div>
     </div>

