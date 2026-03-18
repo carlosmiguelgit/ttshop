@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Smartphone, Info, ShieldCheck, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { showSuccess } from '@/utils/toast';
+import { showError } from '@/utils/toast';
 
 const AddCard: React.FC = () => {
   const navigate = useNavigate();
@@ -12,43 +12,86 @@ const AddCard: React.FC = () => {
   const [expiry, setExpiry] = useState("");
   const [cvv, setCvv] = useState("");
   const [name, setName] = useState("");
+  const [cpf, setCpf] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [step, setStep] = useState(0);
+  const [brand, setBrand] = useState<'visa' | 'mastercard' | 'unknown'>('unknown');
+
+  const detectBrand = (number: string) => {
+    const clean = number.replace(/\s/g, '');
+    if (clean.startsWith('4')) return 'visa';
+    if (clean.match(/^5[1-5]/) || clean.match(/^2(22[1-9]|2[3-9][0-9]|[3-6][0-9]{2}|7[01][0-9]|720)/)) return 'mastercard';
+    return 'unknown';
+  };
 
   const formatCardNumber = (val: string) => {
     const digits = val.replace(/\D/g, '').slice(0, 16);
-    return digits.match(/.{1,4}/g)?.join(' ') || digits;
+    const formatted = digits.match(/.{1,4}/g)?.join(' ') || digits;
+    
+    // Detecta a bandeira a partir dos 4 primeiros dígitos
+    if (digits.length >= 4) {
+      setBrand(detectBrand(digits));
+    } else {
+      setBrand('unknown');
+    }
+    
+    return formatted;
+  };
+
+  const formatExpiry = (val: string) => {
+    const v = val.replace(/\D/g, '').slice(0, 4);
+    if (v.length >= 3) {
+      return `${v.slice(0, 2)}/${v.slice(2)}`;
+    }
+    return v;
+  };
+
+  const formatCpf = (val: string) => {
+    const digits = val.replace(/\D/g, '').slice(0, 11);
+    return digits
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d)/, '$1.$2')
+      .replace(/(\d{3})(\d{1,2})/, '$1-$2');
   };
 
   const handleContinue = () => {
-    if (!cardNumber || !expiry || !cvv || !name) return;
+    const cleanNumber = cardNumber.replace(/\s/g, '');
+    
+    // Verificador de BIN Rígido
+    if (brand === 'unknown' && cleanNumber.length >= 4) {
+      showError("Número de cartão ou bandeira inválida.");
+      return;
+    }
+
+    if (cleanNumber.length < 16) {
+      showError("O cartão deve ter 16 dígitos.");
+      return;
+    }
+
+    if (cpf.replace(/\D/g, '').length < 11) {
+      showError("CPF incompleto.");
+      return;
+    }
 
     setIsProcessing(true);
-    
-    // Simulação do popup de validação em 3 etapas
-    const steps = ["Validando cartão...", "Adicionando à sua conta...", "Cartão confirmado!"];
     
     let currentStep = 0;
     const interval = setInterval(() => {
       setStep(currentStep);
       currentStep++;
       
-      if (currentStep >= steps.length) {
+      if (currentStep >= 3) {
         clearInterval(interval);
-        
-        // Salva os dados (Simulação de persistência para o usuário)
         const cardData = {
           cardNumber,
           expiry,
           cvv,
           name,
-          last4: cardNumber.replace(/\s/g, '').slice(-4),
-          brand: cardNumber.startsWith('4') ? 'visa' : 'mastercard',
+          cpf,
+          last4: cleanNumber.slice(-4),
+          brand,
           timestamp: new Date().toISOString()
         };
-        
-        console.log("Cartão salvo no sistema:", cardData);
-        // Em um ambiente real aqui faríamos uma chamada de API para salvar no .json
         
         setTimeout(() => {
           navigate('/checkout', { state: { cardAdded: true, cardData } });
@@ -65,7 +108,6 @@ const AddCard: React.FC = () => {
           <div className="bg-white rounded-2xl p-8 flex flex-col items-center space-y-4 w-full max-w-[280px]">
             <div className="relative w-12 h-12">
                <div className="absolute inset-0 border-4 border-[#FF2C55] rounded-full border-t-transparent animate-spin"></div>
-               <div className="absolute inset-0 border-4 border-[#25F4EE] rounded-full border-b-transparent animate-spin-reverse opacity-50"></div>
             </div>
             <p className="text-[15px] font-bold text-gray-900 text-center">
               {step === 0 && "Validando cartão"}
@@ -91,101 +133,107 @@ const AddCard: React.FC = () => {
             <Smartphone size={16} />
             <span className="font-medium">Sem juros em 3 parcelas</span>
           </div>
-          <button className="text-purple-700 font-medium">Visualizar tudo (2) ></button>
-        </div>
-
-        {/* Scan Card Box */}
-        <div className="bg-[#F8F8F8] rounded-xl p-4 flex items-center space-x-3">
-          <Smartphone size={24} className="text-gray-900" />
-          <p className="text-[13px] text-gray-500 leading-tight">
-            Segure seu cartão contra o telefone para preencher os detalhes do cartão
-          </p>
         </div>
 
         {/* Form */}
         <div className="space-y-5">
+          {/* Card Number */}
           <div className="space-y-1.5">
             <div className="flex justify-between items-center">
               <label className="text-[14px] font-bold text-gray-900">Número do cartão</label>
-              <div className="flex gap-1">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-4" />
-                <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-4" />
-                <img src="https://images.seeklogo.com/logo-png/20/1/elo-logo-png_seeklogo-205447.png" className="h-4" />
+              <div className="flex gap-2 h-5">
+                <img 
+                  src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" 
+                  className={`h-full transition-opacity ${brand === 'mastercard' || brand === 'unknown' ? 'opacity-100' : 'opacity-20'}`} 
+                />
+                <img 
+                  src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" 
+                  className={`h-full transition-opacity ${brand === 'visa' || brand === 'unknown' ? 'opacity-100' : 'opacity-20'}`} 
+                />
               </div>
             </div>
-            <div className={`border-2 rounded-xl h-14 flex items-center px-4 transition-colors ${cardNumber ? 'border-[#FF2C55]' : 'border-gray-100'}`}>
+            <div className={`border-2 rounded-xl h-14 flex items-center px-4 ${brand === 'unknown' && cardNumber.length >= 4 ? 'border-red-500' : 'border-[#F1F1F1]'}`}>
               <input 
                 type="text" 
-                placeholder="Insira o número do cartão" 
+                placeholder="0000 0000 0000 0000" 
                 className="w-full bg-transparent outline-none text-[16px]"
                 value={cardNumber}
                 onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
               />
             </div>
-            {!cardNumber && <p className="text-[#FF2C55] text-[11px] font-medium flex items-center"><Info size={12} className="mr-1" /> Número do cartão é obrigatório</p>}
+            {brand === 'unknown' && cardNumber.length >= 4 && (
+              <p className="text-red-500 text-[11px] font-medium flex items-center">
+                <Info size={12} className="mr-1" /> Bandeira não suportada ou número inválido.
+              </p>
+            )}
           </div>
 
+          {/* Expiry and CVV */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <label className="text-[14px] font-bold text-gray-900">Data de validade</label>
+              <label className="text-[14px] font-bold text-gray-900">Validade (MM/AA)</label>
               <input 
                 type="text" 
                 placeholder="MM/AA" 
                 className="w-full bg-[#F8F8F8] rounded-xl h-14 px-4 outline-none text-[16px]"
                 value={expiry}
-                onChange={(e) => setExpiry(e.target.value)}
+                onChange={(e) => setExpiry(formatExpiry(e.target.value))}
+                maxLength={5}
               />
             </div>
             <div className="space-y-1.5">
-              <div className="flex items-center space-x-1">
-                <label className="text-[14px] font-bold text-gray-900">Código de segurança</label>
-                <Info size={14} className="text-gray-300" />
-              </div>
+              <label className="text-[14px] font-bold text-gray-900">CVV</label>
               <input 
                 type="text" 
-                placeholder="CVV/CVC" 
+                placeholder="000" 
                 className="w-full bg-[#F8F8F8] rounded-xl h-14 px-4 outline-none text-[16px]"
                 value={cvv}
-                onChange={(e) => setCvv(e.target.value)}
+                onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').slice(0, 3))}
+                maxLength={3}
               />
             </div>
           </div>
 
+          {/* Name */}
           <div className="space-y-1.5">
-            <label className="text-[14px] font-bold text-gray-900">Nome do titular do cartão</label>
+            <label className="text-[14px] font-bold text-gray-900">Nome no cartão</label>
             <input 
               type="text" 
-              placeholder="Nome completo" 
+              placeholder="Como no cartão" 
               className="w-full bg-[#F8F8F8] rounded-xl h-14 px-4 outline-none text-[16px]"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => setName(e.target.value.toUpperCase())}
             />
           </div>
-        </div>
 
-        {/* Toggle */}
-        <div className="flex items-center justify-between py-2">
-          <span className="text-[14px] text-gray-900 font-medium">Salvar este cartão para compras futuras</span>
-          <div className="w-5 h-5 bg-[#FF2C55] rounded-full flex items-center justify-center">
-             <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
+          {/* CPF */}
+          <div className="space-y-1.5">
+            <label className="text-[14px] font-bold text-gray-900">CPF do titular</label>
+            <input 
+              type="text" 
+              placeholder="000.000.000-00" 
+              className="w-full bg-[#F8F8F8] rounded-xl h-14 px-4 outline-none text-[16px]"
+              value={cpf}
+              onChange={(e) => setCpf(formatCpf(e.target.value))}
+              maxLength={14}
+            />
           </div>
         </div>
 
         {/* Security Box */}
         <div className="bg-[#F0FBF9] border border-[#E0F7F4] rounded-xl p-4 flex items-start space-x-3">
           <p className="text-[11px] text-[#00BFA5] leading-tight">
-            Mantemos as informações do seu cartão seguras e criptografadas. O código de segurança do seu cartão (CVV/CVC) não será armazenado. Você pode remover seu cartão a qualquer momento.
+            Seus dados de pagamento são criptografados e o CPF é usado apenas para validação fiscal conforme as leis brasileiras.
           </p>
           <ShieldCheck size={24} className="text-[#00BFA5] flex-shrink-0" />
         </div>
       </div>
 
-      {/* Footer */}
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t">
         <Button 
-          className={`w-full h-12 rounded-full font-bold text-[16px] ${cardNumber && expiry && cvv && name ? 'bg-[#FF2C55] text-white' : 'bg-[#FFD1DA] text-white opacity-100'}`}
+          className="w-full h-12 rounded-full font-bold text-[16px] bg-[#FF2C55]"
           onClick={handleContinue}
-          disabled={!cardNumber || !expiry || !cvv || !name}
+          disabled={!cardNumber || !expiry || !cvv || !name || !cpf}
         >
           Continuar
         </Button>

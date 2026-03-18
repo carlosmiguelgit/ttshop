@@ -115,9 +115,7 @@ const Checkout: React.FC = () => {
                   <Zap size={10} className="mr-1 fill-[#FF2C55]" /> Oferta Relâmpago
                 </div>
                 <div className="bg-[#F8F8F8] text-gray-500 text-[10px] font-medium px-1.5 py-0.5 rounded-sm flex items-center w-fit">
-                  <div className="mr-1 w-3 h-3 border border-gray-400 rounded-full flex items-center justify-center">
-                    <div className="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
-                  </div>
+                  <span className="mr-1 text-[12px]">🪙</span>
                   Devolução gratuita
                 </div>
               </div>
