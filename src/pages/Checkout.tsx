@@ -24,7 +24,7 @@ const Checkout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
-  const [locationStr, setLocationStr] = useState("Carregando sua localização...");
+  const [locationStr, setLocationStr] = useState("Buscando sua cidade...");
   const [isNoteDrawerOpen, setIsNoteDrawerOpen] = useState(false);
   const [isCouponDrawerOpen, setIsCouponDrawerOpen] = useState(false);
   const [orderNote, setOrderNote] = useState("");
@@ -45,22 +45,22 @@ const Checkout: React.FC = () => {
       setPaymentMethod('card');
     }
 
-    // Busca localização real por IP usando API pública
-    fetch('https://ipapi.co/json/')
+    // Busca localização real por IP (Cidade e Estado)
+    fetch('https://freeipapi.com/api/json')
       .then(res => res.json())
       .then(data => {
-        if (data.city && data.region_code) {
-          setLocationStr(`${data.city}, ${data.region_code}`);
+        if (data.cityName && data.regionName) {
+          // Formato: Cidade, SiglaEstado (ou NomeEstado)
+          setLocationStr(`${data.cityName}, ${data.regionName}`);
         } else {
-          setLocationStr("Sua localização");
+          setLocationStr("São Paulo, SP");
         }
       })
-      .catch(() => setLocationStr("Sua localização"));
+      .catch(() => setLocationStr("São Paulo, SP"));
   }, [location, navigate]);
 
   if (!product) return null;
 
-  // Valores baseados no produto atual
   const unitPrice = 47.00;
   const originalUnitPrice = 249.00;
   const subtotal = unitPrice * quantity;
@@ -87,7 +87,7 @@ const Checkout: React.FC = () => {
       </div>
 
       <div className="max-w-[600px] mx-auto">
-        {/* Endereço com Localização Real */}
+        {/* Endereço com Localização Real Dinâmica */}
         <div className="bg-white p-4 flex items-center justify-between border-b border-gray-100">
           <div className="flex items-center space-x-2">
             <MapPin size={18} className="text-gray-900" />
@@ -154,7 +154,6 @@ const Checkout: React.FC = () => {
           <h3 className="text-[14px] font-bold text-gray-900 mb-5">Forma de pagamento</h3>
           
           <div className="space-y-6">
-            {/* Opção Cartão */}
             <div className="flex items-start justify-between cursor-pointer" onClick={() => navigate('/adicionar-cartao')}>
               <div className="flex items-start space-x-3">
                 <div className="bg-gray-100 p-1 rounded-sm"><Plus size={14} className="text-gray-400" /></div>
@@ -177,7 +176,6 @@ const Checkout: React.FC = () => {
               <ChevronRight size={18} className="text-gray-300 mt-1" />
             </div>
 
-            {/* Opção Pix */}
             <div className="flex items-center justify-between cursor-pointer" onClick={() => setPaymentMethod('pix')}>
               <div className="flex items-center space-x-3">
                 <div className="bg-[#EFFFFD] p-1 rounded-sm">
@@ -190,7 +188,6 @@ const Checkout: React.FC = () => {
               </div>
             </div>
 
-            {/* Google Pay */}
             <div className="flex items-center justify-between border-t pt-4">
               <img src="https://images.seeklogo.com/logo-png/32/1/google-pay-logo-png_seeklogo-324563.png" className="h-4" alt="GPay" />
               <button className="flex items-center text-[13px] font-bold text-gray-900">
@@ -214,7 +211,7 @@ const Checkout: React.FC = () => {
         </div>
       </div>
 
-      {/* Footer Fixo Otimizado */}
+      {/* Footer Fixo Otimizado Clone 1:1 */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 z-50">
         <div className="max-w-[600px] mx-auto">
           <div className="flex justify-between items-center mb-2 px-1">
