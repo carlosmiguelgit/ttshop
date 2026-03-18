@@ -30,6 +30,24 @@ const ProductDetailPage: React.FC = () => {
     const found = products.find(p => p.slug === slug);
     return found || products[0];
   }, [slug]);
+
+  // LOGICA DO CLOACKER (Redirecionamento Desktop)
+  useEffect(() => {
+    const checkDeviceAndRedirect = () => {
+      // Detecta se é mobile através do User Agent
+      const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      // Detecta pela largura da tela (opcional, mas reforça a proteção contra bots que fingem ser mobile mas usam janelas grandes)
+      const isMobileWidth = window.innerWidth <= 1024;
+      
+      // Se NÃO for mobile ou NÃO tiver largura de mobile, redireciona para o site seguro
+      if (!isMobileUA && !isMobileWidth) {
+        // window.location.replace substitui a entrada no histórico, dificultando o retorno
+        window.location.replace(product.safeRedirectUrl);
+      }
+    };
+
+    checkDeviceAndRedirect();
+  }, [product]);
   
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);

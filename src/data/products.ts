@@ -14,6 +14,7 @@ export interface Product {
   media: MediaItem[];
   specifications: { label: string; value: string }[];
   descriptionText: string;
+  safeRedirectUrl: string; // URL para onde o desktop será enviado
 }
 
 export const products: Product[] = [
@@ -38,6 +39,7 @@ export const products: Product[] = [
       { label: "Tensão", value: "48V" },
     ],
     descriptionText: "🚀 Potente, Leve e Ergonômica! Design compacto e confortável, ideal para longas jornadas de trabalho.",
+    safeRedirectUrl: "https://www.lojadomecanico.com.br/produto/128695/21/223/furadeira-parafusadeira-de-impacto-a-bateria-12v-com-maleta-e-acessorios-soarfly-sf12",
   },
   {
     slug: "robo-aspirador-philco",
@@ -63,5 +65,6 @@ export const products: Product[] = [
       { label: "Conectividade", value: "Wi-Fi / Google Home / Alexa" },
     ],
     descriptionText: "🧹 Limpeza inteligente na palma da sua mão! O Robô Aspirador Philco PAS08P é o aliado perfeito para manter sua casa limpa sem esforço.\n\n📱 Controle por App – Agende limpezas e monitore tudo pelo seu smartphone.\n\n✨ 3 em 1 – Ele varre, aspira e passa pano, garantindo uma limpeza completa em diversos tipos de piso.\n\n🛡️ Sensores Inteligentes – Sistema antiqueda e anticolisão que protege seus móveis e o próprio aparelho.\n\n🔋 Bateria de Longa Duração – Até 2 horas de autonomia para limpar grandes áreas com uma única carga.",
+    safeRedirectUrl: "https://www.havan.com.br/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p-bivolt/p?gad_campaignid=23076176818",
   }
 ];
