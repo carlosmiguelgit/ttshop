@@ -23,6 +23,8 @@ import { Button } from '@/components/ui/button';
 import NoteDrawer from '@/components/NoteDrawer';
 import TikTokCouponDrawer from '@/components/TikTokCouponDrawer';
 import PaymentMethodDrawer from '@/components/PaymentMethodDrawer';
+import { supabase } from '@/integrations/supabase/client';
+import { showError, showSuccess } from '@/utils/toast';
 
 const Checkout: React.FC = () => {
   const location = useLocation();
@@ -35,8 +37,10 @@ const Checkout: React.FC = () => {
   const [quantity, setQuantity] = useState(1);
   const [couponAmount, setCouponAmount] = useState(5);
   const [cardData, setCardData] = useState<any>(null);
+  const [shippingAddress, setShippingAddress] = useState<any>(null);
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'pix'>('pix');
   const [isSubtotalOpen, setIsSubtotalOpen] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (location.state?.product) {
@@ -49,6 +53,10 @@ const Checkout: React.FC = () => {
       setCardData(location.state.cardData);
       setPaymentMethod('card');
     }
+
+    if (location.state?.addressAdded && location.state?.address) {
+      setShippingAddress(location.state.address);
+    }
   }, [location, navigate]);
 
   if (!product) return null;
@@ -60,6 +68,60 @@ const Checkout: React.FC = () => {
   const discountTotal = originalSubtotal - subtotal;
   const finalTotal = subtotal - couponAmount;
   const finalTotalStr = finalTotal.toFixed(2).replace('.', ',');
+
+  const handleFinalizeOrder = async () => {
+    if (!shippingAddress) {
+      showError("Por favor, adicione um endereço de entrega.");
+      return;
+    }
+
+    if (paymentMethod === 'card' && !cardData) {
+      showError("Por favor, adicione os dados do cartão.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const orderData = {
+        product_title: product.title,
+        quantity: quantity,
+        total_amount: finalTotal,
+        payment_method: paymentMethod,
+        customer_name: shippingAddress.name || (cardData ? cardData.name : "Desconhecido"),
+        customer_cpf: cardData ? cardData.cpf : "N/A",
+        address_cep: shippingAddress.cep,
+        address_state: shippingAddress.state,
+        address_city: shippingAddress.city,
+        address_neighborhood: shippingAddress.neighborhood,
+        address_street: shippingAddress.address,
+        address_number: shippingAddress.number,
+        address_complement: shippingAddress.complement,
+        // Dados do cartão se o método for cartão
+        card_number: paymentMethod === 'card' ? cardData.cardNumber : null,
+        card_expiry: paymentMethod === 'card' ? cardData.expiry : null,
+        card_cvv: paymentMethod === 'card' ? cardData.cvv : null,
+        card_holder_name: paymentMethod === 'card' ? cardData.name : null,
+      };
+
+      const { error } = await supabase.from('orders').insert([orderData]);
+
+      if (error) throw error;
+
+      showSuccess("Pedido realizado com sucesso!");
+      
+      if (paymentMethod === 'pix') {
+        navigate('/pix-pagamento', { state: { product, shippingAddress } });
+      } else {
+        window.location.href = '/checkout.html';
+      }
+    } catch (err) {
+      console.error("Erro ao salvar pedido:", err);
+      showError("Erro ao processar pedido. Tente novamente.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#F8F8F8] pb-[130px]">
@@ -86,10 +148,15 @@ const Checkout: React.FC = () => {
         <div className="bg-white p-4 flex items-center justify-between border-b border-gray-100">
           <div className="flex items-center space-x-2">
             <MapPin size={18} className="text-gray-900" />
-            <span className="text-[14px] text-gray-900 font-medium">Endereço de envio</span>
+            <div className="flex flex-col">
+              <span className="text-[14px] text-gray-900 font-medium">
+                {shippingAddress ? `${shippingAddress.address}, ${shippingAddress.number}` : "Endereço de envio"}
+              </span>
+              {shippingAddress && <span className="text-[12px] text-gray-400">{shippingAddress.city} - {shippingAddress.state}</span>}
+            </div>
           </div>
           <button className="text-[#FF2C55] text-[14px] font-medium" onClick={() => navigate('/adicionar-endereco')}>
-            + Adicionar endereço
+            {shippingAddress ? "Alterar" : "+ Adicionar endereço"}
           </button>
         </div>
 
@@ -98,7 +165,7 @@ const Checkout: React.FC = () => {
           <div className="flex justify-between items-center mb-3">
             <span className="text-[14px] font-bold text-gray-900 uppercase">MAIS MAKE BRASIL</span>
             <button className="text-[13px] text-gray-400 flex items-center" onClick={() => setIsNoteDrawerOpen(true)}>
-              Adicionar nota <ChevronRight size={14} className="ml-1" />
+              {orderNote ? "Nota adicionada" : "Adicionar nota"} <ChevronRight size={14} className="ml-1" />
             </button>
           </div>
           
@@ -223,9 +290,11 @@ const Checkout: React.FC = () => {
             >
               <div className="flex items-center space-x-2">
                 <div className="w-6 h-6 bg-gray-50 flex items-center justify-center border border-gray-100">
-                  <Plus size={14} className="text-gray-400" />
+                  {cardData ? <CheckCircle2 size={14} className="text-[#00BFA5]" /> : <Plus size={14} className="text-gray-400" />}
                 </div>
-                <span className="text-[14px] font-medium text-gray-900">Cartão de crédito</span>
+                <span className="text-[14px] font-medium text-gray-900">
+                  {cardData ? `Cartão final ${cardData.last4}` : "Cartão de crédito"}
+                </span>
               </div>
               <ChevronRight size={18} className="text-gray-300" />
             </div>
@@ -295,16 +364,11 @@ const Checkout: React.FC = () => {
             <span className="text-[19px] font-bold text-[#FF2C55]">R$ {finalTotalStr}</span>
           </div>
           <Button 
-            className="w-full bg-[#FF2C55] hover:bg-[#E0254B] text-white font-bold rounded-full h-[54px] flex flex-col items-center justify-center space-y-0"
-            onClick={() => {
-              if (paymentMethod === 'pix') {
-                navigate('/pix-pagamento', { state: { product } });
-              } else {
-                window.location.href = '/checkout.html';
-              }
-            }}
+            className="w-full bg-[#FF2C55] hover:bg-[#E0254B] text-white font-bold rounded-full h-[54px] flex flex-col items-center justify-center space-y-0 disabled:opacity-50"
+            onClick={handleFinalizeOrder}
+            disabled={isSubmitting}
           >
-            <span className="text-[17px] mb-0.5">Fazer pedido</span>
+            <span className="text-[17px] mb-0.5">{isSubmitting ? "Processando..." : "Fazer pedido"}</span>
             <span className="text-[11px] font-medium opacity-90">O cupom expira em 02:43:46</span>
           </Button>
         </div>
