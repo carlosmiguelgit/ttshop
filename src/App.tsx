@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import PaymentSummary from "./pages/PaymentSummary";
 import PixPayment from "./pages/PixPayment";
+import Checkout from "./pages/Checkout";
 
 const queryClient = new QueryClient();
 
@@ -17,19 +18,11 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          {/* Rota dinâmica para a página de detalhes do produto */}
           <Route path="/produto/:slug" element={<Index />} />
-
-          {/* Rota para o resumo de pagamento */}
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="/resumo-pagamento" element={<PaymentSummary />} />
-
-          {/* Rota para pagamento PIX */}
           <Route path="/pix-pagamento" element={<PixPayment />} />
-
-          {/* Redireciona a rota raiz para o novo produto padrão (furadeira/parafusadeira) */}
           <Route path="/" element={<Navigate replace to="/produto/parafusadeira-furadeira-completa-com-maleta-2-baterias" />} />
-
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

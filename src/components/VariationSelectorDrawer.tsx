@@ -3,6 +3,7 @@ import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { X, Plus, Minus, Zap, Truck, Maximize2 } from 'lucide-react';
 import { Product } from '@/data/products';
+import { useNavigate } from 'react-router-dom';
 
 interface VariationSelectorDrawerProps {
   isOpen: boolean;
@@ -16,6 +17,16 @@ const VariationSelectorDrawer: React.FC<VariationSelectorDrawerProps> = ({ isOpe
   const [quantity, setQuantity] = useState(1);
   const [selectedVariation, setSelectedVariation] = useState(1);
   const variations = ["COM faixa e polvo", "SEM faixa e polvo"];
+  const navigate = useNavigate();
+
+  const handleConfirmAction = () => {
+    if (mode === 'buy') {
+      navigate('/checkout', { state: { product } });
+      onClose();
+    } else {
+      onConfirm(quantity, mode, variations[selectedVariation]);
+    }
+  };
 
   return (
     <Drawer open={isOpen} onOpenChange={onClose}>
@@ -127,7 +138,7 @@ const VariationSelectorDrawer: React.FC<VariationSelectorDrawerProps> = ({ isOpe
           <div className="p-4 bg-white">
             <Button
               className="w-full bg-[#FF2C55] hover:bg-[#E0254B] text-white font-bold rounded-full h-[52px] flex flex-col items-center justify-center shadow-none border-none"
-              onClick={() => onConfirm(quantity, mode, variations[selectedVariation])}
+              onClick={handleConfirmAction}
             >
               {mode === 'cart' ? (
                 <span className="text-[16px]">Adicionar ao carrinho</span>
