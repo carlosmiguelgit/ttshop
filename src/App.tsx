@@ -37,7 +37,11 @@ const App = () => (
       />
       <BrowserRouter>
         <Routes>
-          {/* Rota principal agora suporta slug dinâmico */}
+          {/* Rotas Explícitas para o Menu do Dyad reconhecer */}
+          <Route path="/furadeira" element={<Index />} />
+          <Route path="/robo-aspirador-philco" element={<Index />} />
+          
+          {/* Fallback para slugs dinâmicos */}
           <Route path="/:slug" element={<Index />} />
           <Route path="/produto" element={<Index />} />
           
