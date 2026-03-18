@@ -40,7 +40,7 @@ const Header: React.FC<HeaderProps> = ({ productTitle, cartItemCount, onCartClic
         {/* Ícones da Direita com SETA CURVA de compartilhar */}
         <div className="flex items-center space-x-2">
           <button onClick={handleShare} className="p-1 relative">
-            <Redo2 size={24} className="text-gray-900" />
+            <Redo2 size={24} className="text-gray-900 stroke-[2.5]" />
             <div className="absolute -bottom-1 -right-4 bg-[#FF2C55] text-white text-[8px] px-1 rounded-sm whitespace-nowrap">
               Compre p...
             </div>
