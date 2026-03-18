@@ -6,7 +6,6 @@ import ProductImageGallery from '@/components/ProductImageGallery';
 import ProductPriceSection from '@/components/ProductPriceSection';
 import ProductActionsBar from '@/components/ProductActionsBar';
 import CartDrawer from '@/components/CartDrawer';
-import { showSuccess } from '@/utils/toast';
 import { MadeWithDyad } from '@/components/made-with-dyad';
 import CustomerProtectionSection from '@/components/CustomerProtectionSection';
 import ProductReviewsSection from '@/components/ProductReviewsSection';
@@ -101,7 +100,6 @@ const ProductDetailPage: React.FC = () => {
   const handleVariationConfirm = (qty: number, action: 'cart' | 'buy') => {
     if (action === 'cart') {
       setCartItemCount(prev => prev + qty);
-      showSuccess(`Adicionado ao carrinho`);
       setIsVariationDrawerOpen(false);
     } else {
       setCartItemCount(prev => (prev === 0 ? qty : prev));
@@ -202,7 +200,6 @@ const ProductDetailPage: React.FC = () => {
               >
                 <div className="absolute -top-1.5 -right-1.5 bg-[#00BFA5] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-bl-lg rounded-tr-lg border border-white">x12</div>
                 
-                {/* Rasgos laterais (Meia-lua) */}
                 <div className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-4 bg-[#F8F8F8] rounded-r-full border-y border-r border-[#CCF7F2] -ml-[1px]"></div>
                 <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-4 bg-[#F8F8F8] rounded-l-full border-y border-l border-[#CCF7F2] -mr-[1px]"></div>
 
