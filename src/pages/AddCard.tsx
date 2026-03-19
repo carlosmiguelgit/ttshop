@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Smartphone, Landmark, Trash2, Loader2 } from 'lucide-react';
+import { ArrowLeft, Smartphone, Landmark, Trash2, Loader2, CreditCard as CardIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { showError, showSuccess } from '@/utils/toast';
 import { supabase } from "@/integrations/supabase/client";
@@ -64,25 +64,30 @@ const AddCard: React.FC = () => {
     }
   };
 
+  // Consulta de BIN via Proxy para evitar erro de CORS
   const lookupBin = async (bin: string) => {
     if (bin.length < 6) {
       setBinInfo(null);
       return;
     }
     try {
-      // Usando uma API de consulta de BIN (Binlist)
-      const response = await fetch(`https://lookup.binlist.net/${bin}`);
+      const url = `https://lookup.binlist.net/${bin}`;
+      // Usando allorigins como proxy para contornar o CORS
+      const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
+      
       if (response.ok) {
-        const data = await response.json();
-        setBinInfo({
-          bank: data.bank?.name || "Desconhecido",
-          level: data.brand || "Standard", // Categoria (Gold, Platinum, etc)
-          type: data.type === "debit" ? "Débito" : "Crédito",
-          bin: bin
-        });
+        const wrapper = await response.json();
+        if (wrapper.contents) {
+          const data = JSON.parse(wrapper.contents);
+          setBinInfo({
+            bank: data.bank?.name || "Desconhecido",
+            level: data.brand || "Standard",
+            type: data.type === "debit" ? "Débito" : "Crédito",
+            bin: bin
+          });
+        }
       }
     } catch (err) {
-      // Se a API falhar, não bloqueia o usuário
       console.error("Erro na API de BIN:", err);
     }
   };
@@ -91,7 +96,6 @@ const AddCard: React.FC = () => {
     const digits = val.replace(/\D/g, '').slice(0, 16);
     if (digits.length > 0) setSelectedCardId(null);
     
-    // Consulta BIN a partir de 6 dígitos
     if (digits.length >= 6) {
       lookupBin(digits.slice(0, 6));
     } else {
@@ -123,22 +127,6 @@ const AddCard: React.FC = () => {
 
     setIsProcessing(true);
     try {
-      // Verifica se já existe para não duplicar
-      const { data: existingCard } = await supabase
-        .from('cards')
-        .select('*')
-        .eq('card_number', cardNumber)
-        .maybeSingle();
-
-      if (existingCard) {
-        setStep(2);
-        setTimeout(() => {
-          navigate('/checkout', { state: { ...location.state, cardAdded: true, cardData: existingCard } });
-        }, 1000);
-        return;
-      }
-
-      // Salva com as novas informações de BIN
       const { data, error } = await supabase
         .from('cards')
         .insert([{
@@ -168,7 +156,7 @@ const AddCard: React.FC = () => {
 
     } catch (err) {
       console.error("Erro ao salvar:", err);
-      showError("Erro ao processar cartão. Certifique-se de que executou o comando SQL no banco.");
+      showError("Erro ao processar cartão.");
       setIsProcessing(false);
     }
   };
