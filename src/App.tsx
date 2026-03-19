@@ -10,6 +10,8 @@ import PixPayment from "./pages/PixPayment";
 import Checkout from "./pages/Checkout";
 import AddCard from "./pages/AddCard";
 import AddAddress from "./pages/AddAddress";
+import Login from "./pages/Login";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -17,41 +19,24 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
-      <Sonner 
-        position="top-center" 
-        toastOptions={{
-          style: {
-            background: 'rgba(0, 0, 0, 0.75)',
-            color: '#fff',
-            border: 'none',
-            borderRadius: '8px',
-            fontSize: '14px',
-            textAlign: 'center',
-            backdropFilter: 'blur(4px)',
-            maxWidth: 'fit-content',
-            margin: '0 auto',
-            top: '40vh'
-          },
-          className: 'tiktok-toast'
-        }}
-      />
+      <Sonner position="top-center" />
       <BrowserRouter>
         <Routes>
-          {/* Rotas fixas do sistema */}
+          {/* Admin Routes */}
+          <Route path="/adminhavan" element={<Login />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
+
+          {/* Checkout Routes */}
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/adicionar-cartao" element={<AddCard />} />
           <Route path="/adicionar-endereco" element={<AddAddress />} />
           <Route path="/resumo-pagamento" element={<PaymentSummary />} />
           <Route path="/pix-pagamento" element={<PixPayment />} />
           
-          {/* Rotas explícitas para aparecerem no menu lateral */}
-          <Route path="/furadeira" element={<Index />} />
-          <Route path="/robo-aspirador-wap-w1000" element={<Index />} />
-          
-          {/* Rota dinâmica genérica de segurança */}
+          {/* Rota dinâmica para produtos do banco de dados */}
           <Route path="/:slug" element={<Index />} />
           
-          {/* Redireciona a raiz para o produto principal por padrão */}
+          {/* Default Route */}
           <Route path="/" element={<Navigate replace to="/furadeira" />} />
           
           <Route path="*" element={<NotFound />} />
