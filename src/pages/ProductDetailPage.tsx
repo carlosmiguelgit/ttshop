@@ -18,7 +18,7 @@ import CreatorVideosSection from '@/components/CreatorVideosSection';
 import CustomerProtectionDrawer from '@/components/CustomerProtectionDrawer';
 import ChatDrawer from '@/components/ChatDrawer';
 import StoreSection from '@/components/StoreSection';
-import { Truck, X } from 'lucide-react';
+import { Truck, X, ChevronRight } from 'lucide-react';
 import { addDays, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { trackTikTokEvent } from '@/utils/tiktok-pixel';
