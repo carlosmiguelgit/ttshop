@@ -17,24 +17,24 @@ const StoreSection: React.FC = () => {
       {/* Bloco 1: Avaliações da Loja */}
       <div className="bg-white p-4">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-[16px] font-bold text-gray-900">Avaliações da loja (438)</h3>
+          <h3 className="text-[16px] font-bold text-gray-900">Avaliações da loja (46M)</h3>
           <ChevronRight size={18} className="text-gray-300" />
         </div>
         
         <div className="flex space-x-2 overflow-x-auto no-scrollbar">
           <div className="flex items-center space-x-1.5 bg-[#F1F1F1] px-3 py-2 rounded-md shrink-0">
             <CustomCameraIcon />
-            <span className="text-[12px] font-medium text-gray-900">Inclui imagens ou vídeos (92)</span>
+            <span className="text-[12px] font-medium text-gray-900">Inclui imagens ou vídeos (16M)</span>
           </div>
           <div className="flex items-center space-x-1 bg-[#F1F1F1] px-3 py-2 rounded-md shrink-0">
             <span className="text-[12px] font-medium text-gray-900">5</span>
             <Star size={12} className="text-yellow-500 fill-yellow-500" />
-            <span className="text-[12px] font-medium text-gray-900">(387)</span>
+            <span className="text-[12px] font-medium text-gray-900">(15M)</span>
           </div>
           <div className="flex items-center space-x-1 bg-[#F1F1F1] px-3 py-2 rounded-md shrink-0">
             <span className="text-[12px] font-medium text-gray-900">4</span>
             <Star size={12} className="text-yellow-500 fill-yellow-500" />
-            <span className="text-[12px] font-medium text-gray-900">(27)</span>
+            <span className="text-[12px] font-medium text-gray-900">(1M)</span>
           </div>
         </div>
       </div>
@@ -54,7 +54,7 @@ const StoreSection: React.FC = () => {
               </div>
               <div>
                 <h4 className="text-[17px] font-bold text-gray-900">Havan</h4>
-                <p className="text-[13px] text-gray-400">26.0K vendido(s)</p>
+                <p className="text-[13px] text-gray-400">122M vendido(s)</p>
               </div>
             </div>
             <Button 
