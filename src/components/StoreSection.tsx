@@ -1,13 +1,22 @@
 "use client";
 
 import React from 'react';
-import { ChevronRight, Star, Camera, Zap } from 'lucide-react';
+import { ChevronRight, Star, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const StoreSection: React.FC = () => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  // Ícone de câmera customizado: preto por fora, miolo branco
+  const CustomCameraIcon = () => (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M23 19C23 20.1046 22.1046 21 21 21H3C1.89543 21 1 20.1046 1 19V8C1 6.89543 1.89543 6 3 6H7L9 3H15L17 6H21C22.1046 6 23 6.89543 23 8V19Z" fill="black" stroke="black" strokeWidth="2" strokeLinejoin="round"/>
+      <circle cx="12" cy="13" r="4" fill="white"/>
+      <circle cx="12" cy="13" r="2.5" fill="black"/>
+    </svg>
+  );
 
   return (
     <div className="bg-white mt-4">
@@ -20,7 +29,7 @@ const StoreSection: React.FC = () => {
         
         <div className="flex space-x-2 overflow-x-auto no-scrollbar pb-1">
           <div className="flex items-center space-x-1 bg-[#F8F8F8] px-3 py-1.5 rounded-full shrink-0">
-            <Camera size={14} className="text-black" />
+            <CustomCameraIcon />
             <span className="text-[12px] font-medium text-gray-900">Inclui imagens ou vídeos (19M)</span>
           </div>
           <div className="flex items-center space-x-1 bg-[#F8F8F8] px-3 py-1.5 rounded-full shrink-0">
@@ -76,10 +85,15 @@ const StoreSection: React.FC = () => {
 
         <div className="flex space-x-3 overflow-x-auto no-scrollbar">
           {/* Promo Card Ajustado conforme a foto */}
-          <div className="min-w-[120px] bg-[#FFF7F0] rounded-xl p-3 flex flex-col items-center justify-center text-center border border-[#FFEDD5]">
-            <Zap size={20} className="text-[#FF8A00] fill-[#FF8A00] mb-1" />
-            <p className="text-[14px] font-bold text-[#FF8A00] leading-tight">Até 64% de desconto</p>
-            <p className="text-[10px] text-black font-medium mt-2">Termina em 2 dias</p>
+          <div className="min-w-[120px] bg-[#FFF7F0] rounded-xl p-3 flex flex-col items-center justify-between text-center border border-[#FFEDD5] h-[160px]">
+            <div className="flex flex-col items-center">
+              <Zap size={24} className="text-[#FF6633] fill-[#FF6633] mb-1" />
+              <p className="text-[16px] font-bold text-[#FF6633] leading-tight">Até<br/>64% de<br/>desconto</p>
+            </div>
+            
+            <div className="w-full border-t border-dotted border-gray-200 my-2"></div>
+            
+            <p className="text-[11px] text-gray-500 font-medium">Termina em 2 dias</p>
           </div>
 
           {/* Product Cards */}
