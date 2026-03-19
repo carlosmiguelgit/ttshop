@@ -137,8 +137,8 @@ const Checkout: React.FC = () => {
               <Button className="w-full h-12 rounded-full bg-[#FF2C55] font-bold" onClick={() => navigate('/adicionar-cartao', { state: location.state })}>
                 Adicionar outro cartão
               </Button>
-              <Button variant="ghost" className="w-full h-10 font-bold text-gray-400" onClick={() => { setPaymentMethod('pix'); setCardError(false); }}>
-                Alterar método de pagamento
+              <Button variant="ghost" className="w-full h-10 font-bold text-gray-400" onClick={() => navigate('/pix-pagamento', { state: { product } })}>
+                Pagar com PIX
               </Button>
             </div>
           </div>
