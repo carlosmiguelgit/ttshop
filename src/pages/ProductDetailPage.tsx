@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { products as staticProducts, Product } from '@/data/products';
+import { useNavigate } from 'react-router-dom';
+import { products, Product } from '@/data/products';
 import Header from '@/components/Header';
 import ProductImageGallery from '@/components/ProductImageGallery';
 import ProductPriceSection from '@/components/ProductPriceSection';
@@ -18,17 +18,14 @@ import CreatorVideosSection from '@/components/CreatorVideosSection';
 import CustomerProtectionDrawer from '@/components/CustomerProtectionDrawer';
 import ChatDrawer from '@/components/ChatDrawer';
 import StoreSection from '@/components/StoreSection';
-import { LayoutGrid, ChevronRight, Truck, X, Loader2 } from 'lucide-react';
+import { Truck, X } from 'lucide-react';
 import { addDays, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { trackTikTokEvent } from '@/utils/tiktok-pixel';
-import { supabase } from "@/integrations/supabase/client";
 
 const ProductDetailPage: React.FC = () => {
-  const { slug } = useParams();
   const navigate = useNavigate();
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
+  const product = products[0]; // Sempre usa o primeiro e único produto
 
   // Estados da UI
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -50,49 +47,6 @@ const ProductDetailPage: React.FC = () => {
     'Descrição': useRef<HTMLDivElement>(null),
     'Recomendações': useRef<HTMLDivElement>(null)
   };
-
-  // Busca o produto no banco de dados
-  useEffect(() => {
-    const fetchProduct = async () => {
-      setLoading(true);
-      
-      // 1. Tenta buscar no Supabase
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .eq('slug', slug)
-        .single();
-
-      if (data && !error) {
-        // Converte o formato do banco para o formato do componente
-        const dbProduct: Product = {
-          slug: data.slug,
-          title: data.title,
-          currentPrice: data.current_price,
-          originalPrice: data.original_price,
-          discountPercentage: data.discount_percentage || 0,
-          discountAmount: "0", // Calculado na UI se necessário
-          rating: Number(data.rating) || 4.8,
-          reviewCount: data.review_count || 0,
-          salesCount: data.sales_count || 0,
-          flashSaleTimeSeconds: 300,
-          media: data.media || [],
-          specifications: data.specifications || [],
-          descriptionText: data.description_text || "",
-          safeRedirectUrl: "",
-          reviews: data.reviews || []
-        };
-        setProduct(dbProduct);
-      } else {
-        // 2. Fallback para os estáticos se não achar no banco
-        const staticFound = staticProducts.find(p => p.slug === slug);
-        setProduct(staticFound || staticProducts[0]);
-      }
-      setLoading(false);
-    };
-
-    fetchProduct();
-  }, [slug]);
 
   useEffect(() => {
     if (product) {
@@ -154,15 +108,6 @@ const ProductDetailPage: React.FC = () => {
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-white">
-        <Loader2 className="w-10 h-10 text-[#FF2C55] animate-spin mb-4" />
-        <p className="text-gray-400 font-medium">Carregando oferta...</p>
-      </div>
-    );
-  }
-
   if (!product) return null;
 
   const firstImageSrc = product.media[0]?.src || 'public/placeholder.svg';
@@ -219,7 +164,6 @@ const ProductDetailPage: React.FC = () => {
             onClick={() => setIsVariationDrawerOpen(true)}
           >
             <div className="flex items-center space-x-3 overflow-hidden">
-              <LayoutGrid size={20} className="text-gray-900 shrink-0" />
               <div className="flex space-x-1 shrink-0">
                 {product.media.slice(0, 5).map((m, idx) => (
                   <img 
