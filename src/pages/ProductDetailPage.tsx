@@ -243,6 +243,9 @@ const ProductDetailPage: React.FC = () => {
 
         <StoreSection />
         
+        {/* Faixa cinza de separação para completar o container da loja */}
+        <div className="h-2.5 bg-[#F8F8F8]"></div>
+
         <div ref={sectionRefs['Descrição']}>
           <ProductDescription specifications={product.specifications} descriptionText={product.descriptionText} firstImageSrc={firstImageSrc} />
         </div>
