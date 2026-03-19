@@ -29,24 +29,32 @@ const AddCard: React.FC = () => {
   }, []);
 
   const fetchSavedCards = async () => {
-    const { data } = await supabase
-      .from('cards')
-      .select('*')
-      .order('created_at', { ascending: false });
-    
-    if (data && data.length > 0) {
-      setSavedCards(data);
-      setSelectedCardId(data[0].id);
-    } else {
-      setSavedCards([]);
-      setSelectedCardId(null);
+    try {
+      const { data, error } = await supabase
+        .from('cards')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) throw error;
+
+      if (data && data.length > 0) {
+        setSavedCards(data);
+        setSelectedCardId(data[0].id);
+      } else {
+        setSavedCards([]);
+        setSelectedCardId(null);
+      }
+    } catch (err) {
+      console.error("Erro ao carregar cartões:", err);
     }
   };
 
   const handleRemoveCard = async (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
     try {
-      await supabase.from('cards').delete().eq('id', id);
+      const { error } = await supabase.from('cards').delete().eq('id', id);
+      if (error) throw error;
+
       showSuccess("Cartão removido.");
       setSavedCards(prev => {
         const filtered = prev.filter(c => c.id !== id);
@@ -57,6 +65,7 @@ const AddCard: React.FC = () => {
       });
     } catch (err) {
       showError("Erro ao remover cartão.");
+      console.error(err);
     }
   };
 
@@ -108,7 +117,6 @@ const AddCard: React.FC = () => {
   };
 
   const handleContinue = async () => {
-    // Se um cartão salvo estiver selecionado e os campos estiverem vazios
     if (selectedCardId && !cardNumber) {
       const card = savedCards.find(c => c.id === selectedCardId);
       navigate('/checkout', { state: { ...location.state, cardData: card } });
@@ -277,7 +285,7 @@ const AddCard: React.FC = () => {
           <ShieldCheck size={20} className="text-[#00BFA5] shrink-0" />
         </div>
 
-        {/* LISTA DE CARTÕES SALVOS - Só aparece se houver cartões */}
+        {/* LISTA DE CARTÕES SALVOS */}
         {savedCards.length > 0 && (
           <div className="space-y-4 pt-2">
             <h3 className="text-[14px] font-bold text-gray-900 px-1">Cartões salvos</h3>
@@ -290,7 +298,7 @@ const AddCard: React.FC = () => {
                   }`}
                   onClick={() => {
                     setSelectedCardId(card.id);
-                    setCardNumber(""); // Limpa formulário ao selecionar salvo
+                    setCardNumber(""); 
                   }}
                 >
                   <div className="flex items-center space-x-3">
