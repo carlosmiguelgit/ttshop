@@ -2,23 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Smartphone, Landmark, Trash2, Loader2, CreditCard as CardIcon } from 'lucide-react';
+import { ArrowLeft, Smartphone, Landmark, Trash2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { showError, showSuccess } from '@/utils/toast';
 import { supabase } from "@/integrations/supabase/client";
-
-// Dicionário local para os BINs mais comuns no Brasil (Fallback instantâneo)
-const BR_BIN_DATABASE: Record<string, { bank: string, level: string, type: string }> = {
-  "550209": { bank: "NUBANK", level: "GOLD", type: "Crédito" }, // Corrigido de Platinum para Gold
-  "522840": { bank: "NUBANK", level: "GOLD", type: "Crédito" },
-  "516292": { bank: "ITAÚ", level: "STANDARD", type: "Crédito" },
-  "542445": { bank: "ITAÚ", level: "PLATINUM", type: "Crédito" },
-  "455187": { bank: "INTER", level: "GOLD", type: "Crédito" },
-  "415274": { bank: "BRADESCO", level: "SIGNATURE", type: "Crédito" },
-  "523171": { bank: "SANTANDER", level: "ELITE", type: "Crédito" },
-  "402741": { bank: "CAIXA", level: "STANDARD", type: "Débito" },
-  "498407": { bank: "BANCO DO BRASIL", level: "INFINITE", type: "Crédito" },
-};
 
 const AddCard: React.FC = () => {
   const navigate = useNavigate();
@@ -83,48 +70,34 @@ const AddCard: React.FC = () => {
       return;
     }
 
-    // 1. Tenta o banco de dados local primeiro (Mais rápido e offline)
-    if (BR_BIN_DATABASE[bin]) {
-      setBinInfo({ ...BR_BIN_DATABASE[bin], bin });
-      return;
-    }
-
-    // 2. Tenta API alternativa (HandyAPI - Mais estável)
     try {
-      const response = await fetch(`https://data.handyapi.com/bin/${bin}`);
-      if (response.ok) {
-        const data = await response.json();
-        if (data.Status === "SUCCESS") {
-          setBinInfo({
-            bank: data.Issuer || "Desconhecido",
-            level: data.CardTier || "Standard",
-            type: data.Type === "DEBIT" ? "Débito" : "Crédito",
-            bin: bin
-          });
-          return;
-        }
+      // Chama a Edge Function que consulta a API global (Binlist) sem bloqueios
+      const { data, error } = await supabase.functions.invoke('lookup-bin', {
+        body: { bin }
+      });
+
+      if (error) throw error;
+
+      if (data) {
+        setBinInfo({
+          bank: data.bank?.name || "BANCO LOCAL",
+          level: data.brand || "STANDARD",
+          type: data.type === "debit" ? "Débito" : "Crédito",
+          bin: bin
+        });
       }
     } catch (err) {
-      console.log("[BIN API] HandyAPI falhou, tentando fallback genérico.");
+      console.log("[BIN API] Erro na consulta global, continuando silenciosamente.");
     }
-
-    // 3. Fallback genérico baseado no dígito inicial
-    const firstDigit = bin[0];
-    setBinInfo({
-      bank: firstDigit === '4' ? "VISA ISSUER" : (['2','5'].includes(firstDigit) ? "MASTERCARD ISSUER" : "BANCO LOCAL"),
-      level: "Standard",
-      type: "Crédito",
-      bin: bin
-    });
   };
 
   const formatCardNumber = (val: string) => {
     const digits = val.replace(/\D/g, '').slice(0, 16);
     if (digits.length > 0) setSelectedCardId(null);
     
-    if (digits.length >= 6) {
+    if (digits.length >= 6 && digits.slice(0, 6) !== binInfo?.bin) {
       lookupBin(digits.slice(0, 6));
-    } else {
+    } else if (digits.length < 6) {
       setBinInfo(null);
     }
 
