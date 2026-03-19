@@ -12,7 +12,9 @@ import {
   ExternalLink, 
   Save, 
   X,
-  LayoutGrid
+  LayoutGrid,
+  Settings,
+  Eye
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { showSuccess, showError } from '@/utils/toast';
@@ -25,14 +27,14 @@ const AdminDashboard = () => {
   const [currentProduct, setCurrentProduct] = useState<any>(null);
 
   useEffect(() => {
-    checkUser();
+    // Verificação de segurança local
+    const isAuth = localStorage.getItem('admin_auth') === 'true';
+    if (!isAuth) {
+      navigate('/adminhavan');
+      return;
+    }
     fetchProducts();
-  }, []);
-
-  const checkUser = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) navigate('/adminhavan');
-  };
+  }, [navigate]);
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -54,8 +56,8 @@ const AdminDashboard = () => {
     } else showError("Erro ao remover.");
   };
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
+  const handleLogout = () => {
+    localStorage.removeItem('admin_auth');
     navigate('/adminhavan');
   };
 
@@ -84,119 +86,194 @@ const AdminDashboard = () => {
       .upsert(currentProduct);
 
     if (!error) {
-      showSuccess("Produto salvo com sucesso!");
+      showSuccess("Produto salvo!");
       setIsEditing(false);
       fetchProducts();
     } else {
-      showError("Erro ao salvar: " + error.message);
+      showError("Erro ao salvar.");
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
-      {/* Top Bar */}
-      <div className="bg-white border-b h-16 flex items-center justify-between px-6 sticky top-0 z-50">
-        <div className="flex items-center space-x-2">
-          <div className="bg-[#FF2C55] p-1.5 rounded-lg text-white">
-            <Package size={20} />
+    <div className="min-h-screen bg-[#F1F1F1] flex flex-col">
+      {/* Header Admin */}
+      <header className="bg-white border-b h-16 flex items-center justify-between px-6 sticky top-0 z-50">
+        <div className="flex items-center space-x-3">
+          <div className="bg-[#FF2C55] p-2 rounded-xl text-white">
+            <Package size={22} />
           </div>
-          <h1 className="text-xl font-bold text-gray-900">Painel Havan</h1>
+          <div>
+            <h1 className="text-lg font-black text-gray-900 leading-none">PAINEL HAVAN</h1>
+            <span className="text-[10px] text-[#00BFA5] font-bold uppercase tracking-widest">Administrador Master</span>
+          </div>
         </div>
-        <div className="flex items-center space-x-4">
-          <Button onClick={() => openEdit()} className="bg-green-600 hover:bg-green-700">
+        <div className="flex items-center space-x-3">
+          <Button onClick={() => openEdit()} className="bg-black hover:bg-gray-800 text-white rounded-xl h-10 px-5 font-bold text-sm">
             <Plus size={18} className="mr-2" /> Novo Produto
           </Button>
-          <button onClick={handleLogout} className="text-gray-400 hover:text-red-500 transition-colors">
+          <button 
+            onClick={handleLogout} 
+            className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-[#FF2C55] hover:bg-[#FF2C55]/5 rounded-xl transition-all"
+            title="Sair do Sistema"
+          >
             <LogOut size={22} />
           </button>
         </div>
-      </div>
+      </header>
 
-      <div className="p-6 max-w-6xl mx-auto w-full">
+      <main className="p-6 max-w-7xl mx-auto w-full">
+        <div className="mb-8">
+          <h2 className="text-2xl font-black text-gray-900">Gerenciar Ofertas</h2>
+          <p className="text-gray-500 text-sm">Aqui você controla todos os produtos ativos na sua loja.</p>
+        </div>
+
         {loading ? (
-          <div className="flex justify-center py-20">Carregando produtos...</div>
+          <div className="flex flex-col items-center justify-center py-32 space-y-4">
+            <div className="w-10 h-10 border-4 border-[#FF2C55] border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-gray-400 font-medium">Sincronizando com banco de dados...</p>
+          </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products.map((p) => (
-              <div key={p.id} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
-                <div className="aspect-video bg-gray-100 relative">
-                  {p.media?.[0]?.src && <img src={p.media[0].src} className="w-full h-full object-cover" />}
-                  <div className="absolute top-2 right-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded-full">
-                    /{p.slug}
-                  </div>
-                </div>
-                <div className="p-4">
-                  <h3 className="font-bold text-gray-900 line-clamp-1 mb-1">{p.title}</h3>
-                  <div className="flex justify-between items-center mb-4">
-                    <span className="text-[#FF2C55] font-bold">R$ {p.current_price}</span>
-                    <span className="text-gray-400 text-xs">{p.sales_count} vendidos</span>
-                  </div>
-                  <div className="grid grid-cols-3 gap-2">
-                    <Button variant="outline" className="h-9" onClick={() => window.open(`/${p.slug}`, '_blank')}>
-                      <ExternalLink size={14} />
-                    </Button>
-                    <Button variant="outline" className="h-9 text-blue-600" onClick={() => openEdit(p)}>
-                      <Edit size={14} />
-                    </Button>
-                    <Button variant="outline" className="h-9 text-red-600" onClick={() => handleDelete(p.id)}>
-                      <Trash2 size={14} />
-                    </Button>
-                  </div>
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {products.length === 0 ? (
+              <div className="col-span-full bg-white rounded-3xl p-12 text-center border-2 border-dashed border-gray-200">
+                <Package className="mx-auto text-gray-200 mb-4" size={48} />
+                <h3 className="text-lg font-bold text-gray-400">Nenhum produto cadastrado</h3>
+                <Button onClick={() => openEdit()} className="mt-4 bg-[#FF2C55] rounded-xl">Começar agora</Button>
               </div>
-            ))}
+            ) : (
+              products.map((p) => (
+                <div key={p.id} className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden group hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                  <div className="aspect-[4/3] bg-gray-50 relative overflow-hidden">
+                    {p.media?.[0]?.src ? (
+                      <img src={p.media[0].src} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-200"><LayoutGrid size={48} /></div>
+                    )}
+                    <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-full border border-white/20 uppercase">
+                      /{p.slug}
+                    </div>
+                  </div>
+                  <div className="p-5">
+                    <h3 className="font-bold text-gray-900 text-[15px] line-clamp-1 mb-3">{p.title}</h3>
+                    <div className="flex justify-between items-center mb-5 bg-gray-50 p-3 rounded-2xl">
+                      <div className="flex flex-col">
+                        <span className="text-[10px] text-gray-400 font-bold uppercase">Preço</span>
+                        <span className="text-[#FF2C55] font-black text-lg">R$ {p.current_price}</span>
+                      </div>
+                      <div className="flex flex-col items-end">
+                        <span className="text-[10px] text-gray-400 font-bold uppercase">Vendas</span>
+                        <span className="text-gray-900 font-black text-lg">{p.sales_count}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Button 
+                        variant="outline" 
+                        className="flex-1 h-11 rounded-xl border-gray-100 hover:bg-black hover:text-white transition-all"
+                        onClick={() => window.open(`/${p.slug}`, '_blank')}
+                      >
+                        <Eye size={16} className="mr-2" /> Ver
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-11 h-11 rounded-xl border-gray-100 text-blue-500 hover:bg-blue-50"
+                        onClick={() => openEdit(p)}
+                      >
+                        <Settings size={18} />
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        className="w-11 h-11 rounded-xl border-gray-100 text-red-500 hover:bg-red-50"
+                        onClick={() => handleDelete(p.id)}
+                      >
+                        <Trash2 size={18} />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         )}
-      </div>
+      </main>
 
-      {/* Modal de Edição (Simplificado) */}
+      {/* Modal de Edição */}
       {isEditing && (
-        <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-4 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl">
-            <div className="p-4 border-b flex justify-between items-center">
-              <h2 className="font-bold text-lg">Configurar Produto</h2>
-              <button onClick={() => setIsEditing(false)}><X size={24} /></button>
+        <div className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="bg-white rounded-[32px] w-full max-w-2xl max-h-[90vh] flex flex-col overflow-hidden shadow-2xl border border-white/20">
+            <div className="p-6 border-b flex justify-between items-center bg-gray-50/50">
+              <div>
+                <h2 className="font-black text-xl text-gray-900">Configurar Produto</h2>
+                <p className="text-xs text-gray-400 font-bold uppercase tracking-wider">Edição em tempo real</p>
+              </div>
+              <button 
+                onClick={() => setIsEditing(false)}
+                className="w-10 h-10 flex items-center justify-center bg-white rounded-full shadow-sm text-gray-400 hover:text-gray-900"
+              >
+                <X size={20} />
+              </button>
             </div>
             
-            <div className="p-6 overflow-y-auto space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-gray-400 uppercase">Slug (Link único)</label>
-                  <input 
-                    className="w-full border rounded-lg h-10 px-3" 
-                    value={currentProduct.slug}
-                    onChange={(e) => setCurrentProduct({...currentProduct, slug: e.target.value})}
-                    placeholder="ex: robo-aspirador"
-                  />
+            <div className="p-8 overflow-y-auto space-y-6">
+              <div className="grid grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <label className="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">Slug (Link do Produto)</label>
+                  <div className="relative">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300 text-sm">/</span>
+                    <input 
+                      className="w-full bg-gray-50 border-none rounded-2xl h-12 pl-7 pr-4 outline-none focus:ring-2 focus:ring-[#FF2C55]/20 font-medium" 
+                      value={currentProduct.slug}
+                      onChange={(e) => setCurrentProduct({...currentProduct, slug: e.target.value})}
+                      placeholder="ex: robo-aspirador"
+                    />
+                  </div>
                 </div>
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-gray-400 uppercase">Preço Atual</label>
+                <div className="space-y-2">
+                  <label className="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">Preço Atual (R$)</label>
                   <input 
-                    className="w-full border rounded-lg h-10 px-3" 
+                    className="w-full bg-gray-50 border-none rounded-2xl h-12 px-4 outline-none focus:ring-2 focus:ring-[#FF2C55]/20 font-bold" 
                     value={currentProduct.current_price}
                     onChange={(e) => setCurrentProduct({...currentProduct, current_price: e.target.value})}
                   />
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-gray-400 uppercase">Título Completo</label>
+              <div className="space-y-2">
+                <label className="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">Título do Produto</label>
                 <textarea 
-                  className="w-full border rounded-lg p-3 h-20 resize-none" 
+                  className="w-full bg-gray-50 border-none rounded-2xl p-4 h-24 resize-none outline-none focus:ring-2 focus:ring-[#FF2C55]/20 font-medium leading-tight" 
                   value={currentProduct.title}
                   onChange={(e) => setCurrentProduct({...currentProduct, title: e.target.value})}
+                  placeholder="Nome que aparece no topo da página..."
                 />
               </div>
 
-              <div className="bg-blue-50 p-4 rounded-xl text-xs text-blue-700">
-                Dica: Use o editor para definir fotos, depoimentos e descrições detalhadas. Por enquanto, os dados de reviews e media são salvos como JSON.
+              <div className="p-4 bg-[#FF2C55]/5 border border-[#FF2C55]/10 rounded-2xl flex items-start space-x-3">
+                <div className="bg-[#FF2C55] p-1.5 rounded-lg text-white shrink-0 mt-0.5">
+                  <Settings size={14} />
+                </div>
+                <div>
+                  <h4 className="text-[13px] font-bold text-gray-900">Dica de Gerenciamento</h4>
+                  <p className="text-[11px] text-gray-500 leading-relaxed mt-1">
+                    Os dados de Fotos (Media) e Depoimentos (Reviews) são salvos em formato de dados avançados. 
+                    Se precisar mudar as imagens, você pode fazer isso direto no banco de dados Supabase para maior flexibilidade.
+                  </p>
+                </div>
               </div>
             </div>
 
-            <div className="p-4 bg-gray-50 border-t flex justify-end space-x-3">
-              <Button variant="ghost" onClick={() => setIsEditing(false)}>Cancelar</Button>
-              <Button className="bg-[#FF2C55] px-8" onClick={handleSave}>
-                <Save size={18} className="mr-2" /> Salvar Produto
+            <div className="p-6 bg-gray-50 border-t flex justify-end space-x-3">
+              <Button 
+                variant="ghost" 
+                className="h-12 px-6 rounded-2xl font-bold text-gray-400"
+                onClick={() => setIsEditing(false)}
+              >
+                Cancelar
+              </Button>
+              <Button 
+                className="bg-[#FF2C55] hover:bg-[#E0254B] px-10 h-12 rounded-2xl font-black text-white shadow-lg shadow-[#FF2C55]/20" 
+                onClick={handleSave}
+              >
+                <Save size={18} className="mr-2" /> Salvar Alterações
               </Button>
             </div>
           </div>
