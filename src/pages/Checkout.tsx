@@ -40,6 +40,7 @@ const Checkout: React.FC = () => {
   const [addressData, setAddressData] = useState<any>(null);
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'pix'>('pix');
   const [isSubtotalOpen, setIsSubtotalOpen] = useState(true);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   
   const [isProcessingCard, setIsProcessingCard] = useState(false);
   const [cardProcessingStep, setCardProcessingStep] = useState(0);
@@ -54,13 +55,34 @@ const Checkout: React.FC = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data: addresses } = await supabase.from('addresses').select('*').order('created_at', { ascending: false }).limit(1);
-      if (addresses?.length) setAddressData(addresses[0]);
+      setIsInitialLoading(true);
+      try {
+        // Busca endereço mais recente
+        const { data: addresses } = await supabase
+          .from('addresses')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(1);
+        
+        if (addresses?.length) {
+          setAddressData(addresses[0]);
+        }
 
-      const { data: cards } = await supabase.from('cards').select('*').order('created_at', { ascending: false });
-      if (cards?.length) {
-        setCardData(cards[0]);
-        setPaymentMethod('card');
+        // Busca cartão mais recente
+        const { data: cards } = await supabase
+          .from('cards')
+          .select('*')
+          .order('created_at', { ascending: false })
+          .limit(1);
+        
+        if (cards?.length) {
+          setCardData(cards[0]);
+          setPaymentMethod('card');
+        }
+      } catch (err) {
+        console.error("Erro ao carregar dados:", err);
+      } finally {
+        setIsInitialLoading(false);
       }
     };
     
@@ -86,17 +108,21 @@ const Checkout: React.FC = () => {
   const formatPrice = (val: number) => val.toFixed(2).replace('.', ',');
 
   const handlePlaceOrder = () => {
+    // Verificação rigorosa de endereço
     if (!addressData) {
-      showError("Adicione um endereço de entrega.");
+      showError("Por favor, adicione um endereço de entrega para continuar.");
       navigate('/adicionar-endereco', { state: location.state });
       return;
     }
 
     if (paymentMethod === 'card') {
+      // Verificação rigorosa de cartão
       if (!cardData) {
+        showError("Por favor, adicione um cartão de crédito para continuar.");
         navigate('/adicionar-cartao', { state: location.state });
         return;
       }
+      
       setIsProcessingCard(true);
       let currentStep = 0;
       const interval = setInterval(() => {
@@ -163,7 +189,7 @@ const Checkout: React.FC = () => {
             <div className="flex flex-col">
               <span className="text-[15px] text-gray-900 font-bold">Endereço de envio</span>
               <span className="text-[13px] text-gray-500">
-                {addressData ? `${addressData.city}, ${addressData.state}` : "Calçoene, AP"}
+                {addressData ? `${addressData.address}, ${addressData.number} - ${addressData.city}` : "Nenhum endereço cadastrado"}
               </span>
             </div>
           </div>
@@ -171,7 +197,7 @@ const Checkout: React.FC = () => {
             className="text-[#FF2C55] text-[15px] font-medium" 
             onClick={() => navigate('/adicionar-endereco', { state: location.state })}
           >
-            Alterar
+            {addressData ? "Alterar" : "Adicionar"}
           </button>
         </div>
 
@@ -361,8 +387,9 @@ const Checkout: React.FC = () => {
           <Button 
             className="w-full bg-[#FF2C55] hover:bg-[#E0254B] text-white font-bold rounded-full h-[56px] text-[17px]" 
             onClick={handlePlaceOrder}
+            disabled={isInitialLoading}
           >
-            Fazer pedido
+            {isInitialLoading ? <Loader2 className="animate-spin" /> : "Fazer pedido"}
           </Button>
         </div>
       </div>
