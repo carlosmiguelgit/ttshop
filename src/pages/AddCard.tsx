@@ -24,7 +24,7 @@ const AddCard: React.FC = () => {
   const detectBrand = (number: string) => {
     const clean = number.replace(/\s/g, '');
     if (clean.startsWith('4')) return 'visa';
-    if (clean.match(/^5[1-5]/) || clean.match(/^2(22[1-9]|2[3-9][0-9]|[3-6][0-9]{2}|7[01][0-9]|720)/)) return 'mastercard';
+    if (clean.startsWith('5')) return 'mastercard';
     return 'unknown';
   };
 
@@ -32,12 +32,14 @@ const AddCard: React.FC = () => {
     const digits = val.replace(/\D/g, '').slice(0, 16);
     const formatted = digits.match(/.{1,4}/g)?.join(' ') || digits;
     
-    if (digits.length >= 4) {
-      const detected = detectBrand(digits);
-      setBrand(detected);
-      if (detected === 'unknown') {
-        setErrorMsg("Bandeira não reconhecida. Use Visa ou Mastercard.");
+    if (digits.length > 0) {
+      const firstDigit = digits[0];
+      if (firstDigit !== '4' && firstDigit !== '5') {
+        setBrand('unknown');
+        setErrorMsg("Apenas cartões Visa (4) ou Mastercard (5) são aceitos.");
       } else {
+        const detected = detectBrand(digits);
+        setBrand(detected);
         setErrorMsg(null);
       }
     } else {
@@ -63,18 +65,13 @@ const AddCard: React.FC = () => {
       .replace(/(\d{3})(\d)/, '$1.$2')
       .replace(/(\d{3})(\d{1,2})/, '$1-$2');
     
-    if (digits.length === 11 && !validateCPF(digits)) {
-      setErrorMsg("CPF inválido. Verifique os números.");
-    } else {
-      setErrorMsg(null);
-    }
-    
     return formatted;
   };
 
-  const validateCPF = (cpf: string) => {
-    if (cpf.length !== 11 || !!cpf.match(/(\d)\1{10}/)) return false;
-    const digits = cpf.split('').map(Number);
+  const validateCPF = (cpfStr: string) => {
+    const cpfClean = cpfStr.replace(/\D/g, '');
+    if (cpfClean.length !== 11 || !!cpfClean.match(/(\d)\1{10}/)) return false;
+    const digits = cpfClean.split('').map(Number);
     const calc = (n: number) => digits.slice(0, n).reduce((acc, digit, idx) => acc + digit * (n + 1 - idx), 0) * 10 % 11 % 10;
     return calc(9) === digits[9] && calc(10) === digits[10];
   };
@@ -89,12 +86,12 @@ const AddCard: React.FC = () => {
     }
 
     if (brand === 'unknown') {
-      showError("Bandeira do cartão não suportada.");
+      showError("Apenas cartões começando com 4 ou 5 são permitidos.");
       return;
     }
 
     if (cleanCpf.length < 11 || !validateCPF(cleanCpf)) {
-      setErrorMsg("CPF inválido.");
+      showError("CPF inválido.");
       return;
     }
 
@@ -117,7 +114,6 @@ const AddCard: React.FC = () => {
 
       if (error) throw error;
 
-      // Track AddPaymentInfo
       if (location.state?.product) {
         trackTikTokEvent('AddPaymentInfo', {
           content_id: location.state.product.slug,
@@ -202,7 +198,7 @@ const AddCard: React.FC = () => {
                 <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className={`h-full transition-opacity ${brand === 'visa' || brand === 'unknown' ? 'opacity-100' : 'opacity-20'}`} />
               </div>
             </div>
-            <div className={`border-2 rounded-xl h-14 flex items-center px-4 transition-colors ${brand === 'unknown' && cardNumber.replace(/\s/g, '').length >= 4 ? 'border-red-500 bg-red-50/10' : 'border-[#F1F1F1]'}`}>
+            <div className={`border-2 rounded-xl h-14 flex items-center px-4 transition-colors ${brand === 'unknown' && cardNumber.replace(/\s/g, '').length > 0 ? 'border-red-500 bg-red-50/10' : 'border-[#F1F1F1]'}`}>
               <input 
                 type="text" 
                 placeholder="0000 0000 0000 0000" 

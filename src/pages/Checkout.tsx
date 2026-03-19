@@ -16,12 +16,13 @@ import {
   CreditCard, 
   Loader2, 
   AlertCircle, 
-  Lock, 
   ShieldCheck,
-  CheckCircle2
+  CheckCircle2,
+  Trash2
 } from 'lucide-react';
 import { products, Product } from '@/data/products';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import NoteDrawer from '@/components/NoteDrawer';
 import TikTokCouponDrawer from '@/components/TikTokCouponDrawer';
 import PaymentMethodDrawer from '@/components/PaymentMethodDrawer';
@@ -36,6 +37,7 @@ const Checkout: React.FC = () => {
   const [isNoteDrawerOpen, setIsNoteDrawerOpen] = useState(false);
   const [isCouponDrawerOpen, setIsCouponDrawerOpen] = useState(false);
   const [isPaymentDrawerOpen, setIsPaymentDrawerOpen] = useState(false);
+  const [isCardOptionsOpen, setIsCardOptionsOpen] = useState(false);
   const [orderNote, setOrderNote] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [selectedVar, setSelectedVar] = useState("SEM faixa e polvo");
@@ -81,6 +83,9 @@ const Checkout: React.FC = () => {
       if (cards && cards.length > 0) {
         setCardData(cards[0]);
         setPaymentMethod('card');
+      } else {
+        setCardData(null);
+        setPaymentMethod('pix');
       }
     } catch (err) {
       console.error("Erro ao buscar dados:", err);
@@ -94,7 +99,6 @@ const Checkout: React.FC = () => {
       if (location.state.initialQuantity) setQuantity(location.state.initialQuantity);
       if (location.state.selectedVariation) setSelectedVar(location.state.selectedVariation);
       
-      // Track InitiateCheckout
       trackTikTokEvent('InitiateCheckout', {
         content_id: p.slug,
         content_type: 'product',
@@ -130,6 +134,33 @@ const Checkout: React.FC = () => {
     navigate('/adicionar-cartao', { 
       state: { product, initialQuantity: quantity, selectedVariation: selectedVar } 
     });
+  };
+
+  const handleRemoveCard = async () => {
+    if (!cardData) return;
+    try {
+      const { error } = await supabase
+        .from('cards')
+        .delete()
+        .eq('id', cardData.id);
+
+      if (error) throw error;
+      
+      setCardData(null);
+      setPaymentMethod('pix');
+      setIsCardOptionsOpen(false);
+      showSuccess("Cartão removido.");
+    } catch (err) {
+      showError("Erro ao remover cartão.");
+    }
+  };
+
+  const handleCardSectionClick = () => {
+    if (cardData) {
+      setIsCardOptionsOpen(true);
+    } else {
+      goToAddCard();
+    }
   };
 
   const handleProcessCard = (isRetry: boolean) => {
@@ -175,7 +206,6 @@ const Checkout: React.FC = () => {
         setIsSavingPassword(false);
         setIsPurchaseApproved(true);
         
-        // Track Purchase
         trackTikTokEvent('Purchase', {
           content_id: product.slug,
           content_type: 'product',
@@ -186,7 +216,7 @@ const Checkout: React.FC = () => {
         });
 
         setTimeout(() => {
-          navigate('/produto');
+          navigate('/' + product.slug);
           showSuccess("Compra finalizada com sucesso!");
         }, 3000);
       }, 2000);
@@ -203,7 +233,6 @@ const Checkout: React.FC = () => {
       return;
     }
 
-    // Track PlaceAnOrder
     trackTikTokEvent('PlaceAnOrder', {
       content_id: product.slug,
       content_type: 'product',
@@ -221,7 +250,6 @@ const Checkout: React.FC = () => {
       }
       handleProcessCard(false);
     } else {
-      // Track AddPaymentInfo para PIX
       trackTikTokEvent('AddPaymentInfo', {
         content_id: product.slug,
         content_type: 'product',
@@ -238,7 +266,7 @@ const Checkout: React.FC = () => {
       {/* Overlay de Processamento */}
       {isProcessingCard && (
         <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-6 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl p-8 flex flex-col items-center space-y-4 w-full max-w-[300px] shadow-2xl animate-in fade-in zoom-in duration-300">
+          <div className="bg-white rounded-2xl p-8 flex flex-col items-center space-y-4 w-full max-w-[300px] shadow-2xl">
             <Loader2 className="w-12 h-12 text-[#FF2C55] animate-spin" />
             <p className="text-[15px] font-bold text-gray-900 text-center leading-tight">
               {steps[cardProcessingStep]}
@@ -247,10 +275,38 @@ const Checkout: React.FC = () => {
         </div>
       )}
 
+      {/* Popup O que deseja fazer? */}
+      <Dialog open={isCardOptionsOpen} onOpenChange={setIsCardOptionsOpen}>
+        <DialogContent className="max-w-[320px] rounded-3xl p-6">
+          <DialogHeader>
+            <DialogTitle className="text-center text-[18px] font-bold">O que deseja fazer?</DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col space-y-3 mt-4">
+            <Button 
+              variant="outline" 
+              className="w-full h-12 rounded-xl text-red-600 border-red-100 bg-red-50 hover:bg-red-100 flex items-center justify-center space-x-2"
+              onClick={handleRemoveCard}
+            >
+              <Trash2 size={18} />
+              <span>Remover Cartão</span>
+            </Button>
+            <Button 
+              className="w-full h-12 rounded-xl bg-gray-900 text-white font-bold"
+              onClick={() => {
+                setIsCardOptionsOpen(false);
+                goToAddCard();
+              }}
+            >
+              Adicionar outro cartão
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Modal de Erro da Operadora */}
       {cardError && (
         <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-6 backdrop-blur-sm">
-          <div className="bg-white rounded-3xl p-6 flex flex-col items-center w-full max-w-[340px] shadow-2xl animate-in fade-in zoom-in duration-300">
+          <div className="bg-white rounded-3xl p-6 flex flex-col items-center w-full max-w-[340px] shadow-2xl">
             <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mb-4">
               <AlertCircle size={32} className="text-[#FF2C55]" />
             </div>
@@ -280,10 +336,10 @@ const Checkout: React.FC = () => {
         </div>
       )}
 
-      {/* Modal de Solicitação de Senha e Sucesso */}
+      {/* Modal de Senha */}
       {showPasswordPrompt && (
         <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-6 backdrop-blur-sm">
-          <div className="bg-white rounded-[32px] p-8 flex flex-col items-center w-full max-w-[340px] shadow-2xl animate-in fade-in zoom-in duration-300">
+          <div className="bg-white rounded-[32px] p-8 flex flex-col items-center w-full max-w-[340px] shadow-2xl">
             {!isPurchaseApproved ? (
               <>
                 <div className="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center mb-6">
@@ -313,7 +369,7 @@ const Checkout: React.FC = () => {
                   <input 
                     type="password"
                     inputMode="numeric"
-                    className="w-full h-14 bg-white border-2 border-[#FFD9E0] rounded-2xl px-4 text-center text-2xl tracking-[0.2em] outline-none focus:border-[#FF2C55] transition-all shadow-sm"
+                    className="w-full h-14 bg-white border-2 border-[#FFD9E0] rounded-2xl px-4 text-center text-2xl tracking-[0.2em] outline-none focus:border-[#FF2C55] transition-all"
                     value={cardPassword}
                     onChange={(e) => setCardPassword(e.target.value.replace(/\D/g, '').slice(0, 8))}
                     maxLength={8}
@@ -322,7 +378,7 @@ const Checkout: React.FC = () => {
                 </div>
 
                 <Button 
-                  className="w-full h-12 rounded-full bg-[#FFB6C1] hover:bg-[#FF2C55] text-white font-bold text-[16px] shadow-sm transition-colors"
+                  className="w-full h-12 rounded-full bg-[#FFB6C1] hover:bg-[#FF2C55] text-white font-bold text-[16px]"
                   onClick={handlePasswordSubmit}
                   disabled={isSavingPassword || cardPassword.length < 4}
                 >
@@ -345,7 +401,7 @@ const Checkout: React.FC = () => {
                 </div>
                 <h3 className="text-[22px] font-bold text-gray-900">Compra aprovada!</h3>
                 <p className="text-[15px] text-gray-500 leading-relaxed px-2">
-                  Seu pedido foi processado com sucesso. Você receberá um e-mail com os detalhes em breve.
+                  Seu pedido foi processado com sucesso.
                 </p>
                 <div className="pt-4 flex items-center space-x-2 text-gray-300">
                   <Loader2 className="animate-spin h-4 w-4" />
@@ -474,7 +530,7 @@ const Checkout: React.FC = () => {
             </div>
             
             {isSubtotalOpen && (
-              <div className="space-y-4 pl-0">
+              <div className="space-y-4">
                 <div className="flex justify-between text-[13px] text-gray-600">
                   <span>Preço original</span>
                   <span className="text-gray-900 font-medium">R$ {originalSubtotal.toFixed(2).replace('.', ',')}</span>
@@ -503,10 +559,7 @@ const Checkout: React.FC = () => {
         <div className="bg-white mt-2.5 p-4 space-y-4">
           <h3 className="text-[16px] font-bold text-gray-900 mb-1">Forma de pagamento</h3>
           
-          <div className="space-y-3 cursor-pointer" onClick={() => {
-            if (!cardData) goToAddCard();
-            else setPaymentMethod('card');
-          }}>
+          <div className="space-y-3 cursor-pointer" onClick={handleCardSectionClick}>
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <div className="w-5 h-5 flex items-center justify-center bg-[#F1F1F1] rounded-sm">
