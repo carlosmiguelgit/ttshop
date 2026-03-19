@@ -26,16 +26,6 @@ const AddAddress: React.FC = () => {
     complement: ''
   });
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    // Regex para permitir apenas letras e espaços
-    if (/[0-9]/.test(value)) {
-      showError("O nome deve conter apenas letras.");
-      return;
-    }
-    setFormData({ ...formData, name: value });
-  };
-
   const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const cep = e.target.value.replace(/\D/g, '').slice(0, 8);
     setFormData(prev => ({ ...prev, cep }));
@@ -67,12 +57,8 @@ const AddAddress: React.FC = () => {
   };
 
   const handleSave = async () => {
-    // Validação: todos os campos exceto complemento são obrigatórios
-    const requiredFields = ['name', 'cep', 'state', 'city', 'neighborhood', 'address', 'number'];
-    const isMissingFields = requiredFields.some(field => !formData[field as keyof typeof formData]);
-
-    if (isMissingFields) {
-      showError("Por favor, preencha todos os campos obrigatórios.");
+    if (!formData.name || !formData.cep || !formData.address || !formData.number) {
+      showError("Preencha os campos obrigatórios");
       return;
     }
 
@@ -89,6 +75,7 @@ const AddAddress: React.FC = () => {
 
       if (error) throw error;
 
+      // Retorna para o checkout mantendo o estado do produto
       navigate('/checkout', { 
         state: { 
           ...location.state,
@@ -121,7 +108,7 @@ const AddAddress: React.FC = () => {
               placeholder="Nome e sobrenome" 
               className="w-full outline-none text-[15px] placeholder:text-gray-300"
               value={formData.name}
-              onChange={handleNameChange}
+              onChange={(e) => setFormData({...formData, name: e.target.value})}
             />
           </div>
           <div className="px-4 py-3.5 flex items-center justify-between">
