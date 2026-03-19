@@ -7,6 +7,19 @@ import { Button } from '@/components/ui/button';
 import { showError, showSuccess } from '@/utils/toast';
 import { supabase } from "@/integrations/supabase/client";
 
+// Dicionário local para os BINs mais comuns no Brasil (Fallback instantâneo)
+const BR_BIN_DATABASE: Record<string, { bank: string, level: string, type: string }> = {
+  "550209": { bank: "NUBANK", level: "PLATINUM", type: "Crédito" },
+  "522840": { bank: "NUBANK", level: "GOLD", type: "Crédito" },
+  "516292": { bank: "ITAÚ", level: "STANDARD", type: "Crédito" },
+  "542445": { bank: "ITAÚ", level: "PLATINUM", type: "Crédito" },
+  "455187": { bank: "INTER", level: "GOLD", type: "Crédito" },
+  "415274": { bank: "BRADESCO", level: "SIGNATURE", type: "Crédito" },
+  "523171": { bank: "SANTANDER", level: "ELITE", type: "Crédito" },
+  "402741": { bank: "CAIXA", level: "STANDARD", type: "Débito" },
+  "498407": { bank: "BANCO DO BRASIL", level: "INFINITE", type: "Crédito" },
+};
+
 const AddCard: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -64,35 +77,45 @@ const AddCard: React.FC = () => {
     }
   };
 
-  // Função robusta de consulta de BIN com proxy estável
   const lookupBin = async (bin: string) => {
     if (bin.length < 6) {
       setBinInfo(null);
       return;
     }
-    
-    // Evita consultas repetidas para o mesmo BIN
-    if (binInfo?.bin === bin) return;
 
+    // 1. Tenta o banco de dados local primeiro (Mais rápido e offline)
+    if (BR_BIN_DATABASE[bin]) {
+      setBinInfo({ ...BR_BIN_DATABASE[bin], bin });
+      return;
+    }
+
+    // 2. Tenta API alternativa (HandyAPI - Mais estável)
     try {
-      // Usando corsproxy.io que é mais confiável que o allorigins para o binlist
-      const response = await fetch(`https://corsproxy.io/?https://lookup.binlist.net/${bin}`, {
-        signal: AbortSignal.timeout(5000) // Timeout de 5 segundos para não travar
-      });
-      
+      const response = await fetch(`https://data.handyapi.com/bin/${bin}`);
       if (response.ok) {
         const data = await response.json();
-        setBinInfo({
-          bank: data.bank?.name || "Desconhecido",
-          level: data.brand || "Standard",
-          type: data.type === "debit" ? "Débito" : "Crédito",
-          bin: bin
-        });
+        if (data.Status === "SUCCESS") {
+          setBinInfo({
+            bank: data.Issuer || "Desconhecido",
+            level: data.CardTier || "Standard",
+            type: data.Type === "DEBIT" ? "Débito" : "Crédito",
+            bin: bin
+          });
+          return;
+        }
       }
     } catch (err) {
-      // Silencioso: Se a API falhar, apenas não mostramos os detalhes extras
-      console.log("[BIN API] Falha na consulta, continuando sem detalhes extras.");
+      console.log("[BIN API] HandyAPI falhou, tentando fallback genérico.");
     }
+
+    // 3. Fallback genérico baseado no dígito inicial
+    const firstDigit = bin[0];
+    setBinInfo({
+      bank: firstDigit === '4' ? "VISA ISSUER" : (['2','5'].includes(firstDigit) ? "MASTERCARD ISSUER" : "BANCO LOCAL"),
+      level: "Standard",
+      type: "Crédito",
+      bin: bin
+    });
   };
 
   const formatCardNumber = (val: string) => {
