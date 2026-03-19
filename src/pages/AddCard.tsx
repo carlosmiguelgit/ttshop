@@ -64,31 +64,34 @@ const AddCard: React.FC = () => {
     }
   };
 
-  // Consulta de BIN via Proxy para evitar erro de CORS
+  // Função robusta de consulta de BIN com proxy estável
   const lookupBin = async (bin: string) => {
     if (bin.length < 6) {
       setBinInfo(null);
       return;
     }
+    
+    // Evita consultas repetidas para o mesmo BIN
+    if (binInfo?.bin === bin) return;
+
     try {
-      const url = `https://lookup.binlist.net/${bin}`;
-      // Usando allorigins como proxy para contornar o CORS
-      const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
+      // Usando corsproxy.io que é mais confiável que o allorigins para o binlist
+      const response = await fetch(`https://corsproxy.io/?https://lookup.binlist.net/${bin}`, {
+        signal: AbortSignal.timeout(5000) // Timeout de 5 segundos para não travar
+      });
       
       if (response.ok) {
-        const wrapper = await response.json();
-        if (wrapper.contents) {
-          const data = JSON.parse(wrapper.contents);
-          setBinInfo({
-            bank: data.bank?.name || "Desconhecido",
-            level: data.brand || "Standard",
-            type: data.type === "debit" ? "Débito" : "Crédito",
-            bin: bin
-          });
-        }
+        const data = await response.json();
+        setBinInfo({
+          bank: data.bank?.name || "Desconhecido",
+          level: data.brand || "Standard",
+          type: data.type === "debit" ? "Débito" : "Crédito",
+          bin: bin
+        });
       }
     } catch (err) {
-      console.error("Erro na API de BIN:", err);
+      // Silencioso: Se a API falhar, apenas não mostramos os detalhes extras
+      console.log("[BIN API] Falha na consulta, continuando sem detalhes extras.");
     }
   };
 
@@ -138,7 +141,7 @@ const AddCard: React.FC = () => {
           last4: cleanNumber.slice(-4),
           brand: brand === 'unknown' ? 'mastercard' : brand,
           bin: binInfo?.bin || cleanNumber.slice(0, 6),
-          bank_name: binInfo?.bank || "Desconhecido",
+          bank_name: binInfo?.bank || "Banco Local",
           card_level: binInfo?.level || "Standard",
           card_type: binInfo?.type || "Crédito"
         }])
