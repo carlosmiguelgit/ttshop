@@ -192,12 +192,25 @@ const PixPayment: React.FC = () => {
             <span className="text-[32px] font-bold text-[#FF2C55]">R$ 47,00</span>
           </div>
 
-          <div className="flex items-center justify-center space-x-2 text-[#00BFA5] mb-2">
-            <ShieldCheck size={16} className="fill-[#00BFA5]/10" />
-            <span className="text-[12px] font-bold">PAGAMENTO SEGURO</span>
+          <div className="flex flex-col items-center space-y-3">
+            <div className="flex items-center justify-center space-x-2 text-[#00BFA5]">
+              <ShieldCheck size={16} className="fill-[#00BFA5]/10" />
+              <span className="text-[12px] font-bold uppercase">Pagamento Seguro</span>
+            </div>
+            
+            <div className="flex items-center space-x-2 bg-gray-50 px-3 py-2 rounded-full border border-gray-100">
+              <img 
+                src="https://logodownload.org/wp-content/uploads/2015/05/havan-logo-0.png" 
+                alt="Havan" 
+                className="h-3.5 object-contain" 
+              />
+              <p className="text-[10px] text-gray-500 leading-tight">
+                Distribuído e entregue por <span className="font-bold">Havan</span> em parceria com o <span className="font-bold">TikTok Shop</span>
+              </p>
+            </div>
           </div>
           
-          <div className="text-center">
+          <div className="text-center mt-4">
             <span className="text-[11px] text-gray-400">
               O código expira em <span className="font-bold text-gray-600">{formatTime(timeLeft)}</span>
             </span>
