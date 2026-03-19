@@ -17,12 +17,10 @@ import {
   Loader2, 
   AlertCircle, 
   ShieldCheck,
-  CheckCircle2,
-  Trash2
+  CheckCircle2
 } from 'lucide-react';
 import { products, Product } from '@/data/products';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import NoteDrawer from '@/components/NoteDrawer';
 import TikTokCouponDrawer from '@/components/TikTokCouponDrawer';
 import PaymentMethodDrawer from '@/components/PaymentMethodDrawer';
@@ -37,7 +35,6 @@ const Checkout: React.FC = () => {
   const [isNoteDrawerOpen, setIsNoteDrawerOpen] = useState(false);
   const [isCouponDrawerOpen, setIsCouponDrawerOpen] = useState(false);
   const [isPaymentDrawerOpen, setIsPaymentDrawerOpen] = useState(false);
-  const [isCardOptionsOpen, setIsCardOptionsOpen] = useState(false);
   const [orderNote, setOrderNote] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [selectedVar, setSelectedVar] = useState("SEM faixa e polvo");
@@ -77,11 +74,13 @@ const Checkout: React.FC = () => {
       const { data: cards } = await supabase
         .from('cards')
         .select('*')
-        .order('created_at', { ascending: false })
-        .limit(1);
+        .order('created_at', { ascending: false });
 
       if (cards && cards.length > 0) {
-        setCardData(cards[0]);
+        // Se houver um cartão específico vindo da navegação, usa ele, senão o mais recente
+        const selectedId = location.state?.cardData?.id;
+        const currentCard = selectedId ? cards.find(c => c.id === selectedId) : cards[0];
+        setCardData(currentCard || cards[0]);
         setPaymentMethod('card');
       } else {
         setCardData(null);
@@ -124,42 +123,22 @@ const Checkout: React.FC = () => {
   const finalTotal = subtotal - couponAmount;
   const finalTotalStr = finalTotal.toFixed(2).replace('.', ',');
 
-  const goToAddAddress = () => {
-    navigate('/adicionar-endereco', { 
-      state: { product, initialQuantity: quantity, selectedVariation: selectedVar } 
-    });
-  };
-
-  const goToAddCard = () => {
-    navigate('/adicionar-cartao', { 
-      state: { product, initialQuantity: quantity, selectedVariation: selectedVar } 
-    });
-  };
-
-  const handleRemoveCard = async () => {
-    if (!cardData) return;
-    try {
-      const { error } = await supabase
-        .from('cards')
-        .delete()
-        .eq('id', cardData.id);
-
-      if (error) throw error;
-      
-      setCardData(null);
-      setPaymentMethod('pix');
-      setIsCardOptionsOpen(false);
-      showSuccess("Cartão removido.");
-    } catch (err) {
-      showError("Erro ao remover cartão.");
+  const handlePlaceOrder = async () => {
+    if (!addressData) {
+      showError("Por favor, adicione um endereço de entrega.");
+      navigate('/adicionar-endereco', { state: { product, initialQuantity: quantity, selectedVariation: selectedVar } });
+      return;
     }
-  };
 
-  const handleCardSectionClick = () => {
-    if (cardData) {
-      setIsCardOptionsOpen(true);
+    if (paymentMethod === 'card') {
+      if (!cardData) {
+        showError("Adicionar um cartão para continuar.");
+        navigate('/adicionar-cartao', { state: { product, initialQuantity: quantity, selectedVariation: selectedVar } });
+        return;
+      }
+      handleProcessCard(false);
     } else {
-      goToAddCard();
+      navigate('/pix-pagamento', { state: { product } });
     }
   };
 
@@ -226,41 +205,6 @@ const Checkout: React.FC = () => {
     }
   };
 
-  const handlePlaceOrder = async () => {
-    if (!addressData) {
-      showError("Por favor, adicione um endereço de entrega.");
-      goToAddAddress();
-      return;
-    }
-
-    trackTikTokEvent('PlaceAnOrder', {
-      content_id: product.slug,
-      content_type: 'product',
-      content_name: product.title,
-      value: finalTotal,
-      currency: 'BRL',
-      quantity: quantity
-    });
-
-    if (paymentMethod === 'card') {
-      if (!cardData) {
-        showError("Adicionar um cartão para continuar.");
-        goToAddCard();
-        return;
-      }
-      handleProcessCard(false);
-    } else {
-      trackTikTokEvent('AddPaymentInfo', {
-        content_id: product.slug,
-        content_type: 'product',
-        content_name: product.title,
-        value: finalTotal,
-        currency: 'BRL'
-      });
-      navigate('/pix-pagamento', { state: { product } });
-    }
-  };
-
   return (
     <div className="min-h-screen bg-[#F8F8F8] pb-[130px]">
       {/* Overlay de Processamento */}
@@ -274,34 +218,6 @@ const Checkout: React.FC = () => {
           </div>
         </div>
       )}
-
-      {/* Popup O que deseja fazer? */}
-      <Dialog open={isCardOptionsOpen} onOpenChange={setIsCardOptionsOpen}>
-        <DialogContent className="max-w-[320px] rounded-3xl p-6">
-          <DialogHeader>
-            <DialogTitle className="text-center text-[18px] font-bold">O que deseja fazer?</DialogTitle>
-          </DialogHeader>
-          <div className="flex flex-col space-y-3 mt-4">
-            <Button 
-              variant="outline" 
-              className="w-full h-12 rounded-xl text-red-600 border-red-100 bg-red-50 hover:bg-red-100 flex items-center justify-center space-x-2"
-              onClick={handleRemoveCard}
-            >
-              <Trash2 size={18} />
-              <span>Remover Cartão</span>
-            </Button>
-            <Button 
-              className="w-full h-12 rounded-xl bg-gray-900 text-white font-bold"
-              onClick={() => {
-                setIsCardOptionsOpen(false);
-                goToAddCard();
-              }}
-            >
-              Adicionar outro cartão
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
 
       {/* Modal de Erro da Operadora */}
       {cardError && (
@@ -326,7 +242,7 @@ const Checkout: React.FC = () => {
                 className="w-full h-10 font-bold text-gray-400 hover:text-gray-600"
                 onClick={() => {
                   setCardError(false);
-                  goToAddCard();
+                  navigate('/adicionar-cartao', { state: location.state });
                 }}
               >
                 Adicionar outro cartão
@@ -445,7 +361,10 @@ const Checkout: React.FC = () => {
               )}
             </div>
           </div>
-          <button className="text-[#FF2C55] text-[14px] font-medium" onClick={goToAddAddress}>
+          <button 
+            className="text-[#FF2C55] text-[14px] font-medium" 
+            onClick={() => navigate('/adicionar-endereco', { state: location.state })}
+          >
             {addressData ? "Alterar" : "+ Adicionar endereço"}
           </button>
         </div>
@@ -559,7 +478,7 @@ const Checkout: React.FC = () => {
         <div className="bg-white mt-2.5 p-4 space-y-4">
           <h3 className="text-[16px] font-bold text-gray-900 mb-1">Forma de pagamento</h3>
           
-          <div className="space-y-3 cursor-pointer" onClick={handleCardSectionClick}>
+          <div className="space-y-3 cursor-pointer" onClick={() => navigate('/adicionar-cartao', { state: location.state })}>
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <div className="w-5 h-5 flex items-center justify-center bg-[#F1F1F1] rounded-sm">
@@ -623,7 +542,7 @@ const Checkout: React.FC = () => {
         isOpen={isPaymentDrawerOpen} 
         onClose={() => setIsPaymentDrawerOpen(false)} 
         onSelectMethod={setPaymentMethod} 
-        onAddCard={goToAddCard}
+        onAddCard={() => navigate('/adicionar-cartao', { state: location.state })}
         total={finalTotalStr}
       />
     </div>
