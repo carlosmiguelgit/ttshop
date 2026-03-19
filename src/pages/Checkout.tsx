@@ -17,14 +17,12 @@ import {
   Loader2, 
   AlertCircle, 
   ShieldCheck,
-  CheckCircle2,
-  MessageSquareText
+  CheckCircle2
 } from 'lucide-react';
 import { products, Product } from '@/data/products';
 import { Button } from '@/components/ui/button';
 import NoteDrawer from '@/components/NoteDrawer';
 import TikTokCouponDrawer from '@/components/TikTokCouponDrawer';
-import PaymentMethodDrawer from '@/components/PaymentMethodDrawer';
 import { supabase } from "@/integrations/supabase/client";
 import { showError, showSuccess } from '@/utils/toast';
 
@@ -34,7 +32,6 @@ const Checkout: React.FC = () => {
   const [product, setProduct] = useState<Product | null>(null);
   const [isNoteDrawerOpen, setIsNoteDrawerOpen] = useState(false);
   const [isCouponDrawerOpen, setIsCouponDrawerOpen] = useState(false);
-  const [isPaymentDrawerOpen, setIsPaymentDrawerOpen] = useState(false);
   const [orderNote, setOrderNote] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [selectedVar, setSelectedVar] = useState("SEM faixa e polvo");
@@ -156,12 +153,6 @@ const Checkout: React.FC = () => {
           </button>
           <h1 className="w-full text-center text-[18px] font-bold text-gray-900">Resumo do Pedido</h1>
         </div>
-        <div className="w-full h-10 flex items-center justify-center bg-white border-b border-gray-50">
-          <div className="flex items-center text-[#00BFA5] text-[13px] font-medium">
-            <CreditCard size={16} className="mr-2" />
-            <span>Planos sem juros disponíveis</span>
-          </div>
-        </div>
       </div>
 
       <div className="max-w-[600px] mx-auto">
@@ -184,10 +175,10 @@ const Checkout: React.FC = () => {
           </button>
         </div>
 
-        {/* Seção da Loja e Produto */}
+        {/* Seção do Produto */}
         <div className="bg-white mt-2.5 p-4">
           <div className="flex justify-between items-center mb-3">
-            <span className="text-[15px] font-bold text-gray-900">MAIS MAKE BRASIL</span>
+            <span className="text-[15px] font-bold text-gray-900 uppercase">MAIS MAKE BRASIL</span>
             <button 
               className="text-[13px] text-gray-400 flex items-center" 
               onClick={() => setIsNoteDrawerOpen(true)}
@@ -258,7 +249,7 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Resumo do Pedido Detalhado */}
+        {/* Resumo do Pedido - CLONE 1:1 */}
         <div className="bg-white mt-2.5 p-4">
           <h3 className="text-[16px] font-bold text-gray-900 mb-5">Resumo do Pedido</h3>
           <div className="space-y-4">
@@ -268,24 +259,24 @@ const Checkout: React.FC = () => {
             >
               <div className="flex items-center space-x-2">
                 <span className="text-[15px] font-bold text-gray-900">Subtotal do produto</span>
-                {isSubtotalOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+                {isSubtotalOpen ? <ChevronUp size={18} className="text-gray-400" /> : <ChevronDown size={18} className="text-gray-400" />}
               </div>
               <span className="text-[15px] font-bold text-gray-900">R$ {formatPrice(subtotal)}</span>
             </div>
             
             {isSubtotalOpen && (
               <div className="space-y-4 animate-in fade-in slide-in-from-top-1 duration-200">
-                <div className="flex justify-between text-[14px] text-gray-500">
+                <div className="flex justify-between text-[14px] text-gray-400">
                   <span>Preço original</span>
-                  <span className="text-gray-900">R$ {formatPrice(originalSubtotal)}</span>
+                  <span className="text-gray-900 font-medium">R$ {formatPrice(originalSubtotal)}</span>
                 </div>
-                <div className="flex justify-between text-[14px] text-gray-500">
+                <div className="flex justify-between text-[14px] text-gray-400">
                   <span>Desconto no produto</span>
-                  <span className="text-[#FF2C55]">- R$ {formatPrice(productDiscount)}</span>
+                  <span className="text-[#FF2C55] font-medium">- R$ {formatPrice(productDiscount)}</span>
                 </div>
-                <div className="flex justify-between text-[14px] text-gray-500">
+                <div className="flex justify-between text-[14px] text-gray-400">
                   <span>Cupons do TikTok Shop</span>
-                  <span className="text-[#FF2C55]">- R$ {formatPrice(couponAmount)}</span>
+                  <span className="text-[#FF2C55] font-medium">- R$ {formatPrice(couponAmount)}</span>
                 </div>
               </div>
             )}
@@ -295,45 +286,72 @@ const Checkout: React.FC = () => {
                 <span className="text-[18px] font-bold text-gray-900">Total</span>
                 <span className="text-[18px] font-bold text-gray-900">R$ {formatPrice(finalTotal)}</span>
               </div>
-              <span className="text-[12px] text-gray-400 text-right mt-1">Impostos inclusos</span>
+              <span className="text-[12px] text-gray-300 text-right mt-1">Impostos inclusos</span>
             </div>
           </div>
         </div>
 
-        {/* Forma de Pagamento */}
-        <div className="bg-white mt-2.5 p-4 space-y-5">
+        {/* Forma de Pagamento - CLONE 1:1 */}
+        <div className="bg-white mt-2.5 p-4 space-y-6">
           <h3 className="text-[16px] font-bold text-gray-900">Forma de pagamento</h3>
           
+          {/* Opção Cartão */}
           <div 
-            className="flex items-center justify-between cursor-pointer"
-            onClick={() => navigate('/adicionar-cartao', { state: location.state })}
+            className="flex flex-col space-y-3 cursor-pointer"
+            onClick={() => {
+              setPaymentMethod('card');
+              if (!cardData) navigate('/adicionar-cartao', { state: location.state });
+            }}
           >
-            <div className="flex flex-col space-y-2">
+            <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
-                <CreditCard size={22} className="text-[#00BFA5]" />
-                <span className="text-[15px] font-bold text-gray-900">
+                <div className="bg-[#EFFFFD] p-1.5 rounded-sm">
+                  <CreditCard size={18} className="text-[#00BFA5]" />
+                </div>
+                <span className="text-[15px] font-medium text-gray-900">
                   {cardData ? `Cartão final ${cardData.last4}` : "Adicionar cartão"}
                 </span>
               </div>
-              {cardData && (
-                <div className="pl-8">
-                  <img 
-                    src={cardData.brand === 'mastercard' ? "https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" : "https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png"} 
-                    className="h-4" 
-                    alt="Bandeira" 
-                  />
-                </div>
-              )}
+              <div className="flex items-center space-x-3">
+                {paymentMethod === 'card' && <div className="w-2.5 h-2.5 bg-[#FF2C55] rounded-full" />}
+                <ChevronRight size={18} className="text-gray-200" />
+              </div>
             </div>
+            
+            {cardData && (
+              <div className="pl-10 space-y-3">
+                <div className="flex gap-2">
+                  <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-4" alt="Mastercard" />
+                  <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-4" alt="Visa" />
+                </div>
+                <div className="bg-[#FFF1F3] text-[#FF2C55] text-[11px] font-bold px-3 py-1 rounded-sm border border-[#FFD9E0] flex items-center w-fit">
+                  Sem juros em até 3 parcelas <ChevronRight size={12} className="ml-1" />
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="h-[1px] bg-gray-100 w-full"></div>
+
+          {/* Opção Pix */}
+          <div 
+            className="flex items-center justify-between cursor-pointer"
+            onClick={() => setPaymentMethod('pix')}
+          >
             <div className="flex items-center space-x-3">
-              <div className="w-3 h-3 bg-[#FF2C55] rounded-full" />
-              <ChevronRight size={20} className="text-gray-300" />
+              <div className="bg-[#EFFFFD] p-1.5 rounded-sm">
+                <img src="https://logospng.org/download/pix/logo-pix-icone-512.png" className="h-4 w-4" alt="Pix" />
+              </div>
+              <span className="text-[15px] font-medium text-gray-900">Pix</span>
+            </div>
+            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === 'pix' ? 'border-[#FF2C55]' : 'border-gray-200'}`}>
+              {paymentMethod === 'pix' && <div className="w-2.5 h-2.5 bg-[#FF2C55] rounded-full" />}
             </div>
           </div>
         </div>
       </div>
 
-      {/* Footer Fixo */}
+      {/* Footer Fixo - CLONE 1:1 */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 z-50 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
         <div className="max-w-[600px] mx-auto">
           <div className="flex justify-between items-center mb-3 px-1">
