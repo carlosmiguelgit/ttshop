@@ -44,11 +44,7 @@ const App = () => (
           <Route path="/resumo-pagamento" element={<PaymentSummary />} />
           <Route path="/pix-pagamento" element={<PixPayment />} />
           
-          {/* Rotas explícitas para os produtos */}
-          <Route path="/furadeira" element={<Index />} />
-          <Route path="/robo-aspirador-wap-w1000" element={<Index />} />
-          
-          {/* Rota dinâmica genérica */}
+          {/* Rota dinâmica genérica - Captura qualquer slug */}
           <Route path="/:slug" element={<Index />} />
           
           {/* Redireciona a raiz para o produto principal por padrão */}
