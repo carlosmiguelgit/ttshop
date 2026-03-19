@@ -18,7 +18,7 @@ import CreatorVideosSection from '@/components/CreatorVideosSection';
 import CustomerProtectionDrawer from '@/components/CustomerProtectionDrawer';
 import ChatDrawer from '@/components/ChatDrawer';
 import StoreSection from '@/components/StoreSection';
-import { Truck, X, ChevronRight } from 'lucide-react';
+import { Truck, X, ChevronRight, LayoutGrid } from 'lucide-react';
 import { addDays, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { trackTikTokEvent } from '@/utils/tiktok-pixel';
@@ -111,7 +111,6 @@ const ProductDetailPage: React.FC = () => {
   if (!product) return null;
 
   const firstImageSrc = product.media[0]?.src || 'public/placeholder.svg';
-  const variationsText = `${product.media.length} opções disponíveis`;
 
   return (
     <div className="min-h-screen bg-[#F8F8F8] pb-[104px]">
@@ -159,21 +158,24 @@ const ProductDetailPage: React.FC = () => {
             onShippingClick={() => setIsShippingDrawerOpen(true)}
           />
 
+          {/* Seção de Variações Clonada 1:1 */}
           <div 
             className="bg-white p-4 border-t border-gray-50 flex items-center justify-between cursor-pointer"
             onClick={() => setIsVariationDrawerOpen(true)}
           >
             <div className="flex items-center space-x-3 overflow-hidden">
+              {/* Ícone de 4 quadrados pretos */}
+              <LayoutGrid size={20} className="text-gray-900 shrink-0" />
+              
               <div className="flex space-x-1 shrink-0">
-                {product.media.slice(0, 5).map((m, idx) => (
-                  <img 
-                    key={idx} 
-                    src={m.src} 
-                    className="w-10 h-10 rounded-md border border-gray-100 object-cover" 
-                  />
-                ))}
+                {/* Apenas a segunda foto (index 1) aparecendo */}
+                <img 
+                  src={product.media[1]?.src || product.media[0].src} 
+                  className="w-10 h-10 rounded-md border border-gray-100 object-cover" 
+                  alt="Opção Padrão"
+                />
               </div>
-              <span className="text-[13px] text-gray-400 whitespace-nowrap">{variationsText}</span>
+              <span className="text-[13px] text-gray-400 whitespace-nowrap">1 opção disponível</span>
             </div>
             <ChevronRight size={18} className="text-gray-400 shrink-0" />
           </div>

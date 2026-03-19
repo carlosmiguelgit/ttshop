@@ -16,9 +16,12 @@ interface VariationSelectorDrawerProps {
 
 const VariationSelectorDrawer: React.FC<VariationSelectorDrawerProps> = ({ isOpen, onClose, product, onConfirm, mode }) => {
   const [quantity, setQuantity] = useState(1);
-  const [selectedVariation, setSelectedVariation] = useState(1);
-  const variations = ["COM faixa e polvo", "SEM faixa e polvo"];
+  const [selectedVariation, setSelectedVariation] = useState(0);
+  const variations = ["Padrão"];
   const navigate = useNavigate();
+
+  // Usamos a segunda foto (index 1) como a foto da variação "Padrão"
+  const displayImage = product.media[1]?.src || product.media[0].src;
 
   const handleConfirmAction = () => {
     if (mode === 'buy') {
@@ -55,7 +58,7 @@ const VariationSelectorDrawer: React.FC<VariationSelectorDrawerProps> = ({ isOpe
           <div className="p-4 flex space-x-4 relative">
             <div className="w-[100px] h-[100px] bg-[#F8F8F8] rounded-lg overflow-hidden flex-shrink-0 border border-gray-100 p-1">
               <img 
-                src={product.media[selectedVariation]?.src || product.media[0].src} 
+                src={displayImage} 
                 alt="Produto" 
                 className="w-full h-full object-contain"
               />
@@ -68,7 +71,7 @@ const VariationSelectorDrawer: React.FC<VariationSelectorDrawerProps> = ({ isOpe
                 </div>
                 <div className="text-[#FF2C55] font-bold flex items-baseline">
                   <span className="text-[14px] mr-1">R$</span>
-                  <span className="text-[26px] leading-none">47,00</span>
+                  <span className="text-[26px] leading-none">197,00</span>
                 </div>
               </div>
               
@@ -113,7 +116,7 @@ const VariationSelectorDrawer: React.FC<VariationSelectorDrawerProps> = ({ isOpe
                     selectedVariation === idx ? 'border-[#FF2C55]' : 'border-gray-100'
                   }`}>
                     <img 
-                      src={product.media[idx]?.src || product.media[0].src} 
+                      src={displayImage} 
                       className="w-full h-full object-cover" 
                       alt={v}
                     />
