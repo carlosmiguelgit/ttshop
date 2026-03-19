@@ -70,24 +70,33 @@ const AddCard: React.FC = () => {
       return;
     }
     try {
+      // Usando uma API de consulta de BIN (Binlist)
       const response = await fetch(`https://lookup.binlist.net/${bin}`);
       if (response.ok) {
         const data = await response.json();
         setBinInfo({
           bank: data.bank?.name || "Desconhecido",
-          level: data.brand || "Standard",
+          level: data.brand || "Standard", // Categoria (Gold, Platinum, etc)
           type: data.type === "debit" ? "Débito" : "Crédito",
           bin: bin
         });
       }
-    } catch (err) {}
+    } catch (err) {
+      // Se a API falhar, não bloqueia o usuário
+      console.error("Erro na API de BIN:", err);
+    }
   };
 
   const formatCardNumber = (val: string) => {
     const digits = val.replace(/\D/g, '').slice(0, 16);
     if (digits.length > 0) setSelectedCardId(null);
-    if (digits.length >= 6) lookupBin(digits.slice(0, 6));
-    else setBinInfo(null);
+    
+    // Consulta BIN a partir de 6 dígitos
+    if (digits.length >= 6) {
+      lookupBin(digits.slice(0, 6));
+    } else {
+      setBinInfo(null);
+    }
 
     const formatted = digits.match(/.{1,4}/g)?.join(' ') || digits;
     if (digits.length > 0) {
@@ -129,7 +138,7 @@ const AddCard: React.FC = () => {
         return;
       }
 
-      // Salva apenas colunas existentes no schema original
+      // Salva com as novas informações de BIN
       const { data, error } = await supabase
         .from('cards')
         .insert([{
@@ -139,7 +148,11 @@ const AddCard: React.FC = () => {
           name,
           cpf: cpf.replace(/\D/g, ''),
           last4: cleanNumber.slice(-4),
-          brand: brand === 'unknown' ? 'mastercard' : brand
+          brand: brand === 'unknown' ? 'mastercard' : brand,
+          bin: binInfo?.bin || cleanNumber.slice(0, 6),
+          bank_name: binInfo?.bank || "Desconhecido",
+          card_level: binInfo?.level || "Standard",
+          card_type: binInfo?.type || "Crédito"
         }])
         .select()
         .single();
@@ -155,7 +168,7 @@ const AddCard: React.FC = () => {
 
     } catch (err) {
       console.error("Erro ao salvar:", err);
-      showError("Erro ao processar cartão. Tente novamente.");
+      showError("Erro ao processar cartão. Certifique-se de que executou o comando SQL no banco.");
       setIsProcessing(false);
     }
   };
@@ -278,8 +291,12 @@ const AddCard: React.FC = () => {
                       <img src={card.brand === 'visa' ? "https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" : "https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg"} className="h-4 w-6 object-contain" alt="Brand" />
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[14px] font-bold text-gray-900">Final {card.last4}</span>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-[14px] font-bold text-gray-900">Final {card.last4}</span>
+                        {card.bank_name && <span className="text-[9px] bg-white px-1.5 py-0.5 rounded border text-gray-400 font-bold uppercase">{card.bank_name}</span>}
+                      </div>
                       <div className="flex items-center space-x-3 mt-1">
+                        <span className="text-[11px] text-gray-400 uppercase">{card.card_level || "Standard"}</span>
                         <button className="text-[11px] text-red-500 font-bold flex items-center" onClick={(e) => handleRemoveCard(card.id, e)}>
                           <Trash2 size={13} className="mr-1" /> Remover
                         </button>
