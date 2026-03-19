@@ -67,41 +67,70 @@ export const products: Product[] = [
     ]
   },
   {
-    slug: "robo-aspirador-philco",
-    title: "Robô Aspirador Philco PAS08P Smart Life Wi-Fi Varre Aspira e Passa Pano Sensores Antiqueda e Anticolisão 120min de Autonomia",
-    currentPrice: "89,90",
+    slug: "robo-aspirador-wap-w1000",
+    title: "WAP Robô Aspirador de Pó ROBOT W1000 Mapeamento de Tempo Real GYRO, Base de Carregamento, Compatível com Alexa e Google",
+    currentPrice: "197,00",
     originalPrice: "899,00",
-    discountPercentage: 90,
-    discountAmount: "809,10",
+    discountPercentage: 78,
+    discountAmount: "702,00",
     rating: 4.8,
     reviewCount: 12450,
     salesCount: 15800,
     flashSaleTimeSeconds: 5 * 60,
     media: [
-      { type: 'image', src: "https://philco.vteximg.com.br/arquivos/ids/206981-1000-1000/054903061.jpg", thumbnailSrc: "https://philco.vteximg.com.br/arquivos/ids/206981-1000-1000/054903061.jpg" },
-      { type: 'image', src: "https://philco.vteximg.com.br/arquivos/ids/206982-1000-1000/054903061_1.jpg", thumbnailSrc: "https://philco.vteximg.com.br/arquivos/ids/206982-1000-1000/054903061_1.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/61n4FmVFrQL._AC_SL1500_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61n4FmVFrQL._AC_SL1500_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/51l8Ni2qSUL._AC_SL1000_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/51l8Ni2qSUL._AC_SL1000_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/81upSkYSsZL._AC_SL1500_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/81upSkYSsZL._AC_SL1500_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/81Vvxxi9GGL._AC_SL1500_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/81Vvxxi9GGL._AC_SL1500_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/8102iMz28hL._AC_SL1500_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/8102iMz28hL._AC_SL1500_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/61PFw76v+FL._AC_SL1500_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61PFw76v+FL._AC_SL1500_.jpg" },
     ],
     specifications: [
-      { label: "Marca", value: "Philco" },
-      { label: "Modelo", value: "PAS08P" },
-      { label: "Autonomia", value: "120 minutos" },
+      { label: "Bateria (mAh)", value: "2600" },
+      { label: "Cor", value: "Branco e Turquesa" },
+      { label: "Voltagem", value: "Bivolt" },
+      { label: "Autonomia", value: "Até 2h40min" },
+      { label: "Potência (W)", value: "32" },
+      { label: "Tipo de filtro", value: "HEPA" },
+      { label: "Comando de voz", value: "Alexa e Google" },
     ],
-    descriptionText: "🧹 Limpeza inteligente na palma da sua mão! O Robô Aspirador Philco PAS08P é o aliado perfeito.",
-    safeRedirectUrl: "https://www.havan.com.br/aspirador-de-po-robo-philco",
+    descriptionText: "Imagine ter um ajudante versátil, que varre, aspira e passa pano como você deseja, quando precisar, mesmo estando longe? Com o Robô Aspirador WAP ROBOT W1000, você economiza tempo e pode acompanhar a limpeza dos ambientes diretamente na tela do seu celular.\n\nPronto para oferecer uma nova experiência de limpeza, o robô aspirador com mapeamento é equipado com a exclusiva navegação Gyro. Ela calcula de forma precisa sua posição e orientação em tempo real para uma movimentação segura, que evita obstáculos, para uma ação otimizada na rotina do lar.\n\nO Robô Aspirador WAP ROBOT W1000 torna a limpeza do dia a dia contínua e sem esforço, retornando sozinho até à base. Acompanhado de um controle remoto com funções pré-programadas, é possível escolher os modos de operação que direcionam a aspiração para áreas específicas.\n\nCom o aplicativo WAP CONNECT, o controle do aspirador está nas suas mãos. Atualize o software, agende limpezas e monitore tudo pelo celular, ou ainda solicite à Alexa ou Google Assistant com um simples comando de voz.",
+    safeRedirectUrl: "https://www.havan.com.br/aspirador-de-po-robo-wap-robot-w1000",
     reviews: [
       {
-        username: "Marcos Vinicius",
-        avatarSrc: "/homem/homem (5).jpg",
-        comment: "Sensacional! Ele aspira muito bem os pelos do meu cachorro. Facilita demais a vida.",
-        variation: "Preto",
-        reviewImages: ["https://m.media-amazon.com/images/I/71Y-tC66PmL._AC_SL1500_.jpg"]
+        username: "Fernanda Lima",
+        avatarSrc: "/mulher/mulher (10).jpg",
+        comment: "Simplesmente maravilhoso! Mapeia a casa certinho e o pano úmido limpa de verdade. Recomendo muito.",
+        variation: "Padrão",
+        reviewImages: ["https://m.media-amazon.com/images/I/71ctuiejCeL.jpg", "https://m.media-amazon.com/images/I/61kP5qidrUL.jpg"]
       },
       {
-        username: "Carla Ferreira",
-        avatarSrc: "/mulher/mulher (8).jpg",
-        comment: "Melhor compra que fiz esse ano. Ele passa pano direitinho e volta sozinho pra base.",
-        variation: "Preto",
-        reviewImages: ["https://m.media-amazon.com/images/I/61Nl8A1i3-L._AC_SL1500_.jpg"]
+        username: "João Pedro",
+        avatarSrc: "/homem/homem (12).jpg",
+        comment: "O sistema gyro faz muita diferença, ele não fica batendo em tudo. Chegou rápido.",
+        variation: "Padrão",
+        reviewImages: ["https://m.media-amazon.com/images/I/712ddY7esJL.jpg"]
+      },
+      {
+        username: "Patrícia M.",
+        avatarSrc: "/mulher/mulher (15).jpg",
+        comment: "Melhor investimento para quem tem pet em casa. Aspira todos os pelos sem esforço.",
+        variation: "Padrão",
+        reviewImages: ["https://m.media-amazon.com/images/I/61KouOv4ThL.jpg", "https://m.media-amazon.com/images/I/711iKkVIaYL.jpg"]
+      },
+      {
+        username: "Carlos Eduardo",
+        avatarSrc: "/homem/homem (20).jpg",
+        comment: "Conectei na Alexa super fácil. Agora é só falar pra ele limpar a sala e pronto.",
+        variation: "Padrão",
+        reviewImages: ["https://m.media-amazon.com/images/I/718pxLy67TL.jpg", "https://m.media-amazon.com/images/I/71YkAuDHo4L.jpg"]
+      },
+      {
+        username: "Juliana Silva",
+        avatarSrc: "/mulher/mulher (25).jpg",
+        comment: "A bateria dura muito, consigo limpar o apartamento todo de 80m² e ainda sobra carga.",
+        variation: "Padrão",
+        reviewImages: ["https://m.media-amazon.com/images/I/71FYRSH0xnL.jpg", "https://m.media-amazon.com/images/I/61Z8OTkLJfL.jpg"]
       }
     ]
   }

@@ -12,17 +12,21 @@ interface ProductDescriptionProps {
 }
 
 const ProductDescription: React.FC<ProductDescriptionProps> = ({ specifications, descriptionText, firstImageSrc }) => {
+  // Usar a imagem técnica se for o robô aspirador (slug detectado via URL ou passado via prop seria ideal, mas aqui usamos a lógica de prioridade)
+  const technicalBanner = "https://m.media-amazon.com/images/S/aplus-media-library-service-media/1625de65-4468-447b-9c3f-0742e61a2356.__CR1,0,1464,600_PT0_SX1464_V1___.png";
+  const displayImage = descriptionText.includes("WAP") ? technicalBanner : firstImageSrc;
+
   return (
     <div className="p-4 bg-white space-y-3">
       {/* Título da seção */}
       <h3 className="text-base font-bold text-gray-900">Sobre o produto</h3>
       
-      {/* Imagem do Produto */}
-      <div className="w-full h-auto max-h-[200px] flex justify-center overflow-hidden rounded-lg">
+      {/* Imagem do Produto / Banner Técnico */}
+      <div className="w-full h-auto flex justify-center overflow-hidden rounded-lg">
         <img 
-          src={firstImageSrc} 
+          src={displayImage} 
           alt="Imagem do produto" 
-          className="w-full h-full object-contain" 
+          className="w-full h-auto object-contain" 
         />
       </div>
 

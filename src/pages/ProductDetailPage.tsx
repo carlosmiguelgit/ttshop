@@ -137,6 +137,10 @@ const ProductDetailPage: React.FC = () => {
     }
   };
 
+  // Variações específicas para o Robô ou Furadeira
+  const variationsCount = product.slug.includes("robo") ? 1 : 2;
+  const variationsText = product.slug.includes("robo") ? "1 opção disponível" : "2 opções disponíveis";
+
   return (
     <div className="min-h-screen bg-[#F8F8F8] pb-[104px]">
       <Header 
@@ -183,18 +187,25 @@ const ProductDetailPage: React.FC = () => {
             onShippingClick={() => setIsShippingDrawerOpen(true)}
           />
 
+          {/* Seção de Variações com layout idêntico à foto */}
           <div 
             className="bg-white p-4 border-t border-gray-50 flex items-center justify-between cursor-pointer"
             onClick={() => handleOpenVariations('cart')}
           >
-            <div className="flex items-center space-x-3">
-              <div className="flex space-x-1">
-                <img src={firstImageSrc} className="w-8 h-8 rounded border border-gray-100 object-cover" />
-                {product.media[1] && <img src={product.media[1].src} className="w-8 h-8 rounded border border-gray-100 object-cover" />}
+            <div className="flex items-center space-x-3 overflow-hidden">
+              <LayoutGrid size={20} className="text-gray-900 shrink-0" />
+              <div className="flex space-x-1 shrink-0">
+                {product.media.slice(0, 5).map((m, idx) => (
+                  <img 
+                    key={idx} 
+                    src={m.src} 
+                    className="w-10 h-10 rounded-md border border-gray-100 object-cover" 
+                  />
+                ))}
               </div>
-              <span className="text-[12px] text-gray-500">{product.media.length} fotos disponíveis</span>
+              <span className="text-[13px] text-gray-400 whitespace-nowrap">{variationsText}</span>
             </div>
-            <ChevronRight size={18} className="text-gray-400" />
+            <ChevronRight size={18} className="text-gray-400 shrink-0" />
           </div>
           
           <CustomerProtectionSection onClick={() => setIsProtectionDrawerOpen(true)} />

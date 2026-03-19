@@ -44,9 +44,9 @@ const App = () => (
           <Route path="/resumo-pagamento" element={<PaymentSummary />} />
           <Route path="/pix-pagamento" element={<PixPayment />} />
           
-          {/* Rotas explícitas para os produtos (aparecerão no menu de rotas) */}
+          {/* Rotas explícitas para os produtos */}
           <Route path="/furadeira" element={<Index />} />
-          <Route path="/robo-aspirador-philco" element={<Index />} />
+          <Route path="/robo-aspirador-wap-w1000" element={<Index />} />
           
           {/* Rota dinâmica genérica */}
           <Route path="/:slug" element={<Index />} />
