@@ -192,20 +192,22 @@ const PixPayment: React.FC = () => {
             <span className="text-[32px] font-bold text-[#FF2C55]">R$ 47,00</span>
           </div>
 
-          <div className="flex flex-col items-center space-y-3">
+          <div className="flex flex-col items-center space-y-5">
             <div className="flex items-center justify-center space-x-2 text-[#00BFA5]">
               <ShieldCheck size={16} className="fill-[#00BFA5]/10" />
               <span className="text-[12px] font-bold uppercase">Pagamento Seguro</span>
             </div>
             
-            <div className="flex items-center space-x-2 bg-gray-50 px-3 py-2 rounded-full border border-gray-100">
-              <img 
-                src="https://logodownload.org/wp-content/uploads/2015/05/havan-logo-0.png" 
-                alt="Havan" 
-                className="h-3.5 object-contain" 
-              />
-              <p className="text-[10px] text-gray-500 leading-tight">
-                Distribuído e entregue por <span className="font-bold">Havan</span> em parceria com o <span className="font-bold">TikTok Shop</span>
+            <div className="flex items-center space-x-4 bg-white px-4 py-3 rounded-2xl border-2 border-[#F1F1F1] shadow-sm w-full">
+              <div className="w-16 h-16 rounded-full bg-white border-2 border-gray-100 flex items-center justify-center overflow-hidden shrink-0 shadow-inner">
+                <img 
+                  src="https://logodownload.org/wp-content/uploads/2015/05/havan-logo-0.png" 
+                  alt="Havan" 
+                  className="w-full h-full object-contain scale-125" 
+                />
+              </div>
+              <p className="text-[18px] text-gray-700 leading-tight font-medium">
+                Distribuído e entregue por <span className="font-extrabold text-gray-900">Havan</span> em parceria com o <span className="font-extrabold text-gray-900">TikTok Shop</span>
               </p>
             </div>
           </div>
