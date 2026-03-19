@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import ProductReviewsHeader from './ProductReviewsHeader';
 import ProductReviewsList from './ProductReviewsList';
-import { useParams } from 'react-router-dom';
+import { Review } from '@/data/products';
 
 interface ProductReviewsSectionProps {
   rating: number;
   reviewCount: number;
+  reviews: Review[];
 }
 
-const ProductReviewsSection: React.FC<ProductReviewsSectionProps> = ({ rating, reviewCount }) => {
+const ProductReviewsSection: React.FC<ProductReviewsSectionProps> = ({ rating, reviewCount, reviews }) => {
   const [showAllReviews, setShowAllReviews] = useState(false);
 
   const handleViewMore = () => {
@@ -21,10 +22,11 @@ const ProductReviewsSection: React.FC<ProductReviewsSectionProps> = ({ rating, r
         rating={rating} 
         reviewCount={reviewCount} 
         onViewMoreClick={handleViewMore}
-        showViewMore={!showAllReviews} // Mostra 'Ver mais' apenas se não estiver expandido
+        showViewMore={!showAllReviews && reviews.length > 1}
       />
       <ProductReviewsList 
         showAll={showAllReviews} 
+        reviews={reviews}
       />
     </div>
   );

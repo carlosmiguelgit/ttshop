@@ -238,12 +238,15 @@ const ProductDetailPage: React.FC = () => {
         </div>
         
         <div ref={sectionRefs['Avaliações']}>
-          <ProductReviewsSection rating={product.rating} reviewCount={product.reviewCount} />
+          <ProductReviewsSection 
+            rating={product.rating} 
+            reviewCount={product.reviewCount} 
+            reviews={product.reviews}
+          />
         </div>
 
         <StoreSection />
         
-        {/* Faixa cinza de separação para completar o container da loja */}
         <div className="h-2.5 bg-[#F8F8F8]"></div>
 
         <div ref={sectionRefs['Descrição']}>

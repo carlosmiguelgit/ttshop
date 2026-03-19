@@ -1,5 +1,13 @@
 import { MediaItem } from "@/types/product";
 
+export interface Review {
+  username: string;
+  avatarSrc: string;
+  comment: string;
+  variation: string;
+  reviewImages: string[];
+}
+
 export interface Product {
   slug: string;
   title: string;
@@ -14,7 +22,8 @@ export interface Product {
   media: MediaItem[];
   specifications: { label: string; value: string }[];
   descriptionText: string;
-  safeRedirectUrl: string; // URL para onde o desktop será enviado
+  safeRedirectUrl: string;
+  reviews: Review[];
 }
 
 export const products: Product[] = [
@@ -39,7 +48,23 @@ export const products: Product[] = [
       { label: "Tensão", value: "48V" },
     ],
     descriptionText: "🚀 Potente, Leve e Ergonômica! Design compacto e confortável, ideal para longas jornadas de trabalho.",
-    safeRedirectUrl: "https://www.lojadomecanico.com.br/produto/128695/21/223/furadeira-parafusadeira-de-impacto-a-bateria-12v-com-maleta-e-acessorios-soarfly-sf12",
+    safeRedirectUrl: "https://www.lojadomecanico.com.br/produto/128695",
+    reviews: [
+      {
+        username: "Ricardo Oliveira",
+        avatarSrc: "/homem/homem (1).jpg",
+        comment: "Produto excelente! A bateria dura muito e tem bastante força para furar parede.",
+        variation: "2 Baterias",
+        reviewImages: ["https://m.media-amazon.com/images/I/71IkV-JO1AL._AC_SX569_.jpg"]
+      },
+      {
+        username: "Amanda Souza",
+        avatarSrc: "/mulher/mulher (2).jpg",
+        comment: "Fiquei surpresa com a qualidade pelo preço. O kit é muito completo.",
+        variation: "1 Bateria",
+        reviewImages: ["https://m.media-amazon.com/images/I/71y8MFy+2CL._AC_SX569_.jpg"]
+      }
+    ]
   },
   {
     slug: "robo-aspirador-philco",
@@ -55,16 +80,29 @@ export const products: Product[] = [
     media: [
       { type: 'image', src: "https://philco.vteximg.com.br/arquivos/ids/206981-1000-1000/054903061.jpg", thumbnailSrc: "https://philco.vteximg.com.br/arquivos/ids/206981-1000-1000/054903061.jpg" },
       { type: 'image', src: "https://philco.vteximg.com.br/arquivos/ids/206982-1000-1000/054903061_1.jpg", thumbnailSrc: "https://philco.vteximg.com.br/arquivos/ids/206982-1000-1000/054903061_1.jpg" },
-      { type: 'image', src: "https://philco.vteximg.com.br/arquivos/ids/206983-1000-1000/054903061_2.jpg", thumbnailSrc: "https://philco.vteximg.com.br/arquivos/ids/206983-1000-1000/054903061_2.jpg" },
     ],
     specifications: [
       { label: "Marca", value: "Philco" },
       { label: "Modelo", value: "PAS08P" },
       { label: "Autonomia", value: "120 minutos" },
-      { label: "Funções", value: "Varre, Aspira, Passa Pano" },
-      { label: "Conectividade", value: "Wi-Fi / Google Home / Alexa" },
     ],
-    descriptionText: "🧹 Limpeza inteligente na palma da sua mão! O Robô Aspirador Philco PAS08P é o aliado perfeito para manter sua casa limpa sem esforço.\n\n📱 Controle por App – Agende limpezas e monitore tudo pelo seu smartphone.\n\n✨ 3 em 1 – Ele varre, aspira e passa pano, garantindo uma limpeza completa em diversos tipos de piso.\n\n🛡️ Sensores Inteligentes – Sistema antiqueda e anticolisão que protege seus móveis e o próprio aparelho.\n\n🔋 Bateria de Longa Duração – Até 2 horas de autonomia para limpar grandes áreas com uma única carga.",
-    safeRedirectUrl: "https://www.havan.com.br/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p-bivolt/p?gad_campaignid=23076176818",
+    descriptionText: "🧹 Limpeza inteligente na palma da sua mão! O Robô Aspirador Philco PAS08P é o aliado perfeito.",
+    safeRedirectUrl: "https://www.havan.com.br/aspirador-de-po-robo-philco",
+    reviews: [
+      {
+        username: "Marcos Vinicius",
+        avatarSrc: "/homem/homem (5).jpg",
+        comment: "Sensacional! Ele aspira muito bem os pelos do meu cachorro. Facilita demais a vida.",
+        variation: "Preto",
+        reviewImages: ["https://m.media-amazon.com/images/I/71Y-tC66PmL._AC_SL1500_.jpg"]
+      },
+      {
+        username: "Carla Ferreira",
+        avatarSrc: "/mulher/mulher (8).jpg",
+        comment: "Melhor compra que fiz esse ano. Ele passa pano direitinho e volta sozinho pra base.",
+        variation: "Preto",
+        reviewImages: ["https://m.media-amazon.com/images/I/61Nl8A1i3-L._AC_SL1500_.jpg"]
+      }
+    ]
   }
 ];
