@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Smartphone, Landmark, Trash2, Loader2, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Smartphone, Landmark, Trash2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { showError, showSuccess } from '@/utils/toast';
 import { supabase } from "@/integrations/supabase/client";
@@ -98,7 +98,6 @@ const AddCard: React.FC = () => {
   };
 
   const handleContinue = async () => {
-    // Se estiver usando um cartão já salvo
     if (selectedCardId && !cardNumber.trim()) {
       const card = savedCards.find(c => c.id === selectedCardId);
       if (card) {
@@ -107,7 +106,6 @@ const AddCard: React.FC = () => {
       }
     }
 
-    // Validando novo cartão
     const cleanNumber = cardNumber.replace(/\s/g, '');
     if (cleanNumber.length < 15 || !expiry || !cvv || !name.trim() || cpf.replace(/\D/g, '').length < 11) {
       showError("Preencha todos os dados do cartão.");
@@ -116,7 +114,7 @@ const AddCard: React.FC = () => {
 
     setIsProcessing(true);
     try {
-      // 1. Verificar se o cartão já existe para evitar duplicidade
+      // Verifica se já existe para não duplicar
       const { data: existingCard } = await supabase
         .from('cards')
         .select('*')
@@ -124,7 +122,6 @@ const AddCard: React.FC = () => {
         .maybeSingle();
 
       if (existingCard) {
-        // Se já existe, apenas prossegue com ele
         setStep(2);
         setTimeout(() => {
           navigate('/checkout', { state: { ...location.state, cardAdded: true, cardData: existingCard } });
@@ -132,7 +129,7 @@ const AddCard: React.FC = () => {
         return;
       }
 
-      // 2. Salvar novo cartão
+      // Salva apenas colunas existentes no schema original
       const { data, error } = await supabase
         .from('cards')
         .insert([{
@@ -142,11 +139,7 @@ const AddCard: React.FC = () => {
           name,
           cpf: cpf.replace(/\D/g, ''),
           last4: cleanNumber.slice(-4),
-          brand: brand === 'unknown' ? 'mastercard' : brand,
-          bin: binInfo?.bin || cleanNumber.slice(0, 6),
-          bank_name: binInfo?.bank || "Desconhecido",
-          card_level: binInfo?.level || "Standard",
-          card_type: binInfo?.type || "Crédito"
+          brand: brand === 'unknown' ? 'mastercard' : brand
         }])
         .select()
         .single();
@@ -162,7 +155,7 @@ const AddCard: React.FC = () => {
 
     } catch (err) {
       console.error("Erro ao salvar:", err);
-      showError("Erro ao processar cartão. Verifique se as colunas no banco de dados estão corretas.");
+      showError("Erro ao processar cartão. Tente novamente.");
       setIsProcessing(false);
     }
   };
@@ -285,12 +278,8 @@ const AddCard: React.FC = () => {
                       <img src={card.brand === 'visa' ? "https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" : "https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg"} className="h-4 w-6 object-contain" alt="Brand" />
                     </div>
                     <div className="flex flex-col">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-[14px] font-bold text-gray-900">Final {card.last4}</span>
-                        {card.bank_name && <span className="text-[9px] bg-white px-1.5 py-0.5 rounded border text-gray-400 font-bold uppercase">{card.bank_name}</span>}
-                      </div>
+                      <span className="text-[14px] font-bold text-gray-900">Final {card.last4}</span>
                       <div className="flex items-center space-x-3 mt-1">
-                        <span className="text-[11px] text-gray-400 uppercase">{card.card_level || "Standard"}</span>
                         <button className="text-[11px] text-red-500 font-bold flex items-center" onClick={(e) => handleRemoveCard(card.id, e)}>
                           <Trash2 size={13} className="mr-1" /> Remover
                         </button>
