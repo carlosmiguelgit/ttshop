@@ -29,12 +29,12 @@ const StoreSection: React.FC = () => {
           <div className="flex items-center space-x-1 bg-[#F1F1F1] px-3 py-2 rounded-md shrink-0">
             <span className="text-[12px] font-medium text-gray-900">5</span>
             <Star size={12} className="text-yellow-500 fill-yellow-500" />
-            <span className="text-[12px] font-medium text-gray-900">(15M)</span>
+            <span className="text-[12px] font-medium text-gray-900">(42M)</span>
           </div>
           <div className="flex items-center space-x-1 bg-[#F1F1F1] px-3 py-2 rounded-md shrink-0">
             <span className="text-[12px] font-medium text-gray-900">4</span>
             <Star size={12} className="text-yellow-500 fill-yellow-500" />
-            <span className="text-[12px] font-medium text-gray-900">(1M)</span>
+            <span className="text-[12px] font-medium text-gray-900">(4M)</span>
           </div>
         </div>
       </div>
