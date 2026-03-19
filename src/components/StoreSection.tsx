@@ -85,6 +85,17 @@ const StoreSection: React.FC = () => {
         </div>
       </div>
 
+      {/* Banner da Loja (Havan) - Posicionado acima de "Mais desta loja" */}
+      <div className="px-4 py-2">
+        <div className="w-full h-auto max-h-[200px] flex justify-center overflow-hidden rounded-lg">
+          <img 
+            src="/havan.jpg" 
+            alt="Banner da Loja" 
+            className="w-full h-full object-contain" 
+          />
+        </div>
+      </div>
+
       <div className="p-4 border-t border-gray-50">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-[14px] font-bold text-gray-900">Mais desta loja</h3>

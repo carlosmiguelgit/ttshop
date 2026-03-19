@@ -14,15 +14,6 @@ interface ProductDescriptionProps {
 const ProductDescription: React.FC<ProductDescriptionProps> = ({ specifications, descriptionText, firstImageSrc }) => {
   return (
     <div className="p-4 bg-white space-y-3">
-      {/* Banner da Loja (Havan) - Adicionado acima de tudo */}
-      <div className="w-full h-auto max-h-[200px] flex justify-center overflow-hidden rounded-lg">
-        <img 
-          src="/havan.jpg" 
-          alt="Banner da Loja" 
-          className="w-full h-full object-contain" 
-        />
-      </div>
-
       {/* Título da seção */}
       <h3 className="text-base font-bold text-gray-900">Sobre o produto</h3>
       
