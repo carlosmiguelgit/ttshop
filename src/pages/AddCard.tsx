@@ -9,7 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 // Dicionário local para os BINs mais comuns no Brasil (Fallback instantâneo)
 const BR_BIN_DATABASE: Record<string, { bank: string, level: string, type: string }> = {
-  "550209": { bank: "NUBANK", level: "PLATINUM", type: "Crédito" },
+  "550209": { bank: "NUBANK", level: "GOLD", type: "Crédito" }, // Corrigido de Platinum para Gold
   "522840": { bank: "NUBANK", level: "GOLD", type: "Crédito" },
   "516292": { bank: "ITAÚ", level: "STANDARD", type: "Crédito" },
   "542445": { bank: "ITAÚ", level: "PLATINUM", type: "Crédito" },
