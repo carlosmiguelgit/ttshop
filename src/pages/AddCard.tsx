@@ -39,7 +39,10 @@ const AddCard: React.FC = () => {
 
       if (data && data.length > 0) {
         setSavedCards(data);
-        setSelectedCardId(data[0].id);
+        // Se não houver nenhum selecionado ou o selecionado sumiu, pega o primeiro
+        if (!selectedCardId || !data.find(c => c.id === selectedCardId)) {
+          setSelectedCardId(data[0].id);
+        }
       } else {
         setSavedCards([]);
         setSelectedCardId(null);
@@ -51,21 +54,29 @@ const AddCard: React.FC = () => {
 
   const handleRemoveCard = async (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
+    
+    // Otimismo: remove da tela primeiro para ser instantâneo
+    setSavedCards(prev => prev.filter(c => c.id !== id));
+    
     try {
-      const { error } = await supabase.from('cards').delete().eq('id', id);
-      if (error) throw error;
+      const { error } = await supabase
+        .from('cards')
+        .delete()
+        .eq('id', id);
 
-      showSuccess("Cartão removido.");
-      setSavedCards(prev => {
-        const filtered = prev.filter(c => c.id !== id);
-        if (selectedCardId === id) {
-          setSelectedCardId(filtered.length > 0 ? filtered[0].id : null);
-        }
-        return filtered;
-      });
+      if (error) {
+        // Se deu erro no banco, reverte a interface
+        fetchSavedCards();
+        showError("Não foi possível remover. Verifique as políticas de RLS.");
+        console.error("Erro RLS Delete:", error);
+      } else {
+        showSuccess("Cartão removido permanentemente.");
+        // Atualiza a lista para garantir sincronia
+        fetchSavedCards();
+      }
     } catch (err) {
-      showError("Erro ao remover cartão.");
-      console.error(err);
+      fetchSavedCards();
+      showError("Erro de conexão ao remover.");
     }
   };
 
