@@ -20,8 +20,8 @@ const StoreSection: React.FC = () => {
         
         <div className="flex space-x-2 overflow-x-auto no-scrollbar pb-1">
           <div className="flex items-center space-x-1 bg-[#F8F8F8] px-3 py-1.5 rounded-full shrink-0">
-            <Camera size={14} className="text-gray-900" />
-            <span className="text-[12px] font-medium text-gray-900">Inclui imagens ou vídeos (92)</span>
+            <Camera size={14} className="text-black" />
+            <span className="text-[12px] font-medium text-gray-900">Inclui imagens ou vídeos (19M)</span>
           </div>
           <div className="flex items-center space-x-1 bg-[#F8F8F8] px-3 py-1.5 rounded-full shrink-0">
             <span className="text-[12px] font-medium text-gray-900">5</span>
@@ -75,11 +75,11 @@ const StoreSection: React.FC = () => {
         </div>
 
         <div className="flex space-x-3 overflow-x-auto no-scrollbar">
-          {/* Promo Card */}
-          <div className="min-w-[120px] bg-[#FFF5F5] rounded-xl p-3 flex flex-col items-center justify-center text-center border border-[#FFE5E5]">
-            <Zap size={20} className="text-[#FF2C55] fill-[#FF2C55] mb-1" />
-            <p className="text-[14px] font-bold text-[#FF2C55] leading-tight">Até 64% de desconto</p>
-            <p className="text-[10px] text-[#FF2C55] mt-2">Termina em 2 dias</p>
+          {/* Promo Card Ajustado conforme a foto */}
+          <div className="min-w-[120px] bg-[#FFF7F0] rounded-xl p-3 flex flex-col items-center justify-center text-center border border-[#FFEDD5]">
+            <Zap size={20} className="text-[#FF8A00] fill-[#FF8A00] mb-1" />
+            <p className="text-[14px] font-bold text-[#FF8A00] leading-tight">Até 64% de desconto</p>
+            <p className="text-[10px] text-black font-medium mt-2">Termina em 2 dias</p>
           </div>
 
           {/* Product Cards */}
