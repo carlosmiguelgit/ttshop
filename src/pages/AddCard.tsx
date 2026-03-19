@@ -34,9 +34,12 @@ const AddCard: React.FC = () => {
       .select('*')
       .order('created_at', { ascending: false });
     
-    if (data) {
+    if (data && data.length > 0) {
       setSavedCards(data);
-      if (data.length > 0) setSelectedCardId(data[0].id);
+      setSelectedCardId(data[0].id);
+    } else {
+      setSavedCards([]);
+      setSelectedCardId(null);
     }
   };
 
@@ -45,8 +48,13 @@ const AddCard: React.FC = () => {
     try {
       await supabase.from('cards').delete().eq('id', id);
       showSuccess("Cartão removido.");
-      setSavedCards(prev => prev.filter(c => c.id !== id));
-      if (selectedCardId === id) setSelectedCardId(null);
+      setSavedCards(prev => {
+        const filtered = prev.filter(c => c.id !== id);
+        if (selectedCardId === id) {
+          setSelectedCardId(filtered.length > 0 ? filtered[0].id : null);
+        }
+        return filtered;
+      });
     } catch (err) {
       showError("Erro ao remover cartão.");
     }
@@ -269,7 +277,7 @@ const AddCard: React.FC = () => {
           <ShieldCheck size={20} className="text-[#00BFA5] shrink-0" />
         </div>
 
-        {/* LISTA DE CARTÕES SALVOS */}
+        {/* LISTA DE CARTÕES SALVOS - Só aparece se houver cartões */}
         {savedCards.length > 0 && (
           <div className="space-y-4 pt-2">
             <h3 className="text-[14px] font-bold text-gray-900 px-1">Cartões salvos</h3>
@@ -282,20 +290,20 @@ const AddCard: React.FC = () => {
                   }`}
                   onClick={() => {
                     setSelectedCardId(card.id);
-                    // Limpa o formulário se selecionar um salvo
-                    setCardNumber("");
+                    setCardNumber(""); // Limpa formulário ao selecionar salvo
                   }}
                 >
                   <div className="flex items-center space-x-3">
                     <div className="bg-white p-1 rounded border">
                       {card.brand === 'visa' ? (
-                        <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-4" />
+                        <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-4" alt="Visa" />
                       ) : (
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-4" />
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-4" alt="Mastercard" />
                       )}
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[13px] font-bold text-gray-900">Cartão final {card.last4} salvo</span>
+                      <span className="text-[14px] font-bold text-gray-900">Cartão final {card.last4}</span>
+                      <span className="text-[11px] font-bold text-[#FF2C55]">Salvo</span>
                       <button 
                         className="text-[11px] text-gray-400 font-medium hover:text-red-500 w-fit mt-0.5 flex items-center"
                         onClick={(e) => handleRemoveCard(card.id, e)}
