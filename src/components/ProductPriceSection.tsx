@@ -6,7 +6,6 @@ import { Product } from '@/data/products';
 import { addDays, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
-// Clone 1:1 do raio da imagem - Versão mais larga (50% mais encorpado)
 const CustomZapIcon = ({ className }: { className?: string }) => (
   <svg 
     viewBox="0 0 24 24" 
@@ -25,7 +24,8 @@ interface ProductPriceSectionProps {
 }
 
 const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product, onCouponsClick, onShippingClick }) => {
-  const { currentPrice, originalPrice, reviewCount, title: productTitle } = product;
+  const { originalPrice, reviewCount, title: productTitle } = product;
+  const currentPrice = "97,28"; // Preço atualizado
   const [seconds, setSeconds] = useState(900);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product, onCo
         <div className="relative z-10 flex flex-col justify-center">
           <div className="flex items-center space-x-1.5">
             <div className="bg-white px-1 py-0.5 rounded-sm">
-              <span className="text-[#E62E5D] font-bold text-[13px]">-31%</span>
+              <span className="text-[#E62E5D] font-bold text-[13px]">-89%</span>
             </div>
             <div className="flex items-baseline space-x-0.5">
               <span className="text-3xl font-bold leading-none tracking-tight">
@@ -89,7 +89,7 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product, onCo
               <Clock size={8} className="text-gray-400 fill-gray-100" />
             </div>
           </div>
-          <span>2x R$ 19,74 <span className="text-[#FF2C55] font-medium ml-1">sem juros</span></span>
+          <span>2x R$ 48,64 <span className="text-[#FF2C55] font-medium ml-1">sem juros</span></span>
           <ChevronRight size={14} className="text-gray-300 ml-1" />
         </div>
 

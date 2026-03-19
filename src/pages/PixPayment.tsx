@@ -27,7 +27,6 @@ const PixPayment: React.FC = () => {
   const [showQr, setShowQr] = useState(false);
   const [apiUsada, setApiUsada] = useState<string>("payevo");
 
-  // Contador regressivo (3 minutos)
   const [timeLeft, setTimeLeft] = useState(180);
   const [isExpired, setIsExpired] = useState(false);
 
@@ -35,7 +34,7 @@ const PixPayment: React.FC = () => {
     if (location.state?.product) {
       setProduct(location.state.product);
     } else {
-      navigate('/produto');
+      navigate('/');
     }
   }, [location.state, navigate]);
 
@@ -52,7 +51,7 @@ const PixPayment: React.FC = () => {
       setTimeLeft(180);
       setIsExpired(false);
 
-      const pixValue = 47.00;
+      const pixValue = 97.28;
       const amountInCents = Math.round(pixValue * 100);
 
       const payload = {
@@ -118,7 +117,6 @@ const PixPayment: React.FC = () => {
     return () => clearInterval(timer);
   }, [loading, paymentApproved, isExpired]);
 
-  // Monitoramento via SSE
   useEffect(() => {
     if (!pixData?.id || paymentApproved) return;
     const sseUrl = `https://oferta.segurocheckout.online/api/pix/sse/${apiUsada}/${pixData.id}`;
@@ -132,12 +130,11 @@ const PixPayment: React.FC = () => {
           if (status === "APPROVED" || status.includes("PAID") || status.includes("SUCCESS")) {
             setPaymentApproved(true);
             
-            // Track Purchase para PIX
             trackTikTokEvent('Purchase', {
               content_id: product?.slug,
               content_type: 'product',
               content_name: product?.title,
-              value: 47.00,
+              value: 97.28,
               currency: 'BRL',
               quantity: 1
             });
@@ -163,7 +160,6 @@ const PixPayment: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F8F8F8] flex flex-col items-center">
-      {/* Header Compacto */}
       <div className="w-full max-w-[600px] bg-white border-b h-12 flex items-center px-4 sticky top-0 z-50">
         <button onClick={() => navigate(-1)} className="p-1">
           <ArrowLeft size={24} className="text-gray-900" />
@@ -175,11 +171,10 @@ const PixPayment: React.FC = () => {
       </div>
 
       <main className="w-full max-w-[600px] p-4 space-y-4">
-        {/* Card de Resumo do Pagamento */}
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
           <div className="flex items-center space-x-3 mb-4">
             <div className="w-12 h-12 rounded-lg bg-gray-50 flex-shrink-0 border p-1">
-              <img src={product.media[0].src} className="w-full h-full object-contain" />
+              <img src={product.media[1]?.src || product.media[0].src} className="w-full h-full object-contain" />
             </div>
             <div className="flex-grow overflow-hidden">
               <h3 className="text-[13px] font-bold text-gray-900 truncate">{product.title}</h3>
@@ -189,7 +184,7 @@ const PixPayment: React.FC = () => {
 
           <div className="flex flex-col items-center py-2 border-t border-b border-gray-50 my-4">
             <span className="text-[12px] text-gray-500 mb-1">Total a pagar</span>
-            <span className="text-[32px] font-bold text-[#FF2C55]">R$ 47,00</span>
+            <span className="text-[32px] font-bold text-[#FF2C55]">R$ 97,28</span>
           </div>
 
           <div className="flex flex-col items-center space-y-4">
@@ -219,7 +214,6 @@ const PixPayment: React.FC = () => {
           </div>
         </div>
 
-        {/* Card do Código PIX */}
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 text-center">
           {loading ? (
             <div className="flex flex-col items-center py-8">
@@ -238,7 +232,7 @@ const PixPayment: React.FC = () => {
               </div>
               <h2 className="text-[18px] font-bold text-gray-900">Pagamento Confirmado!</h2>
               <p className="text-[13px] text-gray-500 px-6">Seu pedido já está sendo processado. Acompanhe em seu e-mail.</p>
-              <Button onClick={() => navigate('/produto')} className="bg-[#FF2C55] rounded-full w-full mt-4">Voltar para a loja</Button>
+              <Button onClick={() => navigate('/')} className="bg-[#FF2C55] rounded-full w-full mt-4">Voltar para a loja</Button>
             </div>
           ) : (
             <div className="space-y-5">
@@ -288,7 +282,6 @@ const PixPayment: React.FC = () => {
           )}
         </div>
 
-        {/* Instruções Finais */}
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
           <h4 className="text-[14px] font-bold text-gray-900 mb-4">Como pagar?</h4>
           <div className="space-y-4">

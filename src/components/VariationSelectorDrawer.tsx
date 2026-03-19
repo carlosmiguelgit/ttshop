@@ -20,7 +20,6 @@ const VariationSelectorDrawer: React.FC<VariationSelectorDrawerProps> = ({ isOpe
   const variations = ["Padrão"];
   const navigate = useNavigate();
 
-  // Usamos a segunda foto (index 1) como a foto da variação "Padrão"
   const displayImage = product.media[1]?.src || product.media[0].src;
 
   const handleConfirmAction = () => {
@@ -29,7 +28,7 @@ const VariationSelectorDrawer: React.FC<VariationSelectorDrawerProps> = ({ isOpe
         content_id: product.slug,
         content_type: 'product',
         content_name: product.title,
-        value: parseFloat(product.currentPrice.replace(',', '.')),
+        value: 97.28,
         currency: 'BRL',
         quantity: quantity
       });
@@ -41,7 +40,7 @@ const VariationSelectorDrawer: React.FC<VariationSelectorDrawerProps> = ({ isOpe
         content_id: product.slug,
         content_type: 'product',
         content_name: product.title,
-        value: parseFloat(product.currentPrice.replace(',', '.')),
+        value: 97.28,
         currency: 'BRL',
         quantity: quantity
       });
@@ -54,7 +53,6 @@ const VariationSelectorDrawer: React.FC<VariationSelectorDrawerProps> = ({ isOpe
       <DrawerContent className="max-h-[92vh] p-0 rounded-t-[20px] border-none">
         <div className="mx-auto w-full max-w-[600px] flex flex-col h-full bg-white rounded-t-[20px] overflow-hidden">
           
-          {/* Header Section */}
           <div className="p-4 flex space-x-4 relative">
             <div className="w-[100px] h-[100px] bg-[#F8F8F8] rounded-lg overflow-hidden flex-shrink-0 border border-gray-100 p-1">
               <img 
@@ -67,11 +65,11 @@ const VariationSelectorDrawer: React.FC<VariationSelectorDrawerProps> = ({ isOpe
             <div className="flex flex-col justify-start pt-1 space-y-1">
               <div className="flex items-center space-x-2">
                 <div className="bg-[#FF2C55] text-white text-[12px] font-bold px-1.5 py-0.5 rounded-sm">
-                  -31%
+                  -89%
                 </div>
                 <div className="text-[#FF2C55] font-bold flex items-baseline">
                   <span className="text-[14px] mr-1">R$</span>
-                  <span className="text-[26px] leading-none">197,00</span>
+                  <span className="text-[26px] leading-none">97,28</span>
                 </div>
               </div>
               
@@ -88,7 +86,6 @@ const VariationSelectorDrawer: React.FC<VariationSelectorDrawerProps> = ({ isOpe
             </button>
           </div>
 
-          {/* Flash Sale Bar */}
           <div className="bg-[#FF8A00] px-4 py-2.5 flex items-center justify-between text-white mx-4 rounded-lg mb-4">
             <div className="flex items-center space-x-1 font-bold text-[14px]">
               <Zap size={16} className="fill-white" />
@@ -99,7 +96,6 @@ const VariationSelectorDrawer: React.FC<VariationSelectorDrawerProps> = ({ isOpe
             </div>
           </div>
 
-          {/* Options Section */}
           <div className="flex-grow overflow-y-auto px-4 space-y-4">
             <h3 className="text-[13px] font-bold text-gray-900 uppercase">
               ESCOLHA UMA OPÇÃO ({variations.length})
@@ -133,7 +129,6 @@ const VariationSelectorDrawer: React.FC<VariationSelectorDrawerProps> = ({ isOpe
               ))}
             </div>
 
-            {/* Quantity Selector */}
             <div className="flex justify-between items-center py-6">
               <h3 className="text-[14px] font-bold text-gray-900">Quantidade</h3>
               <div className="flex items-center bg-[#F1F1F1] rounded-lg h-10 px-1">
@@ -155,7 +150,6 @@ const VariationSelectorDrawer: React.FC<VariationSelectorDrawerProps> = ({ isOpe
             </div>
           </div>
 
-          {/* Footer Button */}
           <div className="p-4 bg-white">
             <Button
               className="w-full bg-[#FF2C55] hover:bg-[#E0254B] text-white font-bold rounded-full h-[52px] flex flex-col items-center justify-center shadow-none border-none"
