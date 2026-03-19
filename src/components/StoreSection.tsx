@@ -4,7 +4,7 @@ import React from 'react';
 import { ChevronRight, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-// Clone 1:1 do raio da imagem
+// Clone 1:1 do raio da imagem - Versão mais larga (50% mais encorpado)
 const CustomZapIcon = ({ className }: { className?: string }) => (
   <svg 
     viewBox="0 0 24 24" 
@@ -12,7 +12,7 @@ const CustomZapIcon = ({ className }: { className?: string }) => (
     className={className}
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="M11 2L18 2L12 11h5L6 22l3-10H4L11 2z" />
+    <path d="M10 2L21 2L12 11h8L4 22l6-10H2L10 2z" />
   </svg>
 );
 
