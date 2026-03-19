@@ -7,9 +7,8 @@
         var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 1024;
         
         if (!isMobile) {
-          // Se não for mobile, esconde todo o conteúdo da página permanentemente
-          document.documentElement.style.display = 'none';
-          // Tenta parar o carregamento de scripts adicionais
+          // Se for desktop, remove o HTML e para o carregamento para ficar em branco
+          document.documentElement.innerHTML = '';
           window.stop();
         }
       })();

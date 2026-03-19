@@ -37,14 +37,10 @@ const App = () => (
       />
       <BrowserRouter>
         <Routes>
-          {/* Rotas Explícitas para o Menu do Dyad reconhecer */}
-          <Route path="/furadeira" element={<Index />} />
-          <Route path="/robo-aspirador-philco" element={<Index />} />
-          
-          {/* Fallback para slugs dinâmicos */}
+          {/* Rota principal com parâmetro de slug - essencial para carregar os produtos diferentes */}
           <Route path="/:slug" element={<Index />} />
-          <Route path="/produto" element={<Index />} />
           
+          {/* Rotas fixas do sistema */}
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/adicionar-cartao" element={<AddCard />} />
           <Route path="/adicionar-endereco" element={<AddAddress />} />
