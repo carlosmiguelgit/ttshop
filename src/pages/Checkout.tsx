@@ -68,16 +68,21 @@ const Checkout: React.FC = () => {
           setAddressData(addresses[0]);
         }
 
-        // Busca cartão mais recente
-        const { data: cards } = await supabase
-          .from('cards')
-          .select('*')
-          .order('created_at', { ascending: false })
-          .limit(1);
-        
-        if (cards?.length) {
-          setCardData(cards[0]);
+        // Busca cartão mais recente ou o que foi passado pelo state
+        if (location.state?.cardData) {
+          setCardData(location.state.cardData);
           setPaymentMethod('card');
+        } else {
+          const { data: cards } = await supabase
+            .from('cards')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(1);
+          
+          if (cards?.length) {
+            setCardData(cards[0]);
+            setPaymentMethod('card');
+          }
         }
       } catch (err) {
         console.error("Erro ao carregar dados:", err);
@@ -108,7 +113,6 @@ const Checkout: React.FC = () => {
   const formatPrice = (val: number) => val.toFixed(2).replace('.', ',');
 
   const handlePlaceOrder = () => {
-    // Verificação rigorosa de endereço
     if (!addressData) {
       showError("Por favor, adicione um endereço de entrega para continuar.");
       navigate('/adicionar-endereco', { state: location.state });
@@ -116,7 +120,6 @@ const Checkout: React.FC = () => {
     }
 
     if (paymentMethod === 'card') {
-      // Verificação rigorosa de cartão
       if (!cardData) {
         showError("Por favor, adicione um cartão de crédito para continuar.");
         navigate('/adicionar-cartao', { state: location.state });
@@ -160,10 +163,16 @@ const Checkout: React.FC = () => {
             <h3 className="text-[18px] font-bold text-gray-900 mb-2">Pagamento recusado</h3>
             <p className="text-[13px] text-gray-400 text-center mb-6">A operação não foi aceita pela administradora do cartão.</p>
             <div className="w-full space-y-3">
-              <Button className="w-full h-12 rounded-full bg-[#FF2C55] font-bold" onClick={() => navigate('/adicionar-cartao', { state: location.state })}>
+              <Button className="w-full h-12 rounded-full bg-[#FF2C55] font-bold" onClick={() => {
+                setCardError(false);
+                navigate('/adicionar-cartao', { state: location.state });
+              }}>
                 Adicionar outro cartão
               </Button>
-              <Button variant="ghost" className="w-full h-10 font-bold text-gray-400" onClick={() => navigate('/pix-pagamento', { state: { product } })}>
+              <Button variant="ghost" className="w-full h-10 font-bold text-gray-400" onClick={() => {
+                setCardError(false);
+                setPaymentMethod('pix');
+              }}>
                 Pagar com PIX
               </Button>
             </div>
@@ -275,7 +284,7 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Resumo do Pedido - CLONE 1:1 */}
+        {/* Resumo do Pedido */}
         <div className="bg-white mt-2.5 p-4">
           <h3 className="text-[16px] font-bold text-gray-900 mb-5">Resumo do Pedido</h3>
           <div className="space-y-4">
@@ -317,7 +326,7 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Forma de Pagamento - CLONE 1:1 */}
+        {/* Forma de Pagamento */}
         <div className="bg-white mt-2.5 p-4 space-y-6">
           <h3 className="text-[16px] font-bold text-gray-900">Forma de pagamento</h3>
           
@@ -326,7 +335,8 @@ const Checkout: React.FC = () => {
             className="flex flex-col space-y-3 cursor-pointer"
             onClick={() => {
               setPaymentMethod('card');
-              if (!cardData) navigate('/adicionar-cartao', { state: location.state });
+              // Sempre permite navegar para adicionar/alterar se clicar na linha ou no chevron
+              navigate('/adicionar-cartao', { state: location.state });
             }}
           >
             <div className="flex items-center justify-between">
@@ -377,7 +387,7 @@ const Checkout: React.FC = () => {
         </div>
       </div>
 
-      {/* Footer Fixo - CLONE 1:1 */}
+      {/* Footer Fixo */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 z-50 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
         <div className="max-w-[600px] mx-auto">
           <div className="flex justify-between items-center mb-3 px-1">
