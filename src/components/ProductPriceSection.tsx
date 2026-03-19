@@ -37,11 +37,14 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product, onCo
 
   return (
     <div className="bg-white">
-      {/* Faixa Oferta Relâmpago SEM 'A PARTIR' e com RAIO de fundo */}
-      <div className="relative bg-[#FF6633] h-[64px] flex items-center justify-between px-4 text-white overflow-hidden">
-        <div className="absolute right-1/4 top-0 h-full opacity-10 pointer-events-none">
-           <Zap size={100} className="fill-white rotate-12" />
-        </div>
+      {/* Faixa Oferta Relâmpago com imagem de fundo personalizada */}
+      <div className="relative h-[64px] flex items-center justify-between px-4 text-white overflow-hidden">
+        {/* Imagem de fundo redimensionada para preencher o container */}
+        <img 
+          src="/faixalaranja.png" 
+          alt="Background Oferta Relâmpago" 
+          className="absolute inset-0 w-full h-full object-cover"
+        />
 
         <div className="relative z-10 flex flex-col justify-center">
           <div className="flex items-center space-x-1.5">
