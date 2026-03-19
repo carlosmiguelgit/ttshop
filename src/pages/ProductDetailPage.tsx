@@ -17,6 +17,7 @@ import ShippingDrawer from '@/components/ShippingDrawer';
 import CreatorVideosSection from '@/components/CreatorVideosSection';
 import CustomerProtectionDrawer from '@/components/CustomerProtectionDrawer';
 import ChatDrawer from '@/components/ChatDrawer';
+import StoreSection from '@/components/StoreSection';
 import { LayoutGrid, ChevronRight, Truck, X } from 'lucide-react';
 import { addDays, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -26,13 +27,11 @@ const ProductDetailPage: React.FC = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
 
-  // Encontra o produto pelo slug ou usa o primeiro como fallback
   const product: Product = useMemo(() => {
     const found = products.find(p => p.slug === slug);
     return found || products[0];
   }, [slug]);
 
-  // Track ViewContent
   useEffect(() => {
     if (product) {
       trackTikTokEvent('ViewContent', {
@@ -241,6 +240,8 @@ const ProductDetailPage: React.FC = () => {
         <div ref={sectionRefs['Avaliações']}>
           <ProductReviewsSection rating={product.rating} reviewCount={product.reviewCount} />
         </div>
+
+        <StoreSection />
         
         <div ref={sectionRefs['Descrição']}>
           <ProductDescription specifications={product.specifications} descriptionText={product.descriptionText} firstImageSrc={firstImageSrc} />

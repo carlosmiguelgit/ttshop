@@ -1,10 +1,22 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { ChevronRight, Star, CreditCard, Bookmark, Zap, Clock, Ticket } from 'lucide-react';
+import { ChevronRight, Star, CreditCard, Bookmark, Clock, Ticket } from 'lucide-react';
 import { Product } from '@/data/products';
 import { addDays, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+
+// Clone 1:1 do raio da imagem - Versão mais larga (50% mais encorpado)
+const CustomZapIcon = ({ className }: { className?: string }) => (
+  <svg 
+    viewBox="0 0 24 24" 
+    fill="currentColor" 
+    className={className}
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M10 2L21 2L12 11h8L4 22l6-10H2L10 2z" />
+  </svg>
+);
 
 interface ProductPriceSectionProps {
   product: Product;
@@ -27,7 +39,6 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product, onCo
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
-  // Cálculo dinâmico da data (2 a 7 dias a partir de hoje)
   const deliveryDateRange = React.useMemo(() => {
     const today = new Date();
     const start = addDays(today, 2);
@@ -37,11 +48,12 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product, onCo
 
   return (
     <div className="bg-white">
-      {/* Faixa Oferta Relâmpago SEM 'A PARTIR' e com RAIO de fundo */}
-      <div className="relative bg-[#FF6633] h-[64px] flex items-center justify-between px-4 text-white overflow-hidden">
-        <div className="absolute right-1/4 top-0 h-full opacity-10 pointer-events-none">
-           <Zap size={100} className="fill-white rotate-12" />
-        </div>
+      <div className="relative h-[64px] flex items-center justify-between px-4 text-white overflow-hidden">
+        <img 
+          src="/faixalaranja.png" 
+          alt="Background Oferta Relâmpago" 
+          className="absolute inset-0 w-full h-full object-cover"
+        />
 
         <div className="relative z-10 flex flex-col justify-center">
           <div className="flex items-center space-x-1.5">
@@ -60,7 +72,7 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product, onCo
         
         <div className="relative z-10 flex flex-col items-end justify-center">
           <div className="flex items-center text-[13px] font-bold">
-            <Zap size={14} className="fill-white mr-1" />
+            <CustomZapIcon className="w-4 h-4 mr-1" />
             Oferta Relâmpago
           </div>
           <div className="text-[11px] opacity-100 mt-1">
@@ -70,7 +82,6 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product, onCo
       </div>
 
       <div className="p-4 space-y-3.5">
-        {/* Parcelamento com MICRO RELÓGIO */}
         <div className="flex items-center text-[11px] text-gray-800">
           <div className="relative mr-1.5">
             <CreditCard size={15} className="text-gray-600" />
@@ -82,7 +93,6 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product, onCo
           <ChevronRight size={14} className="text-gray-300 ml-1" />
         </div>
 
-        {/* Cupons com TICKET e SETA */}
         <div 
           className="flex items-center justify-between cursor-pointer"
           onClick={onCouponsClick}
@@ -113,7 +123,6 @@ const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product, onCo
           <span className="text-gray-500 font-medium">28.0K vendidos</span>
         </div>
 
-        {/* Entrega com CAMINHÃO COM LISTRAS (Custom SVG para precisão) */}
         <div 
           className="flex justify-between items-center py-3 border-t border-gray-100 cursor-pointer"
           onClick={onShippingClick}
