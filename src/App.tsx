@@ -37,14 +37,18 @@ const App = () => (
       />
       <BrowserRouter>
         <Routes>
-          {/* Rotas fixas do sistema (Devem vir ANTES da rota dinâmica :slug) */}
+          {/* Rotas fixas do sistema */}
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/adicionar-cartao" element={<AddCard />} />
           <Route path="/adicionar-endereco" element={<AddAddress />} />
           <Route path="/resumo-pagamento" element={<PaymentSummary />} />
           <Route path="/pix-pagamento" element={<PixPayment />} />
           
-          {/* Rota principal com parâmetro de slug para carregar produtos (ex: /furadeira) */}
+          {/* Rotas explícitas para os produtos (aparecerão no menu de rotas) */}
+          <Route path="/furadeira" element={<Index />} />
+          <Route path="/robo-aspirador-philco" element={<Index />} />
+          
+          {/* Rota dinâmica genérica */}
           <Route path="/:slug" element={<Index />} />
           
           {/* Redireciona a raiz para o produto principal por padrão */}
