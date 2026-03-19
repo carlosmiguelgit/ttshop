@@ -30,10 +30,10 @@ export const products: Product[] = [
   {
     slug: "robo-aspirador-wap-w1000",
     title: "WAP Robô Aspirador de Pó ROBOT W1000 Mapeamento de Tempo Real GYRO, Base de Carregamento, Compatível com Alexa e Google",
-    currentPrice: "197,00",
+    currentPrice: "97,28",
     originalPrice: "899,00",
-    discountPercentage: 78,
-    discountAmount: "702,00",
+    discountPercentage: 89,
+    discountAmount: "801,72",
     rating: 4.8,
     reviewCount: 12450,
     salesCount: 15800,
@@ -61,35 +61,35 @@ export const products: Product[] = [
       {
         username: "Fernanda Lima",
         avatarSrc: "/mulher/mulher (10).jpg",
-        comment: "Simplesmente maravilhoso! Mapeia a casa certinho e o pano úmido limpa de verdade. Recomendo muito.",
+        comment: "Simplesmente maravilhoso! Quando vi que baixou de 900 pra menos de 100 reais não pensei duas vezes, não dava pra perder essa oferta. Chegou em 3 dias aqui em SP.",
         variation: "Padrão",
         reviewImages: ["https://m.media-amazon.com/images/I/71ctuiejCeL.jpg", "https://m.media-amazon.com/images/I/61kP5qidrUL.jpg"]
       },
       {
         username: "João Pedro",
         avatarSrc: "/homem/homem (12).jpg",
-        comment: "O sistema gyro faz muita diferença, ele não fica batendo em tudo. Chegou rápido.",
+        comment: "O sistema gyro faz muita diferença. Entrega super rápida, chegou em 4 dias. Pelo preço que paguei valeu demais, promoção imbatível.",
         variation: "Padrão",
         reviewImages: ["https://m.media-amazon.com/images/I/712ddY7esJL.jpg"]
       },
       {
         username: "Patrícia M.",
         avatarSrc: "/mulher/mulher (15).jpg",
-        comment: "Melhor investimento para quem tem pet em casa. Aspira todos os pelos sem esforço.",
+        comment: "Melhor investimento para quem tem pet em casa. Aspira todos os pelos sem esforço. Fiquei chocada com o desconto, de 900 por esse valor é presente.",
         variation: "Padrão",
         reviewImages: ["https://m.media-amazon.com/images/I/61KouOv4ThL.jpg", "https://m.media-amazon.com/images/I/711iKkVIaYL.jpg"]
       },
       {
         username: "Carlos Eduardo",
         avatarSrc: "/homem/homem (20).jpg",
-        comment: "Conectei na Alexa super fácil. Agora é só falar pra ele limpar a sala e pronto.",
+        comment: "Conectei na Alexa super fácil. Chegou em 3 dias bem embalado. Aproveitei a promoção de menos de 100 reais e não me arrependo.",
         variation: "Padrão",
         reviewImages: ["https://m.media-amazon.com/images/I/718pxLy67TL.jpg", "https://m.media-amazon.com/images/I/71YkAuDHo4L.jpg"]
       },
       {
         username: "Juliana Silva",
         avatarSrc: "/mulher/mulher (25).jpg",
-        comment: "A bateria dura muito, consigo limpar o apartamento todo de 80m² e ainda sobra carga.",
+        comment: "A bateria dura muito. Chegou em 4 dias certinho. O preço original era quase 900, pagar menos de 100 foi a melhor compra do ano.",
         variation: "Padrão",
         reviewImages: ["https://m.media-amazon.com/images/I/71FYRSH0xnL.jpg", "https://m.media-amazon.com/images/I/61Z8OTkLJfL.jpg"]
       }
