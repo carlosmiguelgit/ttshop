@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { products, Product } from '@/data/products';
+import { products as staticProducts, Product } from '@/data/products';
 import Header from '@/components/Header';
 import ProductImageGallery from '@/components/ProductImageGallery';
 import ProductPriceSection from '@/components/ProductPriceSection';
@@ -18,18 +18,80 @@ import CreatorVideosSection from '@/components/CreatorVideosSection';
 import CustomerProtectionDrawer from '@/components/CustomerProtectionDrawer';
 import ChatDrawer from '@/components/ChatDrawer';
 import StoreSection from '@/components/StoreSection';
-import { LayoutGrid, ChevronRight, Truck, X } from 'lucide-react';
+import { LayoutGrid, ChevronRight, Truck, X, Loader2 } from 'lucide-react';
 import { addDays, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { trackTikTokEvent } from '@/utils/tiktok-pixel';
+import { supabase } from "@/integrations/supabase/client";
 
 const ProductDetailPage: React.FC = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const product: Product = useMemo(() => {
-    const found = products.find(p => p.slug === slug);
-    return found || products[0];
+  // Estados da UI
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [cartItemCount, setCartItemCount] = useState(0);
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
+  const [isVariationDrawerOpen, setIsVariationDrawerOpen] = useState(false);
+  const [variationDrawerMode, setVariationDrawerMode] = useState<'cart' | 'buy'>('cart');
+  const [isCouponsDrawerOpen, setIsCouponsDrawerOpen] = useState(false);
+  const [isShippingDrawerOpen, setIsShippingDrawerOpen] = useState(false);
+  const [isProtectionDrawerOpen, setIsProtectionDrawerOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [showShippingMsg, setShowShippingMsg] = useState(false);
+  const [activeTab, setActiveTab] = useState('Visão geral');
+  const [timeLeft, setTimeLeft] = useState(300);
+
+  const sectionRefs = {
+    'Visão geral': useRef<HTMLDivElement>(null),
+    'Avaliações': useRef<HTMLDivElement>(null),
+    'Descrição': useRef<HTMLDivElement>(null),
+    'Recomendações': useRef<HTMLDivElement>(null)
+  };
+
+  // Busca o produto no banco de dados
+  useEffect(() => {
+    const fetchProduct = async () => {
+      setLoading(true);
+      
+      // 1. Tenta buscar no Supabase
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('slug', slug)
+        .single();
+
+      if (data && !error) {
+        // Converte o formato do banco para o formato do componente
+        const dbProduct: Product = {
+          slug: data.slug,
+          title: data.title,
+          currentPrice: data.current_price,
+          originalPrice: data.original_price,
+          discountPercentage: data.discount_percentage || 0,
+          discountAmount: "0", // Calculado na UI se necessário
+          rating: Number(data.rating) || 4.8,
+          reviewCount: data.review_count || 0,
+          salesCount: data.sales_count || 0,
+          flashSaleTimeSeconds: 300,
+          media: data.media || [],
+          specifications: data.specifications || [],
+          descriptionText: data.description_text || "",
+          safeRedirectUrl: "",
+          reviews: data.reviews || []
+        };
+        setProduct(dbProduct);
+      } else {
+        // 2. Fallback para os estáticos se não achar no banco
+        const staticFound = staticProducts.find(p => p.slug === slug);
+        setProduct(staticFound || staticProducts[0]);
+      }
+      setLoading(false);
+    };
+
+    fetchProduct();
   }, [slug]);
 
   useEffect(() => {
@@ -43,27 +105,6 @@ const ProductDetailPage: React.FC = () => {
       });
     }
   }, [product]);
-
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItemCount, setCartItemCount] = useState(0);
-  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
-  const [isVariationDrawerOpen, setIsVariationDrawerOpen] = useState(false);
-  const [variationDrawerMode, setVariationDrawerMode] = useState<'cart' | 'buy'>('cart');
-  const [isCouponsDrawerOpen, setIsCouponsDrawerOpen] = useState(false);
-  const [isShippingDrawerOpen, setIsShippingDrawerOpen] = useState(false);
-  const [isProtectionDrawerOpen, setIsProtectionDrawerOpen] = useState(false);
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const [showShippingMsg, setShowShippingMsg] = useState(false);
-  const [activeTab, setActiveTab] = useState('Visão geral');
-
-  const [timeLeft, setTimeLeft] = useState(300);
-
-  const sectionRefs = {
-    'Visão geral': useRef<HTMLDivElement>(null),
-    'Avaliações': useRef<HTMLDivElement>(null),
-    'Descrição': useRef<HTMLDivElement>(null),
-    'Recomendações': useRef<HTMLDivElement>(null)
-  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -103,30 +144,6 @@ const ProductDetailPage: React.FC = () => {
     return `${format(start, 'dd')} – ${format(end, 'dd')} de ${format(end, 'MMM', { locale: ptBR })}`;
   }, []);
 
-  const firstImageSrc = product.media[0]?.src || 'public/placeholder.svg';
-
-  const handleOpenVariations = (mode: 'cart' | 'buy') => {
-    setVariationDrawerMode(mode);
-    setIsVariationDrawerOpen(true);
-  };
-  
-  const handleVariationConfirm = (qty: number, action: 'cart' | 'buy') => {
-    if (action === 'cart') {
-      setCartItemCount(prev => prev + qty);
-      setIsVariationDrawerOpen(false);
-    } else {
-      setCartItemCount(prev => (prev === 0 ? qty : prev));
-      setIsVariationDrawerOpen(false);
-      setIsCheckoutModalOpen(true);
-    }
-  };
-
-  const handleShippingCouponClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setShowShippingMsg(true);
-    setTimeout(() => setShowShippingMsg(false), 2000);
-  };
-
   const scrollToSection = (tabName: string) => {
     const ref = sectionRefs[tabName as keyof typeof sectionRefs];
     if (ref.current) {
@@ -137,9 +154,19 @@ const ProductDetailPage: React.FC = () => {
     }
   };
 
-  // Variações específicas para o Robô ou Furadeira
-  const variationsCount = product.slug.includes("robo") ? 1 : 2;
-  const variationsText = product.slug.includes("robo") ? "1 opção disponível" : "2 opções disponíveis";
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+        <Loader2 className="w-10 h-10 text-[#FF2C55] animate-spin mb-4" />
+        <p className="text-gray-400 font-medium">Carregando oferta...</p>
+      </div>
+    );
+  }
+
+  if (!product) return null;
+
+  const firstImageSrc = product.media[0]?.src || 'public/placeholder.svg';
+  const variationsText = `${product.media.length} opções disponíveis`;
 
   return (
     <div className="min-h-screen bg-[#F8F8F8] pb-[104px]">
@@ -187,10 +214,9 @@ const ProductDetailPage: React.FC = () => {
             onShippingClick={() => setIsShippingDrawerOpen(true)}
           />
 
-          {/* Seção de Variações com layout idêntico à foto */}
           <div 
             className="bg-white p-4 border-t border-gray-50 flex items-center justify-between cursor-pointer"
-            onClick={() => handleOpenVariations('cart')}
+            onClick={() => setIsVariationDrawerOpen(true)}
           >
             <div className="flex items-center space-x-3 overflow-hidden">
               <LayoutGrid size={20} className="text-gray-900 shrink-0" />
@@ -219,13 +245,9 @@ const ProductDetailPage: React.FC = () => {
             <div className="px-4 py-4 flex space-x-3 overflow-x-auto no-scrollbar scroll-smooth">
               <div 
                 className="min-w-[240px] bg-[#EFFFFD] border border-[#CCF7F2] rounded-xl p-3 relative flex items-center justify-between cursor-pointer"
-                onClick={handleShippingCouponClick}
+                onClick={(e) => { e.stopPropagation(); setShowShippingMsg(true); setTimeout(() => setShowShippingMsg(false), 2000); }}
               >
                 <div className="absolute -top-1.5 -right-1.5 bg-[#00BFA5] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-bl-lg rounded-tr-lg border border-white">x12</div>
-                
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-4 bg-[#F8F8F8] rounded-r-full border-y border-r border-[#CCF7F2] -ml-[1px]"></div>
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-4 bg-[#F8F8F8] rounded-l-full border-y border-l border-[#CCF7F2] -mr-[1px]"></div>
-
                 <div className="flex-grow pr-3">
                   <span className="text-[15px] font-bold text-gray-900 block leading-none mb-1">Cupom de envio</span>
                   <p className="text-[10px] text-gray-500 leading-tight">Desconto de R$ 10 no frete<br/>em pedidos acima de R$ 15</p>
@@ -233,15 +255,6 @@ const ProductDetailPage: React.FC = () => {
                 <button className="border border-[#00BFA5] text-[#00BFA5] text-[13px] font-medium h-8 px-5 rounded-full bg-white flex-shrink-0">
                   Usar
                 </button>
-              </div>
-
-              <div className="min-w-[180px] bg-[#FFF8F9] border border-[#FFD9E0] rounded-xl p-3 relative flex items-center justify-between">
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-2 h-4 bg-[#F8F8F8] rounded-r-full border-y border-r border-[#FFD9E0] -ml-[1px]"></div>
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-4 bg-[#F8F8F8] rounded-l-full border-y border-l border-[#FFD9E0] -mr-[1px]"></div>
-                <div className="flex-grow">
-                  <span className="text-[15px] font-bold text-gray-900 block leading-none mb-1">Desconto de R$ 5</span>
-                  <p className="text-[10px] text-gray-500 leading-tight">nos pedidos acima de R$ 80</p>
-                </div>
               </div>
             </div>
           </div>
@@ -283,15 +296,15 @@ const ProductDetailPage: React.FC = () => {
       </div>
       
       <ProductActionsBar 
-        onAddToCartClick={() => handleOpenVariations('cart')}
-        onBuyWithCouponClick={() => handleOpenVariations('buy')}
+        onAddToCartClick={() => { setVariationDrawerMode('cart'); setIsVariationDrawerOpen(true); }}
+        onBuyWithCouponClick={() => { setVariationDrawerMode('buy'); setIsVariationDrawerOpen(true); }}
         onChatClick={() => setIsChatOpen(true)}
       />
       
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} onCheckoutClick={() => setIsCheckoutModalOpen(true)} product={product} cartItemCount={cartItemCount} />
       <ChatDrawer isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} product={product} />
-      <VariationSelectorDrawer isOpen={isVariationDrawerOpen} onClose={() => setIsVariationDrawerOpen(false)} product={product} onConfirm={handleVariationConfirm} mode={variationDrawerMode} />
-      <CouponsDrawer isOpen={isCouponsDrawerOpen} onClose={() => setIsCouponsDrawerOpen(false)} onClaim={(amt) => {}} />
+      <VariationSelectorDrawer isOpen={isVariationDrawerOpen} onClose={() => setIsVariationDrawerOpen(false)} product={product} onConfirm={(qty) => { setCartItemCount(prev => prev + qty); setIsVariationDrawerOpen(false); }} mode={variationDrawerMode} />
+      <CouponsDrawer isOpen={isCouponsDrawerOpen} onClose={() => setIsCouponsDrawerOpen(false)} onClaim={() => {}} />
       <ShippingDrawer isOpen={isShippingDrawerOpen} onClose={() => setIsShippingDrawerOpen(false)} deliveryDate={deliveryDateRange} />
       <CustomerProtectionDrawer isOpen={isProtectionDrawerOpen} onClose={() => setIsProtectionDrawerOpen(false)} />
       <CheckoutDialog isOpen={isCheckoutModalOpen} onClose={() => setIsCheckoutModalOpen(false)} product={product} onFinalize={() => {}} />
