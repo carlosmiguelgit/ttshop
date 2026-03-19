@@ -8,16 +8,16 @@ interface Specification {
 interface ProductDescriptionProps {
   specifications: Specification[];
   descriptionText: string;
-  firstImageSrc: string;
+  firstImageSrc: string; // Novo prop para a primeira imagem
 }
 
 const ProductDescription: React.FC<ProductDescriptionProps> = ({ specifications, descriptionText, firstImageSrc }) => {
   return (
-    <div className="p-4 bg-white space-y-3">
-      {/* Título da seção */}
+    <div className="p-4 bg-white space-y-3"> {/* Reduzindo o espaçamento vertical para space-y-3 */}
+      {/* Título ajustado para 'Sobre o produto' e fonte menor (text-base) */}
       <h3 className="text-base font-bold text-gray-900">Sobre o produto</h3>
       
-      {/* Imagem do Produto */}
+      {/* Imagem do Produto - Reduzindo max-h para 200px */}
       <div className="w-full h-auto max-h-[200px] flex justify-center overflow-hidden rounded-lg">
         <img 
           src={firstImageSrc} 
