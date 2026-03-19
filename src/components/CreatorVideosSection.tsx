@@ -1,14 +1,40 @@
-import React from 'react';
+"use client";
+
+import React, { useState } from 'react';
 import { Play } from 'lucide-react';
+import YouTubePlayerDialog from './YouTubePlayerDialog';
 
 const videos = [
-  { id: 1, thumb: "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/ea2c34a6b70d4e3f80e67cabb80a5bac~tplv-o3syd03w52-resize-webp:800:800.webp", author: "Juju indica", avatar: "https://randomuser.me/api/portraits/women/1.jpg" },
-  { id: 2, thumb: "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/36ae405ac5544aa2b8a9a6a0252782e6~tplv-o3syd03w52-resize-webp:800:1443.webp", author: "mayckon.jho...", avatar: "https://randomuser.me/api/portraits/men/2.jpg" },
-  { id: 3, thumb: "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/f67585a059d74169b110b05d7a92d14c~tplv-o3syd03w52-resize-webp:800:1443.webp", author: "Daiane Mede...", avatar: "https://randomuser.me/api/portraits/women/3.jpg" },
-  { id: 4, thumb: "https://p16-oec-va.ibyteimg.com/tos-maliva-i-o3syd03w52-us/dca235c49d1e4eb895d4fe4237e7684d~tplv-o3syd03w52-resize-webp:800:1443.webp", author: "Ana Shop", avatar: "https://randomuser.me/api/portraits/women/4.jpg" },
+  { 
+    id: "IxJqHw_NKTs", 
+    author: "Juju indica", 
+    avatar: "https://randomuser.me/api/portraits/women/1.jpg" 
+  },
+  { 
+    id: "72r5fnX12vk", 
+    author: "mayckon.jho...", 
+    avatar: "https://randomuser.me/api/portraits/men/2.jpg" 
+  },
+  { 
+    id: "dGYEUZB5fgI", 
+    author: "Daiane Mede...", 
+    avatar: "https://randomuser.me/api/portraits/women/3.jpg" 
+  },
+  { 
+    id: "0JTefrwo7rQ", 
+    author: "Ana Shop", 
+    avatar: "https://randomuser.me/api/portraits/women/4.jpg" 
+  },
+  { 
+    id: "BdMsbQRhHjc", 
+    author: "Dicas de Casa", 
+    avatar: "https://randomuser.me/api/portraits/men/5.jpg" 
+  },
 ];
 
 const CreatorVideosSection: React.FC = () => {
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
+
   return (
     <div className="bg-white p-4 border-t border-gray-50">
       <div className="flex justify-between items-center mb-4">
@@ -17,9 +43,18 @@ const CreatorVideosSection: React.FC = () => {
       
       <div className="flex space-x-3 overflow-x-auto no-scrollbar pb-2">
         {videos.map((video) => (
-          <div key={video.id} className="relative flex-shrink-0 w-[140px] h-[220px] rounded-xl overflow-hidden shadow-sm">
-            <img src={video.thumb} className="w-full h-full object-cover" alt="Video thumb" />
-            <div className="absolute inset-0 bg-black/10"></div>
+          <div 
+            key={video.id} 
+            className="relative flex-shrink-0 w-[140px] h-[220px] rounded-xl overflow-hidden shadow-sm cursor-pointer active:scale-95 transition-transform"
+            onClick={() => setSelectedVideo(video.id)}
+          >
+            {/* Thumbnail do YouTube */}
+            <img 
+              src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`} 
+              className="w-full h-full object-cover" 
+              alt="Video thumb" 
+            />
+            <div className="absolute inset-0 bg-black/20"></div>
             
             {/* Ícone de Play */}
             <div className="absolute top-2 left-2">
@@ -36,6 +71,12 @@ const CreatorVideosSection: React.FC = () => {
           </div>
         ))}
       </div>
+
+      <YouTubePlayerDialog 
+        isOpen={!!selectedVideo} 
+        onClose={() => setSelectedVideo(null)} 
+        videoId={selectedVideo} 
+      />
     </div>
   );
 };
