@@ -22,7 +22,7 @@ const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, product }) => 
       setMessages([
         {
           type: 'bot',
-          text: 'Agradecemos por entrar em contato. Como posso ajudar hoje?',
+          text: 'Agradecemos por entrar em contato com a Havan. Como posso ajudar hoje?',
           time: '20:55'
         }
       ]);
@@ -47,11 +47,10 @@ const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, product }) => 
     setMessages(prev => [...prev, newMsg]);
     setInputValue("");
 
-    // Resposta automática baseada no contexto (Compartilhamento vs Mensagem Comum)
     setTimeout(() => {
       const responseText = isProductShare 
-        ? 'Obrigado por teres partilhado este artigo. Em que posso ajudar-te?'
-        : 'Obrigado pela mensagem e pelo seu interesse, retornaremos assim que possível.';
+        ? 'Obrigado por compartilhar este produto da Havan. Em que posso ajudar?'
+        : 'Obrigado pela mensagem! Um de nossos atendentes Havan retornará em breve.';
 
       setMessages(prev => [...prev, {
         type: 'bot',
@@ -71,11 +70,15 @@ const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, product }) => 
             <button onClick={onClose} className="mr-3">
               <ArrowLeft size={24} className="text-gray-900" />
             </button>
-            <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center mr-2 border">
-              <span className="text-[8px] font-bold text-gray-400 text-center">SHOP LOGO</span>
+            <div className="w-8 h-8 flex items-center justify-center mr-2">
+              <img 
+                src="https://logodownload.org/wp-content/uploads/2015/05/havan-logo-0.png" 
+                alt="Havan Logo" 
+                className="w-full h-full object-contain"
+              />
             </div>
             <div className="flex-grow">
-              <h2 className="text-[14px] font-bold text-gray-900 leading-none">MAIS MAKE BRASIL</h2>
+              <h2 className="text-[14px] font-bold text-gray-900 leading-none uppercase">HAVAN</h2>
               <span className="text-[10px] text-gray-500">Normalmente responde em até 24 horas</span>
             </div>
             <div className="flex items-center space-x-4">
@@ -106,7 +109,7 @@ const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, product }) => 
             {/* Options Card */}
             <div className="bg-white rounded-xl border shadow-sm overflow-hidden mt-2">
               <div className="p-4 border-b">
-                <h3 className="text-[15px] font-bold text-gray-900">Como posso ajudar você hoje?</h3>
+                <h3 className="text-[15px] font-bold text-gray-900">Como a Havan pode ajudar você hoje?</h3>
               </div>
               <div className="divide-y">
                 {[
@@ -127,7 +130,7 @@ const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, product }) => 
                 ))}
               </div>
               <div className="p-2 bg-gray-50 text-center">
-                <span className="text-[10px] text-gray-400">Enviado por chatbot</span>
+                <span className="text-[10px] text-gray-400">Enviado por chatbot Havan</span>
               </div>
             </div>
           </div>
@@ -142,7 +145,7 @@ const ChatDrawer: React.FC<ChatDrawerProps> = ({ isOpen, onClose, product }) => 
               <img src={product.media[0].src} className="w-12 h-12 rounded object-cover mr-3 border" />
               <div className="flex-grow pr-16">
                 <p className="text-[12px] font-medium text-gray-800 line-clamp-1">{product.title}</p>
-                <p className="text-[11px] text-gray-400">28007 vendidos</p>
+                <p className="text-[11px] text-gray-400">{product.salesCount} vendidos</p>
               </div>
               <Button 
                 className="bg-[#FF2C55] hover:bg-[#E0254B] text-white text-[12px] font-bold h-7 px-4 rounded-md"

@@ -172,7 +172,7 @@ const Checkout: React.FC = () => {
 
         <div className="bg-white mt-2.5 p-4">
           <div className="flex justify-between items-center mb-3">
-            <span className="text-[14px] font-bold text-gray-900 uppercase">MAIS MAKE BRASIL</span>
+            <span className="text-[14px] font-bold text-gray-900 uppercase">HAVAN</span>
           </div>
           <div className="flex space-x-3 mb-4">
             <div className="w-[100px] h-[100px] bg-[#F8F8F8] rounded-lg overflow-hidden border p-1 flex-shrink-0">
