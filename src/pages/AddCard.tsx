@@ -103,7 +103,6 @@ const AddCard: React.FC = () => {
     const formatted = digits.match(/.{1,4}/g)?.join(' ') || digits;
     if (digits.length > 0) {
       const first = digits[0];
-      // Libera 4 (Visa), 5 (Master), 6 (Elo/Outros)
       if (first === '4') setBrand('visa');
       else if (first === '5') setBrand('mastercard');
       else if (first === '6') setBrand('elo');
@@ -116,7 +115,7 @@ const AddCard: React.FC = () => {
     if (selectedCardId && !cardNumber.trim()) {
       const card = savedCards.find(c => c.id === selectedCardId);
       if (card) {
-        navigate('/checkout', { state: { ...location.state, cardData: card } });
+        navigate(-1, { state: { ...location.state, cardData: card } });
         return;
       }
     }
@@ -153,7 +152,7 @@ const AddCard: React.FC = () => {
       setTimeout(() => setStep(1), 700);
       setTimeout(() => setStep(2), 1400);
       setTimeout(() => {
-        navigate('/checkout', { state: { ...location.state, cardAdded: true, cardData: data } });
+        navigate(-1, { state: { ...location.state, cardAdded: true, cardData: data } });
       }, 2100);
 
     } catch (err) {
