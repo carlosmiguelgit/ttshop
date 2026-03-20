@@ -18,15 +18,14 @@ import CreatorVideosSection from '@/components/CreatorVideosSection';
 import CustomerProtectionDrawer from '@/components/CustomerProtectionDrawer';
 import ChatDrawer from '@/components/ChatDrawer';
 import StoreSection from '@/components/StoreSection';
-import { Truck, X, LayoutGrid, ChevronRight } from 'lucide-react';
+import ProductRecommendations from '@/components/ProductRecommendations';
+import { Truck, X, LayoutGrid, ChevronRight, ArrowUp } from 'lucide-react';
 import { addDays, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { trackTikTokEvent } from '@/utils/tiktok-pixel';
 
 const AspiradorProductPage: React.FC = () => {
   const navigate = useNavigate();
-  
-  // Dados isolados do produto
   const product = {
     slug: "aspirador-de-po",
     title: "WAP Robô Aspirador de Pó ROBOT W1000 Mapeamento de Tempo Real GYRO, Base de Carregamento, Compatível com Alexa e Google",
@@ -44,15 +43,7 @@ const AspiradorProductPage: React.FC = () => {
       { label: "Autonomia", value: "Até 2h40min" },
     ],
     descriptionText: "O Robô Aspirador WAP ROBOT W1000 torna a limpeza do dia a dia contínua e sem esforço...",
-    reviews: [
-      {
-        username: "Fernanda Lima",
-        avatarSrc: "/mulher/mulher (10).jpg",
-        comment: "Simplesmente maravilhoso! Chegou em 3 dias.",
-        variation: "Padrão",
-        reviewImages: []
-      }
-    ]
+    reviews: []
   };
 
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -64,15 +55,12 @@ const AspiradorProductPage: React.FC = () => {
   const [isProtectionDrawerOpen, setIsProtectionDrawerOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [timeLeft, setTimeLeft] = useState(300);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
-    trackTikTokEvent('ViewContent', {
-      content_id: product.slug,
-      content_type: 'product',
-      content_name: product.title,
-      value: 97.28,
-      currency: 'BRL'
-    });
+    const handleScroll = () => setShowScrollTop(window.scrollY > 1000);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const deliveryDateRange = useMemo(() => {
@@ -82,25 +70,14 @@ const AspiradorProductPage: React.FC = () => {
     return `${format(start, 'dd')} – ${format(end, 'dd')} de ${format(end, 'MMM', { locale: ptBR })}`;
   }, []);
 
-  const formatTimer = (seconds: number) => {
-    const m = Math.floor(seconds / 60);
-    const s = seconds % 60;
-    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}:00`;
-  };
-
   return (
     <div className="min-h-screen bg-[#F8F8F8] pb-[104px]">
       <Header productTitle={product.title} cartItemCount={cartItemCount} onCartClick={() => setIsCartOpen(true)} />
       
       <div className="max-w-[600px] mx-auto bg-white shadow-sm mt-[48px]">
         <ProductImageGallery media={product.media as any} onCartClick={() => setIsCartOpen(true)} cartItemCount={cartItemCount} />
+        <ProductPriceSection product={product as any} onCouponsClick={() => setIsCouponsDrawerOpen(true)} onShippingClick={() => setIsShippingDrawerOpen(true)} />
         
-        <ProductPriceSection 
-          product={product as any} 
-          onCouponsClick={() => setIsCouponsDrawerOpen(true)}
-          onShippingClick={() => setIsShippingDrawerOpen(true)}
-        />
-
         <div className="bg-white p-4 border-t border-gray-50 flex items-center justify-between cursor-pointer" onClick={() => setIsVariationDrawerOpen(true)}>
           <div className="flex items-center space-x-3">
             <LayoutGrid size={20} className="text-gray-900" />
@@ -112,11 +89,25 @@ const AspiradorProductPage: React.FC = () => {
         
         <CustomerProtectionSection onClick={() => setIsProtectionDrawerOpen(true)} />
         <CreatorVideosSection />
-        <ProductReviewsSection rating={product.rating} reviewCount={product.reviewCount} reviews={product.reviews as any} />
+        <ProductReviewsSection rating={product.rating} reviewCount={product.reviewCount} reviews={[]} />
         <StoreSection />
         <ProductDescription specifications={product.specifications} descriptionText={product.descriptionText} firstImageSrc={product.media[0].src} />
+        
+        {/* Seção de Recomendações */}
+        <ProductRecommendations currentSlug={product.slug} />
+        
         <MadeWithDyad />
       </div>
+
+      {/* Botão Voltar ao Topo */}
+      {showScrollTop && (
+        <button 
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="fixed bottom-[120px] right-4 z-40 bg-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center border border-gray-100 active:scale-90 transition-transform"
+        >
+          <ArrowUp size={20} className="text-gray-900" />
+        </button>
+      )}
 
       <div className="fixed bottom-[60px] left-0 right-0 z-20 flex justify-center">
         <div className="w-full max-w-[600px] bg-white border-t h-10 px-4 flex items-center justify-between">
@@ -124,32 +115,14 @@ const AspiradorProductPage: React.FC = () => {
             <Truck size={16} />
             <span className="text-[12px] font-medium">O <span className="font-bold">frete grátis</span> expira em breve</span>
           </div>
-          <span className="text-[#00BFA5] text-[13px] font-bold font-mono">{formatTimer(timeLeft)}</span>
+          <span className="text-[#00BFA5] text-[13px] font-bold font-mono">05:00:00</span>
         </div>
       </div>
       
-      <ProductActionsBar 
-        onAddToCartClick={() => { setVariationDrawerMode('cart'); setIsVariationDrawerOpen(true); }}
-        onBuyWithCouponClick={() => { setVariationDrawerMode('buy'); setIsVariationDrawerOpen(true); }}
-        onChatClick={() => setIsChatOpen(true)}
-      />
-      
+      <ProductActionsBar onAddToCartClick={() => setIsVariationDrawerOpen(true)} onBuyWithCouponClick={() => setIsVariationDrawerOpen(true)} onChatClick={() => setIsChatOpen(true)} />
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} onCheckoutClick={() => navigate('/aspirador-de-po/checkout')} product={product as any} cartItemCount={cartItemCount} />
       <ChatDrawer isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} product={product as any} />
-      <VariationSelectorDrawer 
-        isOpen={isVariationDrawerOpen} 
-        onClose={() => setIsVariationDrawerOpen(false)} 
-        product={product as any} 
-        onConfirm={(qty) => { 
-          if (variationDrawerMode === 'buy') {
-            navigate('/aspirador-de-po/checkout', { state: { product, initialQuantity: qty } });
-          } else {
-            setCartItemCount(prev => prev + qty);
-            setIsVariationDrawerOpen(false);
-          }
-        }} 
-        mode={variationDrawerMode} 
-      />
+      <VariationSelectorDrawer isOpen={isVariationDrawerOpen} onClose={() => setIsVariationDrawerOpen(false)} product={product as any} onConfirm={(qty) => navigate('/aspirador-de-po/checkout', { state: { product, initialQuantity: qty } })} mode="buy" />
       <CouponsDrawer isOpen={isCouponsDrawerOpen} onClose={() => setIsCouponsDrawerOpen(false)} onClaim={() => {}} />
       <ShippingDrawer isOpen={isShippingDrawerOpen} onClose={() => setIsShippingDrawerOpen(false)} deliveryDate={deliveryDateRange} />
       <CustomerProtectionDrawer isOpen={isProtectionDrawerOpen} onClose={() => setIsProtectionDrawerOpen(false)} />
