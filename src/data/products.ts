@@ -43,11 +43,45 @@ export const products: Product[] = [
       { type: 'image', src: "https://m.media-amazon.com/images/I/51l8Ni2qSUL._AC_SL1000_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/51l8Ni2qSUL._AC_SL1000_.jpg" },
     ],
     specifications: [
-      { label: "Bateria (mAh)", value: "2600" },
+      { label: "Nível de ruído", value: "65 dB(A)" },
+      { label: "Tipo de filtro", value: "HEPA + Espuma + Tela" },
+      { label: "Níveis de filtragem", value: "3" },
+      { label: "Aspira água?", value: "Não" },
+      { label: "Capacidade para pó", value: "600 ml" },
+      { label: "Voltagem", value: "BIVOLT" },
+      { label: "Potência elétrica", value: "36W" },
+      { label: "Frequência", value: "60Hz" },
+      { label: "Capacidade útil", value: "350ml (água) + 260ml (pó)" },
+      { label: "Tipo de bateria", value: "Li-Ion" },
+      { label: "Capacidade da bateria", value: "2600 (mAh)" },
+      { label: "Autonomia", value: "Até 2h40" },
+      { label: "Tempo de carga", value: "Até 5 horas" },
+      { label: "Base carregadora", value: "Sim" },
+      { label: "Controle remoto", value: "Sim" },
+      { label: "Conectividade APP", value: "Sim" },
+      { label: "Peso líquido", value: "3 kg" },
       { label: "Cor", value: "Branco e Turquesa" },
-      { label: "Autonomia", value: "Até 2h40min" },
+      { label: "Dimensões", value: "32 x 32 x 8 cm" },
     ],
-    descriptionText: "O Robô Aspirador WAP ROBOT W1000 torna a limpeza do dia a dia contínua e sem esforço...",
+    descriptionText: `Direção inteligente para uma limpeza eficiente!
+
+Imagine ter um ajudante versátil, que varre, aspira e passa pano como você deseja, quando precisar, mesmo estando longe? Com o Robô Aspirador WAP ROBOT W1000, você economiza tempo e pode acompanhar a limpeza dos ambientes diretamente na tela do seu celular. 
+
+Pronto para oferecer uma nova experiência de limpeza, o robô aspirador com mapeamento é equipado com a exclusiva navegação Gyro. Ela calcula de forma precisa sua posição e orientação em tempo real para uma movimentação segura, que evita obstáculos, para uma ação otimizada na rotina do lar. 
+
+O Robô Aspirador WAP ROBOT W1000 torna a limpeza do dia a dia contínua e sem esforço, retornando sozinho até à base. Acompanhado de um controle remoto com funções pré-programadas, é possível escolher os modos de operação que direcionam a aspiração para áreas específicas. 
+
+Com o aplicativo WAP CONNECT, o controle do aspirador está nas suas mãos. Atualize o software, agende limpezas e monitore tudo pelo celular, ou ainda solicite à Alexa ou Google Assistant com um simples comando de voz.
+
+Ideal para famílias com pets, o ROBOT W1000 oferece três modos de sucção e é eficaz na remoção de pelos, cabelos, poeira e sujeira em diferentes tipos de pisos, incluindo madeira, carpete e pisos frios. Suas rodas emborrachadas e as duas escovas giratórias promovem uma limpeza profunda. 
+
+Além do design sofisticado, com acabamento em vidro de fácil manutenção, o robô aspirador com mapeamento possui recipiente duplo, para água e pó. Assim, ele não apenas aspira o pó, mas também realiza a limpeza completa dos cômodos, enquanto o tanque inteligente gerencia a umidade do piso durante a passagem do MOP, liberando água em 3 níveis de umidade. 
+
+Escolha entre os cinco modos de limpeza disponíveis, incluindo as opções de Cantos, Aleatória, Espiral, Inteligente e Umedecida. Com até 2h40 de autonomia de bateria, você pode renovar toda a casa sem interrupções ou obstáculos. Isso é possível graças aos sensores antiqueda e de redirecionamento.  
+
+O melhor caminho para o seu conforto está aqui! Adicione um toque de sofisticação e alta performance à sua rotina de limpeza com o Robô Aspirador WAP ROBOT W1000.  
+ 
+WAP | Deixa tudo mais fácil`,
     safeRedirectUrl: "https://www.havan.com.br/aspirador-de-po-robo-wap-robot-w1000",
     reviews: []
   },
@@ -67,6 +101,7 @@ export const products: Product[] = [
     ],
     specifications: [
       { label: "Potência", value: "600W" },
+      { label: "Mandril", value: "1/2\" (13mm)" },
     ],
     descriptionText: "A Furadeira de Impacto Havan Power é a ferramenta ideal para seus projetos...",
     safeRedirectUrl: "https://www.havan.com.br/furadeira",

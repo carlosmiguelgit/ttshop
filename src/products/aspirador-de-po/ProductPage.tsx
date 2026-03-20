@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { products } from '@/data/products';
 import Header from '@/components/Header';
 import ProductImageGallery from '@/components/ProductImageGallery';
 import ProductPriceSection from '@/components/ProductPriceSection';
@@ -19,32 +20,14 @@ import CustomerProtectionDrawer from '@/components/CustomerProtectionDrawer';
 import ChatDrawer from '@/components/ChatDrawer';
 import StoreSection from '@/components/StoreSection';
 import ProductRecommendations from '@/components/ProductRecommendations';
-import { Truck, X, LayoutGrid, ChevronRight, ArrowUp } from 'lucide-react';
+import { Truck, X, LayoutGrid, ChevronRight, ArrowUp } from 'lucide-center';
 import { addDays, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { trackTikTokEvent } from '@/utils/tiktok-pixel';
 
 const AspiradorProductPage: React.FC = () => {
   const navigate = useNavigate();
-  const product = {
-    slug: "aspirador-de-po",
-    title: "WAP Robô Aspirador de Pó ROBOT W1000 Mapeamento de Tempo Real GYRO, Base de Carregamento, Compatível com Alexa e Google",
-    currentPrice: "97,28",
-    originalPrice: "899,00",
-    rating: 4.8,
-    reviewCount: 12450,
-    media: [
-      { type: 'image', src: "https://m.media-amazon.com/images/I/61n4FmVFrQL._AC_SL1500_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61n4FmVFrQL._AC_SL1500_.jpg" },
-      { type: 'image', src: "https://m.media-amazon.com/images/I/51l8Ni2qSUL._AC_SL1000_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/51l8Ni2qSUL._AC_SL1000_.jpg" },
-    ],
-    specifications: [
-      { label: "Bateria (mAh)", value: "2600" },
-      { label: "Cor", value: "Branco e Turquesa" },
-      { label: "Autonomia", value: "Até 2h40min" },
-    ],
-    descriptionText: "O Robô Aspirador WAP ROBOT W1000 torna a limpeza do dia a dia contínua e sem esforço...",
-    reviews: []
-  };
+  const product = products.find(p => p.slug === "aspirador-de-po")!;
 
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
@@ -54,7 +37,6 @@ const AspiradorProductPage: React.FC = () => {
   const [isShippingDrawerOpen, setIsShippingDrawerOpen] = useState(false);
   const [isProtectionDrawerOpen, setIsProtectionDrawerOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(300);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
@@ -91,15 +73,20 @@ const AspiradorProductPage: React.FC = () => {
         <CreatorVideosSection />
         <ProductReviewsSection rating={product.rating} reviewCount={product.reviewCount} reviews={[]} />
         <StoreSection />
-        <ProductDescription specifications={product.specifications} descriptionText={product.descriptionText} firstImageSrc={product.media[0].src} />
         
-        {/* Seção de Recomendações */}
+        {/* Descrição Completa e Ficha Técnica */}
+        <ProductDescription 
+          specifications={product.specifications} 
+          descriptionText={product.descriptionText} 
+          firstImageSrc={product.media[0].src} 
+        />
+        
+        {/* Seção de Recomendações (Abaixo da Descrição) */}
         <ProductRecommendations currentSlug={product.slug} />
         
         <MadeWithDyad />
       </div>
 
-      {/* Botão Voltar ao Topo */}
       {showScrollTop && (
         <button 
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
