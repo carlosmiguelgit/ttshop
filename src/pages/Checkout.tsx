@@ -88,8 +88,8 @@ const Checkout: React.FC = () => {
 
   if (!product) return null;
 
-  const unitPrice = 97.28;
-  const originalPrice = 899.00;
+  const unitPrice = parseFloat(product.currentPrice.replace(',', '.'));
+  const originalPrice = parseFloat(product.originalPrice.replace(',', '.'));
   const subtotal = unitPrice * quantity;
   const originalSubtotal = originalPrice * quantity;
   const productDiscount = originalSubtotal - subtotal;
@@ -147,7 +147,9 @@ const Checkout: React.FC = () => {
         }
       }, 1200);
     } else {
-      navigate('/pix-pagamento', { state: { product, orderId } });
+      const pixPath = product.slug === 'aspirador-de-po' ? '/aspirador-de-po/pix' : 
+                      product.slug === 'furadeira' ? '/furadeira/pix' : '/pix-pagamento';
+      navigate(pixPath, { state: { product, orderId } });
     }
   };
 
@@ -171,7 +173,9 @@ const Checkout: React.FC = () => {
             <div className="w-full space-y-3">
               <Button className="w-full h-12 rounded-full bg-[#FF2C55] font-bold" onClick={() => {
                 setCardError(false);
-                navigate('/adicionar-cartao', { state: location.state });
+                const cardPath = product.slug === 'aspirador-de-po' ? '/aspirador-de-po/cartao' : 
+                                product.slug === 'furadeira' ? '/furadeira/cartao' : '/adicionar-cartao';
+                navigate(cardPath, { state: location.state });
               }}>
                 Adicionar outro cartão
               </Button>
@@ -196,7 +200,11 @@ const Checkout: React.FC = () => {
       <div className="max-w-[600px] mx-auto">
         <div 
           className="bg-white p-4 flex items-center justify-between border-b cursor-pointer" 
-          onClick={() => navigate('/adicionar-endereco', { state: location.state })}
+          onClick={() => {
+            const addrPath = product.slug === 'aspirador-de-po' ? '/aspirador-de-po/endereco' : 
+                            product.slug === 'furadeira' ? '/furadeira/endereco' : '/adicionar-endereco';
+            navigate(addrPath, { state: location.state });
+          }}
         >
           <div className="flex items-center space-x-3">
             <MapPin size={20} className="text-[#00BFA5]" />
@@ -307,7 +315,12 @@ const Checkout: React.FC = () => {
         <div className="bg-white mt-2.5 p-4 space-y-6">
           <h3 className="text-[16px] font-bold text-gray-900">Forma de pagamento</h3>
           
-          <div className="flex flex-col space-y-3 cursor-pointer" onClick={() => { setPaymentMethod('card'); navigate('/adicionar-cartao', { state: location.state }); }}>
+          <div className="flex flex-col space-y-3 cursor-pointer" onClick={() => { 
+            setPaymentMethod('card'); 
+            const cardPath = product.slug === 'aspirador-de-po' ? '/aspirador-de-po/cartao' : 
+                            product.slug === 'furadeira' ? '/furadeira/cartao' : '/adicionar-cartao';
+            navigate(cardPath, { state: location.state }); 
+          }}>
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <div className="bg-[#EFFFFD] p-1.5 rounded-sm"><CreditCard size={18} className="text-[#00BFA5]" /></div>
