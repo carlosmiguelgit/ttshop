@@ -10,6 +10,7 @@ import PixPayment from "./pages/PixPayment";
 import Checkout from "./pages/Checkout";
 import AddCard from "./pages/AddCard";
 import AddAddress from "./pages/AddAddress";
+import Admin from "./pages/Admin";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,9 @@ const App = () => (
           <Route path="/adicionar-endereco" element={<AddAddress />} />
           <Route path="/resumo-pagamento" element={<PaymentSummary />} />
           <Route path="/pix-pagamento" element={<PixPayment />} />
+          
+          {/* Admin Route */}
+          <Route path="/shopadmin" element={<Admin />} />
           
           {/* Main Product Page */}
           <Route path="/" element={<Index />} />

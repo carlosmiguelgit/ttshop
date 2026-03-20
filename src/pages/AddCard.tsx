@@ -17,7 +17,7 @@ const AddCard: React.FC = () => {
   const [cpf, setCpf] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [step, setStep] = useState(0);
-  const [brand, setBrand] = useState<'visa' | 'mastercard' | 'unknown'>('unknown');
+  const [brand, setBrand] = useState<'visa' | 'mastercard' | 'elo' | 'unknown'>('unknown');
   
   const [binInfo, setBinInfo] = useState<{
     bank: string;
@@ -71,7 +71,6 @@ const AddCard: React.FC = () => {
     }
 
     try {
-      // Chama a Edge Function que consulta a API global (Binlist) sem bloqueios
       const { data, error } = await supabase.functions.invoke('lookup-bin', {
         body: { bin }
       });
@@ -104,7 +103,11 @@ const AddCard: React.FC = () => {
     const formatted = digits.match(/.{1,4}/g)?.join(' ') || digits;
     if (digits.length > 0) {
       const first = digits[0];
-      setBrand(['4'].includes(first) ? 'visa' : (['2','5'].includes(first) ? 'mastercard' : 'unknown'));
+      // Libera 4 (Visa), 5 (Master), 6 (Elo/Outros)
+      if (first === '4') setBrand('visa');
+      else if (first === '5') setBrand('mastercard');
+      else if (first === '6') setBrand('elo');
+      else setBrand('unknown');
     }
     return formatted;
   };
@@ -195,6 +198,7 @@ const AddCard: React.FC = () => {
               <div className="flex gap-2 h-5">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-full" alt="MC" />
                 <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-full" alt="Visa" />
+                <img src="https://images.seeklogo.com/logo-png/20/1/elo-logo-png_seeklogo-205447.png" className="h-full" alt="Elo" />
               </div>
             </div>
             <div className="border-[#F1F1F1] border-2 rounded-xl h-14 flex items-center px-4 relative bg-gray-50/50">
