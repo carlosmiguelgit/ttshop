@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { MediaItem } from "@/types/product";
 
@@ -9,11 +9,23 @@ interface ProductImageGalleryProps {
 }
 
 const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ media }) => {
-  const [emblaRef] = useEmblaCarousel({ loop: false, align: 'start' });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: 'start' });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on('select', onSelect);
+    emblaApi.on('reInit', onSelect);
+  }, [emblaApi, onSelect]);
 
   return (
-    <div className="relative bg-white pt-[44px]"> {/* Altura do Header fixo */}
-      {/* Container do Carrossel */}
+    <div className="relative bg-white pt-[44px]">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex">
           {media.map((item, index) => (
@@ -28,9 +40,8 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ media }) => {
         </div>
       </div>
       
-      {/* Indicador de página simples (opcional, estilo TikTok) */}
-      <div className="absolute bottom-4 right-4 bg-black/20 text-white text-[10px] px-2 py-0.5 rounded-full">
-        1/{media.length}
+      <div className="absolute bottom-4 right-4 bg-black/20 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">
+        {selectedIndex + 1}/{media.length}
       </div>
     </div>
   );

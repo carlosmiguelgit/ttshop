@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { products } from '@/data/products';
 import Header from '@/components/Header';
@@ -20,10 +20,9 @@ import CustomerProtectionDrawer from '@/components/CustomerProtectionDrawer';
 import ChatDrawer from '@/components/ChatDrawer';
 import StoreSection from '@/components/StoreSection';
 import ProductRecommendations from '@/components/ProductRecommendations';
-import { Truck, X, LayoutGrid, ChevronRight, ArrowUp } from 'lucide-react';
+import { Truck, LayoutGrid, ChevronRight, ArrowUp } from 'lucide-react';
 import { addDays, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { trackTikTokEvent } from '@/utils/tiktok-pixel';
 
 const FuradeiraProductPage: React.FC = () => {
   const navigate = useNavigate();
@@ -52,6 +51,15 @@ const FuradeiraProductPage: React.FC = () => {
     return `${format(start, 'dd')} – ${format(end, 'dd')} de ${format(end, 'MMM', { locale: ptBR })}`;
   }, []);
 
+  const handleConfirmVariation = (qty: number, mode: 'cart' | 'buy', variation: string, price: string) => {
+    if (mode === 'buy') {
+      navigate('/furadeira/checkout', { state: { product, initialQuantity: qty, selectedVariation: variation, selectedPrice: price } });
+    } else {
+      setCartItemCount(prev => prev + qty);
+      setIsVariationDrawerOpen(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#F8F8F8] pb-[104px]">
       <Header productTitle={product.title} cartItemCount={cartItemCount} onCartClick={() => setIsCartOpen(true)} />
@@ -64,7 +72,7 @@ const FuradeiraProductPage: React.FC = () => {
           <div className="flex items-center space-x-3">
             <LayoutGrid size={20} className="text-gray-900" />
             <img src={product.media[0].src} className="w-10 h-10 rounded-md border object-cover" alt="Opção" />
-            <span className="text-[13px] text-gray-400">1 opção disponível</span>
+            <span className="text-[13px] text-gray-400">{product.variations?.length || 1} opções disponíveis</span>
           </div>
           <ChevronRight size={18} className="text-gray-400" />
         </div>
@@ -73,44 +81,26 @@ const FuradeiraProductPage: React.FC = () => {
         <CreatorVideosSection />
         <ProductReviewsSection rating={product.rating} reviewCount={product.reviewCount} reviews={[]} />
         <StoreSection />
-        
-        {/* Descrição Completa e Ficha Técnica */}
-        <ProductDescription 
-          specifications={product.specifications} 
-          descriptionText={product.descriptionText} 
-          firstImageSrc={product.media[0].src} 
-          bannerImage={product.bannerImage}
-        />
-        
-        {/* Seção de Recomendações */}
+        <ProductDescription specifications={product.specifications} descriptionText={product.descriptionText} firstImageSrc={product.media[0].src} bannerImage={product.bannerImage} />
         <ProductRecommendations currentSlug={product.slug} />
-        
         <MadeWithDyad />
       </div>
 
       {showScrollTop && (
-        <button 
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-[120px] right-4 z-40 bg-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center border border-gray-100 active:scale-90 transition-transform"
-        >
-          <ArrowUp size={20} className="text-gray-900" />
-        </button>
+        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="fixed bottom-[120px] right-4 z-40 bg-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center border border-gray-100"><ArrowUp size={20} className="text-gray-900" /></button>
       )}
 
       <div className="fixed bottom-[60px] left-0 right-0 z-20 flex justify-center">
         <div className="w-full max-w-[600px] bg-white border-t h-10 px-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2 text-[#00BFA5]">
-            <Truck size={16} />
-            <span className="text-[12px] font-medium">O <span className="font-bold">frete grátis</span> expira em breve</span>
-          </div>
+          <div className="flex items-center space-x-2 text-[#00BFA5]"><Truck size={16} /><span className="text-[12px] font-medium">O <span className="font-bold">frete grátis</span> expira em breve</span></div>
           <span className="text-[#00BFA5] text-[13px] font-bold font-mono">05:00:00</span>
         </div>
       </div>
       
-      <ProductActionsBar onAddToCartClick={() => setIsVariationDrawerOpen(true)} onBuyWithCouponClick={() => setIsVariationDrawerOpen(true)} onChatClick={() => setIsChatOpen(true)} />
+      <ProductActionsBar onAddToCartClick={() => { setVariationDrawerMode('cart'); setIsVariationDrawerOpen(true); }} onBuyWithCouponClick={() => { setVariationDrawerMode('buy'); setIsVariationDrawerOpen(true); }} onChatClick={() => setIsChatOpen(true)} />
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} onCheckoutClick={() => navigate('/furadeira/checkout')} product={product as any} cartItemCount={cartItemCount} />
       <ChatDrawer isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} product={product as any} />
-      <VariationSelectorDrawer isOpen={isVariationDrawerOpen} onClose={() => setIsVariationDrawerOpen(false)} product={product as any} onConfirm={(qty) => navigate('/furadeira/checkout', { state: { product, initialQuantity: qty } })} mode="buy" />
+      <VariationSelectorDrawer isOpen={isVariationDrawerOpen} onClose={() => setIsVariationDrawerOpen(false)} product={product as any} onConfirm={handleConfirmVariation} mode={variationDrawerMode} />
       <CouponsDrawer isOpen={isCouponsDrawerOpen} onClose={() => setIsCouponsDrawerOpen(false)} onClaim={() => {}} />
       <ShippingDrawer isOpen={isShippingDrawerOpen} onClose={() => setIsShippingDrawerOpen(false)} deliveryDate={deliveryDateRange} />
       <CustomerProtectionDrawer isOpen={isProtectionDrawerOpen} onClose={() => setIsProtectionDrawerOpen(false)} />
