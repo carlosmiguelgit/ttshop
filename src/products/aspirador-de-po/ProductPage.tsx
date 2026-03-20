@@ -23,7 +23,6 @@ import ProductRecommendations from '@/components/ProductRecommendations';
 import { Truck, X, LayoutGrid, ChevronRight, ArrowUp } from 'lucide-react';
 import { addDays, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { trackTikTokEvent } from '@/utils/tiktok-pixel';
 
 const AspiradorProductPage: React.FC = () => {
   const navigate = useNavigate();
@@ -38,6 +37,14 @@ const AspiradorProductPage: React.FC = () => {
   const [isProtectionDrawerOpen, setIsProtectionDrawerOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+
+  // Lógica de Aleatoriedade Sincronizada
+  const stats = useMemo(() => {
+    const sales = Math.floor(Math.random() * (62000 - 28000 + 1)) + 28000;
+    const rating = parseFloat((Math.random() * (4.9 - 4.8) + 4.8).toFixed(1));
+    const reviews = Math.floor(sales * 0.2);
+    return { sales, rating, reviews };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setShowScrollTop(window.scrollY > 1000);
@@ -58,7 +65,12 @@ const AspiradorProductPage: React.FC = () => {
       
       <div className="max-w-[600px] mx-auto bg-white shadow-sm mt-[48px]">
         <ProductImageGallery media={product.media as any} onCartClick={() => setIsCartOpen(true)} cartItemCount={cartItemCount} />
-        <ProductPriceSection product={product as any} onCouponsClick={() => setIsCouponsDrawerOpen(true)} onShippingClick={() => setIsShippingDrawerOpen(true)} />
+        
+        <ProductPriceSection 
+          product={{...product, rating: stats.rating, salesCount: stats.sales, reviewCount: stats.reviews} as any} 
+          onCouponsClick={() => setIsCouponsDrawerOpen(true)} 
+          onShippingClick={() => setIsShippingDrawerOpen(true)} 
+        />
         
         <div className="bg-white p-4 border-t border-gray-50 flex items-center justify-between cursor-pointer" onClick={() => setIsVariationDrawerOpen(true)}>
           <div className="flex items-center space-x-3">
@@ -71,37 +83,26 @@ const AspiradorProductPage: React.FC = () => {
         
         <CustomerProtectionSection onClick={() => setIsProtectionDrawerOpen(true)} />
         <CreatorVideosSection />
-        <ProductReviewsSection rating={product.rating} reviewCount={product.reviewCount} reviews={[]} />
-        <StoreSection />
         
-        {/* Descrição Completa e Ficha Técnica */}
-        <ProductDescription 
-          specifications={product.specifications} 
-          descriptionText={product.descriptionText} 
-          firstImageSrc={product.media[0].src} 
+        <ProductReviewsSection 
+          rating={stats.rating} 
+          reviewCount={stats.reviews} 
+          reviews={product.reviews} 
         />
         
-        {/* Seção de Recomendações (Abaixo da Descrição) */}
+        <StoreSection />
+        <ProductDescription specifications={product.specifications} descriptionText={product.descriptionText} firstImageSrc={product.media[0].src} />
         <ProductRecommendations currentSlug={product.slug} />
-        
         <MadeWithDyad />
       </div>
 
       {showScrollTop && (
-        <button 
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="fixed bottom-[120px] right-4 z-40 bg-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center border border-gray-100 active:scale-90 transition-transform"
-        >
-          <ArrowUp size={20} className="text-gray-900" />
-        </button>
+        <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="fixed bottom-[120px] right-4 z-40 bg-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center border border-gray-100"><ArrowUp size={20} className="text-gray-900" /></button>
       )}
 
       <div className="fixed bottom-[60px] left-0 right-0 z-20 flex justify-center">
         <div className="w-full max-w-[600px] bg-white border-t h-10 px-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2 text-[#00BFA5]">
-            <Truck size={16} />
-            <span className="text-[12px] font-medium">O <span className="font-bold">frete grátis</span> expira em breve</span>
-          </div>
+          <div className="flex items-center space-x-2 text-[#00BFA5]"><Truck size={16} /><span className="text-[12px] font-medium">O <span className="font-bold">frete grátis</span> expira em breve</span></div>
           <span className="text-[#00BFA5] text-[13px] font-bold font-mono">05:00:00</span>
         </div>
       </div>

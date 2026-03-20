@@ -73,7 +73,15 @@ export const products: Product[] = [
     ],
     descriptionText: `Direção inteligente para uma limpeza eficiente!`,
     safeRedirectUrl: "https://www.havan.com.br/aspirador-de-po-robo-wap-robot-w1000",
-    reviews: []
+    reviews: [
+      {
+        username: "Marcos Silva",
+        avatarSrc: "/homem/homem (1).jpg",
+        comment: "Melhor compra que fiz esse ano. O robô aspira muito bem e o mapeamento funciona de verdade. Chegou em 3 dias aqui em casa.",
+        variation: "Padrão",
+        reviewImages: ["https://m.media-amazon.com/images/I/61n4FmVFrQL._AC_SL1500_.jpg"]
+      }
+    ]
   },
   {
     slug: "furadeira",
@@ -112,6 +120,42 @@ export const products: Product[] = [
     descriptionText: `Parafusadeira e Furadeira DEWALT de Impacto com a tecnologia sem escovas de carvão (BRUSHLESS) sem fio de 20V MAX** com 2 Baterias e Carregador Bivolt que pode ser usado com 220V e 127V. Conta com muito mais eficiência através de mais tempo de uso e menos manutenções.`,
     bannerImage: "https://m.media-amazon.com/images/S/aplus-media-library-service-media/01bfda1f-fac1-4ad9-a34f-2b30a5248653.__CR0,0,970,300_PT0_SX970_V1___.jpg",
     safeRedirectUrl: "https://www.havan.com.br/furadeira",
-    reviews: []
+    reviews: [
+      {
+        username: "Ricardo S.",
+        avatarSrc: "/homem/homem (1).jpg",
+        comment: "Chegou em 3 dias aqui no interior. O preço tá maravilhoso, original mesmo. A maleta é muito resistente.",
+        variation: "Com 2 baterias",
+        reviewImages: ["https://m.media-amazon.com/images/I/81+2-iPRbAL._SY250_.jpg", "https://m.media-amazon.com/images/I/81ukYAJTLWL._SY250_.jpg"]
+      },
+      {
+        username: "Marcos Oliveira",
+        avatarSrc: "/homem/homem (12).jpg",
+        comment: "Ferramenta top. Motor brushless é outro nível, não esquenta nada. Vale cada centavo, entrega super ágil.",
+        variation: "Com 2 baterias",
+        reviewImages: ["https://m.media-amazon.com/images/I/71iemNNiHFL._SY250_.jpg", "https://m.media-amazon.com/images/I/71dp8ROLsML._SY250_.jpg"]
+      },
+      {
+        username: "Ana Paula",
+        avatarSrc: "/mulher/mulher (22).jpg",
+        comment: "Comprei pro meu marido e ele amou. Chegou em 2 dias úteis aqui em SP. O preço estava imbatível.",
+        variation: "Com 1 bateria",
+        reviewImages: ["https://m.media-amazon.com/images/I/714eD6JHSSL._SY250_.jpg", "https://m.media-amazon.com/images/I/81-e-nbrONL._SY250_.jpg"]
+      },
+      {
+        username: "Carlos Alberto",
+        avatarSrc: "/homem/homem (33).jpg",
+        comment: "Melhor preço que já vi nessa DeWalt. Chegou voando. A bateria dura muito tempo de trabalho.",
+        variation: "Com 2 baterias",
+        reviewImages: ["https://m.media-amazon.com/images/I/71SPi73dLEL._SY250_.jpg", "https://m.media-amazon.com/images/I/71LXOY3pTtL._SY250_.jpg", "https://m.media-amazon.com/images/I/71J5ySnvJwL._SY250_.jpg"]
+      },
+      {
+        username: "Felipe M.",
+        avatarSrc: "/homem/homem (45).jpg",
+        comment: "Bruta demais! Furou a viga aqui de casa sem nem fazer força. Recomendo pelo valor e pela entrega rápida.",
+        variation: "Com 2 baterias",
+        reviewImages: ["https://m.media-amazon.com/images/I/71cI8NGF8sL._SY250_.jpg", "https://m.media-amazon.com/images/I/71+TQabIs6L._SY250_.jpg"]
+      }
+    ]
   }
 ];
