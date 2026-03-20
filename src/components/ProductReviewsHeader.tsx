@@ -9,31 +9,29 @@ interface ProductReviewsHeaderProps {
   showViewMore: boolean;
 }
 
-const ProductReviewsHeader: React.FC<ProductReviewsHeaderProps> = ({ reviewCount, onViewMoreClick, showViewMore }) => {
+const ProductReviewsHeader: React.FC<ProductReviewsHeaderProps> = ({ rating, reviewCount, onViewMoreClick, showViewMore }) => {
   
-  // Exibe o número bruto conforme solicitado
   const formatReviewCount = (count: number): string => {
     return count.toString();
   };
   
-  // Renderiza 5 estrelas amarelas fixas com tamanho reduzido
   const renderStars = () => (
     <div className="flex">
       {Array(5).fill(0).map((_, i) => (
-        <Star key={i} size={14} className="text-yellow-500 fill-yellow-500" />
+        <Star 
+          key={i} 
+          size={14} 
+          className={i < Math.floor(rating) ? "text-yellow-500 fill-yellow-500" : "text-gray-200 fill-gray-200"} 
+        />
       ))}
     </div>
   );
 
   return (
     <div className="mb-2">
-      {/* Linha 1: Título e Contagem */}
       <div className="flex justify-between items-center">
         <div className="flex items-center space-x-1">
-          {/* Título com fonte menor (text-sm) */}
           <h3 className="text-sm font-bold text-gray-900">Avaliações dos clientes</h3>
-          
-          {/* Contagem de Avaliações com fonte menor (text-sm) */}
           <span className="text-sm text-gray-500">
             (
             <span className="font-bold">
@@ -43,7 +41,6 @@ const ProductReviewsHeader: React.FC<ProductReviewsHeaderProps> = ({ reviewCount
           </span>
         </div>
         
-        {/* Botão Ver Mais com fonte menor (text-xs) */}
         {showViewMore && (
           <Button 
             variant="ghost" 
@@ -56,12 +53,9 @@ const ProductReviewsHeader: React.FC<ProductReviewsHeaderProps> = ({ reviewCount
         )}
       </div>
       
-      {/* Linha 2: Nota e Estrelas (Reduzidas significativamente) */}
       <div className="flex items-center mt-1 space-x-1.5">
         <div className="flex items-baseline">
-          {/* 5.0 com tamanho reduzido (text-lg) */}
-          <span className="text-lg font-bold text-gray-900 leading-none">5.0</span>
-          {/* /5 com tamanho reduzido (text-xs) */}
+          <span className="text-lg font-bold text-gray-900 leading-none">{rating.toFixed(1)}</span>
           <span className="text-xs text-gray-500 font-normal ml-0.5">/5</span>
         </div>
         {renderStars()}

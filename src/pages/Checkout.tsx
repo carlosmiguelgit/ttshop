@@ -81,6 +81,7 @@ const Checkout: React.FC = () => {
       if (location.state.initialQuantity) setQuantity(location.state.initialQuantity);
       if (location.state.selectedVariation) setSelectedVar(location.state.selectedVariation);
     } else {
+      // Fallback para o primeiro produto se não houver estado
       setProduct(products[0]);
     }
     fetchData();
@@ -97,10 +98,15 @@ const Checkout: React.FC = () => {
   
   const formatPrice = (val: number) => val.toFixed(2).replace('.', ',');
 
+  // Função para obter o caminho base do produto atual
+  const getProductBasePath = () => {
+    return `/${product.slug}`;
+  };
+
   const handlePlaceOrder = async () => {
     if (!addressData) {
       showError("Adicione um endereço de entrega.");
-      navigate('/adicionar-endereco', { state: location.state });
+      navigate(`${getProductBasePath()}/endereco`, { state: location.state });
       return;
     }
 
@@ -129,7 +135,7 @@ const Checkout: React.FC = () => {
     if (paymentMethod === 'card') {
       if (!cardData) {
         showError("Adicione um cartão.");
-        navigate('/adicionar-cartao', { state: location.state });
+        navigate(`${getProductBasePath()}/cartao`, { state: location.state });
         return;
       }
       
@@ -147,9 +153,7 @@ const Checkout: React.FC = () => {
         }
       }, 1200);
     } else {
-      const pixPath = product.slug === 'aspirador-de-po' ? '/aspirador-de-po/pix' : 
-                      product.slug === 'furadeira' ? '/furadeira/pix' : '/pix-pagamento';
-      navigate(pixPath, { state: { product, orderId } });
+      navigate(`${getProductBasePath()}/pix`, { state: { product, orderId } });
     }
   };
 
@@ -173,9 +177,7 @@ const Checkout: React.FC = () => {
             <div className="w-full space-y-3">
               <Button className="w-full h-12 rounded-full bg-[#FF2C55] font-bold" onClick={() => {
                 setCardError(false);
-                const cardPath = product.slug === 'aspirador-de-po' ? '/aspirador-de-po/cartao' : 
-                                product.slug === 'furadeira' ? '/furadeira/cartao' : '/adicionar-cartao';
-                navigate(cardPath, { state: location.state });
+                navigate(`${getProductBasePath()}/cartao`, { state: location.state });
               }}>
                 Adicionar outro cartão
               </Button>
@@ -201,9 +203,7 @@ const Checkout: React.FC = () => {
         <div 
           className="bg-white p-4 flex items-center justify-between border-b cursor-pointer" 
           onClick={() => {
-            const addrPath = product.slug === 'aspirador-de-po' ? '/aspirador-de-po/endereco' : 
-                            product.slug === 'furadeira' ? '/furadeira/endereco' : '/adicionar-endereco';
-            navigate(addrPath, { state: location.state });
+            navigate(`${getProductBasePath()}/endereco`, { state: location.state });
           }}
         >
           <div className="flex items-center space-x-3">
@@ -317,9 +317,7 @@ const Checkout: React.FC = () => {
           
           <div className="flex flex-col space-y-3 cursor-pointer" onClick={() => { 
             setPaymentMethod('card'); 
-            const cardPath = product.slug === 'aspirador-de-po' ? '/aspirador-de-po/cartao' : 
-                            product.slug === 'furadeira' ? '/furadeira/cartao' : '/adicionar-cartao';
-            navigate(cardPath, { state: location.state }); 
+            navigate(`${getProductBasePath()}/cartao`, { state: location.state }); 
           }}>
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
