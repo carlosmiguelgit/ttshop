@@ -93,7 +93,9 @@ const AddAddress: React.FC = () => {
 
       if (error) throw error;
 
-      navigate('/checkout', { 
+      // Redireciona de volta para o checkout de onde veio
+      const returnPath = location.state?.product?.slug ? `/${location.state.product.slug}/checkout` : '/checkout';
+      navigate(returnPath, { 
         state: { 
           ...location.state,
           addressAdded: true, 
