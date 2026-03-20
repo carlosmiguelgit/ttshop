@@ -3,14 +3,19 @@ import { Toaster as Sonner } from "sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+// Admin & Global
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import PaymentSummary from "./pages/PaymentSummary";
-import PixPayment from "./pages/PixPayment";
-import Checkout from "./pages/Checkout";
-import AddCard from "./pages/AddCard";
-import AddAddress from "./pages/AddAddress";
 import Admin from "./pages/Admin";
+
+// Produto: Aspirador de Pó
+import AspiradorIndex from "./products/aspirador-de-po/ProductPage";
+import AspiradorCheckout from "./products/aspirador-de-po/CheckoutPage";
+// Nota: Você pode criar AddCardPage, AddAddressPage e PixPaymentPage dentro da pasta do produto conforme necessário
+
+// Produto: Furadeira
+import FuradeiraIndex from "./products/furadeira/ProductPage";
 
 const queryClient = new QueryClient();
 
@@ -21,18 +26,18 @@ const App = () => (
       <Sonner position="top-center" />
       <BrowserRouter>
         <Routes>
-          {/* Checkout Routes */}
-          <Route path="/checkout" element={<Checkout />} />
-          <Route path="/adicionar-cartao" element={<AddCard />} />
-          <Route path="/adicionar-endereco" element={<AddAddress />} />
-          <Route path="/resumo-pagamento" element={<PaymentSummary />} />
-          <Route path="/pix-pagamento" element={<PixPayment />} />
-          
-          {/* Admin Route */}
+          {/* Admin */}
           <Route path="/shopadmin" element={<Admin />} />
           
-          {/* Main Product Page */}
-          <Route path="/" element={<Index />} />
+          {/* Fluxo Aspirador de Pó */}
+          <Route path="/aspirador-de-po" element={<AspiradorIndex />} />
+          <Route path="/aspirador-de-po/checkout" element={<AspiradorCheckout />} />
+          
+          {/* Fluxo Furadeira */}
+          <Route path="/furadeira" element={<FuradeiraIndex />} />
+          
+          {/* Home (Redireciona para o primeiro produto ou lista) */}
+          <Route path="/" element={<AspiradorIndex />} />
           
           <Route path="*" element={<NotFound />} />
         </Routes>
