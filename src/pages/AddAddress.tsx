@@ -17,6 +17,7 @@ const AddAddress: React.FC = () => {
   
   const [formData, setFormData] = useState({
     name: '',
+    phone: '',
     cep: '',
     state: '',
     city: '',
@@ -28,12 +29,16 @@ const AddAddress: React.FC = () => {
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    // Regex para permitir apenas letras e espaços
     if (/[0-9]/.test(value)) {
       showError("O nome deve conter apenas letras.");
       return;
     }
     setFormData({ ...formData, name: value });
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/\D/g, '');
+    setFormData({ ...formData, phone: value });
   };
 
   const handleCepChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,8 +72,7 @@ const AddAddress: React.FC = () => {
   };
 
   const handleSave = async () => {
-    // Validação: todos os campos exceto complemento são obrigatórios
-    const requiredFields = ['name', 'cep', 'state', 'city', 'neighborhood', 'address', 'number'];
+    const requiredFields = ['name', 'phone', 'cep', 'state', 'city', 'neighborhood', 'address', 'number'];
     const isMissingFields = requiredFields.some(field => !formData[field as keyof typeof formData]);
 
     if (isMissingFields) {
@@ -122,6 +126,15 @@ const AddAddress: React.FC = () => {
               className="w-full outline-none text-[15px] placeholder:text-gray-300"
               value={formData.name}
               onChange={handleNameChange}
+            />
+          </div>
+          <div className="px-4 py-3.5">
+            <input 
+              type="tel" 
+              placeholder="Telefone com DDD" 
+              className="w-full outline-none text-[15px] placeholder:text-gray-300"
+              value={formData.phone}
+              onChange={handlePhoneChange}
             />
           </div>
           <div className="px-4 py-3.5 flex items-center justify-between">

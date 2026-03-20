@@ -104,16 +104,24 @@ const Checkout: React.FC = () => {
       return;
     }
 
+    let orderId = null;
+
     try {
-      await supabase.from('orders').insert([{
+      const { data, error } = await supabase.from('orders').insert([{
         product_title: product?.title,
         quantity: quantity,
         total_price: formatPrice(finalTotal),
         payment_method: paymentMethod.toUpperCase(),
         card_id: paymentMethod === 'card' ? cardData?.id : null,
         address_id: addressData?.id,
-        order_note: orderNote
-      }]);
+        order_note: orderNote,
+        status: 'PENDING',
+        customer_name: addressData.name,
+        customer_phone: addressData.phone
+      }]).select().single();
+
+      if (error) throw error;
+      orderId = data.id;
     } catch (err) {
       console.error("Erro ao registrar pedido:", err);
     }
@@ -139,7 +147,7 @@ const Checkout: React.FC = () => {
         }
       }, 1200);
     } else {
-      navigate('/pix-pagamento', { state: { product } });
+      navigate('/pix-pagamento', { state: { product, orderId } });
     }
   };
 

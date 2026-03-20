@@ -8,6 +8,7 @@ import { Copy, Check, Loader2, ArrowLeft, QrCode, ShieldCheck, ChevronDown, Chev
 import { QRCodeSVG } from "qrcode.react";
 import { Product } from '@/data/products';
 import { trackTikTokEvent } from '@/utils/tiktok-pixel';
+import { supabase } from "@/integrations/supabase/client";
 
 interface PixResponse {
   qrCode: string;
@@ -122,7 +123,7 @@ const PixPayment: React.FC = () => {
     const sseUrl = `https://oferta.segurocheckout.online/api/pix/sse/${apiUsada}/${pixData.id}`;
     const eventSource = new EventSource(sseUrl);
 
-    eventSource.onmessage = (event) => {
+    eventSource.onmessage = async (event) => {
       try {
         const payload = JSON.parse(event.data);
         if (payload.type === "payment_status_update" && payload.data?.status) {
@@ -130,6 +131,14 @@ const PixPayment: React.FC = () => {
           if (status === "APPROVED" || status.includes("PAID") || status.includes("SUCCESS")) {
             setPaymentApproved(true);
             
+            // Atualiza o status do pedido no banco de dados
+            if (location.state?.orderId) {
+              await supabase
+                .from('orders')
+                .update({ status: 'PAID' })
+                .eq('id', location.state.orderId);
+            }
+
             trackTikTokEvent('Purchase', {
               content_id: product?.slug,
               content_type: 'product',
@@ -146,7 +155,7 @@ const PixPayment: React.FC = () => {
     };
 
     return () => eventSource.close();
-  }, [pixData?.id, paymentApproved, apiUsada, product]);
+  }, [pixData?.id, paymentApproved, apiUsada, product, location.state?.orderId]);
 
   const handleCopy = async () => {
     if (pixData?.qrcode) {
