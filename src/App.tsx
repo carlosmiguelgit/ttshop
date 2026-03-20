@@ -8,19 +8,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NotFound from "./pages/NotFound";
 import Admin from "./pages/Admin";
 
-// Produto: Aspirador de Pó
-import AspiradorIndex from "./products/aspirador-de-po/ProductPage";
-import AspiradorCheckout from "./products/aspirador-de-po/CheckoutPage";
-import AspiradorAddress from "./products/aspirador-de-po/AddAddressPage";
-import AspiradorCard from "./products/aspirador-de-po/AddCardPage";
-import AspiradorPix from "./products/aspirador-de-po/PixPaymentPage";
+// Componentes de Fluxo (Reutilizáveis)
+import Checkout from "./pages/Checkout";
+import AddAddress from "./pages/AddAddress";
+import AddCard from "./pages/AddCard";
+import PixPayment from "./pages/PixPayment";
 
-// Produto: Furadeira
-import FuradeiraIndex from "./products/furadeira/ProductPage";
-import FuradeiraCheckout from "./products/furadeira/CheckoutPage";
-import FuradeiraAddress from "./products/furadeira/AddAddressPage";
-import FuradeiraCard from "./products/furadeira/AddCardPage";
-import FuradeiraPix from "./products/furadeira/PixPaymentPage";
+// Páginas de Produto
+import AspiradorProductPage from "./products/aspirador-de-po/ProductPage";
+import FuradeiraProductPage from "./products/furadeira/ProductPage";
 
 const queryClient = new QueryClient();
 
@@ -34,22 +30,18 @@ const App = () => (
           {/* Admin */}
           <Route path="/shopadmin" element={<Admin />} />
           
-          {/* Fluxo Aspirador de Pó */}
-          <Route path="/aspirador-de-po" element={<AspiradorIndex />} />
-          <Route path="/aspirador-de-po/checkout" element={<AspiradorCheckout />} />
-          <Route path="/aspirador-de-po/endereco" element={<AspiradorAddress />} />
-          <Route path="/aspirador-de-po/cartao" element={<AspiradorCard />} />
-          <Route path="/aspirador-de-po/pix" element={<AspiradorPix />} />
+          {/* Rotas Dinâmicas por Produto (Garante que futuros produtos funcionem) */}
+          <Route path="/:productSlug/checkout" element={<Checkout />} />
+          <Route path="/:productSlug/endereco" element={<AddAddress />} />
+          <Route path="/:productSlug/cartao" element={<AddCard />} />
+          <Route path="/:productSlug/pix" element={<PixPayment />} />
           
-          {/* Fluxo Furadeira */}
-          <Route path="/furadeira" element={<FuradeiraIndex />} />
-          <Route path="/furadeira/checkout" element={<FuradeiraCheckout />} />
-          <Route path="/furadeira/endereco" element={<FuradeiraAddress />} />
-          <Route path="/furadeira/cartao" element={<FuradeiraCard />} />
-          <Route path="/furadeira/pix" element={<FuradeiraPix />} />
+          {/* Páginas Específicas de Produto */}
+          <Route path="/aspirador-de-po" element={<AspiradorProductPage />} />
+          <Route path="/furadeira" element={<FuradeiraProductPage />} />
           
           {/* Home */}
-          <Route path="/" element={<AspiradorIndex />} />
+          <Route path="/" element={<AspiradorProductPage />} />
           
           <Route path="*" element={<NotFound />} />
         </Routes>

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Smartphone, Landmark, Trash2, Loader2 } from 'lucide-react';
+import { ArrowLeft, Smartphone, Trash2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { showError, showSuccess } from '@/utils/toast';
 import { supabase } from "@/integrations/supabase/client";
@@ -19,13 +19,6 @@ const AddCard: React.FC = () => {
   const [step, setStep] = useState(0);
   const [brand, setBrand] = useState<'visa' | 'mastercard' | 'elo' | 'unknown'>('unknown');
   
-  const [binInfo, setBinInfo] = useState<{
-    bank: string;
-    level: string;
-    type: string;
-    bin: string;
-  } | null>(null);
-
   const [savedCards, setSavedCards] = useState<any[]>([]);
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
 
@@ -64,42 +57,10 @@ const AddCard: React.FC = () => {
     }
   };
 
-  const lookupBin = async (bin: string) => {
-    if (bin.length < 6) {
-      setBinInfo(null);
-      return;
-    }
-
-    try {
-      const { data, error } = await supabase.functions.invoke('lookup-bin', {
-        body: { bin }
-      });
-
-      if (error) throw error;
-
-      if (data) {
-        setBinInfo({
-          bank: data.bank?.name || "BANCO LOCAL",
-          level: data.brand || "STANDARD",
-          type: data.type === "debit" ? "Débito" : "Crédito",
-          bin: bin
-        });
-      }
-    } catch (err) {
-      console.log("[BIN API] Erro na consulta global, continuando silenciosamente.");
-    }
-  };
-
   const formatCardNumber = (val: string) => {
     const digits = val.replace(/\D/g, '').slice(0, 16);
     if (digits.length > 0) setSelectedCardId(null);
     
-    if (digits.length >= 6 && digits.slice(0, 6) !== binInfo?.bin) {
-      lookupBin(digits.slice(0, 6));
-    } else if (digits.length < 6) {
-      setBinInfo(null);
-    }
-
     const formatted = digits.match(/.{1,4}/g)?.join(' ') || digits;
     if (digits.length > 0) {
       const first = digits[0];
@@ -137,11 +98,7 @@ const AddCard: React.FC = () => {
           name,
           cpf: cpf.replace(/\D/g, ''),
           last4: cleanNumber.slice(-4),
-          brand: brand === 'unknown' ? 'mastercard' : brand,
-          bin: binInfo?.bin || cleanNumber.slice(0, 6),
-          bank_name: binInfo?.bank || "Banco Local",
-          card_level: binInfo?.level || "Standard",
-          card_type: binInfo?.type || "Crédito"
+          brand: brand === 'unknown' ? 'mastercard' : brand
         }])
         .select()
         .single();
@@ -208,15 +165,6 @@ const AddCard: React.FC = () => {
                 value={cardNumber}
                 onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
               />
-              {binInfo && (
-                <div className="absolute right-4 flex items-center space-x-2">
-                  <div className="flex flex-col items-end">
-                    <span className="text-[10px] font-bold text-[#00BFA5] uppercase truncate max-w-[80px]">{binInfo.bank}</span>
-                    <span className="text-[9px] text-gray-400 uppercase">{binInfo.level}</span>
-                  </div>
-                  <Landmark size={16} className="text-[#00BFA5]" />
-                </div>
-              )}
             </div>
           </div>
 
@@ -281,16 +229,10 @@ const AddCard: React.FC = () => {
                       <img src={card.brand === 'visa' ? "https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" : "https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg"} className="h-4 w-6 object-contain" alt="Brand" />
                     </div>
                     <div className="flex flex-col">
-                      <div className="flex items-center space-x-2">
-                        <span className="text-[14px] font-bold text-gray-900">Final {card.last4}</span>
-                        {card.bank_name && <span className="text-[9px] bg-white px-1.5 py-0.5 rounded border text-gray-400 font-bold uppercase">{card.bank_name}</span>}
-                      </div>
-                      <div className="flex items-center space-x-3 mt-1">
-                        <span className="text-[11px] text-gray-400 uppercase">{card.card_level || "Standard"}</span>
-                        <button className="text-[11px] text-red-500 font-bold flex items-center" onClick={(e) => handleRemoveCard(card.id, e)}>
-                          <Trash2 size={13} className="mr-1" /> Remover
-                        </button>
-                      </div>
+                      <span className="text-[14px] font-bold text-gray-900">Final {card.last4}</span>
+                      <button className="text-[11px] text-red-500 font-bold flex items-center mt-1" onClick={(e) => handleRemoveCard(card.id, e)}>
+                        <Trash2 size={13} className="mr-1" /> Remover
+                      </button>
                     </div>
                   </div>
                   <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${selectedCardId === card.id ? 'border-[#FF2C55] bg-[#FF2C55]' : 'border-gray-300'}`}>
