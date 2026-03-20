@@ -20,7 +20,7 @@ import CustomerProtectionDrawer from '@/components/CustomerProtectionDrawer';
 import ChatDrawer from '@/components/ChatDrawer';
 import StoreSection from '@/components/StoreSection';
 import ProductRecommendations from '@/components/ProductRecommendations';
-import { Truck, X, LayoutGrid, ChevronRight, ArrowUp } from 'lucide-center';
+import { Truck, X, LayoutGrid, ChevronRight, ArrowUp } from 'lucide-react';
 import { addDays, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { trackTikTokEvent } from '@/utils/tiktok-pixel';
