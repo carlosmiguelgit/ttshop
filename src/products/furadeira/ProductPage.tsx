@@ -38,13 +38,22 @@ const FuradeiraProductPage: React.FC = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  // Lógica de Aleatoriedade Sincronizada
+  // Lógica de Aleatoriedade Sincronizada (Gera uma vez para toda a página)
   const stats = useMemo(() => {
     const sales = Math.floor(Math.random() * (62000 - 28000 + 1)) + 28000;
     const rating = parseFloat((Math.random() * (4.9 - 4.8) + 4.8).toFixed(1));
     const reviews = Math.floor(sales * 0.2);
     return { sales, rating, reviews };
   }, []);
+
+  // Vídeos específicos da Furadeira
+  const furadeiraVideos = [
+    { id: "A858_4_9vLg", author: "Oficina de Casa", avatar: "https://randomuser.me/api/portraits/men/10.jpg" },
+    { id: "uC7cxPROwuQ", author: "Dicas de Ferramentas", avatar: "https://randomuser.me/api/portraits/men/11.jpg" },
+    { id: "Wz7Lf9JZckA", author: "Review Tech", avatar: "https://randomuser.me/api/portraits/men/12.jpg" },
+    { id: "Tc4CRERkBFM", author: "Mestre da Obra", avatar: "https://randomuser.me/api/portraits/men/13.jpg" },
+    { id: "QilgRsHYaC4", author: "Faça Você Mesmo", avatar: "https://randomuser.me/api/portraits/men/14.jpg" },
+  ];
 
   useEffect(() => {
     const handleScroll = () => setShowScrollTop(window.scrollY > 1000);
@@ -75,9 +84,12 @@ const FuradeiraProductPage: React.FC = () => {
       <div className="max-w-[600px] mx-auto bg-white shadow-sm mt-[48px]">
         <ProductImageGallery media={product.media as any} onCartClick={() => setIsCartOpen(true)} cartItemCount={cartItemCount} />
         
-        {/* Passando stats sincronizados */}
+        {/* Passando stats sincronizados para o topo */}
         <ProductPriceSection 
-          product={{...product, rating: stats.rating, salesCount: stats.sales, reviewCount: stats.reviews} as any} 
+          product={product as any} 
+          rating={stats.rating}
+          salesCount={stats.sales}
+          reviewCount={stats.reviews}
           onCouponsClick={() => setIsCouponsDrawerOpen(true)} 
           onShippingClick={() => setIsShippingDrawerOpen(true)} 
         />
@@ -92,9 +104,11 @@ const FuradeiraProductPage: React.FC = () => {
         </div>
         
         <CustomerProtectionSection onClick={() => setIsProtectionDrawerOpen(true)} />
-        <CreatorVideosSection />
         
-        {/* Passando stats sincronizados para as avaliações */}
+        {/* Passando os novos vídeos */}
+        <CreatorVideosSection videos={furadeiraVideos} />
+        
+        {/* Passando os MESMOS stats para a seção de avaliações */}
         <ProductReviewsSection 
           rating={stats.rating} 
           reviewCount={stats.reviews} 

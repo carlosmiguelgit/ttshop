@@ -16,19 +16,31 @@ interface ProductPriceSectionProps {
   product: Product;
   onCouponsClick: () => void;
   onShippingClick: () => void;
+  // Props opcionais para sincronização externa
+  rating?: number;
+  salesCount?: number;
+  reviewCount?: number;
 }
 
-const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ product, onCouponsClick, onShippingClick }) => {
+const ProductPriceSection: React.FC<ProductPriceSectionProps> = ({ 
+  product, 
+  onCouponsClick, 
+  onShippingClick,
+  rating: propRating,
+  salesCount: propSales,
+  reviewCount: propReviews
+}) => {
   const { originalPrice, title: productTitle } = product;
   const [seconds, setSeconds] = useState(900);
 
-  // Lógica de Aleatoriedade (Fixa por sessão para não mudar ao re-renderizar)
+  // Se não receber via props, gera aleatório (fallback)
   const stats = useMemo(() => {
-    const sales = Math.floor(Math.random() * (62000 - 28000 + 1)) + 28000;
-    const rating = (Math.random() * (4.9 - 4.8) + 4.8).toFixed(1);
-    const reviews = Math.floor(sales * 0.2);
-    return { sales, rating, reviews };
-  }, []);
+    return {
+      sales: propSales || Math.floor(Math.random() * (62000 - 28000 + 1)) + 28000,
+      rating: propRating || parseFloat((Math.random() * (4.9 - 4.8) + 4.8).toFixed(1)),
+      reviews: propReviews || Math.floor((propSales || 30000) * 0.2)
+    };
+  }, [propRating, propSales, propReviews]);
 
   useEffect(() => {
     const timer = setInterval(() => setSeconds(prev => (prev > 0 ? prev - 1 : 0)), 1000);

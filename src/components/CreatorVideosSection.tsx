@@ -4,41 +4,29 @@ import React, { useState } from 'react';
 import { Play } from 'lucide-react';
 import YouTubePlayerDialog from './YouTubePlayerDialog';
 
-const videos = [
-  { 
-    id: "IxJqHw_NKTs", 
-    author: "Juju indica", 
-    avatar: "https://randomuser.me/api/portraits/women/1.jpg" 
-  },
-  { 
-    id: "72r5fnX12vk", 
-    author: "mayckon.jho...", 
-    avatar: "https://randomuser.me/api/portraits/men/2.jpg" 
-  },
-  { 
-    id: "dGYEUZB5fgI", 
-    author: "Daiane Mede...", 
-    avatar: "https://randomuser.me/api/portraits/women/3.jpg" 
-  },
-  { 
-    id: "0JTefrwo7rQ", 
-    author: "Ana Shop", 
-    avatar: "https://randomuser.me/api/portraits/women/4.jpg" 
-  },
-  { 
-    id: "BdMsbQRhHjc", 
-    author: "Dicas de Casa", 
-    avatar: "https://randomuser.me/api/portraits/men/5.jpg" 
-  },
+interface VideoItem {
+  id: string;
+  author: string;
+  avatar: string;
+}
+
+interface CreatorVideosSectionProps {
+  videos?: VideoItem[];
+}
+
+const defaultVideos = [
+  { id: "IxJqHw_NKTs", author: "Juju indica", avatar: "https://randomuser.me/api/portraits/women/1.jpg" },
+  { id: "72r5fnX12vk", author: "mayckon.jho...", avatar: "https://randomuser.me/api/portraits/men/2.jpg" },
+  { id: "dGYEUZB5fgI", author: "Daiane Mede...", avatar: "https://randomuser.me/api/portraits/women/3.jpg" },
 ];
 
-const CreatorVideosSection: React.FC = () => {
+const CreatorVideosSection: React.FC<CreatorVideosSectionProps> = ({ videos = defaultVideos }) => {
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
 
   return (
     <div className="bg-white p-4 border-t border-gray-50">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-[15px] font-bold text-gray-900">Vídeos de criadores (30+)</h3>
+        <h3 className="text-[15px] font-bold text-gray-900">Vídeos de criadores ({videos.length}+)</h3>
       </div>
       
       <div className="flex space-x-3 overflow-x-auto no-scrollbar pb-2">
@@ -48,7 +36,6 @@ const CreatorVideosSection: React.FC = () => {
             className="relative flex-shrink-0 w-[140px] h-[220px] rounded-xl overflow-hidden shadow-sm cursor-pointer active:scale-95 transition-transform"
             onClick={() => setSelectedVideo(video.id)}
           >
-            {/* Thumbnail do YouTube */}
             <img 
               src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`} 
               className="w-full h-full object-cover" 
@@ -56,12 +43,10 @@ const CreatorVideosSection: React.FC = () => {
             />
             <div className="absolute inset-0 bg-black/20"></div>
             
-            {/* Ícone de Play */}
             <div className="absolute top-2 left-2">
               <Play size={16} className="text-white fill-white opacity-80" />
             </div>
 
-            {/* Rodapé do vídeo (Autor) */}
             <div className="absolute bottom-2 left-2 right-2 flex items-center space-x-1.5">
               <img src={video.avatar} className="w-5 h-5 rounded-full border border-white" alt="Avatar" />
               <span className="text-[11px] text-white font-bold truncate drop-shadow-md">
