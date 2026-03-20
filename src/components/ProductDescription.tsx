@@ -9,12 +9,12 @@ interface ProductDescriptionProps {
   specifications: Specification[];
   descriptionText: string;
   firstImageSrc: string;
+  bannerImage?: string; // Nova prop opcional
 }
 
-const ProductDescription: React.FC<ProductDescriptionProps> = ({ specifications, descriptionText, firstImageSrc }) => {
-  // Usar a imagem técnica se for o robô aspirador (slug detectado via URL ou passado via prop seria ideal, mas aqui usamos a lógica de prioridade)
-  const technicalBanner = "https://m.media-amazon.com/images/S/aplus-media-library-service-media/1625de65-4468-447b-9c3f-0742e61a2356.__CR1,0,1464,600_PT0_SX1464_V1___.png";
-  const displayImage = descriptionText.includes("WAP") ? technicalBanner : firstImageSrc;
+const ProductDescription: React.FC<ProductDescriptionProps> = ({ specifications, descriptionText, firstImageSrc, bannerImage }) => {
+  // Prioriza o bannerImage se fornecido, senão usa a lógica antiga ou a primeira imagem
+  const displayImage = bannerImage || firstImageSrc;
 
   return (
     <div className="p-4 bg-white space-y-3">

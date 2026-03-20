@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { products } from '@/data/products';
 import Header from '@/components/Header';
 import ProductImageGallery from '@/components/ProductImageGallery';
 import ProductPriceSection from '@/components/ProductPriceSection';
@@ -26,25 +27,7 @@ import { trackTikTokEvent } from '@/utils/tiktok-pixel';
 
 const FuradeiraProductPage: React.FC = () => {
   const navigate = useNavigate();
-  const product = {
-    slug: "furadeira",
-    title: "Furadeira de Impacto Profissional Havan Power 600W com Kit de Brocas e Maleta",
-    currentPrice: "89,90",
-    originalPrice: "349,00",
-    rating: 4.8,
-    reviewCount: 12450,
-    media: [
-      { type: 'image', src: "https://m.media-amazon.com/images/I/71-v6v6v6vL._AC_SL1500_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/71-v6v6v6vL._AC_SL1500_.jpg" },
-      { type: 'image', src: "https://m.media-amazon.com/images/I/61-v6v6v6vL._AC_SL1500_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61-v6v6v6vL._AC_SL1500_.jpg" },
-    ],
-    specifications: [
-      { label: "Potência", value: "600W" },
-      { label: "Mandril", value: "1/2\" (13mm)" },
-      { label: "Velocidade", value: "0-3000 RPM" },
-    ],
-    descriptionText: "A Furadeira de Impacto Havan Power é a ferramenta ideal para seus projetos...",
-    reviews: []
-  };
+  const product = products.find(p => p.slug === "furadeira")!;
 
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
@@ -54,7 +37,6 @@ const FuradeiraProductPage: React.FC = () => {
   const [isShippingDrawerOpen, setIsShippingDrawerOpen] = useState(false);
   const [isProtectionDrawerOpen, setIsProtectionDrawerOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(300);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
@@ -91,7 +73,14 @@ const FuradeiraProductPage: React.FC = () => {
         <CreatorVideosSection />
         <ProductReviewsSection rating={product.rating} reviewCount={product.reviewCount} reviews={[]} />
         <StoreSection />
-        <ProductDescription specifications={product.specifications} descriptionText={product.descriptionText} firstImageSrc={product.media[0].src} />
+        
+        {/* Descrição Completa e Ficha Técnica */}
+        <ProductDescription 
+          specifications={product.specifications} 
+          descriptionText={product.descriptionText} 
+          firstImageSrc={product.media[0].src} 
+          bannerImage={product.bannerImage}
+        />
         
         {/* Seção de Recomendações */}
         <ProductRecommendations currentSlug={product.slug} />
@@ -99,7 +88,6 @@ const FuradeiraProductPage: React.FC = () => {
         <MadeWithDyad />
       </div>
 
-      {/* Botão Voltar ao Topo */}
       {showScrollTop && (
         <button 
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}

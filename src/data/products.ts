@@ -24,6 +24,7 @@ export interface Product {
   descriptionText: string;
   safeRedirectUrl: string;
   reviews: Review[];
+  bannerImage?: string;
 }
 
 export const products: Product[] = [
@@ -87,23 +88,36 @@ WAP | Deixa tudo mais fácil`,
   },
   {
     slug: "furadeira",
-    title: "Furadeira de Impacto Profissional Havan Power 600W com Kit de Brocas e Maleta",
-    currentPrice: "89,90",
-    originalPrice: "349,00",
-    discountPercentage: 74,
-    discountAmount: "259,10",
-    rating: 4.9,
-    reviewCount: 8500,
-    salesCount: 12000,
+    title: "DEWALT Parafusadeira e Furaderia de Impacto de 1/2 Pol. (13mm) Brushless Motor a Bateria 20V MAX* Ion-Litio com 2 Baterias 2.0Ah Carregador Bivolt e Mala DCD7781D2",
+    currentPrice: "97,94",
+    originalPrice: "897,00",
+    discountPercentage: 89,
+    discountAmount: "799,06",
+    rating: 4.8,
+    reviewCount: 306,
+    salesCount: 3504,
     flashSaleTimeSeconds: 10 * 60,
     media: [
-      { type: 'image', src: "https://m.media-amazon.com/images/I/71-v6v6v6vL._AC_SL1500_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/71-v6v6v6vL._AC_SL1500_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/51NuTLIhp7L._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/51NuTLIhp7L._AC_SX679_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/51ZclRWxMFL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/51ZclRWxMFL._AC_SX679_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/51xJArXXCYL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/51xJArXXCYL._AC_SX679_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/51C9aON0llL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/51C9aON0llL._AC_SX679_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/51xqB0lPNWL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/51xqB0lPNWL._AC_SX679_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/61uR63dk2xL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61uR63dk2xL._AC_SX679_.jpg" },
     ],
     specifications: [
-      { label: "Potência", value: "600W" },
+      { label: "Fabricante", value: "Dewalt" },
+      { label: "Modelo", value: "DCD7781D2-BR" },
+      { label: "Voltagem", value: "Bivolt" },
+      { label: "Tipo de bateria", value: "Íon-lítio" },
+      { label: "Capacidade da bateria", value: "4 Amperes Horas" },
+      { label: "Peso", value: "2,21 kg" },
+      { label: "Dimensões", value: "32 x 10 x 44 cm" },
       { label: "Mandril", value: "1/2\" (13mm)" },
+      { label: "Motor", value: "Brushless (Sem escovas)" },
     ],
-    descriptionText: "A Furadeira de Impacto Havan Power é a ferramenta ideal para seus projetos...",
+    descriptionText: `Parafusadeira e Furadeira DEWALT de Impacto com a tecnologia sem escovas de carvão (BRUSHLESS) sem fio de 20V MAX** com 2 Baterias e Carregador Bivolt que pode ser usado com 220V e 127V. Conta com muito mais eficiência através de mais tempo de uso e menos manutenções.`,
+    bannerImage: "https://m.media-amazon.com/images/S/aplus-media-library-service-media/01bfda1f-fac1-4ad9-a34f-2b30a5248653.__CR0,0,970,300_PT0_SX970_V1___.jpg",
     safeRedirectUrl: "https://www.havan.com.br/furadeira",
     reviews: []
   },

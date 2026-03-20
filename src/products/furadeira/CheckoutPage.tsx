@@ -12,8 +12,8 @@ const FuradeiraCheckoutPage: React.FC = () => {
   const navigate = useNavigate();
   
   const product = {
-    title: "Furadeira de Impacto Bosch GSB 450 RE",
-    media: [{ src: "https://m.media-amazon.com/images/I/51-v6v6v6vL._AC_SL1000_.jpg" }]
+    title: "DEWALT Parafusadeira e Furaderia de Impacto de 1/2 Pol. (13mm) Brushless Motor a Bateria 20V MAX* Ion-Litio com 2 Baterias 2.0Ah Carregador Bivolt e Mala DCD7781D2",
+    media: [{ src: "https://m.media-amazon.com/images/I/51NuTLIhp7L._AC_SX679_.jpg" }]
   };
 
   const [quantity, setQuantity] = useState(location.state?.initialQuantity || 1);
@@ -32,7 +32,7 @@ const FuradeiraCheckoutPage: React.FC = () => {
     fetchData();
   }, []);
 
-  const finalTotal = (89.90 * quantity) - 5;
+  const finalTotal = (97.94 * quantity) - 5;
 
   const handlePlaceOrder = async () => {
     if (!addressData) { navigate('/furadeira/endereco'); return; }
@@ -64,7 +64,7 @@ const FuradeiraCheckoutPage: React.FC = () => {
             <div className="flex-grow">
               <h4 className="text-[14px] font-bold line-clamp-2">{product.title}</h4>
               <div className="flex justify-between items-end mt-2">
-                <span className="text-[18px] font-bold text-[#FF2C55]">R$ 89,90</span>
+                <span className="text-[18px] font-bold text-[#FF2C55]">R$ 97,94</span>
                 <div className="flex items-center bg-[#F1F1F1] rounded-md h-8">
                   <button className="px-3" onClick={() => setQuantity(q => Math.max(1, q - 1))}><Minus size={16} /></button>
                   <span className="font-bold">{quantity}</span>

@@ -26,7 +26,7 @@ const FuradeiraPixPayment: React.FC = () => {
       <main className="w-full max-w-[600px] p-4 space-y-4">
         <div className="bg-white rounded-2xl p-6 text-center shadow-sm">
           <span className="text-gray-500 text-sm">Total a pagar</span>
-          <h2 className="text-3xl font-bold text-[#FF2C55] my-2">R$ 89,90</h2>
+          <h2 className="text-3xl font-bold text-[#FF2C55] my-2">R$ 97,94</h2>
           <div className="flex items-center justify-center text-[#00BFA5] text-xs font-bold uppercase mt-4"><ShieldCheck size={16} className="mr-1" /> Pagamento Seguro</div>
         </div>
         <div className="bg-white rounded-2xl p-6 shadow-sm text-center space-y-6">
