@@ -75,11 +75,18 @@ export const products: Product[] = [
     safeRedirectUrl: "https://www.havan.com.br/aspirador-de-po-robo-wap-robot-w1000",
     reviews: [
       {
-        username: "Marcos Silva",
-        avatarSrc: "/homem/homem (1).jpg",
-        comment: "Melhor compra que fiz esse ano. O robô aspira muito bem e o mapeamento funciona de verdade. Chegou em 3 dias aqui em casa.",
+        username: "Claudio Mendes",
+        avatarSrc: "/homem/homem (10).jpg",
+        comment: "Surpreso com a qualidade. Ele mapeia a casa direitinho e volta pra base sozinho. Pelo preço da promoção valeu muito a pena.",
         variation: "Padrão",
         reviewImages: ["https://m.media-amazon.com/images/I/61n4FmVFrQL._AC_SL1500_.jpg"]
+      },
+      {
+        username: "Juliana Costa",
+        avatarSrc: "/mulher/mulher (15).jpg",
+        comment: "Melhor investimento pra quem tem pet! Tira todos os pelos do tapete. Chegou super rápido, em 2 dias.",
+        variation: "Padrão",
+        reviewImages: ["https://m.media-amazon.com/images/I/51l8Ni2qSUL._AC_SL1000_.jpg"]
       }
     ]
   },
@@ -122,36 +129,36 @@ export const products: Product[] = [
     safeRedirectUrl: "https://www.havan.com.br/furadeira",
     reviews: [
       {
-        username: "Ricardo S.",
-        avatarSrc: "/homem/homem (1).jpg",
-        comment: "Chegou em 3 dias aqui no interior. O preço tá maravilhoso, original mesmo. A maleta é muito resistente.",
+        username: "Ricardo Santos",
+        avatarSrc: "/homem/homem (25).jpg",
+        comment: "Chegou em 3 dias aqui no interior. O preço tá maravilhoso, original mesmo. A maleta é muito resistente e as baterias duram muito.",
         variation: "Com 2 baterias",
         reviewImages: ["https://m.media-amazon.com/images/I/81+2-iPRbAL._SY250_.jpg", "https://m.media-amazon.com/images/I/81ukYAJTLWL._SY250_.jpg"]
       },
       {
         username: "Marcos Oliveira",
-        avatarSrc: "/homem/homem (12).jpg",
-        comment: "Ferramenta top. Motor brushless é outro nível, não esquenta nada. Vale cada centavo, entrega super ágil.",
+        avatarSrc: "/homem/homem (42).jpg",
+        comment: "Ferramenta top. Motor brushless é outro nível, não esquenta nada. Vale cada centavo, entrega super ágil da Havan.",
         variation: "Com 2 baterias",
         reviewImages: ["https://m.media-amazon.com/images/I/71iemNNiHFL._SY250_.jpg", "https://m.media-amazon.com/images/I/71dp8ROLsML._SY250_.jpg"]
       },
       {
-        username: "Ana Paula",
-        avatarSrc: "/mulher/mulher (22).jpg",
-        comment: "Comprei pro meu marido e ele amou. Chegou em 2 dias úteis aqui em SP. O preço estava imbatível.",
+        username: "Beatriz Lima",
+        avatarSrc: "/mulher/mulher (33).jpg",
+        comment: "Comprei pro meu marido e ele amou. Chegou em 2 dias úteis aqui em SP. O preço estava imbatível comparado a outras lojas.",
         variation: "Com 1 bateria",
         reviewImages: ["https://m.media-amazon.com/images/I/714eD6JHSSL._SY250_.jpg", "https://m.media-amazon.com/images/I/81-e-nbrONL._SY250_.jpg"]
       },
       {
         username: "Carlos Alberto",
-        avatarSrc: "/homem/homem (33).jpg",
-        comment: "Melhor preço que já vi nessa DeWalt. Chegou voando. A bateria dura muito tempo de trabalho.",
+        avatarSrc: "/homem/homem (55).jpg",
+        comment: "Melhor preço que já vi nessa DeWalt. Chegou voando. A bateria de 20V tem muita força pra furar concreto.",
         variation: "Com 2 baterias",
         reviewImages: ["https://m.media-amazon.com/images/I/71SPi73dLEL._SY250_.jpg", "https://m.media-amazon.com/images/I/71LXOY3pTtL._SY250_.jpg", "https://m.media-amazon.com/images/I/71J5ySnvJwL._SY250_.jpg"]
       },
       {
-        username: "Felipe M.",
-        avatarSrc: "/homem/homem (45).jpg",
+        username: "Fernanda Souza",
+        avatarSrc: "/mulher/mulher (64).jpg",
         comment: "Bruta demais! Furou a viga aqui de casa sem nem fazer força. Recomendo pelo valor e pela entrega rápida.",
         variation: "Com 2 baterias",
         reviewImages: ["https://m.media-amazon.com/images/I/71cI8NGF8sL._SY250_.jpg", "https://m.media-amazon.com/images/I/71+TQabIs6L._SY250_.jpg"]
