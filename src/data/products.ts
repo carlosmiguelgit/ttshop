@@ -37,7 +37,7 @@ export interface Product {
 export const products: Product[] = [
   {
     slug: "aspirador-de-po",
-    title: "WAP Robô Aspirador de Pó ROBOT W1000 Mapeamento de Tempo Real GYRO, Base de Carregamento, Compatível com Alexa e Google",
+    title: "Aspirador de Pó Robô Philco 3 em 1 Antiqueda Pas26p - Bivolt",
     currentPrice: "97,28",
     originalPrice: "899,00",
     discountPercentage: 89,
@@ -47,41 +47,35 @@ export const products: Product[] = [
     salesCount: 48800,
     flashSaleTimeSeconds: 5 * 60,
     media: [
-      { type: 'image', src: "https://m.media-amazon.com/images/I/61n4FmVFrQL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61n4FmVFrQL._AC_SX679_.jpg" },
-      { type: 'image', src: "https://m.media-amazon.com/images/I/51l8Ni2qSUL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/51l8Ni2qSUL._AC_SX679_.jpg" },
-      { type: 'image', src: "https://m.media-amazon.com/images/I/81upSkYSsZL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/81upSkYSsZL._AC_SX679_.jpg" },
-      { type: 'image', src: "https://m.media-amazon.com/images/I/81Vvxxi9GGL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/81Vvxxi9GGL._AC_SX679_.jpg" },
-      { type: 'image', src: "https://m.media-amazon.com/images/I/8102iMz28hL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/8102iMz28hL._AC_SX679_.jpg" },
-      { type: 'image', src: "https://m.media-amazon.com/images/I/61WF03ugCnL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61WF03ugCnL._AC_SX679_.jpg" },
+      { type: 'image', src: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243700.webp", thumbnailSrc: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243700.webp" },
+      { type: 'image', src: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243701.webp", thumbnailSrc: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243701.webp" },
+      { type: 'image', src: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243702.webp", thumbnailSrc: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243702.webp" },
+      { type: 'image', src: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243703.webp", thumbnailSrc: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243703.webp" },
+      { type: 'image', src: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243704.webp", thumbnailSrc: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243704.webp" },
+      { type: 'image', src: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243705.webp", thumbnailSrc: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243705.webp" },
     ],
     specifications: [
-      { label: "Nível de ruído", value: "65 dB(A)" },
-      { label: "Tipo de filtro", value: "HEPA + Espuma + Tela" },
-      { label: "Níveis de filtragem", value: "3" },
-      { label: "Aspira água?", value: "Não" },
-      { label: "Capacidade para pó", value: "600 ml" },
-      { label: "Voltagem", value: "BIVOLT" },
-      { label: "Potência elétrica", value: "36W" },
-      { label: "Frequência", value: "60Hz" },
-      { label: "Capacidade útil", value: "350ml (água) + 260ml (pó)" },
-      { label: "Tipo de bateria", value: "Li-Ion" },
-      { label: "Capacidade da bateria", value: "2600 (mAh)" },
-      { label: "Autonomia", value: "Até 2h40" },
-      { label: "Tempo de carga", value: "Até 5 horas" },
-      { label: "Base carregadora", value: "Sim" },
-      { label: "Controle remoto", value: "Sim" },
-      { label: "Conectividade APP", value: "Sim" },
-      { label: "Peso líquido", value: "3 kg" },
-      { label: "Cor", value: "Branco e Turquesa" },
-      { label: "Dimensões", value: "32 x 32 x 8 cm" },
+      { label: "Marca", value: "Philco" },
+      { label: "Modelo", value: "ROBÔ PAS26P" },
+      { label: "Potência", value: "35W" },
+      { label: "Função MOP", value: "Aspira e passa pano (seco ou úmido)" },
+      { label: "Filtro", value: "HEPA (Retém 99,5% de ácaros e poeira)" },
+      { label: "Reservatório de Pó", value: "610ml" },
+      { label: "Reservatório de Água", value: "200ml" },
+      { label: "Autonomia", value: "70-90 minutos" },
+      { label: "Tempo de Carga", value: "4-5 horas" },
+      { label: "Sensores", value: "Antiqueda e Obstáculos" },
+      { label: "Voltagem", value: "Bivolt" },
+      { label: "Dimensões", value: "31,6cm x 8cm x 34,9cm" },
+      { label: "Peso", value: "2,7Kg" },
     ],
-    descriptionText: `Direção inteligente para uma limpeza eficiente!`,
-    safeRedirectUrl: "https://www.havan.com.br/aspirador-de-po-robo-wap-robot-w1000",
+    descriptionText: `Com design moderno e tecnologia inovadora, tenha mais praticidade e conforto ao ter seus cômodos 100% limpos sem nenhum esforço com o Aspirador de Pó Robô Philco PAS26P. O Aspirador Robô Philco possui reservatório de água de 200ml e reservatório de pó de 610ml, é ideal para passar pano em todo o ambiente e sem a constante necessidade de precisar esvaziar o reservatório. Com sensor antiqueda e obstáculos o Aspirador de Pó Robô Philco é redirecionado ao ter contato com obstáculos. Além disso, quando a bateria estiver acabando ele retorna sozinho para a base de carregamento. Equipado com filtro HEPA, ele retém até 99,5% de ácaros, poeiras e até as partículas mais finais da sujeira. Outro diferencial é a função MOP que permite aspirar e passar pano seco ou úmido. Seus ambientes limpos e renovados em instantes com o Aspirador de Pó Robô Philco PAS26P MOP Bivolt.`,
+    safeRedirectUrl: "https://www.havan.com.br/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p",
     reviews: [
       {
         username: "Claudio Mendes",
         avatarSrc: "/homem/homem (10).jpg",
-        comment: "Surpreso com a qualidade. Ele mapeia a casa direitinho e volta pra base sozinho. Pelo preço da promoção valeu muito a pena. Recomendo demais para quem tem pouco tempo.",
+        comment: "Surpreso com a qualidade desse Philco. Ele mapeia a casa direitinho e a função de passar pano é excelente. Pelo preço da promoção valeu muito a pena.",
         variation: "Padrão",
         reviewImages: [
           "https://m.media-amazon.com/images/I/71opket9kyL._SY250_.jpg",
@@ -92,7 +86,7 @@ export const products: Product[] = [
       {
         username: "Juliana Costa",
         avatarSrc: "/mulher/mulher (15).jpg",
-        comment: "Melhor investimento pra quem tem pet! Tira todos os pelos do tapete. Chegou super rápido, em 2 dias. O sensor de degrau funciona perfeitamente, não cai da escada.",
+        comment: "Melhor investimento pra quem tem pet! O reservatório de 610ml cabe muita sujeira. Chegou super rápido, em 2 dias. O sensor de degrau funciona perfeitamente.",
         variation: "Padrão",
         reviewImages: [
           "https://m.media-amazon.com/images/I/71vfDsbwopL._SY250_.jpg",
@@ -103,7 +97,7 @@ export const products: Product[] = [
       {
         username: "Ricardo Oliveira",
         avatarSrc: "/homem/homem (22).jpg",
-        comment: "Produto excelente, aspira muito bem e o barulho é bem baixo. Consigo deixar ele limpando enquanto assisto TV sem problemas. A bateria dura bastante tempo.",
+        comment: "Produto excelente, aspira muito bem e o barulho é bem baixo. O filtro HEPA faz muita diferença pra quem tem alergia. A bateria dura o suficiente para meu apto.",
         variation: "Padrão",
         reviewImages: [
           "https://m.media-amazon.com/images/I/61kP5qidrUL._SY250_.jpg",
@@ -114,7 +108,7 @@ export const products: Product[] = [
       {
         username: "Mariana Santos",
         avatarSrc: "/mulher/mulher (40).jpg",
-        comment: "Estou apaixonada! Ele entra embaixo do sofá e da cama, lugares que eu tinha dificuldade de limpar. O aplicativo é bem intuitivo e fácil de usar.",
+        comment: "Estou apaixonada! Ele entra embaixo do sofá e da cama, lugares que eu tinha dificuldade de limpar. A função MOP deixa o chão brilhando.",
         variation: "Padrão",
         reviewImages: [
           "https://m.media-amazon.com/images/I/71YkAuDHo4L._SY250_.jpg",
@@ -125,7 +119,7 @@ export const products: Product[] = [
       {
         username: "Paulo Henrique",
         avatarSrc: "/homem/homem (33).jpg",
-        comment: "Chegou muito bem embalado e antes do prazo. A Havan sempre surpreende na entrega. O robô é muito inteligente e eficiente na limpeza diária.",
+        comment: "Chegou muito bem embalado. O robô é muito inteligente e volta sozinho para a base quando a bateria acaba. Recomendo!",
         variation: "Padrão",
         reviewImages: [
           "https://m.media-amazon.com/images/I/718pxLy67TL._SY250_.jpg",
