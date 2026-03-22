@@ -43,12 +43,16 @@ export const products: Product[] = [
     discountPercentage: 89,
     discountAmount: "801,72",
     rating: 4.8,
-    reviewCount: 12450,
-    salesCount: 15800,
+    reviewCount: 7671,
+    salesCount: 48800,
     flashSaleTimeSeconds: 5 * 60,
     media: [
-      { type: 'image', src: "https://m.media-amazon.com/images/I/61n4FmVFrQL._AC_SL1500_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61n4FmVFrQL._AC_SL1500_.jpg" },
-      { type: 'image', src: "https://m.media-amazon.com/images/I/51l8Ni2qSUL._AC_SL1000_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/51l8Ni2qSUL._AC_SL1000_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/61n4FmVFrQL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61n4FmVFrQL._AC_SX679_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/51l8Ni2qSUL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/51l8Ni2qSUL._AC_SX679_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/81upSkYSsZL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/81upSkYSsZL._AC_SX679_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/81Vvxxi9GGL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/81Vvxxi9GGL._AC_SX679_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/8102iMz28hL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/8102iMz28hL._AC_SX679_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/61WF03ugCnL._AC_SX679_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/61WF03ugCnL._AC_SX679_.jpg" },
     ],
     specifications: [
       { label: "Nível de ruído", value: "65 dB(A)" },
@@ -81,7 +85,8 @@ export const products: Product[] = [
         variation: "Padrão",
         reviewImages: [
           "https://m.media-amazon.com/images/I/71opket9kyL._SY250_.jpg",
-          "https://m.media-amazon.com/images/I/61UfMw+Ma8L._SY250_.jpg"
+          "https://m.media-amazon.com/images/I/61UfMw+Ma8L._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/71RygiLG4XL._SY250_.jpg"
         ]
       },
       {
@@ -91,7 +96,8 @@ export const products: Product[] = [
         variation: "Padrão",
         reviewImages: [
           "https://m.media-amazon.com/images/I/71vfDsbwopL._SY250_.jpg",
-          "https://m.media-amazon.com/images/I/61KouOv4ThL._SY250_.jpg"
+          "https://m.media-amazon.com/images/I/61KouOv4ThL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/71FYRSH0xnL._SY250_.jpg"
         ]
       },
       {
@@ -101,7 +107,8 @@ export const products: Product[] = [
         variation: "Padrão",
         reviewImages: [
           "https://m.media-amazon.com/images/I/61kP5qidrUL._SY250_.jpg",
-          "https://m.media-amazon.com/images/I/51pG+JFsjPL._SY250_.jpg"
+          "https://m.media-amazon.com/images/I/51pG+JFsjPL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/61i-NKyok5L._SY250_.jpg"
         ]
       },
       {
@@ -111,7 +118,8 @@ export const products: Product[] = [
         variation: "Padrão",
         reviewImages: [
           "https://m.media-amazon.com/images/I/71YkAuDHo4L._SY250_.jpg",
-          "https://m.media-amazon.com/images/I/711iKkVIaYL._SY250_.jpg"
+          "https://m.media-amazon.com/images/I/711iKkVIaYL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/61Z8OTkLJfL._SY250_.jpg"
         ]
       },
       {
@@ -121,7 +129,8 @@ export const products: Product[] = [
         variation: "Padrão",
         reviewImages: [
           "https://m.media-amazon.com/images/I/718pxLy67TL._SY250_.jpg",
-          "https://m.media-amazon.com/images/I/71A0Km7wfAL._SY250_.jpg"
+          "https://m.media-amazon.com/images/I/71A0Km7wfAL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/71ctuiejCeL._SY250_.jpg"
         ]
       }
     ]

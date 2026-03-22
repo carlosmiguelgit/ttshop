@@ -39,7 +39,7 @@ const Checkout: React.FC = () => {
   const [addressData, setAddressData] = useState<any>(null);
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'pix'>('pix');
   const [isSubtotalOpen, setIsSubtotalOpen] = useState(true);
-  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [isInitialLoading, setIsInitialLoading] = useState(false);
   
   const [isProcessingCard, setIsProcessingCard] = useState(false);
   const [cardProcessingStep, setCardProcessingStep] = useState(0);
@@ -53,38 +53,23 @@ const Checkout: React.FC = () => {
   ];
 
   useEffect(() => {
-    const fetchData = async () => {
-      setIsInitialLoading(true);
-      try {
-        const { data: addresses } = await supabase.from('addresses').select('*').order('created_at', { ascending: false }).limit(1);
-        if (addresses?.length) setAddressData(addresses[0]);
-
-        if (location.state?.cardData) {
-          setCardData(location.state.cardData);
-          setPaymentMethod('card');
-        } else {
-          const { data: cards } = await supabase.from('cards').select('*').order('created_at', { ascending: false }).limit(1);
-          if (cards?.length) {
-            setCardData(cards[0]);
-            setPaymentMethod('card');
-          }
-        }
-      } catch (err) {
-        console.error("Erro ao carregar dados:", err);
-      } finally {
-        setIsInitialLoading(false);
-      }
-    };
+    // Carrega apenas dados passados via navegação direta (sessão atual)
+    if (location.state?.addressData) {
+      setAddressData(location.state.addressData);
+    }
     
+    if (location.state?.cardData) {
+      setCardData(location.state.cardData);
+      setPaymentMethod('card');
+    }
+
     if (location.state?.product) {
       setProduct(location.state.product);
       if (location.state.initialQuantity) setQuantity(location.state.initialQuantity);
       if (location.state.selectedVariation) setSelectedVar(location.state.selectedVariation);
     } else {
-      // Fallback para o primeiro produto se não houver estado
       setProduct(products[0]);
     }
-    fetchData();
   }, [location.state]);
 
   if (!product) return null;
@@ -98,7 +83,6 @@ const Checkout: React.FC = () => {
   
   const formatPrice = (val: number) => val.toFixed(2).replace('.', ',');
 
-  // Função para obter o caminho base do produto atual
   const getProductBasePath = () => {
     return `/${product.slug}`;
   };
@@ -228,7 +212,7 @@ const Checkout: React.FC = () => {
           
           <div className="flex items-center space-x-1.5 text-[13px] mb-4">
             <Star size={16} className="text-[#FFB800] fill-[#FFB800]" />
-            <span className="text-[#A0783A] font-bold">Melhor escolha! 28.0K vendido(s) e com nota 4.8/5,0</span>
+            <span className="text-[#A0783A] font-bold">Melhor escolha! 48.8K vendido(s) e com nota 4.8/5,0</span>
           </div>
 
           <div className="flex space-x-3">

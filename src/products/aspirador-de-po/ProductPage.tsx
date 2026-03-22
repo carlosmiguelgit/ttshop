@@ -38,13 +38,12 @@ const AspiradorProductPage: React.FC = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  // Lógica de Aleatoriedade Sincronizada
-  const stats = useMemo(() => {
-    const sales = Math.floor(Math.random() * (62000 - 28000 + 1)) + 28000;
-    const rating = parseFloat((Math.random() * (4.9 - 4.8) + 4.8).toFixed(1));
-    const reviews = Math.floor(sales * 0.2);
-    return { sales, rating, reviews };
-  }, []);
+  // Valores fixos conforme solicitado para o Aspirador
+  const stats = {
+    sales: 48800,
+    rating: 4.8,
+    reviews: 7671
+  };
 
   useEffect(() => {
     const handleScroll = () => setShowScrollTop(window.scrollY > 1000);
@@ -67,7 +66,10 @@ const AspiradorProductPage: React.FC = () => {
         <ProductImageGallery media={product.media as any} onCartClick={() => setIsCartOpen(true)} cartItemCount={cartItemCount} />
         
         <ProductPriceSection 
-          product={{...product, rating: stats.rating, salesCount: stats.sales, reviewCount: stats.reviews} as any} 
+          product={product as any} 
+          rating={stats.rating}
+          salesCount={stats.sales}
+          reviewCount={stats.reviews}
           onCouponsClick={() => setIsCouponsDrawerOpen(true)} 
           onShippingClick={() => setIsShippingDrawerOpen(true)} 
         />
