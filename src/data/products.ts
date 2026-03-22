@@ -77,16 +77,52 @@ export const products: Product[] = [
       {
         username: "Claudio Mendes",
         avatarSrc: "/homem/homem (10).jpg",
-        comment: "Surpreso com a qualidade. Ele mapeia a casa direitinho e volta pra base sozinho. Pelo preço da promoção valeu muito a pena.",
+        comment: "Surpreso com a qualidade. Ele mapeia a casa direitinho e volta pra base sozinho. Pelo preço da promoção valeu muito a pena. Recomendo demais para quem tem pouco tempo.",
         variation: "Padrão",
-        reviewImages: ["https://m.media-amazon.com/images/I/61n4FmVFrQL._AC_SL1500_.jpg"]
+        reviewImages: [
+          "https://m.media-amazon.com/images/I/71opket9kyL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/61UfMw+Ma8L._SY250_.jpg"
+        ]
       },
       {
         username: "Juliana Costa",
         avatarSrc: "/mulher/mulher (15).jpg",
-        comment: "Melhor investimento pra quem tem pet! Tira todos os pelos do tapete. Chegou super rápido, em 2 dias.",
+        comment: "Melhor investimento pra quem tem pet! Tira todos os pelos do tapete. Chegou super rápido, em 2 dias. O sensor de degrau funciona perfeitamente, não cai da escada.",
         variation: "Padrão",
-        reviewImages: ["https://m.media-amazon.com/images/I/51l8Ni2qSUL._AC_SL1000_.jpg"]
+        reviewImages: [
+          "https://m.media-amazon.com/images/I/71vfDsbwopL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/61KouOv4ThL._SY250_.jpg"
+        ]
+      },
+      {
+        username: "Ricardo Oliveira",
+        avatarSrc: "/homem/homem (22).jpg",
+        comment: "Produto excelente, aspira muito bem e o barulho é bem baixo. Consigo deixar ele limpando enquanto assisto TV sem problemas. A bateria dura bastante tempo.",
+        variation: "Padrão",
+        reviewImages: [
+          "https://m.media-amazon.com/images/I/61kP5qidrUL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/51pG+JFsjPL._SY250_.jpg"
+        ]
+      },
+      {
+        username: "Mariana Santos",
+        avatarSrc: "/mulher/mulher (40).jpg",
+        comment: "Estou apaixonada! Ele entra embaixo do sofá e da cama, lugares que eu tinha dificuldade de limpar. O aplicativo é bem intuitivo e fácil de usar.",
+        variation: "Padrão",
+        reviewImages: [
+          "https://m.media-amazon.com/images/I/71YkAuDHo4L._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/711iKkVIaYL._SY250_.jpg"
+        ]
+      },
+      {
+        username: "Paulo Henrique",
+        avatarSrc: "/homem/homem (33).jpg",
+        comment: "Chegou muito bem embalado e antes do prazo. A Havan sempre surpreende na entrega. O robô é muito inteligente e eficiente na limpeza diária.",
+        variation: "Padrão",
+        reviewImages: [
+          "https://m.media-amazon.com/images/I/718pxLy67TL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/71A0Km7wfAL._SY250_.jpg"
+        ]
       }
     ]
   },

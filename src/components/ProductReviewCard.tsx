@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Star } from 'lucide-react';
 import ReviewImageGallery from './ReviewImageGallery';
 
@@ -24,7 +24,12 @@ const ProductReviewCard: React.FC<ReviewCardProps> = ({
   reviewImages,
   variation,
 }) => {
+  const [isExpanded, setIsExpanded] = useState(false);
   const maskedUsername = maskUsername(username);
+  
+  const MAX_LENGTH = 120;
+  const shouldShowReadMore = comment.length > MAX_LENGTH;
+  const displayedComment = isExpanded ? comment : comment.slice(0, MAX_LENGTH);
 
   const renderStars = () => (
     <div className="flex mb-1">
@@ -49,9 +54,20 @@ const ProductReviewCard: React.FC<ReviewCardProps> = ({
 
       <p className="text-sm text-gray-500 mb-2">Item: {variation}</p>
 
-      <p className="text-sm text-gray-700 leading-relaxed mb-3">
-        {comment}
-      </p>
+      <div className="mb-3">
+        <p className="text-sm text-gray-700 leading-relaxed inline">
+          {displayedComment}
+          {!isExpanded && shouldShowReadMore && "..."}
+        </p>
+        {shouldShowReadMore && (
+          <button 
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="text-sm font-bold text-gray-900 ml-1 hover:underline"
+          >
+            {isExpanded ? "Ler menos" : "Ler mais"}
+          </button>
+        )}
+      </div>
 
       {reviewImages && reviewImages.length > 0 && (
         <ReviewImageGallery reviewImages={reviewImages} />

@@ -8,7 +8,8 @@ interface ProductReviewsListProps {
 }
 
 const ProductReviewsList: React.FC<ProductReviewsListProps> = ({ showAll, reviews }) => {
-  const reviewsToDisplay = showAll ? reviews : reviews.slice(0, 1);
+  // Mostra 2 comentários por padrão, ou todos se showAll for true
+  const reviewsToDisplay = showAll ? reviews : reviews.slice(0, 2);
 
   return (
     <div className="divide-y divide-gray-100">
