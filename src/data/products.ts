@@ -47,8 +47,8 @@ export const products: Product[] = [
     salesCount: 48800,
     flashSaleTimeSeconds: 5 * 60,
     media: [
-      { type: 'image', src: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243700.webp", thumbnailSrc: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243700.webp" },
       { type: 'image', src: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243701.webp", thumbnailSrc: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243701.webp" },
+      { type: 'image', src: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243700.webp", thumbnailSrc: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243700.webp" },
       { type: 'image', src: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243702.webp", thumbnailSrc: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243702.webp" },
       { type: 'image', src: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243703.webp", thumbnailSrc: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243703.webp" },
       { type: 'image', src: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243704.webp", thumbnailSrc: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243704.webp" },
@@ -78,9 +78,8 @@ export const products: Product[] = [
         comment: "Surpreso com a qualidade desse Philco. Ele mapeia a casa direitinho e a função de passar pano é excelente. Pelo preço da promoção valeu muito a pena.",
         variation: "Padrão",
         reviewImages: [
-          "https://m.media-amazon.com/images/I/71opket9kyL._SY250_.jpg",
-          "https://m.media-amazon.com/images/I/61UfMw+Ma8L._SY250_.jpg",
-          "https://m.media-amazon.com/images/I/71RygiLG4XL._SY250_.jpg"
+          "https://stgavaliaprodutoextprd01.blob.core.windows.net/midiasproduto-public/h1Ie7sm1ifJ4tEcSSp0V28Za8Acmf4rHN_JfotJOj4npVOzASNGk-PY9h1jBMzAz.webp",
+          "https://stgavaliaprodutoextprd01.blob.core.windows.net/midiasproduto-public/C188efv7p2qe-24Ko78deglqhw5H5LCSFqZmdH_BMtfA-i5dII4YKEIKm9HM9kXM.webp"
         ]
       },
       {
@@ -89,9 +88,8 @@ export const products: Product[] = [
         comment: "Melhor investimento pra quem tem pet! O reservatório de 610ml cabe muita sujeira. Chegou super rápido, em 2 dias. O sensor de degrau funciona perfeitamente.",
         variation: "Padrão",
         reviewImages: [
-          "https://m.media-amazon.com/images/I/71vfDsbwopL._SY250_.jpg",
-          "https://m.media-amazon.com/images/I/61KouOv4ThL._SY250_.jpg",
-          "https://m.media-amazon.com/images/I/71FYRSH0xnL._SY250_.jpg"
+          "https://stgavaliaprodutoextprd01.blob.core.windows.net/midiasproduto-public/mIl72h6iRGHRG9bDC17jrSJEnY-o6FNivUBvxTKLsnc5G4uIsUP9aRz3hOqYPaiX.webp",
+          "https://stgavaliaprodutoextprd01.blob.core.windows.net/midiasproduto-public/K6sbZwg8Je3R8meMWJJr6FJS2-ZrO17aXhdunUhSQD14xNNGrqXBZi0UWmiIWORx.webp"
         ]
       },
       {
@@ -100,9 +98,8 @@ export const products: Product[] = [
         comment: "Produto excelente, aspira muito bem e o barulho é bem baixo. O filtro HEPA faz muita diferença pra quem tem alergia. A bateria dura o suficiente para meu apto.",
         variation: "Padrão",
         reviewImages: [
-          "https://m.media-amazon.com/images/I/61kP5qidrUL._SY250_.jpg",
-          "https://m.media-amazon.com/images/I/51pG+JFsjPL._SY250_.jpg",
-          "https://m.media-amazon.com/images/I/61i-NKyok5L._SY250_.jpg"
+          "https://stgavaliaprodutoextprd01.blob.core.windows.net/midiasproduto-public/kJ9NmK62ITG9tAUye52jvSdtGpD6UbUfIHUyZ5nIYNNHC9vdviEBkkyAZ-Bmln0y.webp",
+          "https://stgavaliaprodutoextprd01.blob.core.windows.net/midiasproduto-public/qfbZzLllAOIMSO5ZdZwC4-1BLDACkFDoEX81a5LqW8q14H8QMVyC4lspdNp111cd.webp"
         ]
       },
       {
@@ -111,9 +108,7 @@ export const products: Product[] = [
         comment: "Estou apaixonada! Ele entra embaixo do sofá e da cama, lugares que eu tinha dificuldade de limpar. A função MOP deixa o chão brilhando.",
         variation: "Padrão",
         reviewImages: [
-          "https://m.media-amazon.com/images/I/71YkAuDHo4L._SY250_.jpg",
-          "https://m.media-amazon.com/images/I/711iKkVIaYL._SY250_.jpg",
-          "https://m.media-amazon.com/images/I/61Z8OTkLJfL._SY250_.jpg"
+          "https://stgavaliaprodutoextprd01.blob.core.windows.net/midiasproduto-public/Mlz3tRPB_SiXZ16fSApt6jHOFR3lROglN6vBc6dVA6vt1rNhd6ONbgSu1KuE0cPe.webp"
         ]
       },
       {
@@ -122,9 +117,7 @@ export const products: Product[] = [
         comment: "Chegou muito bem embalado. O robô é muito inteligente e volta sozinho para a base quando a bateria acaba. Recomendo!",
         variation: "Padrão",
         reviewImages: [
-          "https://m.media-amazon.com/images/I/718pxLy67TL._SY250_.jpg",
-          "https://m.media-amazon.com/images/I/71A0Km7wfAL._SY250_.jpg",
-          "https://m.media-amazon.com/images/I/71ctuiejCeL._SY250_.jpg"
+          "https://stgavaliaprodutoextprd01.blob.core.windows.net/midiasproduto-public/M6Kzg6EbzhS_kUpfoF1B4UaVE8GhAD1fzadXCyDEHZXAvxgCC7JlCQmh9fqS0KjJ.webp"
         ]
       }
     ]
