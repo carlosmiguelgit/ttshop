@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { products } from '@/data/products';
 import Header from '@/components/Header';
@@ -20,7 +20,7 @@ import CustomerProtectionDrawer from '@/components/CustomerProtectionDrawer';
 import ChatDrawer from '@/components/ChatDrawer';
 import StoreSection from '@/components/StoreSection';
 import ProductRecommendations from '@/components/ProductRecommendations';
-import { Truck, X, LayoutGrid, ChevronRight, ArrowUp } from 'lucide-react';
+import { Truck, LayoutGrid, ChevronRight, ArrowUp } from 'lucide-react';
 import { addDays, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
@@ -38,14 +38,12 @@ const AspiradorProductPage: React.FC = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  // Valores fixos conforme solicitado para o Aspirador
   const stats = {
     sales: 48800,
     rating: 4.8,
     reviews: 7671
   };
 
-  // Vídeos específicos do Aspirador Philco
   const aspiradorVideos = [
     { id: "kqPnkR9WjHw", author: "Review Philco", avatar: "https://randomuser.me/api/portraits/women/10.jpg" },
     { id: "hrK_C1D_mJA", author: "Dicas de Casa", avatar: "https://randomuser.me/api/portraits/men/11.jpg" },
@@ -65,6 +63,22 @@ const AspiradorProductPage: React.FC = () => {
     return `${format(start, 'dd')} – ${format(end, 'dd')} de ${format(end, 'MMM', { locale: ptBR })}`;
   }, []);
 
+  const handleConfirmVariation = (qty: number, mode: 'cart' | 'buy', variation: string, price: string) => {
+    if (mode === 'buy') {
+      navigate('/aspirador-de-po/checkout', { 
+        state: { 
+          product, 
+          initialQuantity: qty, 
+          selectedVariation: variation, 
+          selectedPrice: price 
+        } 
+      });
+    } else {
+      setCartItemCount(prev => prev + qty);
+      setIsVariationDrawerOpen(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#F8F8F8] pb-[104px]">
       <Header productTitle={product.title} cartItemCount={cartItemCount} onCartClick={() => setIsCartOpen(true)} />
@@ -81,7 +95,7 @@ const AspiradorProductPage: React.FC = () => {
           onShippingClick={() => setIsShippingDrawerOpen(true)} 
         />
         
-        <div className="bg-white p-4 border-t border-gray-50 flex items-center justify-between cursor-pointer" onClick={() => setIsVariationDrawerOpen(true)}>
+        <div className="bg-white p-4 border-t border-gray-50 flex items-center justify-between cursor-pointer" onClick={() => { setVariationDrawerMode('buy'); setIsVariationDrawerOpen(true); }}>
           <div className="flex items-center space-x-3">
             <LayoutGrid size={20} className="text-gray-900" />
             <img src={product.media[0].src} className="w-10 h-10 rounded-md border object-cover" alt="Opção" />
@@ -91,16 +105,8 @@ const AspiradorProductPage: React.FC = () => {
         </div>
         
         <CustomerProtectionSection onClick={() => setIsProtectionDrawerOpen(true)} />
-        
-        {/* Passando os vídeos específicos do aspirador */}
         <CreatorVideosSection videos={aspiradorVideos} />
-        
-        <ProductReviewsSection 
-          rating={stats.rating} 
-          reviewCount={stats.reviews} 
-          reviews={product.reviews} 
-        />
-        
+        <ProductReviewsSection rating={stats.rating} reviewCount={stats.reviews} reviews={product.reviews} />
         <StoreSection />
         <ProductDescription specifications={product.specifications} descriptionText={product.descriptionText} firstImageSrc={product.media[0].src} />
         <ProductRecommendations currentSlug={product.slug} />
@@ -118,10 +124,15 @@ const AspiradorProductPage: React.FC = () => {
         </div>
       </div>
       
-      <ProductActionsBar onAddToCartClick={() => setIsVariationDrawerOpen(true)} onBuyWithCouponClick={() => setIsVariationDrawerOpen(true)} onChatClick={() => setIsChatOpen(true)} />
+      <ProductActionsBar 
+        onAddToCartClick={() => { setVariationDrawerMode('cart'); setIsVariationDrawerOpen(true); }} 
+        onBuyWithCouponClick={() => { setVariationDrawerMode('buy'); setIsVariationDrawerOpen(true); }} 
+        onChatClick={() => setIsChatOpen(true)} 
+      />
+      
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} onCheckoutClick={() => navigate('/aspirador-de-po/checkout')} product={product as any} cartItemCount={cartItemCount} />
       <ChatDrawer isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} product={product as any} />
-      <VariationSelectorDrawer isOpen={isVariationDrawerOpen} onClose={() => setIsVariationDrawerOpen(false)} product={product as any} onConfirm={(qty) => navigate('/aspirador-de-po/checkout', { state: { product, initialQuantity: qty } })} mode="buy" />
+      <VariationSelectorDrawer isOpen={isVariationDrawerOpen} onClose={() => setIsVariationDrawerOpen(false)} product={product as any} onConfirm={handleConfirmVariation} mode={variationDrawerMode} />
       <CouponsDrawer isOpen={isCouponsDrawerOpen} onClose={() => setIsCouponsDrawerOpen(false)} onClaim={() => {}} />
       <ShippingDrawer isOpen={isShippingDrawerOpen} onClose={() => setIsShippingDrawerOpen(false)} deliveryDate={deliveryDateRange} />
       <CustomerProtectionDrawer isOpen={isProtectionDrawerOpen} onClose={() => setIsProtectionDrawerOpen(false)} />

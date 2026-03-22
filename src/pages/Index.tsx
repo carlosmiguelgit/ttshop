@@ -1,9 +1,9 @@
 import React from 'react';
-import ProductDetailPage from './ProductDetailPage';
+import AspiradorProductPage from '../products/aspirador-de-po/ProductPage';
 
 const Index = () => {
   return (
-    <ProductDetailPage />
+    <AspiradorProductPage />
   );
 };
 
