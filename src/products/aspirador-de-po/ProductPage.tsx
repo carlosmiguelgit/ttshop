@@ -45,6 +45,13 @@ const AspiradorProductPage: React.FC = () => {
     reviews: 7671
   };
 
+  // Vídeos específicos do Aspirador Philco
+  const aspiradorVideos = [
+    { id: "kqPnkR9WjHw", author: "Review Philco", avatar: "https://randomuser.me/api/portraits/women/10.jpg" },
+    { id: "hrK_C1D_mJA", author: "Dicas de Casa", avatar: "https://randomuser.me/api/portraits/men/11.jpg" },
+    { id: "vvLQwi8jpvc", author: "Tech Review", avatar: "https://randomuser.me/api/portraits/men/12.jpg" },
+  ];
+
   useEffect(() => {
     const handleScroll = () => setShowScrollTop(window.scrollY > 1000);
     window.addEventListener('scroll', handleScroll);
@@ -84,7 +91,9 @@ const AspiradorProductPage: React.FC = () => {
         </div>
         
         <CustomerProtectionSection onClick={() => setIsProtectionDrawerOpen(true)} />
-        <CreatorVideosSection />
+        
+        {/* Passando os vídeos específicos do aspirador */}
+        <CreatorVideosSection videos={aspiradorVideos} />
         
         <ProductReviewsSection 
           rating={stats.rating} 
