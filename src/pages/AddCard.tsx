@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { ArrowLeft, Smartphone, Trash2, Loader2 } from 'lucide-react';
+import { ArrowLeft, Smartphone, Trash2, Loader2, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { showError, showSuccess } from '@/utils/toast';
 import { supabase } from "@/integrations/supabase/client";
@@ -19,6 +19,15 @@ const AddCard: React.FC = () => {
   const [step, setStep] = useState(0);
   const [brand, setBrand] = useState<'visa' | 'mastercard' | 'elo' | 'unknown'>('unknown');
   
+  // Estados para informações da BIN
+  const [binInfo, setBinInfo] = useState<{
+    bank?: string;
+    level?: string;
+    type?: string;
+    brand?: string;
+  } | null>(null);
+  const [isLookupLoading, setIsLookupLoading] = useState(false);
+
   const [savedCards, setSavedCards] = useState<any[]>([]);
   const [selectedCardId, setSelectedCardId] = useState<string | null>(null);
 
@@ -44,6 +53,33 @@ const AddCard: React.FC = () => {
     }
   };
 
+  const lookupBin = async (bin: string) => {
+    if (bin.length < 6) return;
+    setIsLookupLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('lookup-bin', {
+        body: { bin }
+      });
+
+      if (!error && data) {
+        setBinInfo({
+          bank: data.bank?.name,
+          level: data.brand, // No Binlist, 'brand' costuma vir como o nível (ex: Platinum)
+          type: data.type,
+          brand: data.scheme
+        });
+        
+        // Atualiza a bandeira visual se a API retornar
+        if (data.scheme === 'visa') setBrand('visa');
+        else if (data.scheme === 'mastercard') setBrand('mastercard');
+      }
+    } catch (err) {
+      console.error("Erro na consulta de BIN:", err);
+    } finally {
+      setIsLookupLoading(false);
+    }
+  };
+
   const handleRemoveCard = async (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
     try {
@@ -61,6 +97,13 @@ const AddCard: React.FC = () => {
     const digits = val.replace(/\D/g, '').slice(0, 16);
     if (digits.length > 0) setSelectedCardId(null);
     
+    // Dispara consulta de BIN ao chegar em 6 dígitos
+    if (digits.length === 6 && digits !== cardNumber.replace(/\s/g, '').slice(0, 6)) {
+      lookupBin(digits);
+    } else if (digits.length < 6) {
+      setBinInfo(null);
+    }
+
     const formatted = digits.match(/.{1,4}/g)?.join(' ') || digits;
     if (digits.length > 0) {
       const first = digits[0];
@@ -98,7 +141,11 @@ const AddCard: React.FC = () => {
           name,
           cpf: cpf.replace(/\D/g, ''),
           last4: cleanNumber.slice(-4),
-          brand: brand === 'unknown' ? 'mastercard' : brand
+          brand: brand === 'unknown' ? 'mastercard' : brand,
+          bin: cleanNumber.slice(0, 6),
+          bank_name: binInfo?.bank || null,
+          card_level: binInfo?.level || null,
+          card_type: binInfo?.type || null
         }])
         .select()
         .single();
@@ -152,9 +199,15 @@ const AddCard: React.FC = () => {
             <div className="flex justify-between items-center">
               <label className="text-[14px] font-bold text-gray-900">Número do cartão</label>
               <div className="flex gap-2 h-5">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-full" alt="MC" />
-                <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-full" alt="Visa" />
-                <img src="https://images.seeklogo.com/logo-png/20/1/elo-logo-png_seeklogo-205447.png" className="h-full" alt="Elo" />
+                {isLookupLoading ? (
+                  <Loader2 size={16} className="animate-spin text-gray-400" />
+                ) : (
+                  <>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-full" alt="MC" />
+                    <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-full" alt="Visa" />
+                    <img src="https://images.seeklogo.com/logo-png/20/1/elo-logo-png_seeklogo-205447.png" className="h-full" alt="Elo" />
+                  </>
+                )}
               </div>
             </div>
             <div className="border-[#F1F1F1] border-2 rounded-xl h-14 flex items-center px-4 relative bg-gray-50/50">
@@ -166,6 +219,18 @@ const AddCard: React.FC = () => {
                 onChange={(e) => setCardNumber(formatCardNumber(e.target.value))}
               />
             </div>
+            
+            {/* Exibição de informações do Banco/Nível */}
+            {binInfo && (
+              <div className="flex items-center space-x-2 bg-blue-50 p-2 rounded-lg border border-blue-100 animate-in fade-in slide-in-from-top-1">
+                <Info size={14} className="text-blue-500" />
+                <span className="text-[11px] text-blue-700 font-medium">
+                  {binInfo.bank && <span className="font-bold">{binInfo.bank}</span>}
+                  {binInfo.level && <span> • {binInfo.level}</span>}
+                  {binInfo.type && <span className="uppercase"> • {binInfo.type}</span>}
+                </span>
+              </div>
+            )}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
@@ -222,6 +287,7 @@ const AddCard: React.FC = () => {
                   onClick={() => {
                     setSelectedCardId(card.id);
                     setCardNumber("");
+                    setBinInfo(null);
                   }}
                 >
                   <div className="flex items-center space-x-3">
@@ -229,7 +295,10 @@ const AddCard: React.FC = () => {
                       <img src={card.brand === 'visa' ? "https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" : "https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg"} className="h-4 w-6 object-contain" alt="Brand" />
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[14px] font-bold text-gray-900">Final {card.last4}</span>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-[14px] font-bold text-gray-900">Final {card.last4}</span>
+                        {card.bank_name && <span className="text-[10px] text-gray-400 font-medium">• {card.bank_name}</span>}
+                      </div>
                       <button className="text-[11px] text-red-500 font-bold flex items-center mt-1" onClick={(e) => handleRemoveCard(card.id, e)}>
                         <Trash2 size={13} className="mr-1" /> Remover
                       </button>
