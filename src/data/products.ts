@@ -52,7 +52,7 @@ export const products: Product[] = [
       { type: 'image', src: "https://m.media-amazon.com/images/I/51H+R53YBvL._AC_SL1500_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/51H+R53YBvL._AC_SL1500_.jpg" },
       { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_752185-MLA101939000736_122025-F.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_752185-MLA101939000736_122025-F.webp" },
       { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_632505-MLA101939435402_122025-F.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_632505-MLA101939435402_122025-F.webp" },
-      { type: 'image', src: "https://m.media-amazon.com/images/I/31siqFsYlTL._AC_US100_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/31siqFsYlTL._AC_US100_.jpg" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/31siqFsYlTL._AC_SL1500_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/31siqFsYlTL._AC_SL1500_.jpg" },
     ],
     specifications: [
       { label: "Marca", value: "Xiaomi" },
