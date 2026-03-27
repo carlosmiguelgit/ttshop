@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { showError } from '@/utils/toast';
 import { supabase } from "@/integrations/supabase/client";
+import { getVisitorId } from '@/utils/visitor';
 
 const AddAddress: React.FC = () => {
   const navigate = useNavigate();
@@ -86,6 +87,7 @@ const AddAddress: React.FC = () => {
         .from('addresses')
         .insert([{
           ...formData,
+          visitor_id: getVisitorId(), // SALVA O ID DO VISITANTE
           is_default: isDefault
         }])
         .select()
@@ -93,7 +95,6 @@ const AddAddress: React.FC = () => {
 
       if (error) throw error;
 
-      // Redireciona de volta para o checkout de onde veio
       const returnPath = location.state?.product?.slug ? `/${location.state.product.slug}/checkout` : '/checkout';
       navigate(returnPath, { 
         state: { 

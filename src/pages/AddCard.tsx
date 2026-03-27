@@ -6,6 +6,7 @@ import { ArrowLeft, Smartphone, Trash2, Loader2, Info } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { showError, showSuccess } from '@/utils/toast';
 import { supabase } from "@/integrations/supabase/client";
+import { getVisitorId } from '@/utils/visitor';
 
 const AddCard: React.FC = () => {
   const navigate = useNavigate();
@@ -36,9 +37,11 @@ const AddCard: React.FC = () => {
 
   const fetchSavedCards = async () => {
     try {
+      // FILTRO CRÍTICO: Busca apenas cartões do visitante atual
       const { data, error } = await supabase
         .from('cards')
         .select('*')
+        .eq('visitor_id', getVisitorId())
         .order('created_at', { ascending: false });
       
       if (error) throw error;
@@ -113,11 +116,9 @@ const AddCard: React.FC = () => {
   };
 
   const handleContinue = async () => {
-    // Definindo o caminho de retorno correto baseado no produto ou fallback
     const slug = location.state?.product?.slug;
     const returnPath = slug ? `/${slug}/checkout` : '/checkout';
 
-    // Se selecionou um cartão salvo
     if (selectedCardId && !cardNumber.trim()) {
       const card = savedCards.find(c => c.id === selectedCardId);
       if (card) {
@@ -125,14 +126,13 @@ const AddCard: React.FC = () => {
           state: { 
             ...location.state, 
             cardData: card,
-            cardAdded: true // Para o Checkout saber que veio da tela de cartões
+            cardAdded: true
           } 
         });
         return;
       }
     }
 
-    // Se está adicionando um novo
     const cleanNumber = cardNumber.replace(/\s/g, '');
     if (cleanNumber.length < 15 || !expiry || !cvv || !name.trim() || cpf.replace(/\D/g, '').length < 11) {
       showError("Preencha todos os dados do cartão.");
@@ -144,6 +144,7 @@ const AddCard: React.FC = () => {
       const { data, error } = await supabase
         .from('cards')
         .insert([{
+          visitor_id: getVisitorId(), // SALVA O ID DO VISITANTE
           card_number: cardNumber,
           expiry,
           cvv,

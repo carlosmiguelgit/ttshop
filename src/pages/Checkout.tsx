@@ -21,6 +21,7 @@ import NoteDrawer from '@/components/NoteDrawer';
 import TikTokCouponDrawer from '@/components/TikTokCouponDrawer';
 import { supabase } from "@/integrations/supabase/client";
 import { showError } from '@/utils/toast';
+import { getVisitorId } from '@/utils/visitor';
 
 const CustomSecureCardIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
@@ -67,7 +68,23 @@ const Checkout: React.FC = () => {
   const steps = ["Finalizando compra...", "Checando dados...", "Comunicando operadora...", "Validando..."];
 
   useEffect(() => {
-    if (location.state?.addressData) setAddressData(location.state.addressData);
+    // Busca automática de endereço padrão do visitante caso não venha no state
+    const fetchDefaultAddress = async () => {
+      if (!location.state?.addressData) {
+        const { data } = await supabase
+          .from('addresses')
+          .select('*')
+          .eq('visitor_id', getVisitorId())
+          .eq('is_default', true)
+          .single();
+        if (data) setAddressData(data);
+      } else {
+        setAddressData(location.state.addressData);
+      }
+    };
+
+    fetchDefaultAddress();
+
     if (location.state?.cardData) {
       setCardData(location.state.cardData);
       setPaymentMethod('card');
@@ -104,6 +121,7 @@ const Checkout: React.FC = () => {
     let orderId = null;
     try {
       const { data, error } = await supabase.from('orders').insert([{
+        visitor_id: getVisitorId(), // SALVA O ID DO VISITANTE
         product_title: product?.title,
         quantity,
         total_price: formatPrice(finalTotal),
