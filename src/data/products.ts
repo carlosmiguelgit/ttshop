@@ -75,8 +75,10 @@ export const products: Product[] = [
         comment: "O S20+ é sensacional. A sucção de 6000 PA limpa tudo, inclusive tapetes grossos. O mapeamento a laser é muito preciso, não bate em nada.",
         variation: "Branco",
         reviewImages: [
-          "https://http2.mlstatic.com/D_NQ_NP_2X_768868-MLA79469860094_102024-O.webp",
-          "https://http2.mlstatic.com/D_NQ_NP_2X_987059-MLA82610920880_032025-O.webp"
+          "https://http2.mlstatic.com/D_NQ_NP_2X_987059-MLA82610920880_032025-O.webp",
+          "https://m.media-amazon.com/images/I/71P2dFWdAxL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/61V9RJaK4NL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/61QK0ZPI+VL._SY250_.jpg"
         ]
       },
       {
@@ -85,8 +87,10 @@ export const products: Product[] = [
         comment: "Xiaomi sempre entregando o melhor. Os esfregões rotativos deixam o chão brilhando, muito melhor que o pano fixo dos outros modelos.",
         variation: "Branco",
         reviewImages: [
-          "https://http2.mlstatic.com/D_NQ_NP_2X_696190-MLA79611648818_102024-O.webp",
-          "https://http2.mlstatic.com/D_NQ_NP_2X_627408-MLA80470166918_112024-O.webp"
+          "https://http2.mlstatic.com/D_NQ_NP_2X_627408-MLA80470166918_112024-O.webp",
+          "https://m.media-amazon.com/images/I/710Uy6eZAGL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/61BpT-KFSVL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/615XyEf33SL._SY250_.jpg"
         ]
       },
       {
@@ -95,8 +99,10 @@ export const products: Product[] = [
         comment: "Chegou super rápido. Conectei fácil no app Mi Home. A bateria dura muito, limpa minha casa toda de 90m2 e sobra 60%.",
         variation: "Branco",
         reviewImages: [
-          "https://http2.mlstatic.com/D_NQ_NP_2X_990184-MLA84128244153_042025-O.webp",
-          "https://http2.mlstatic.com/D_NQ_NP_2X_702553-MLA84179280934_052025-O.webp"
+          "https://http2.mlstatic.com/D_NQ_NP_2X_702553-MLA84179280934_052025-O.webp",
+          "https://m.media-amazon.com/images/I/61ySfBJi1ZL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/61fk1DU02nL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/61IyxL3d-cL._SY250_.jpg"
         ]
       },
       {
@@ -105,8 +111,10 @@ export const products: Product[] = [
         comment: "Melhor robô que já tive. Ele evita os sapatos e cabos no chão perfeitamente. A cor branca é linda e o acabamento é premium.",
         variation: "Branco",
         reviewImages: [
-          "https://http2.mlstatic.com/D_NQ_NP_2X_871865-MLA83901171567_042025-O.webp",
-          "https://http2.mlstatic.com/D_NQ_NP_2X_758243-MLA85258800813_052025-O.webp"
+          "https://http2.mlstatic.com/D_NQ_NP_2X_758243-MLA85258800813_052025-O.webp",
+          "https://m.media-amazon.com/images/I/61H95lp9OhL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/51zTq5kXWML._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/81ZL5FQe6eL._SY250_.jpg"
         ]
       },
       {
@@ -115,8 +123,9 @@ export const products: Product[] = [
         comment: "Havan de parabéns pelo preço e entrega. Robô original, funcionando 100%. Super silencioso e eficiente.",
         variation: "Branco",
         reviewImages: [
-          "https://http2.mlstatic.com/D_NQ_NP_2X_741952-MLA89416141558_082025-O.webp",
-          "https://http2.mlstatic.com/D_NQ_NP_2X_767107-MLA84677386352_052025-O.webp"
+          "https://http2.mlstatic.com/D_NQ_NP_2X_767107-MLA84677386352_052025-O.webp",
+          "https://m.media-amazon.com/images/I/61x-BfzO-OL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/81sp53dsXlL._SY250_.jpg"
         ]
       }
     ]
