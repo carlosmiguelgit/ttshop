@@ -20,9 +20,10 @@ const StoreSection: React.FC = () => {
 
   return (
     <div className="bg-[#F8F8F8] space-y-2.5">
+      {/* Módulo de Avaliações da Loja */}
       <div className="bg-white p-4">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-[16px] font-bold text-gray-900">Avaliações da loja (46M)</h3>
+          <h3 className="text-[15px] font-bold text-gray-900">Avaliações da loja (46M)</h3>
           <ChevronRight size={18} className="text-gray-300" />
         </div>
         <div className="flex space-x-2 overflow-x-auto no-scrollbar">
@@ -38,22 +39,40 @@ const StoreSection: React.FC = () => {
         </div>
       </div>
 
+      {/* Módulo do Perfil da Loja */}
       <div className="bg-white">
-        <div className="p-4">
+        <div className="p-4 pb-0">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center space-x-3">
-              <div className="w-[60px] h-[60px] rounded-full overflow-hidden border border-gray-100 flex items-center justify-center bg-white">
+              <div className="w-[60px] h-[60px] rounded-full overflow-hidden border border-gray-100 flex items-center justify-center bg-white shrink-0">
                 <img src="https://logodownload.org/wp-content/uploads/2015/05/havan-logo-0.png" alt="Havan" className="w-10 h-10 object-contain" />
               </div>
               <div>
-                <h4 className="text-[17px] font-bold text-gray-900">Havan</h4>
+                <h4 className="text-[16px] font-bold text-gray-900 leading-tight">Havan</h4>
                 <p className="text-[13px] text-gray-400">122M vendido(s)</p>
               </div>
             </div>
-            <Button className="bg-[#F1F1F1] hover:bg-gray-200 text-gray-900 font-bold rounded-full h-9 px-6 text-[14px]">Visitar</Button>
+            <Button className="bg-[#F1F1F1] hover:bg-gray-200 text-gray-900 font-bold rounded-full h-9 px-6 text-[14px] border-none shadow-none">
+              Visitar
+            </Button>
           </div>
 
-          <div className="mb-6 rounded-xl overflow-hidden">
+          {/* Métricas de Desempenho 1:1 da foto */}
+          <div className="flex items-center space-x-4 mb-5 text-[12px]">
+            <div className="flex items-center">
+              <span className="font-bold text-gray-900 mr-1">96%</span>
+              <span className="text-gray-400 font-medium">responde em 24 horas</span>
+            </div>
+            <div className="flex items-center">
+              <span className="font-bold text-gray-900 mr-1">95%</span>
+              <span className="text-gray-400 font-medium">envios pontuais</span>
+            </div>
+          </div>
+
+          {/* Separador Horizontal */}
+          <div className="h-[1px] bg-gray-50 w-full mb-5"></div>
+
+          <div className="mb-6 rounded-xl overflow-hidden shadow-sm border border-gray-50">
             <img src="/havan.jpg" alt="Banner Havan" className="w-full h-auto object-cover" />
           </div>
 
@@ -62,7 +81,7 @@ const StoreSection: React.FC = () => {
             <ChevronRight size={18} className="text-gray-300" />
           </div>
 
-          <div className="flex space-x-3 overflow-x-auto no-scrollbar pb-2">
+          <div className="flex space-x-3 overflow-x-auto no-scrollbar pb-6">
             <div className="min-w-[130px] bg-[#FFF5F1] rounded-xl p-4 flex flex-col items-center justify-center text-center border border-[#FFE4D6] h-[170px]">
               <Zap size={24} className="text-[#FF6633] fill-[#FF6633] mb-2" />
               <p className="text-[16px] font-bold text-[#FF6633] leading-tight">Até<br/>89% de<br/>desconto</p>
