@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Copy, Check, Loader2, ArrowLeft, QrCode, ShieldCheck, ChevronDown, ChevronUp } from 'lucide-center';
+import { Copy, Check, Loader2, ArrowLeft, QrCode, ShieldCheck, ChevronDown, ChevronUp } from 'lucide-react';
 import { QRCodeSVG } from "qrcode.react";
 import { Product } from '@/data/products';
 import { trackTikTokEvent } from '@/utils/tiktok-pixel';
