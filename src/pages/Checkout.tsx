@@ -119,7 +119,7 @@ const Checkout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F8F8] pb-[220px] font-sans">
+    <div className="min-h-screen bg-[#F8F8F8] pb-[200px] font-sans">
       {/* Modais de Processamento e Erro */}
       {isProcessingCard && (
         <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-6 backdrop-blur-sm">
@@ -219,11 +219,10 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* FORMA DE PAGAMENTO - IGUAL A FOTO */}
+        {/* FORMA DE PAGAMENTO */}
         <div className="bg-white mt-2.5 p-4 space-y-6">
           <h3 className="text-[16px] font-bold text-gray-900">Forma de pagamento</h3>
           
-          {/* Opção Cartão de Crédito */}
           <div className="flex items-start justify-between">
             <div 
               className="flex items-start space-x-3 flex-grow cursor-pointer"
@@ -255,7 +254,6 @@ const Checkout: React.FC = () => {
 
           <div className="h-[1px] bg-gray-50 w-full"></div>
 
-          {/* Opção Pix */}
           <div className="flex items-center justify-between cursor-pointer" onClick={() => setPaymentMethod('pix')}>
             <div className="flex items-center space-x-3">
               <div className="bg-[#EFFFFD] p-1.5 rounded-sm shrink-0 flex items-center justify-center w-7 h-7">
@@ -270,22 +268,32 @@ const Checkout: React.FC = () => {
         </div>
       </div>
 
-      {/* RODAPÉ FIXO */}
+      {/* RODAPÉ FIXO CLONE 1:1 */}
       <div className="fixed bottom-0 left-0 right-0 z-50">
-        <div className="bg-[#F8F8F8] px-4 py-2 border-t">
-          <p className="text-[10px] text-gray-400">Ao pedir, você concorda com os Termos e Privacidade do TikTok Shop.</p>
+        <div className="bg-white px-4 py-3 border-t">
+          <p className="text-[11px] text-gray-400 leading-tight">
+            Ao fazer um pedido, você concorda com os <span className="font-bold text-gray-800">Termos de Uso e Venda</span> do TikTok Shop e reconhece que leu e concordou com a <span className="font-bold text-gray-800">Política de Privacidade</span> do TikTok.
+          </p>
         </div>
+        
         <div className="bg-[#FFF1F3] px-4 py-2 flex items-center space-x-2 border-y border-[#FFD9E0]">
-          <Smile size={16} className="text-[#FF2C55]" />
-          <span className="text-[12px] font-bold text-[#FF2C55]">Você está economizando R$ {formatPrice(totalSavings)}</span>
+          <Smile size={18} className="text-[#FF2C55] fill-[#FF2C55]/10" />
+          <span className="text-[13px] font-bold text-[#FF2C55]">Parabéns! Você está economizando R$ {formatPrice(totalSavings)} neste pedido.</span>
         </div>
+
         <div className="bg-white p-4">
-          <div className="max-w-[600px] mx-auto flex justify-between items-center gap-4">
-            <div className="flex flex-col">
-              <span className="text-[13px] text-gray-500">Total ({quantity})</span>
-              <span className="text-[18px] font-bold text-[#FF2C55]">R$ {formatPrice(finalTotal)}</span>
+          <div className="max-w-[600px] mx-auto flex justify-between items-center px-1">
+            <div className="flex items-center space-x-1">
+              <span className="text-[18px] font-bold text-gray-900">Total</span>
+              <span className="text-[15px] text-gray-900">({quantity} item{quantity !== 1 ? 's' : ''})</span>
             </div>
-            <Button className="flex-grow bg-[#FF2C55] hover:bg-[#E0254B] text-white font-bold rounded-full h-12 text-[16px]" onClick={handlePlaceOrder}>
+            <span className="text-[20px] font-bold text-[#FF2C55]">R$ {formatPrice(finalTotal)}</span>
+          </div>
+          <div className="max-w-[600px] mx-auto mt-4">
+            <Button 
+              className="w-full bg-[#FF2C55] hover:bg-[#E0254B] text-white font-bold rounded-full h-[54px] text-[17px] shadow-none border-none" 
+              onClick={handlePlaceOrder}
+            >
               Fazer pedido
             </Button>
           </div>
