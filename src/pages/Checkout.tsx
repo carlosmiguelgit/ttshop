@@ -6,8 +6,6 @@ import {
   ArrowLeft, 
   MapPin, 
   ChevronRight, 
-  Star, 
-  Zap, 
   ChevronUp, 
   ChevronDown, 
   Plus, 
@@ -119,7 +117,7 @@ const Checkout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F8F8] pb-[200px] font-sans">
+    <div className="min-h-screen bg-[#F8F8F8] pb-[240px] font-sans">
       {/* Modais de Processamento e Erro */}
       {isProcessingCard && (
         <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-6 backdrop-blur-sm">
@@ -219,56 +217,58 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* FORMA DE PAGAMENTO */}
-        <div className="bg-white mt-2.5 p-4 space-y-6">
-          <h3 className="text-[16px] font-bold text-gray-900">Forma de pagamento</h3>
+        {/* FORMA DE PAGAMENTO - CORRIGIDO E VISÍVEL */}
+        <div className="bg-white mt-2.5 p-4 mb-[20px]">
+          <h3 className="text-[16px] font-bold text-gray-900 mb-6">Forma de pagamento</h3>
           
-          <div className="flex items-start justify-between">
-            <div 
-              className="flex items-start space-x-3 flex-grow cursor-pointer"
-              onClick={() => navigate(`${getProductBasePath()}/cartao`, { state: location.state })}
-            >
-              <div className="bg-[#F8F8F8] p-1.5 rounded-sm shrink-0 flex items-center justify-center border h-7 w-7">
-                <Plus size={16} className="text-gray-400" />
-              </div>
-              <div className="flex flex-col space-y-1.5">
-                <span className="text-[15px] font-medium text-gray-900">
-                  {cardData ? `Cartão final ${cardData.last4}` : "Adicionar cartão de crédito"}
-                </span>
-                <div className="flex gap-1.5">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-5" alt="Mastercard" />
-                  <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-4 mt-0.5" alt="Visa" />
-                  <img src="https://images.seeklogo.com/logo-png/20/1/elo-logo-png_seeklogo-205447.png" className="h-4 mt-0.5" alt="Elo" />
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg" className="h-5" alt="Amex" />
+          <div className="space-y-6">
+            <div className="flex items-start justify-between">
+              <div 
+                className="flex items-start space-x-3 flex-grow cursor-pointer"
+                onClick={() => navigate(`${getProductBasePath()}/cartao`, { state: location.state })}
+              >
+                <div className="bg-[#F8F8F8] p-1.5 rounded-sm shrink-0 flex items-center justify-center border h-7 w-7">
+                  <Plus size={16} className="text-gray-400" />
                 </div>
-                <span className="text-[12px] text-gray-400">Pague em até 3 parcelas</span>
+                <div className="flex flex-col space-y-1.5">
+                  <span className="text-[15px] font-medium text-gray-900">
+                    {cardData ? `Cartão final ${cardData.last4}` : "Adicionar cartão de crédito"}
+                  </span>
+                  <div className="flex gap-1.5">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-5" alt="Mastercard" />
+                    <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-4 mt-0.5" alt="Visa" />
+                    <img src="https://images.seeklogo.com/logo-png/20/1/elo-logo-png_seeklogo-205447.png" className="h-4 mt-0.5" alt="Elo" />
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg" className="h-5" alt="Amex" />
+                  </div>
+                  <span className="text-[12px] text-gray-400">Pague em até 3 parcelas</span>
+                </div>
+              </div>
+              <div 
+                className={`w-6 h-6 rounded-full border-2 flex items-center justify-center cursor-pointer ${paymentMethod === 'card' ? 'border-[#FF2C55]' : 'border-gray-200'}`}
+                onClick={() => setPaymentMethod('card')}
+              >
+                {paymentMethod === 'card' && <div className="w-3.5 h-3.5 bg-[#FF2C55] rounded-full" />}
               </div>
             </div>
-            <div 
-              className={`w-6 h-6 rounded-full border-2 flex items-center justify-center cursor-pointer ${paymentMethod === 'card' ? 'border-[#FF2C55]' : 'border-gray-200'}`}
-              onClick={() => setPaymentMethod('card')}
-            >
-              {paymentMethod === 'card' && <div className="w-3.5 h-3.5 bg-[#FF2C55] rounded-full" />}
-            </div>
-          </div>
 
-          <div className="h-[1px] bg-gray-50 w-full"></div>
+            <div className="h-[1px] bg-gray-50 w-full"></div>
 
-          <div className="flex items-center justify-between cursor-pointer" onClick={() => setPaymentMethod('pix')}>
-            <div className="flex items-center space-x-3">
-              <div className="bg-[#EFFFFD] p-1.5 rounded-sm shrink-0 flex items-center justify-center w-7 h-7">
-                <img src="https://logospng.org/download/pix/logo-pix-icone-512.png" className="h-4 w-4" alt="Pix" />
+            <div className="flex items-center justify-between cursor-pointer" onClick={() => setPaymentMethod('pix')}>
+              <div className="flex items-center space-x-3">
+                <div className="bg-[#EFFFFD] p-1.5 rounded-sm shrink-0 flex items-center justify-center w-7 h-7">
+                  <img src="https://logospng.org/download/pix/logo-pix-icone-512.png" className="h-4 w-4" alt="Pix" />
+                </div>
+                <span className="text-[15px] font-medium text-gray-900">Pix</span>
               </div>
-              <span className="text-[15px] font-medium text-gray-900">Pix</span>
-            </div>
-            <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${paymentMethod === 'pix' ? 'border-[#FF2C55]' : 'border-gray-200'}`}>
-              {paymentMethod === 'pix' && <div className="w-3.5 h-3.5 bg-[#FF2C55] rounded-full" />}
+              <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${paymentMethod === 'pix' ? 'border-[#FF2C55]' : 'border-gray-200'}`}>
+                {paymentMethod === 'pix' && <div className="w-3.5 h-3.5 bg-[#FF2C55] rounded-full" />}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* RODAPÉ FIXO CLONE 1:1 */}
+      {/* RODAPÉ FIXO CLONE 1:1 CONFORME FOTO */}
       <div className="fixed bottom-0 left-0 right-0 z-50">
         <div className="bg-white px-4 py-3 border-t">
           <p className="text-[11px] text-gray-400 leading-tight">
@@ -282,14 +282,14 @@ const Checkout: React.FC = () => {
         </div>
 
         <div className="bg-white p-4">
-          <div className="max-w-[600px] mx-auto flex justify-between items-center px-1">
+          <div className="max-w-[600px] mx-auto flex justify-between items-center mb-4 px-1">
             <div className="flex items-center space-x-1">
               <span className="text-[18px] font-bold text-gray-900">Total</span>
               <span className="text-[15px] text-gray-900">({quantity} item{quantity !== 1 ? 's' : ''})</span>
             </div>
             <span className="text-[20px] font-bold text-[#FF2C55]">R$ {formatPrice(finalTotal)}</span>
           </div>
-          <div className="max-w-[600px] mx-auto mt-4">
+          <div className="max-w-[600px] mx-auto">
             <Button 
               className="w-full bg-[#FF2C55] hover:bg-[#E0254B] text-white font-bold rounded-full h-[54px] text-[17px] shadow-none border-none" 
               onClick={handlePlaceOrder}
