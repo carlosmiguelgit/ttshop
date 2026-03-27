@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from "react";
+"use client";
+
+import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "sonner";
 
@@ -14,30 +16,6 @@ import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
 const App = () => {
-  const [isMobile, setIsMobile] = useState<boolean | null>(null);
-
-  useEffect(() => {
-    const checkDevice = () => {
-      const userAgent = navigator.userAgent || navigator.vendor || (window as any).opera;
-      const mobileRegex = /android|iphone|kindle|ipad|playbook|silk/i;
-      const isMobileDevice = mobileRegex.test(userAgent) || window.innerWidth < 768;
-      
-      if (!isMobileDevice) {
-        // Redireciona para a página "white" se não for mobile
-        window.location.href = '/checkout.html';
-      } else {
-        setIsMobile(true);
-      }
-    };
-
-    checkDevice();
-  }, []);
-
-  // Enquanto verifica o dispositivo, não renderiza nada para evitar "flash" de conteúdo
-  if (isMobile === null) {
-    return <div className="min-h-screen bg-white" />;
-  }
-
   return (
     <Router>
       <Toaster position="top-center" richColors />
