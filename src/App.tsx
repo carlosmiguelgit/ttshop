@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "sonner";
 
@@ -17,19 +17,11 @@ import UnlockGate from "./components/UnlockGate";
 const App = () => {
   const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
 
-  // Se for admin ou localhost, pula o desbloqueio para facilitar o desenvolvimento
-  useEffect(() => {
-    const isDev = window.location.hostname === 'localhost' || 
-                  window.location.search.includes('admin=true');
-    if (isDev) {
-      setIsUnlocked(true);
-    }
-  }, []);
-
   return (
     <Router>
       <Toaster position="top-center" richColors />
       
+      {/* A roleta agora aparecerá sempre que isUnlocked for false */}
       {!isUnlocked && <UnlockGate onUnlock={() => setIsUnlocked(true)} />}
 
       {isUnlocked && (
