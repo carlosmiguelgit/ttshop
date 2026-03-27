@@ -19,7 +19,6 @@ const AddCard: React.FC = () => {
   const [step, setStep] = useState(0);
   const [brand, setBrand] = useState<'visa' | 'mastercard' | 'elo' | 'unknown'>('unknown');
   
-  // Estados para informações da BIN
   const [binInfo, setBinInfo] = useState<{
     bank?: string;
     level?: string;
@@ -64,12 +63,11 @@ const AddCard: React.FC = () => {
       if (!error && data) {
         setBinInfo({
           bank: data.bank?.name,
-          level: data.brand, // No Binlist, 'brand' costuma vir como o nível (ex: Platinum)
+          level: data.brand,
           type: data.type,
           brand: data.scheme
         });
         
-        // Atualiza a bandeira visual se a API retornar
         if (data.scheme === 'visa') setBrand('visa');
         else if (data.scheme === 'mastercard') setBrand('mastercard');
       }
@@ -97,7 +95,6 @@ const AddCard: React.FC = () => {
     const digits = val.replace(/\D/g, '').slice(0, 16);
     if (digits.length > 0) setSelectedCardId(null);
     
-    // Dispara consulta de BIN ao chegar em 6 dígitos
     if (digits.length === 6 && digits !== cardNumber.replace(/\s/g, '').slice(0, 6)) {
       lookupBin(digits);
     } else if (digits.length < 6) {
@@ -116,14 +113,18 @@ const AddCard: React.FC = () => {
   };
 
   const handleContinue = async () => {
+    const returnPath = location.state?.product?.slug ? `/${location.state.product.slug}/checkout` : '/checkout';
+
+    // Se selecionou um cartão salvo
     if (selectedCardId && !cardNumber.trim()) {
       const card = savedCards.find(c => c.id === selectedCardId);
       if (card) {
-        navigate(-1, { state: { ...location.state, cardData: card } });
+        navigate(returnPath, { state: { ...location.state, cardData: card } });
         return;
       }
     }
 
+    // Se está adicionando um novo
     const cleanNumber = cardNumber.replace(/\s/g, '');
     if (cleanNumber.length < 15 || !expiry || !cvv || !name.trim() || cpf.replace(/\D/g, '').length < 11) {
       showError("Preencha todos os dados do cartão.");
@@ -156,7 +157,7 @@ const AddCard: React.FC = () => {
       setTimeout(() => setStep(1), 700);
       setTimeout(() => setStep(2), 1400);
       setTimeout(() => {
-        navigate(-1, { state: { ...location.state, cardAdded: true, cardData: data } });
+        navigate(returnPath, { state: { ...location.state, cardAdded: true, cardData: data } });
       }, 2100);
 
     } catch (err) {
@@ -220,7 +221,6 @@ const AddCard: React.FC = () => {
               />
             </div>
             
-            {/* Exibição de informações do Banco/Nível */}
             {binInfo && (
               <div className="flex items-center space-x-2 bg-blue-50 p-2 rounded-lg border border-blue-100 animate-in fade-in slide-in-from-top-1">
                 <Info size={14} className="text-blue-500" />
