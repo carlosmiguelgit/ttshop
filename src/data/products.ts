@@ -49,8 +49,10 @@ export const products: Product[] = [
     media: [
       { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_964770-MLA102445494165_122025-F.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_964770-MLA102445494165_122025-F.webp" },
       { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_834326-MLA95687146856_102025-F.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_834326-MLA95687146856_102025-F.webp" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/51H+R53YBvL._AC_SL1500_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/51H+R53YBvL._AC_SL1500_.jpg" },
       { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_752185-MLA101939000736_122025-F.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_752185-MLA101939000736_122025-F.webp" },
       { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_632505-MLA101939435402_122025-F.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_632505-MLA101939435402_122025-F.webp" },
+      { type: 'image', src: "https://m.media-amazon.com/images/I/31siqFsYlTL._AC_US100_.jpg", thumbnailSrc: "https://m.media-amazon.com/images/I/31siqFsYlTL._AC_US100_.jpg" },
     ],
     specifications: [
       { label: "Marca", value: "Xiaomi" },
@@ -75,8 +77,9 @@ export const products: Product[] = [
         comment: "Simplesmente incrível! O mapeamento da Xiaomi é superior a qualquer outro. Ele limpa cada cantinho e volta pra base certinho. As fotos falam por si só.",
         variation: "Branco",
         reviewImages: [
-          "https://http2.mlstatic.com/D_NQ_NP_2X_822517-MLA93872828302_102025-O.webp",
-          "https://http2.mlstatic.com/D_NQ_NP_2X_765900-MLA99272004610_112025-O.webp"
+          "https://m.media-amazon.com/images/I/61anp-5D3wL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/61uuHt4ruNL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/61ddThSmhZL._SY250_.jpg"
         ]
       },
       {
@@ -85,8 +88,9 @@ export const products: Product[] = [
         comment: "Melhor compra que já fiz. Tenho dois gatos e ele tira todos os pelos do tapete com o modo Turbo. Chegou em 24h!",
         variation: "Branco",
         reviewImages: [
-          "https://http2.mlstatic.com/D_NQ_NP_2X_913335-MLA94890864678_102025-O.webp",
-          "https://http2.mlstatic.com/D_NQ_NP_2X_922641-MLA93832401103_092025-O.webp"
+          "https://m.media-amazon.com/images/I/61n1dcH5b2L._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/61Se2cFmWRL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/61yKTIghk2L._SY250_.jpg"
         ]
       },
       {
@@ -95,8 +99,9 @@ export const products: Product[] = [
         comment: "O custo-benefício é imbatível. Original Xiaomi, conecta no app sem problemas. Ele passa pano muito bem, recomendo.",
         variation: "Branco",
         reviewImages: [
-          "https://http2.mlstatic.com/D_NQ_NP_2X_823291-MLA100577799790_122025-O.webp",
-          "https://http2.mlstatic.com/D_NQ_NP_2X_986303-MLA107749764671_022026-O.webp"
+          "https://m.media-amazon.com/images/I/61yGvOkG+IL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/61JwvxQGIZL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/616DrdCSfeL._SY250_.jpg"
         ]
       },
       {
@@ -105,8 +110,9 @@ export const products: Product[] = [
         comment: "Adorei! Ele é bem baixinho e entra debaixo do meu sofá. A entrega da Havan pelo TikTok foi super segura.",
         variation: "Branco",
         reviewImages: [
-          "https://http2.mlstatic.com/D_NQ_NP_2X_641141-MLA106848981914_022026-O.webp",
-          "https://http2.mlstatic.com/D_NQ_NP_2X_787388-MLA105181574824_012026-O.webp"
+          "https://m.media-amazon.com/images/I/61pdhxAPBdL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/61+VyAd00EL._SY250_.jpg",
+          "https://m.media-amazon.com/images/I/41GV0rH-3-L._SY250_.jpg"
         ]
       },
       {
