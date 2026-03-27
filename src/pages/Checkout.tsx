@@ -15,7 +15,8 @@ import {
   Ticket, 
   CreditCard, 
   Loader2, 
-  AlertCircle
+  AlertCircle,
+  Smile
 } from 'lucide-react';
 import { products, Product } from '@/data/products';
 import { Button } from '@/components/ui/button';
@@ -36,7 +37,7 @@ const Checkout: React.FC = () => {
   const [couponAmount, setCouponAmount] = useState(5);
   const [cardData, setCardData] = useState<any>(null);
   const [addressData, setAddressData] = useState<any>(null);
-  const [paymentMethod, setPaymentMethod] = useState<'card' | 'pix'>('pix');
+  const [paymentMethod, setPaymentMethodsetPaymentMethod('pix');
   const [isSubtotalOpen, setIsSubtotalOpen] = useState(true);
   
   const [isProcessingCard, setIsProcessingCard] = useState(false);
@@ -76,6 +77,7 @@ const Checkout: React.FC = () => {
   const subtotal = unitPrice * quantity;
   const originalSubtotal = originalPrice * quantity;
   const productDiscount = originalSubtotal - subtotal;
+  const totalSavings = productDiscount + couponAmount;
   const finalTotal = subtotal - couponAmount;
   
   const formatPrice = (val: number) => val.toFixed(2).replace('.', ',');
@@ -139,7 +141,7 @@ const Checkout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F8F8] pb-[130px] font-sans">
+    <div className="min-h-screen bg-[#F8F8F8] pb-[160px] font-sans">
       {isProcessingCard && (
         <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-6 backdrop-blur-sm">
           <div className="bg-white rounded-2xl p-8 flex flex-col items-center space-y-4 w-full max-w-[300px]">
@@ -296,70 +298,82 @@ const Checkout: React.FC = () => {
         <div className="bg-white mt-2.5 p-4 space-y-6">
           <h3 className="text-[16px] font-bold text-gray-900">Forma de pagamento</h3>
           
-          {/* Opção Cartão */}
           <div className="flex items-start justify-between">
             <div 
               className="flex items-start space-x-3 flex-grow cursor-pointer"
               onClick={() => navigate(`${getProductBasePath()}/cartao`, { state: location.state })}
             >
-              <div className="bg-[#EFFFFD] p-1.5 rounded-sm shrink-0">
-                <CreditCard size={18} className="text-[#00BFA5]" />
+              <div className="bg-[#F8F8F8] p-1.5 rounded-sm shrink-0 flex items-center justify-center border h-6 w-6">
+                <Plus size={14} className="text-gray-400" />
               </div>
               <div className="flex flex-col">
                 <span className="text-[15px] font-medium text-gray-900">
-                  {cardData ? `Cartão final ${cardData.last4}` : "Adicionar cartão"}
+                  {cardData ? `Cartão final ${cardData.last4}` : "Adicionar cartão de crédito"}
                 </span>
-                {cardData && (
-                  <div className="mt-2 space-y-3">
-                    <div className="flex gap-2">
-                      <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-4" alt="Mastercard" />
-                      <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-4" alt="Visa" />
-                    </div>
-                    <div className="bg-[#FFF1F3] text-[#FF2C55] text-[11px] font-bold px-2.5 py-1 rounded-sm border border-[#FFD9E0] flex items-center w-fit">
-                      Sem juros em até 3 parcelas <ChevronRight size={12} className="ml-1" />
-                    </div>
+                <div className="mt-2 space-y-2">
+                  <div className="flex gap-1.5">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-5" alt="Mastercard" />
+                    <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-5" alt="Visa" />
+                    <img src="https://images.seeklogo.com/logo-png/20/1/elo-logo-png_seeklogo-205447.png" className="h-5" alt="Elo" />
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/30/American_Express_logo.svg" className="h-5" alt="Amex" />
                   </div>
-                )}
+                  <span className="text-[12px] text-gray-400">Pague em até 3 parcelas</span>
+                </div>
               </div>
             </div>
-            
-            <div className="flex items-center space-x-3">
-              <div 
-                className={`w-5 h-5 rounded-full border-2 flex items-center justify-center cursor-pointer ${paymentMethod === 'card' ? 'border-[#FF2C55]' : 'border-gray-200'}`}
-                onClick={() => setPaymentMethod('card')}
-              >
-                {paymentMethod === 'card' && <div className="w-2.5 h-2.5 bg-[#FF2C55] rounded-full" />}
-              </div>
-              <ChevronRight size={18} className="text-gray-200" />
+            <div 
+              className={`w-6 h-6 rounded-full border-2 flex items-center justify-center cursor-pointer ${paymentMethod === 'card' ? 'border-[#FF2C55]' : 'border-gray-200'}`}
+              onClick={() => setPaymentMethod('card')}
+            >
+              {paymentMethod === 'card' && <div className="w-3 h-3 bg-[#FF2C55] rounded-full" />}
             </div>
           </div>
 
-          <div className="h-[1px] bg-gray-100 w-full"></div>
+          <div className="h-[1px] bg-gray-50 w-full"></div>
 
-          {/* Opção Pix */}
           <div className="flex items-center justify-between cursor-pointer" onClick={() => setPaymentMethod('pix')}>
             <div className="flex items-center space-x-3">
-              <div className="bg-[#EFFFFD] p-1.5 rounded-sm shrink-0">
+              <div className="bg-[#EFFFFD] p-1.5 rounded-sm shrink-0 flex items-center justify-center">
                 <img src="https://logospng.org/download/pix/logo-pix-icone-512.png" className="h-4 w-4" alt="Pix" />
               </div>
               <span className="text-[15px] font-medium text-gray-900">Pix</span>
             </div>
-            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === 'pix' ? 'border-[#FF2C55]' : 'border-gray-200'}`}>
-              {paymentMethod === 'pix' && <div className="w-2.5 h-2.5 bg-[#FF2C55] rounded-full" />}
+            <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${paymentMethod === 'pix' ? 'border-[#FF2C55]' : 'border-gray-200'}`}>
+              {paymentMethod === 'pix' && <div className="w-3 h-3 bg-[#FF2C55] rounded-full" />}
             </div>
           </div>
         </div>
       </div>
 
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4 z-50">
-        <div className="max-w-[600px] mx-auto">
-          <div className="flex justify-between items-center mb-3 px-1">
-            <span className="text-[18px] font-bold text-gray-900">Total</span>
-            <span className="text-[22px] font-bold text-[#FF2C55]">R$ {formatPrice(finalTotal)}</span>
+      <div className="fixed bottom-0 left-0 right-0 z-50">
+        <div className="bg-[#F8F8F8] px-4 py-3 border-t">
+          <p className="text-[11px] text-gray-400 leading-tight">
+            Ao fazer um pedido, você concorda com os <span className="font-bold text-gray-800">Termos de Uso e Venda</span> do TikTok Shop e reconhece que leu e concordou com a <span className="font-bold text-gray-800">Política de Privacidade</span> do TikTok.
+          </p>
+        </div>
+        
+        <div className="bg-[#FFF1F3] px-4 py-2 flex items-center space-x-2 border-y border-[#FFD9E0]">
+          <Smile size={18} className="text-[#FF2C55] fill-[#FF2C55]/10" />
+          <span className="text-[13px] font-bold text-[#FF2C55]">Parabéns! Você está economizando R$ {formatPrice(totalSavings)} neste pedido.</span>
+        </div>
+
+        <div className="bg-white p-4">
+          <div className="max-w-[600px] mx-auto">
+            <div className="flex justify-between items-center mb-4 px-1">
+              <div className="flex items-center space-x-1">
+                <span className="text-[18px] font-bold text-gray-900">Total</span>
+                <span className="text-[15px] text-gray-900">({quantity} item{quantity !== 1 ? 's' : ''})</span>
+              </div>
+              <span className="text-[20px] font-bold text-[#FF2C55]">R$ {formatPrice(finalTotal)}</span>
+            </div>
+            <Button 
+              className="w-full bg-[#FF2C55] hover:bg-[#E0254B] text-white font-bold rounded-xl h-[56px] flex flex-col items-center justify-center py-0" 
+              onClick={handlePlaceOrder}
+            >
+              <span className="text-[17px] leading-tight">Fazer pedido</span>
+              <span className="text-[11px] font-normal leading-tight opacity-90">Oferta acaba em breve</span>
+            </Button>
           </div>
-          <Button className="w-full bg-[#FF2C55] hover:bg-[#E0254B] text-white font-bold rounded-full h-[56px] text-[17px]" onClick={handlePlaceOrder}>
-            Fazer pedido
-          </Button>
         </div>
       </div>
 
