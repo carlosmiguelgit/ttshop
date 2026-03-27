@@ -13,7 +13,8 @@ import {
   Ticket, 
   Loader2, 
   AlertCircle,
-  Smile
+  Smile,
+  Zap
 } from 'lucide-react';
 import { products, Product } from '@/data/products';
 import { Button } from '@/components/ui/button';
@@ -163,7 +164,10 @@ const Checkout: React.FC = () => {
         {/* Produto */}
         <div className="bg-white mt-2 p-4">
           <div className="flex justify-between items-center mb-3">
-            <span className="text-[14px] font-bold uppercase">HAVAN</span>
+            <div className="flex items-center space-x-2">
+              <span className="text-[14px] font-bold uppercase">HAVAN</span>
+              <div className="bg-[#FF2C55] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm">Melhor escolha</div>
+            </div>
             <button className="text-[13px] text-gray-400 flex items-center" onClick={() => setIsNoteDrawerOpen(true)}>
               {orderNote ? "Nota salva" : "Adicionar nota"} <ChevronRight size={16} />
             </button>
@@ -173,9 +177,21 @@ const Checkout: React.FC = () => {
               <img src={product.media[0].src} className="w-full h-full object-contain" alt="" />
             </div>
             <div className="flex-grow">
-              <h4 className="text-[13px] font-bold line-clamp-2">{product.title}</h4>
-              <p className="text-[12px] text-gray-400">{selectedVar}</p>
-              <div className="flex justify-between items-end mt-1">
+              <h4 className="text-[13px] font-bold line-clamp-2 leading-tight">{product.title}</h4>
+              <p className="text-[12px] text-gray-400 mt-0.5">{selectedVar}</p>
+              
+              {/* Tags de Oferta e Devolução */}
+              <div className="flex flex-wrap gap-1.5 mt-1.5">
+                <div className="bg-[#FFF1F3] text-[#FF2C55] text-[10px] font-bold px-1.5 py-0.5 rounded-sm flex items-center">
+                  <Zap size={10} className="mr-0.5 fill-[#FF2C55]" />
+                  Oferta Relâmpago
+                </div>
+                <div className="bg-[#F1F1F1] text-gray-500 text-[10px] font-medium px-1.5 py-0.5 rounded-sm">
+                  Devolução gratuita em 30 dias
+                </div>
+              </div>
+
+              <div className="flex justify-between items-end mt-2">
                 <span className="text-[16px] font-bold text-[#FF2C55]">R$ {formatPrice(unitPrice)}</span>
                 <div className="flex items-center bg-[#F1F1F1] rounded h-7">
                   <button className="px-2" onClick={() => setQuantity(q => Math.max(1, q - 1))}><Minus size={14} /></button>
@@ -217,7 +233,7 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* FORMA DE PAGAMENTO - CORRIGIDO E VISÍVEL */}
+        {/* FORMA DE PAGAMENTO */}
         <div className="bg-white mt-2.5 p-4 mb-[20px]">
           <h3 className="text-[16px] font-bold text-gray-900 mb-6">Forma de pagamento</h3>
           
