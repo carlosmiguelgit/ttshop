@@ -14,9 +14,7 @@ import {
   Loader2, 
   AlertCircle,
   Smile,
-  Zap,
-  Star,
-  ShieldCheck
+  Star
 } from 'lucide-react';
 import { products, Product } from '@/data/products';
 import { Button } from '@/components/ui/button';
@@ -24,6 +22,21 @@ import NoteDrawer from '@/components/NoteDrawer';
 import TikTokCouponDrawer from '@/components/TikTokCouponDrawer';
 import { supabase } from "@/integrations/supabase/client";
 import { showError } from '@/utils/toast';
+
+// Ícone do Raio Customizado (Flat no topo como na foto)
+const CustomFlashIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className} xmlns="http://www.w3.org/2000/svg">
+    <path d="M7 2H17L14 11H20L10 22L12 13H5L7 2Z" />
+  </svg>
+);
+
+// Ícone da Moeda Dourada com Check (Réplica da foto)
+const CustomCheckCoinIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
+    <circle cx="12" cy="12" r="10" fill="#FFB800" />
+    <path d="M8 12.5L11 15.5L16 9.5" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
 
 const Checkout: React.FC = () => {
   const location = useLocation();
@@ -163,9 +176,17 @@ const Checkout: React.FC = () => {
           <ChevronRight size={20} className="text-gray-300" />
         </div>
 
-        {/* Produto - REPLICA 1:1 DA FOTO */}
+        {/* Produto - CLONE 1:1 DA FOTO */}
         <div className="bg-white mt-2 p-4">
-          {/* Top Line: Estrela + Melhor Escolha */}
+          {/* Cabeçalho do Bloco: HAVAN + Nota */}
+          <div className="flex justify-between items-center mb-3">
+            <span className="text-[13px] font-bold text-gray-900 uppercase">HAVAN</span>
+            <button className="text-[12px] text-gray-400 flex items-center font-medium" onClick={() => setIsNoteDrawerOpen(true)}>
+              {orderNote ? "Nota salva" : "Adicionar nota"} <ChevronRight size={14} className="ml-0.5" />
+            </button>
+          </div>
+
+          {/* Melhor Escolha */}
           <div className="flex items-start space-x-1.5 mb-4">
             <Star size={16} className="text-[#FFB800] fill-[#FFB800] mt-0.5 shrink-0" />
             <p className="text-[13px] font-bold text-[#A0783A] leading-tight">
@@ -174,35 +195,35 @@ const Checkout: React.FC = () => {
           </div>
 
           <div className="flex space-x-3">
-            {/* Imagem com Borda Arredondada Branca */}
+            {/* Imagem */}
             <div className="w-[110px] h-[110px] rounded-xl border border-gray-100 flex items-center justify-center p-1 bg-white shrink-0 overflow-hidden shadow-sm">
               <img src={product.media[0].src} className="w-full h-full object-contain" alt="Produto" />
             </div>
 
-            {/* Informações da Direita */}
-            <div className="flex-grow flex flex-col justify-start">
-              <h4 className="text-[15px] font-extrabold text-black leading-snug line-clamp-2">
-                {product.title}
-              </h4>
-              <p className="text-[13px] text-[#A6B0C3] mt-0.5">{selectedVar}</p>
+            {/* Informações */}
+            <div className="flex-grow flex flex-col justify-between">
+              <div>
+                <h4 className="text-[15px] font-extrabold text-black leading-snug line-clamp-2">
+                  {product.title}
+                </h4>
+                <p className="text-[13px] text-[#A6B0C3] mt-0.5">{selectedVar}</p>
 
-              <div className="mt-2 space-y-1.5">
-                {/* Tag Oferta Relâmpago */}
-                <div className="flex items-center bg-[#FFF1F3] rounded-sm px-2 py-0.5 w-fit">
-                  <Zap size={12} className="text-[#FF2C55] fill-[#FF2C55] mr-1" />
-                  <span className="text-[12px] font-bold text-[#FF2C55]">Oferta Relâmpago</span>
-                </div>
-
-                {/* Tag Devolução Gratuita */}
-                <div className="flex items-center bg-[#F8F8F8] rounded-sm px-2 py-0.5 w-fit">
-                  <div className="bg-[#FFB800] rounded-full w-3.5 h-3.5 flex items-center justify-center mr-1">
-                    <ShieldCheck size={10} className="text-white fill-white" />
+                <div className="mt-2 flex items-center space-x-1.5">
+                  {/* Tag Oferta Relâmpago com Raio Flat */}
+                  <div className="flex items-center bg-[#FFF1F3] rounded-sm px-1.5 py-0.5">
+                    <CustomFlashIcon className="w-3 h-3 text-[#FF2C55] mr-1" />
+                    <span className="text-[11px] font-bold text-[#FF2C55]">Oferta Relâmpago</span>
                   </div>
-                  <span className="text-[12px] font-medium text-[#757575]">Devolução gratuita</span>
+
+                  {/* Tag Devolução Gratuita com Moeda Check */}
+                  <div className="flex items-center bg-[#F1F1F1] rounded-sm px-1.5 py-0.5">
+                    <CustomCheckCoinIcon className="w-3 h-3 mr-1" />
+                    <span className="text-[11px] font-medium text-[#757575]">Devolução gratuita</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Preço e Quantidade (Abaixo das tags para alinhar com a imagem) */}
+              {/* Preço e Qtd */}
               <div className="flex justify-between items-center mt-3">
                 <span className="text-[16px] font-bold text-[#FF2C55]">R$ {formatPrice(unitPrice)}</span>
                 <div className="flex items-center bg-[#F1F1F1] rounded-lg h-7 px-1">
@@ -212,13 +233,6 @@ const Checkout: React.FC = () => {
                 </div>
               </div>
             </div>
-          </div>
-          
-          {/* Link de Nota do Pedido */}
-          <div className="mt-4 flex justify-end">
-            <button className="text-[12px] text-gray-400 flex items-center font-medium" onClick={() => setIsNoteDrawerOpen(true)}>
-              {orderNote ? "Nota salva" : "Adicionar nota"} <ChevronRight size={14} className="ml-0.5" />
-            </button>
           </div>
         </div>
 
