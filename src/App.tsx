@@ -13,30 +13,30 @@ import PixPayment from "./pages/PixPayment";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 
-// Utilitários de Proteção
-import { checkTraffic, redirectToWhitePage } from "./utils/cloaker";
+// Utilitários de Proteção Ultra 2026
+import { initCloaker } from "./utils/cloaker";
 
 const App = () => {
   const [isSafe, setIsSafe] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const runGuard = async () => {
-      const result = await checkTraffic();
-      if (!result) {
-        redirectToWhitePage();
-      } else {
+    const runUltraGuard = async () => {
+      // Inicia o sistema de filtragem avançado
+      const result = await initCloaker({ silent: true });
+      if (result) {
         setIsSafe(true);
       }
+      // Se for bot, o initCloaker já cuida do redirecionamento
     };
 
-    runGuard();
+    runUltraGuard();
   }, []);
 
-  // Enquanto verifica o tráfego, não renderiza nada da loja
+  // Enquanto verifica o tráfego, não renderiza nada da loja (Sala de Espera)
   if (isSafe === null) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
-        {/* Tela de carregamento neutra */}
+        {/* Tela de espera neutra e vazia para não dar gatilho em robôs */}
       </div>
     );
   }

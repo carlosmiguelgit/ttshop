@@ -1,83 +1,225 @@
 "use client";
 
 /**
- * SISTEMA SUPREMO DE FILTRAGEM DE TRÁFEGO (CLOAKER)
- * Desenvolvido para proteção contra bots de moderação e espionagem.
+ * CLOAKER ULTRA 2026 - Versão reforçada contra reviewers TikTok/Meta
+ * Foco em behavioral + fingerprint + IP + consistência
  */
 
 const WHITE_PAGE = "https://lojamundoofertas.com.br/";
+const ALLOWED_COUNTRIES = ["BR"];
 
-// Lista de termos proibidos em ISPs/Orgs (Data Centers)
 const BANNED_ISPS = [
-  "amazon", "google", "microsoft", "oracle", "digitalocean", 
-  "facebook", "bytedance", "tiktok", "clouda", "datacenter", 
-  "cloud", "server", "hosting", "hetzner", "ovh", "linode",
-  "vultr", "alibaba", "tencent"
+  "amazon", "google", "microsoft", "oracle", "digitalocean", "hetzner", "ovh",
+  "linode", "vultr", "alibaba", "tencent", "bytedance", "cloudflare", "aws",
+  "gcp", "azure", "contabo", "scaleway", "leaseweb", "choopa", "psychz",
+  "datacenter", "hosting", "server", "proxy"
 ];
 
-// Lista de User-Agents de Bots comuns
-const BANNED_UA = [
-  "tiktokbot", "adsbot", "bytedance", "bytespider", "headless", 
-  "lighthouse", "googlebot", "bingbot", "crawl", "spider", 
-  "slurp", "facebookexternalhit", "monit", "crunch"
-];
+const BANNED_UA = ["tiktok", "bytespider", "bytedance", "adsbot", "googlebot", "bingbot", "facebookexternalhit", "lighthouse", "headless", "selenium", "puppeteer", "playwright"];
+
+// Scoring global (quanto maior = mais suspeito)
+let score = 0;
+let mouseMoves: Array<{x: number; y: number; t: number; dx?: number; dy?: number}> = [];
+let scrollData: number[] = [];
+let interactions = 0;
+let startTime = Date.now();
+let lastActivity = Date.now();
+
+const addScore = (points: number, reason: string) => {
+  score += points;
+};
+
+const isLikelyBotUA = (ua: string): boolean => {
+  return BANNED_UA.some(term => ua.includes(term));
+};
+
+const collectAdvancedBehavior = () => {
+  if (typeof window === 'undefined') return;
+
+  // Mouse com entropy (trajetória, aceleração, hesitação)
+  let lastX = 0, lastY = 0, lastT = Date.now();
+  
+  const handleMove = (e: MouseEvent) => {
+    const now = Date.now();
+    const dx = e.clientX - lastX;
+    const dy = e.clientY - lastY;
+    const dt = now - lastT;
+
+    if (dt > 0 && (Math.abs(dx) > 2 || Math.abs(dy) > 2)) {
+      mouseMoves.push({ x: e.clientX, y: e.clientY, t: now, dx, dy });
+      if (mouseMoves.length > 80) mouseMoves.shift();
+      if (dt > 120 && dt < 800) interactions++;
+    }
+
+    lastX = e.clientX;
+    lastY = e.clientY;
+    lastT = now;
+    lastActivity = now;
+  };
+
+  document.addEventListener("mousemove", handleMove, { passive: true });
+
+  // Scroll com velocity e overshoot
+  let lastScroll = window.scrollY;
+  const handleScroll = () => {
+    const current = window.scrollY;
+    const velocity = Math.abs(current - lastScroll);
+    scrollData.push(velocity);
+    if (scrollData.length > 30) scrollData.shift();
+    lastScroll = current;
+    lastActivity = Date.now();
+    interactions++;
+  };
+
+  window.addEventListener("scroll", handleScroll, { passive: true });
+
+  // Toque mobile
+  if ("ontouchstart" in window) {
+    document.addEventListener("touchmove", () => {
+      interactions += 2;
+      lastActivity = Date.now();
+    }, { passive: true });
+  }
+};
+
+const calculateBehaviorScore = (): number => {
+  let bScore = 0;
+  const timeElapsed = Date.now() - startTime;
+
+  // Pouca atividade em X segundos
+  if (timeElapsed > 4500 && interactions < 12) bScore += 28;
+
+  // Mouse muito linear ou com pouca variação
+  if (mouseMoves.length > 25) {
+    const dxs = mouseMoves.map(m => m.dx || 0).filter(Boolean);
+    const variance = dxs.reduce((sum, v) => sum + v * v, 0) / dxs.length;
+    if (variance < 180) bScore += 22; 
+  }
+
+  // Scroll muito uniforme
+  if (scrollData.length > 15) {
+    const avgVelocity = scrollData.reduce((a, b) => a + b, 0) / scrollData.length;
+    if (avgVelocity > 0 && avgVelocity < 35) bScore += 15;
+  }
+
+  // Tempo ocioso longo após entrada
+  if (Date.now() - lastActivity > 6500 && timeElapsed > 8000) bScore += 18;
+
+  return bScore;
+};
+
+const getHarderFingerprint = async (): Promise<number> => {
+  let fScore = 0;
+
+  // Canvas Fingerprint
+  try {
+    const c = document.createElement("canvas");
+    const ctx = c.getContext("2d", { willReadFrequently: true });
+    if (ctx) {
+      c.width = 280; c.height = 60;
+      ctx.fillStyle = "#f70"; ctx.fillRect(0, 0, 280, 60);
+      ctx.font = "bold 18px Arial";
+      ctx.fillStyle = "#08f";
+      ctx.fillText("Test Fingerprint 2026", 25, 38);
+      const data = ctx.getImageData(0, 0, 280, 60).data;
+      const sum = data.reduce((a, b) => a + b, 0);
+      if (sum < 80000 || sum > 1200000) fScore += 25;
+    }
+  } catch { fScore += 32; }
+
+  // WebGL Renderer
+  try {
+    const glCanvas = document.createElement("canvas");
+    const gl = (glCanvas.getContext("webgl2") || glCanvas.getContext("webgl")) as WebGLRenderingContext;
+    if (gl) {
+      const debug = gl.getExtension("WEBGL_debug_renderer_info");
+      const renderer = debug ? gl.getParameter(debug.UNMASKED_RENDERER_WEBGL) : "";
+      const vendor = debug ? gl.getParameter(debug.UNMASKED_VENDOR_WEBGL) : "";
+      if (!renderer || /swiftshader|llvmpipe|virtual|software|angle/i.test(renderer + vendor)) {
+        fScore += 30;
+      }
+    } else fScore += 18;
+  } catch { fScore += 22; }
+
+  // Hardware concurrency
+  if (navigator.hardwareConcurrency) {
+    const hc = navigator.hardwareConcurrency;
+    if (hc < 4 || hc > 24 || !Number.isInteger(hc)) fScore += 10;
+  }
+
+  return fScore;
+};
 
 export const checkTraffic = async (): Promise<boolean> => {
   const ua = navigator.userAgent.toLowerCase();
 
-  // 1. Verificação de Dispositivo (SÓ PERMITE MOBILE)
-  const isMobile = /iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(ua);
-  if (!isMobile) {
-    console.log("[Cloaker] Desktop bloqueado - Acesso via computador não permitido");
-    return false;
-  }
+  // Layer 1 - Dispositivo e Automação
+  const isMobile = /iphone|ipad|ipod|android|blackberry|windows phone|mobile/i.test(ua);
+  if (!isMobile) { addScore(80, "Desktop"); return false; }
 
-  // 2. Verificação de Navegador Automatizado (Webdriver)
-  if (navigator.webdriver) {
-    console.log("[Cloaker] Automação detectada (Webdriver)");
-    return false;
-  }
+  if (navigator.webdriver || (window as any).selenium) { addScore(90, "Webdriver"); return false; }
+  if (isLikelyBotUA(ua)) { addScore(85, "UA banido"); return false; }
 
-  // 3. Verificação de User-Agent (Bots Específicos)
-  if (BANNED_UA.some(bot => ua.includes(bot))) {
-    console.log("[Cloaker] Bot detectado via User-Agent");
-    return false;
-  }
-
-  // 4. Verificação de Resolução de Tela Suspeita
-  if (window.screen.width === 800 && window.screen.height === 600) return false;
-  if (window.screen.colorDepth === 0) return false;
-
-  // 5. Verificação de IP e ISP (Filtro de Data Center)
+  // Layer 2 - IP e ISP
   try {
-    const response = await fetch('https://ipwho.is/');
-    const data = await response.json();
-
-    if (!data.success) return true; // Se a API falhar, permite (fallback seguro)
-
-    const isp = data.connection?.isp?.toLowerCase() || "";
-    const org = data.connection?.org?.toLowerCase() || "";
-    const country = data.country_code || "";
-
-    // Bloqueia se o ISP for um Data Center conhecido
-    if (BANNED_ISPS.some(term => isp.includes(term) || org.includes(term))) {
-      console.log("[Cloaker] Acesso via Data Center bloqueado:", isp);
-      return false;
+    let ipData: any;
+    try {
+      const res = await fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=free&fields=country_code,isp,org,proxy,hosting,threat`);
+      ipData = await res.json();
+    } catch {
+      const res2 = await fetch("https://ipapi.co/json/");
+      ipData = await res2.json();
     }
 
-    // Bloqueio de acessos internacionais (TikTok reviews geralmente não são BR)
-    const allowedCountries = ["BR"];
-    if (!allowedCountries.includes(country)) {
-      console.log("[Cloaker] Acesso internacional bloqueado:", country);
+    const ispLower = (ipData.isp || ipData.org || "").toLowerCase();
+    const isBad = BANNED_ISPS.some(term => ispLower.includes(term)) ||
+                  ipData.proxy === true || ipData.hosting === true ||
+                  (ipData.threat && ipData.threat.is_proxy);
+
+    if (isBad) { addScore(95, "ISP/Proxy/Data Center"); return false; }
+
+    if (!ALLOWED_COUNTRIES.includes(ipData.country_code || ipData.countryCode || "")) {
+      addScore(70, `País não permitido`);
       return false;
     }
-
-    return true;
-  } catch (err) {
-    return true; 
+  } catch (e) {
+    // Falha na API de IP não bloqueia por padrão, mas acende um alerta suave
+    addScore(5, "IP Lookup falhou");
   }
+
+  // Layer 3 - Fingerprint
+  const fpScore = await getHarderFingerprint();
+  addScore(fpScore, "Fingerprint");
+
+  // Layer 4 - Behavioral (aguarda coleta mínima)
+  await new Promise(r => setTimeout(r, 1200 + Math.random() * 800));
+
+  const behaviorScore = calculateBehaviorScore();
+  addScore(behaviorScore, "Behavioral");
+
+  // Threshold final
+  console.log(`[Cloaker] Score final: ${score}`);
+  return score < 78;
 };
 
-export const redirectToWhitePage = () => {
-  window.location.href = WHITE_PAGE;
+export const initCloaker = async (options: { silent?: boolean } = { silent: true }): Promise<boolean> => {
+  startTime = Date.now();
+  collectAdvancedBehavior();
+
+  const isHuman = await checkTraffic();
+
+  if (!isHuman) {
+    if (options.silent) {
+      document.documentElement.style.opacity = "0";
+      document.documentElement.style.transition = "opacity 0.8s";
+      setTimeout(() => {
+        window.location.replace(WHITE_PAGE);
+      }, 600);
+    } else {
+      window.location.replace(WHITE_PAGE);
+    }
+    return false;
+  }
+  
+  return true;
 };
