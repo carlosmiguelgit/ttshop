@@ -12,6 +12,7 @@ export interface Review {
   comment: string;
   variation: string;
   reviewImages: string[];
+  reviewVideos?: string[];
 }
 
 export interface Product {
@@ -79,7 +80,12 @@ export const products: Product[] = [
         reviewImages: [
           "https://m.media-amazon.com/images/I/61anp-5D3wL._SY250_.jpg",
           "https://m.media-amazon.com/images/I/61uuHt4ruNL._SY250_.jpg",
-          "https://m.media-amazon.com/images/I/61ddThSmhZL._SY250_.jpg"
+          "https://m.media-amazon.com/images/I/61ddThSmhZL._SY250_.jpg",
+          "https://http2.mlstatic.com/D_NQ_NP_2X_822517-MLA93872828302_102025-O.webp",
+          "https://http2.mlstatic.com/D_NQ_NP_2X_765900-MLA99272004610_112025-O.webp"
+        ],
+        reviewVideos: [
+          "https://down-ws-br.vod.susercontent.com/api/v4/11110103/mms/br-11110103-6v6x7-mlv7lt13vi10ac.16000051773611699.mp4"
         ]
       },
       {
@@ -90,7 +96,12 @@ export const products: Product[] = [
         reviewImages: [
           "https://m.media-amazon.com/images/I/61n1dcH5b2L._SY250_.jpg",
           "https://m.media-amazon.com/images/I/61Se2cFmWRL._SY250_.jpg",
-          "https://m.media-amazon.com/images/I/61yKTIghk2L._SY250_.jpg"
+          "https://m.media-amazon.com/images/I/61yKTIghk2L._SY250_.jpg",
+          "https://http2.mlstatic.com/D_NQ_NP_2X_913335-MLA94890864678_102025-O.webp",
+          "https://http2.mlstatic.com/D_NQ_NP_2X_922641-MLA93832401103_092025-O.webp"
+        ],
+        reviewVideos: [
+          "https://down-ws-br.vod.susercontent.com/api/v4/11110103/mms/br-11110103-6v6x5-mmaraxrjo64nc1.16000051774552827.mp4"
         ]
       },
       {
@@ -101,7 +112,8 @@ export const products: Product[] = [
         reviewImages: [
           "https://m.media-amazon.com/images/I/61yGvOkG+IL._SY250_.jpg",
           "https://m.media-amazon.com/images/I/61JwvxQGIZL._SY250_.jpg",
-          "https://m.media-amazon.com/images/I/616DrdCSfeL._SY250_.jpg"
+          "https://m.media-amazon.com/images/I/616DrdCSfeL._SY250_.jpg",
+          "https://http2.mlstatic.com/D_NQ_NP_2X_823291-MLA100577799790_122025-O.webp"
         ]
       },
       {
@@ -112,7 +124,8 @@ export const products: Product[] = [
         reviewImages: [
           "https://m.media-amazon.com/images/I/61pdhxAPBdL._SY250_.jpg",
           "https://m.media-amazon.com/images/I/61+VyAd00EL._SY250_.jpg",
-          "https://m.media-amazon.com/images/I/41GV0rH-3-L._SY250_.jpg"
+          "https://m.media-amazon.com/images/I/41GV0rH-3-L._SY250_.jpg",
+          "https://down-br.img.susercontent.com/file/br-11134103-820lx-mlv7lgqoxqf432@resize_w72_nl.webp"
         ]
       },
       {
@@ -122,7 +135,8 @@ export const products: Product[] = [
         variation: "Branco",
         reviewImages: [
           "https://http2.mlstatic.com/D_NQ_NP_2X_856028-MLA104618930816_012026-O.webp",
-          "https://http2.mlstatic.com/D_NQ_NP_2X_610262-MLA106533172798_022026-O.webp"
+          "https://http2.mlstatic.com/D_NQ_NP_2X_610262-MLA106533172798_022026-O.webp",
+          "https://down-br.img.susercontent.com/file/br-11134103-820lw-mlv7lgqwmgau89@resize_w72_nl.webp"
         ]
       }
     ]

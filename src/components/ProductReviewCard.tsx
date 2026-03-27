@@ -7,6 +7,7 @@ interface ReviewCardProps {
   avatarSrc: string;
   comment: string;
   reviewImages?: string[];
+  reviewVideos?: string[];
   variation: string;
 }
 
@@ -21,7 +22,8 @@ const ProductReviewCard: React.FC<ReviewCardProps> = ({
   username,
   avatarSrc,
   comment,
-  reviewImages,
+  reviewImages = [],
+  reviewVideos = [],
   variation,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -69,9 +71,7 @@ const ProductReviewCard: React.FC<ReviewCardProps> = ({
         )}
       </div>
 
-      {reviewImages && reviewImages.length > 0 && (
-        <ReviewImageGallery reviewImages={reviewImages} />
-      )}
+      <ReviewImageGallery reviewImages={reviewImages} reviewVideos={reviewVideos} />
     </div>
   );
 };
