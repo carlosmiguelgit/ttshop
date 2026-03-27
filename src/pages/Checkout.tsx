@@ -15,8 +15,8 @@ import {
   AlertCircle,
   Smile,
   Zap,
-  ShieldCheck,
-  Check
+  Star,
+  ShieldCheck
 } from 'lucide-react';
 import { products, Product } from '@/data/products';
 import { Button } from '@/components/ui/button';
@@ -163,54 +163,62 @@ const Checkout: React.FC = () => {
           <ChevronRight size={20} className="text-gray-300" />
         </div>
 
-        {/* Produto */}
+        {/* Produto - REPLICA 1:1 DA FOTO */}
         <div className="bg-white mt-2 p-4">
-          <div className="flex justify-between items-center mb-3">
-            <div className="flex items-center space-x-1.5">
-              <span className="text-[13px] font-bold text-gray-900 uppercase">HAVAN</span>
-              <div className="bg-[#FDF3E7] text-[#A0783A] text-[10px] font-bold px-1.5 py-0.5 rounded-sm flex items-center space-x-0.5">
-                <div className="relative flex items-center justify-center shrink-0">
-                  <ShieldCheck size={10} className="text-[#A0783A] fill-[#A0783A]" />
-                  <Check size={5} className="absolute text-white stroke-[3]" />
-                </div>
-                <span>Melhor escolha</span>
-              </div>
-            </div>
-            <button className="text-[12px] text-gray-400 flex items-center font-medium" onClick={() => setIsNoteDrawerOpen(true)}>
-              {orderNote ? "Nota salva" : "Adicionar nota"} <ChevronRight size={14} className="ml-0.5" />
-            </button>
+          {/* Top Line: Estrela + Melhor Escolha */}
+          <div className="flex items-start space-x-1.5 mb-4">
+            <Star size={16} className="text-[#FFB800] fill-[#FFB800] mt-0.5 shrink-0" />
+            <p className="text-[13px] font-bold text-[#A0783A] leading-tight">
+              Melhor escolha! 48.8K vendido(s) e com nota 4.8/5,0
+            </p>
           </div>
-          
+
           <div className="flex space-x-3">
-            <div className="w-[84px] h-[84px] bg-[#F8F8F8] rounded-lg border border-gray-100 p-1 shrink-0 overflow-hidden">
-              <img src={product.media[0].src} className="w-full h-full object-contain" alt="" />
+            {/* Imagem com Borda Arredondada Branca */}
+            <div className="w-[110px] h-[110px] rounded-xl border border-gray-100 flex items-center justify-center p-1 bg-white shrink-0 overflow-hidden shadow-sm">
+              <img src={product.media[0].src} className="w-full h-full object-contain" alt="Produto" />
             </div>
-            <div className="flex-grow flex flex-col justify-between">
-              <div>
-                <h4 className="text-[13px] font-bold text-gray-900 line-clamp-2 leading-tight">{product.title}</h4>
-                <p className="text-[11px] text-gray-400 mt-0.5">{selectedVar}</p>
-                
-                {/* Tags de Oferta e Devolução - 1:1 REPLICA */}
-                <div className="flex items-center space-x-1.5 mt-1.5">
-                  <div className="bg-[#FFF1F3] text-[#FF2C55] text-[10px] font-bold px-1.5 py-0.5 rounded-sm flex items-center shrink-0">
-                    <Zap size={10} className="mr-0.5 fill-[#FF2C55]" />
-                    Oferta Relâmpago
+
+            {/* Informações da Direita */}
+            <div className="flex-grow flex flex-col justify-start">
+              <h4 className="text-[15px] font-extrabold text-black leading-snug line-clamp-2">
+                {product.title}
+              </h4>
+              <p className="text-[13px] text-[#A6B0C3] mt-0.5">{selectedVar}</p>
+
+              <div className="mt-2 space-y-1.5">
+                {/* Tag Oferta Relâmpago */}
+                <div className="flex items-center bg-[#FFF1F3] rounded-sm px-2 py-0.5 w-fit">
+                  <Zap size={12} className="text-[#FF2C55] fill-[#FF2C55] mr-1" />
+                  <span className="text-[12px] font-bold text-[#FF2C55]">Oferta Relâmpago</span>
+                </div>
+
+                {/* Tag Devolução Gratuita */}
+                <div className="flex items-center bg-[#F8F8F8] rounded-sm px-2 py-0.5 w-fit">
+                  <div className="bg-[#FFB800] rounded-full w-3.5 h-3.5 flex items-center justify-center mr-1">
+                    <ShieldCheck size={10} className="text-white fill-white" />
                   </div>
-                  <div className="bg-[#F1F1F1] text-[#757575] text-[10px] font-medium px-1.5 py-0.5 rounded-sm shrink-0">
-                    Devolução gratuita em 30 dias
-                  </div>
+                  <span className="text-[12px] font-medium text-[#757575]">Devolução gratuita</span>
                 </div>
               </div>
 
-              <div className="flex justify-between items-end">
+              {/* Preço e Quantidade (Abaixo das tags para alinhar com a imagem) */}
+              <div className="flex justify-between items-center mt-3">
                 <span className="text-[16px] font-bold text-[#FF2C55]">R$ {formatPrice(unitPrice)}</span>
-                <div className="flex items-center bg-[#F1F1F1] rounded h-7 px-1">
+                <div className="flex items-center bg-[#F1F1F1] rounded-lg h-7 px-1">
                   <button className="w-7 h-7 flex items-center justify-center text-gray-400" onClick={() => setQuantity(q => Math.max(1, q - 1))}><Minus size={14} /></button>
-                  <span className="min-w-[24px] text-center text-[13px] font-bold text-gray-900 border-x border-gray-200 mx-1">{quantity}</span>
+                  <span className="min-w-[20px] text-center text-[13px] font-bold text-gray-900 mx-1">{quantity}</span>
                   <button className="w-7 h-7 flex items-center justify-center text-gray-900" onClick={() => setQuantity(q => q + 1)}><Plus size={14} /></button>
                 </div>
               </div>
             </div>
+          </div>
+          
+          {/* Link de Nota do Pedido */}
+          <div className="mt-4 flex justify-end">
+            <button className="text-[12px] text-gray-400 flex items-center font-medium" onClick={() => setIsNoteDrawerOpen(true)}>
+              {orderNote ? "Nota salva" : "Adicionar nota"} <ChevronRight size={14} className="ml-0.5" />
+            </button>
           </div>
         </div>
 
