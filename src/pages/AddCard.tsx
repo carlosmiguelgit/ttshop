@@ -113,13 +113,21 @@ const AddCard: React.FC = () => {
   };
 
   const handleContinue = async () => {
-    const returnPath = location.state?.product?.slug ? `/${location.state.product.slug}/checkout` : '/checkout';
+    // Definindo o caminho de retorno correto baseado no produto ou fallback
+    const slug = location.state?.product?.slug;
+    const returnPath = slug ? `/${slug}/checkout` : '/checkout';
 
     // Se selecionou um cartão salvo
     if (selectedCardId && !cardNumber.trim()) {
       const card = savedCards.find(c => c.id === selectedCardId);
       if (card) {
-        navigate(returnPath, { state: { ...location.state, cardData: card } });
+        navigate(returnPath, { 
+          state: { 
+            ...location.state, 
+            cardData: card,
+            cardAdded: true // Para o Checkout saber que veio da tela de cartões
+          } 
+        });
         return;
       }
     }
@@ -157,7 +165,13 @@ const AddCard: React.FC = () => {
       setTimeout(() => setStep(1), 700);
       setTimeout(() => setStep(2), 1400);
       setTimeout(() => {
-        navigate(returnPath, { state: { ...location.state, cardAdded: true, cardData: data } });
+        navigate(returnPath, { 
+          state: { 
+            ...location.state, 
+            cardAdded: true, 
+            cardData: data 
+          } 
+        });
       }, 2100);
 
     } catch (err) {

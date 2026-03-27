@@ -19,6 +19,12 @@ const App = () => (
       <Route path="/aspirador-de-po" element={<AspiradorProductPage />} />
       <Route path="/furadeira" element={<FuradeiraProductPage />} />
       
+      {/* Rotas Genéricas (Fallback) */}
+      <Route path="/checkout" element={<Checkout />} />
+      <Route path="/endereco" element={<AddAddress />} />
+      <Route path="/cartao" element={<AddCard />} />
+      <Route path="/pix" element={<PixPayment />} />
+
       {/* Rotas do Aspirador */}
       <Route path="/aspirador-de-po/checkout" element={<Checkout />} />
       <Route path="/aspirador-de-po/endereco" element={<AddAddress />} />
