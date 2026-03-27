@@ -14,7 +14,9 @@ import {
   Loader2, 
   AlertCircle,
   Smile,
-  Zap
+  Zap,
+  ShieldCheck,
+  Check
 } from 'lucide-react';
 import { products, Product } from '@/data/products';
 import { Button } from '@/components/ui/button';
@@ -164,39 +166,48 @@ const Checkout: React.FC = () => {
         {/* Produto */}
         <div className="bg-white mt-2 p-4">
           <div className="flex justify-between items-center mb-3">
-            <div className="flex items-center space-x-2">
-              <span className="text-[14px] font-bold uppercase">HAVAN</span>
-              <div className="bg-[#FF2C55] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm">Melhor escolha</div>
+            <div className="flex items-center space-x-1.5">
+              <span className="text-[13px] font-bold text-gray-900 uppercase">HAVAN</span>
+              <div className="bg-[#FDF3E7] text-[#A0783A] text-[10px] font-bold px-1.5 py-0.5 rounded-sm flex items-center space-x-0.5">
+                <div className="relative flex items-center justify-center shrink-0">
+                  <ShieldCheck size={10} className="text-[#A0783A] fill-[#A0783A]" />
+                  <Check size={5} className="absolute text-white stroke-[3]" />
+                </div>
+                <span>Melhor escolha</span>
+              </div>
             </div>
-            <button className="text-[13px] text-gray-400 flex items-center" onClick={() => setIsNoteDrawerOpen(true)}>
-              {orderNote ? "Nota salva" : "Adicionar nota"} <ChevronRight size={16} />
+            <button className="text-[12px] text-gray-400 flex items-center font-medium" onClick={() => setIsNoteDrawerOpen(true)}>
+              {orderNote ? "Nota salva" : "Adicionar nota"} <ChevronRight size={14} className="ml-0.5" />
             </button>
           </div>
+          
           <div className="flex space-x-3">
-            <div className="w-20 h-20 bg-[#F8F8F8] rounded-lg border p-1 shrink-0">
+            <div className="w-[84px] h-[84px] bg-[#F8F8F8] rounded-lg border border-gray-100 p-1 shrink-0 overflow-hidden">
               <img src={product.media[0].src} className="w-full h-full object-contain" alt="" />
             </div>
-            <div className="flex-grow">
-              <h4 className="text-[13px] font-bold line-clamp-2 leading-tight">{product.title}</h4>
-              <p className="text-[12px] text-gray-400 mt-0.5">{selectedVar}</p>
-              
-              {/* Tags de Oferta e Devolução */}
-              <div className="flex flex-wrap gap-1.5 mt-1.5">
-                <div className="bg-[#FFF1F3] text-[#FF2C55] text-[10px] font-bold px-1.5 py-0.5 rounded-sm flex items-center">
-                  <Zap size={10} className="mr-0.5 fill-[#FF2C55]" />
-                  Oferta Relâmpago
-                </div>
-                <div className="bg-[#F1F1F1] text-gray-500 text-[10px] font-medium px-1.5 py-0.5 rounded-sm">
-                  Devolução gratuita em 30 dias
+            <div className="flex-grow flex flex-col justify-between">
+              <div>
+                <h4 className="text-[13px] font-bold text-gray-900 line-clamp-2 leading-tight">{product.title}</h4>
+                <p className="text-[11px] text-gray-400 mt-0.5">{selectedVar}</p>
+                
+                {/* Tags de Oferta e Devolução - 1:1 REPLICA */}
+                <div className="flex items-center space-x-1.5 mt-1.5">
+                  <div className="bg-[#FFF1F3] text-[#FF2C55] text-[10px] font-bold px-1.5 py-0.5 rounded-sm flex items-center shrink-0">
+                    <Zap size={10} className="mr-0.5 fill-[#FF2C55]" />
+                    Oferta Relâmpago
+                  </div>
+                  <div className="bg-[#F1F1F1] text-[#757575] text-[10px] font-medium px-1.5 py-0.5 rounded-sm shrink-0">
+                    Devolução gratuita em 30 dias
+                  </div>
                 </div>
               </div>
 
-              <div className="flex justify-between items-end mt-2">
+              <div className="flex justify-between items-end">
                 <span className="text-[16px] font-bold text-[#FF2C55]">R$ {formatPrice(unitPrice)}</span>
-                <div className="flex items-center bg-[#F1F1F1] rounded h-7">
-                  <button className="px-2" onClick={() => setQuantity(q => Math.max(1, q - 1))}><Minus size={14} /></button>
-                  <span className="px-2 text-sm font-bold">{quantity}</span>
-                  <button className="px-2" onClick={() => setQuantity(q => q + 1)}><Plus size={14} /></button>
+                <div className="flex items-center bg-[#F1F1F1] rounded h-7 px-1">
+                  <button className="w-7 h-7 flex items-center justify-center text-gray-400" onClick={() => setQuantity(q => Math.max(1, q - 1))}><Minus size={14} /></button>
+                  <span className="min-w-[24px] text-center text-[13px] font-bold text-gray-900 border-x border-gray-200 mx-1">{quantity}</span>
+                  <button className="w-7 h-7 flex items-center justify-center text-gray-900" onClick={() => setQuantity(q => q + 1)}><Plus size={14} /></button>
                 </div>
               </div>
             </div>
@@ -228,8 +239,8 @@ const Checkout: React.FC = () => {
             </div>
           )}
           <div className="pt-3 border-t flex justify-between items-center">
-            <span className="text-[16px] font-bold">Total</span>
-            <span className="text-[18px] font-bold">R$ {formatPrice(finalTotal)}</span>
+            <span className="text-[16px] font-bold text-gray-900">Total</span>
+            <span className="text-[18px] font-bold text-gray-900">R$ {formatPrice(finalTotal)}</span>
           </div>
         </div>
 
@@ -284,7 +295,7 @@ const Checkout: React.FC = () => {
         </div>
       </div>
 
-      {/* RODAPÉ FIXO CLONE 1:1 CONFORME FOTO */}
+      {/* RODAPÉ FIXO CLONE 1:1 */}
       <div className="fixed bottom-0 left-0 right-0 z-50">
         <div className="bg-white px-4 py-3 border-t">
           <p className="text-[11px] text-gray-400 leading-tight">
