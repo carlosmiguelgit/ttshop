@@ -58,7 +58,7 @@ const StoreSection: React.FC = () => {
           </div>
 
           {/* Métricas de Desempenho 1:1 da foto */}
-          <div className="flex items-center space-x-4 mb-5 text-[12px]">
+          <div className="flex items-center space-x-4 mb-4 text-[12px]">
             <div className="flex items-center">
               <span className="font-bold text-gray-900 mr-1">96%</span>
               <span className="text-gray-400 font-medium">responde em 24 horas</span>
@@ -69,8 +69,8 @@ const StoreSection: React.FC = () => {
             </div>
           </div>
 
-          {/* Separador Horizontal */}
-          <div className="h-[1px] bg-gray-50 w-full mb-5"></div>
+          {/* Separador Horizontal (Linha Preta conforme solicitado) */}
+          <div className="h-[1px] bg-gray-100 w-full mb-5"></div>
 
           <div className="mb-6 rounded-xl overflow-hidden shadow-sm border border-gray-50">
             <img src="/havan.jpg" alt="Banner Havan" className="w-full h-auto object-cover" />
@@ -84,7 +84,8 @@ const StoreSection: React.FC = () => {
           <div className="flex space-x-3 overflow-x-auto no-scrollbar pb-6">
             <div className="min-w-[130px] bg-[#FFF5F1] rounded-xl p-4 flex flex-col items-center justify-center text-center border border-[#FFE4D6] h-[170px]">
               <Zap size={24} className="text-[#FF6633] fill-[#FF6633] mb-2" />
-              <p className="text-[16px] font-bold text-[#FF6633] leading-tight">Até<br/>89% de<br/>desconto</p>
+              <p className="text-[15px] font-bold text-[#FF6633] leading-tight">Até<br/>89% de<br/>desconto</p>
+              <p className="text-[11px] text-[#FF6633] mt-2 font-medium">Termina em 1 dia</p>
             </div>
 
             {products.map((p, i) => (
