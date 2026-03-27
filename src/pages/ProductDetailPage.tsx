@@ -9,7 +9,6 @@ import CartDrawer from '@/components/CartDrawer';
 import { MadeWithDyad } from '@/components/made-with-dyad';
 import CustomerProtectionSection from '@/components/CustomerProtectionSection';
 import ProductReviewsSection from '@/components/ProductReviewsSection';
-import ProductReviewsList from '@/components/ProductReviewsList';
 import ProductDescription from '@/components/ProductDescription';
 import CheckoutDialog from '@/components/CheckoutDialog';
 import VariationSelectorDrawer from '@/components/VariationSelectorDrawer';
@@ -22,12 +21,13 @@ import StoreSection from '@/components/StoreSection';
 import { Truck, X, ChevronRight, LayoutGrid } from 'lucide-react';
 import { addDays, format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { trackFacebookEvent } from '@/utils/facebook-pixel';
+import { trackTikTokEvent } from '@/utils/tiktok-pixel';
 
 const ProductDetailPage: React.FC = () => {
   const navigate = useNavigate();
-  const product = products[0];
+  const product = products[0]; // Sempre usa o primeiro e único produto
 
+  // Estados da UI
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItemCount, setCartItemCount] = useState(0);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
@@ -50,8 +50,8 @@ const ProductDetailPage: React.FC = () => {
 
   useEffect(() => {
     if (product) {
-      trackFacebookEvent('ViewContent', {
-        content_ids: [product.slug],
+      trackTikTokEvent('ViewContent', {
+        content_id: product.slug,
         content_type: 'product',
         content_name: product.title,
         value: parseFloat(product.currentPrice.replace(',', '.')),
@@ -77,6 +77,27 @@ const ProductDetailPage: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(prev => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTimer = (seconds: number) => {
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    const ms = Math.floor(Math.random() * 99);
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}:${ms.toString().padStart(2, '0')}`;
+  };
+
+  const deliveryDateRange = useMemo(() => {
+    const today = new Date();
+    const start = addDays(today, 2);
+    const end = addDays(today, 7);
+    return `${format(start, 'dd')} – ${format(end, 'dd')} de ${format(end, 'MMM', { locale: ptBR })}`;
+  }, []);
+
   const scrollToSection = (tabName: string) => {
     const ref = sectionRefs[tabName as keyof typeof sectionRefs];
     if (ref.current) {
@@ -99,6 +120,14 @@ const ProductDetailPage: React.FC = () => {
         onCartClick={() => setIsCartOpen(true)}
       />
       
+      {showShippingMsg && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none">
+          <div className="bg-black/80 text-white px-6 py-3 rounded-lg text-sm font-bold animate-in fade-in zoom-in duration-300">
+            Este ítem ja possue frete grátis!
+          </div>
+        </div>
+      )}
+
       <div className="fixed top-12 left-0 right-0 z-40 bg-white border-b flex justify-center">
         <div className="w-full max-w-[600px] flex px-4">
           {['Visão geral', 'Avaliações', 'Descrição', 'Recomendações'].map((tab) => (
@@ -129,14 +158,22 @@ const ProductDetailPage: React.FC = () => {
             onShippingClick={() => setIsShippingDrawerOpen(true)}
           />
 
+          {/* Seção de Variações Clonada 1:1 */}
           <div 
             className="bg-white p-4 border-t border-gray-50 flex items-center justify-between cursor-pointer"
             onClick={() => setIsVariationDrawerOpen(true)}
           >
             <div className="flex items-center space-x-3 overflow-hidden">
+              {/* Ícone de 4 quadrados pretos */}
               <LayoutGrid size={20} className="text-gray-900 shrink-0" />
+              
               <div className="flex space-x-1 shrink-0">
-                <img src={product.media[1]?.src || product.media[0].src} className="w-10 h-10 rounded-md border border-gray-100 object-cover" alt="Opção Padrão" />
+                {/* Apenas a segunda foto (index 1) aparecendo */}
+                <img 
+                  src={product.media[1]?.src || product.media[0].src} 
+                  className="w-10 h-10 rounded-md border border-gray-100 object-cover" 
+                  alt="Opção Padrão"
+                />
               </div>
               <span className="text-[13px] text-gray-400 whitespace-nowrap">1 opção disponível</span>
             </div>
@@ -144,19 +181,66 @@ const ProductDetailPage: React.FC = () => {
           </div>
           
           <CustomerProtectionSection onClick={() => setIsProtectionDrawerOpen(true)} />
+
+          <div className="bg-white border-t border-gray-50 overflow-hidden">
+            <div className="px-4 pt-4 flex justify-between items-center cursor-pointer" onClick={() => setIsCouponsDrawerOpen(true)}>
+              <h3 className="text-[15px] font-bold text-gray-900">Ofertas</h3>
+              <ChevronRight size={16} className="text-gray-300" />
+            </div>
+
+            <div className="px-4 py-4 flex space-x-3 overflow-x-auto no-scrollbar scroll-smooth">
+              <div 
+                className="min-w-[240px] bg-[#EFFFFD] border border-[#CCF7F2] rounded-xl p-3 relative flex items-center justify-between cursor-pointer"
+                onClick={(e) => { e.stopPropagation(); setShowShippingMsg(true); setTimeout(() => setShowShippingMsg(false), 2000); }}
+              >
+                <div className="absolute -top-1.5 -right-1.5 bg-[#00BFA5] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-bl-lg rounded-tr-lg border border-white">x12</div>
+                <div className="flex-grow pr-3">
+                  <span className="text-[15px] font-bold text-gray-900 block leading-none mb-1">Cupom de envio</span>
+                  <p className="text-[10px] text-gray-500 leading-tight">Desconto de R$ 10 no frete<br/>em pedidos acima de R$ 15</p>
+                </div>
+                <button className="border border-[#00BFA5] text-[#00BFA5] text-[13px] font-medium h-8 px-5 rounded-full bg-white flex-shrink-0">
+                  Usar
+                </button>
+              </div>
+            </div>
+          </div>
           <CreatorVideosSection />
         </div>
         
         <div ref={sectionRefs['Avaliações']}>
-          <ProductReviewsSection rating={product.rating} reviewCount={product.reviewCount} reviews={product.reviews} />
+          <ProductReviewsSection 
+            rating={product.rating} 
+            reviewCount={product.reviewCount} 
+            reviews={product.reviews}
+          />
         </div>
 
         <StoreSection />
+        
         <div className="h-2.5 bg-[#F8F8F8]"></div>
-        <div ref={sectionRefs['Descrição']}><ProductDescription specifications={product.specifications} descriptionText={product.descriptionText} firstImageSrc={firstImageSrc} /></div>
-        <div ref={sectionRefs['Recomendações']}><MadeWithDyad /></div>
+
+        <div ref={sectionRefs['Descrição']}>
+          <ProductDescription specifications={product.specifications} descriptionText={product.descriptionText} firstImageSrc={firstImageSrc} />
+        </div>
+        
+        <div ref={sectionRefs['Recomendações']}>
+          <MadeWithDyad />
+        </div>
       </div>
 
+      <div className="fixed bottom-[60px] left-0 right-0 z-20 flex justify-center">
+        <div className="w-full max-w-[600px] bg-white border-t border-gray-100 h-10 px-4 flex items-center justify-between shadow-[0_-2px_5px_rgba(0,0,0,0.02)]">
+          <div className="flex items-center space-x-2 text-[#00BFA5]">
+            <Truck size={16} className="fill-[#00BFA5]/10" />
+            <span className="text-[12px] font-medium">O <span className="font-bold">frete grátis</span> expira em breve</span>
+          </div>
+          <div className="flex items-center space-x-2">
+            <span className="text-[#00BFA5] text-[13px] font-bold font-mono">{formatTimer(timeLeft)}</span>
+            <X size={16} className="text-gray-300" />
+          </div>
+        </div>
+      </div>
+      
       <ProductActionsBar 
         onAddToCartClick={() => { setVariationDrawerMode('cart'); setIsVariationDrawerOpen(true); }}
         onBuyWithCouponClick={() => { setVariationDrawerMode('buy'); setIsVariationDrawerOpen(true); }}
@@ -167,8 +251,9 @@ const ProductDetailPage: React.FC = () => {
       <ChatDrawer isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} product={product} />
       <VariationSelectorDrawer isOpen={isVariationDrawerOpen} onClose={() => setIsVariationDrawerOpen(false)} product={product} onConfirm={(qty) => { setCartItemCount(prev => prev + qty); setIsVariationDrawerOpen(false); }} mode={variationDrawerMode} />
       <CouponsDrawer isOpen={isCouponsDrawerOpen} onClose={() => setIsCouponsDrawerOpen(false)} onClaim={() => {}} />
-      <ShippingDrawer isOpen={isShippingDrawerOpen} onClose={() => setIsShippingDrawerOpen(false)} deliveryDate="" />
+      <ShippingDrawer isOpen={isShippingDrawerOpen} onClose={() => setIsShippingDrawerOpen(false)} deliveryDate={deliveryDateRange} />
       <CustomerProtectionDrawer isOpen={isProtectionDrawerOpen} onClose={() => setIsProtectionDrawerOpen(false)} />
+      <CheckoutDialog isOpen={isCheckoutModalOpen} onClose={() => setIsCheckoutModalOpen(false)} product={product} onFinalize={() => {}} />
     </div>
   );
 };

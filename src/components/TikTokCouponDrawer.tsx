@@ -87,7 +87,7 @@ const TikTokCouponDrawer: React.FC<TikTokCouponDrawerProps> = ({ isOpen, onClose
                   <p className="text-[13px] text-gray-400">nos pedidos acima de R$ 200</p>
                   <div className="flex items-center space-x-1 text-[11px] text-[#FF2C55]">
                     <Info size={12} />
-                    <span>Gaste R$ 20,22 a mais para usar este cupom</span>
+                    <span>Gaste R$ 81,53 a mais para usar este cupom</span>
                   </div>
                 </div>
                 <div className="absolute right-4 top-1/2 -translate-y-1/2">
