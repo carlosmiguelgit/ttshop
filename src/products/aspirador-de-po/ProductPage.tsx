@@ -44,11 +44,10 @@ const AspiradorProductPage: React.FC = () => {
     reviews: 7671
   };
 
-  // Novos vídeos baseados nos links enviados
   const aspiradorVideos = [
-    { id: "Wtb1UXCHDoU", author: "Review S40c", avatar: "https://randomuser.me/api/portraits/women/10.jpg" },
-    { id: "GHsexvJ6eFg", author: "Xiaomi Vacuum", avatar: "https://randomuser.me/api/portraits/men/11.jpg" },
-    { id: "Yh73s8pTtUM", author: "Unboxing Br", avatar: "https://randomuser.me/api/portraits/men/12.jpg" },
+    { id: "kqPnkR9WjHw", author: "Review Philco", avatar: "https://randomuser.me/api/portraits/women/10.jpg" },
+    { id: "hrK_C1D_mJA", author: "Dicas de Casa", avatar: "https://randomuser.me/api/portraits/men/11.jpg" },
+    { id: "vvLQwi8jpvc", author: "Tech Review", avatar: "https://randomuser.me/api/portraits/men/12.jpg" },
   ];
 
   useEffect(() => {

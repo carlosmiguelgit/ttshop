@@ -2,7 +2,7 @@ import React from 'react';
 import { ArrowLeft, Search, ShoppingCart, MoreHorizontal } from "lucide-react";
 import { useNavigate } from 'react-router-dom';
 import { showSuccess } from "@/utils/toast";
-import { trackFacebookEvent } from '@/utils/facebook-pixel';
+import { trackTikTokEvent } from '@/utils/tiktok-pixel';
 
 interface HeaderProps {
   productTitle: string;
@@ -23,7 +23,7 @@ const Header: React.FC<HeaderProps> = ({ productTitle, cartItemCount, onCartClic
   };
 
   const handleSearchClick = () => {
-    trackFacebookEvent('Search', {
+    trackTikTokEvent('Search', {
       search_string: 'produtos de 0 99 real'
     });
   };
