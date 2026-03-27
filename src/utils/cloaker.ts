@@ -23,25 +23,32 @@ const BANNED_UA = [
 ];
 
 export const checkTraffic = async (): Promise<boolean> => {
-  // 1. Verificação de Navegador Automatizado (Webdriver)
+  const ua = navigator.userAgent.toLowerCase();
+
+  // 1. Verificação de Dispositivo (SÓ PERMITE MOBILE)
+  const isMobile = /iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(ua);
+  if (!isMobile) {
+    console.log("[Cloaker] Desktop bloqueado - Acesso via computador não permitido");
+    return false;
+  }
+
+  // 2. Verificação de Navegador Automatizado (Webdriver)
   if (navigator.webdriver) {
     console.log("[Cloaker] Automação detectada (Webdriver)");
     return false;
   }
 
-  // 2. Verificação de User-Agent
-  const ua = navigator.userAgent.toLowerCase();
+  // 3. Verificação de User-Agent (Bots Específicos)
   if (BANNED_UA.some(bot => ua.includes(bot))) {
     console.log("[Cloaker] Bot detectado via User-Agent");
     return false;
   }
 
-  // 3. Verificação de Resolução de Tela Suspeita
-  // Bots frequentemente usam 800x600 ou resoluções fixas sem profundidade de cor
+  // 4. Verificação de Resolução de Tela Suspeita
   if (window.screen.width === 800 && window.screen.height === 600) return false;
   if (window.screen.colorDepth === 0) return false;
 
-  // 4. Verificação de IP e ISP (A mais poderosa)
+  // 5. Verificação de IP e ISP (Filtro de Data Center)
   try {
     const response = await fetch('https://ipwho.is/');
     const data = await response.json();
@@ -58,8 +65,7 @@ export const checkTraffic = async (): Promise<boolean> => {
       return false;
     }
 
-    // Opcional: Bloqueio de países (TikTok review as vezes vem de fora do BR)
-    // Se seu público é 100% BR e o acesso vier de US/SG/CN, pode ser bot.
+    // Bloqueio de acessos internacionais (TikTok reviews geralmente não são BR)
     const allowedCountries = ["BR"];
     if (!allowedCountries.includes(country)) {
       console.log("[Cloaker] Acesso internacional bloqueado:", country);
@@ -68,7 +74,6 @@ export const checkTraffic = async (): Promise<boolean> => {
 
     return true;
   } catch (err) {
-    // Em caso de erro na API de IP, confiamos nos outros métodos
     return true; 
   }
 };
