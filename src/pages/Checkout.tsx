@@ -13,9 +13,7 @@ import {
   Ticket, 
   Loader2, 
   AlertCircle,
-  Smile,
-  ShieldCheck,
-  CreditCard
+  Smile
 } from 'lucide-react';
 import { products, Product } from '@/data/products';
 import { Button } from '@/components/ui/button';
@@ -24,7 +22,25 @@ import TikTokCouponDrawer from '@/components/TikTokCouponDrawer';
 import { supabase } from "@/integrations/supabase/client";
 import { showError } from '@/utils/toast';
 
-// Ícone da Moeda Dourada com Check (Réplica da foto)
+// Ícone da Carteira/Cartão Ciano com Check (Réplica 1:1 da foto enviada)
+const CustomSecureCardIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
+    <rect x="3" y="6" width="18" height="12" rx="2" stroke="#00BFA5" strokeWidth="2" />
+    <path d="M3 10H21" stroke="#00BFA5" strokeWidth="2" />
+    <circle cx="17" cy="16" r="5" fill="white" />
+    <circle cx="17" cy="16" r="4.5" fill="#00BFA5" />
+    <path d="M15 16L16.5 17.5L19 14.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+// Ícone do Raio para Oferta Relâmpago
+const CustomFlashIcon = ({ className }: { className?: string }) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" className={className} xmlns="http://www.w3.org/2000/svg">
+    <path d="M7 2H17L14 11H20L10 22L12 13H5L7 2Z" />
+  </svg>
+);
+
+// Ícone da Moeda Dourada com Check
 const CustomCheckCoinIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
     <circle cx="12" cy="12" r="10" fill="#FFB800" />
@@ -152,14 +168,14 @@ const Checkout: React.FC = () => {
         </div>
       )}
 
-      {/* Header Atualizado com Selo de Segurança */}
+      {/* Header com Ícone de Carteira Ciano Clone 1:1 */}
       <div className="bg-white sticky top-0 z-50 border-b pb-2">
         <div className="h-12 flex items-center px-4">
           <button onClick={() => navigate(-1)} className="p-2 -ml-2"><ArrowLeft size={24} /></button>
           <h1 className="w-full text-center text-[18px] font-bold">Resumo do Pedido</h1>
         </div>
         <div className="flex items-center justify-center space-x-1 -mt-1">
-          <CreditCard size={14} className="text-[#00BFA5]" />
+          <CustomSecureCardIcon className="w-5 h-5" />
           <span className="text-[13px] font-medium text-[#00BFA5]">Checkout seguro garantido</span>
         </div>
       </div>
@@ -177,7 +193,7 @@ const Checkout: React.FC = () => {
           <ChevronRight size={20} className="text-gray-300" />
         </div>
 
-        {/* Produto - CLONE 1:1 DA FOTO */}
+        {/* Produto - Réplica com as tags empilhadas */}
         <div className="bg-white mt-2 p-4">
           <div className="flex justify-between items-center mb-3">
             <span className="text-[13px] font-bold text-gray-900 uppercase">HAVAN</span>
@@ -187,40 +203,44 @@ const Checkout: React.FC = () => {
           </div>
 
           <div className="flex space-x-3">
-            {/* Imagem */}
             <div className="w-[110px] h-[110px] rounded-xl border border-gray-100 flex items-center justify-center p-1 bg-white shrink-0 overflow-hidden">
               <img src={product.media[0].src} className="w-full h-full object-contain" alt="Produto" />
             </div>
 
-            {/* Informações da Direita */}
-            <div className="flex-grow flex flex-col justify-between">
-              <div>
-                <h4 className="text-[15px] font-bold text-black leading-snug line-clamp-1">
-                  {product.title}
-                </h4>
-                
+            <div className="flex-grow flex flex-col justify-start">
+              <h4 className="text-[15px] font-bold text-black leading-snug line-clamp-1">
+                {product.title}
+              </h4>
+              
+              <div className="mt-2 flex flex-col space-y-1">
+                {/* Tag Oferta Relâmpago Restaurada */}
+                <div className="flex items-center bg-[#FFF1F3] rounded-sm px-1.5 py-0.5 w-fit">
+                  <CustomFlashIcon className="w-3 h-3 text-[#FF2C55] mr-1" />
+                  <span className="text-[11px] font-bold text-[#FF2C55]">Oferta Relâmpago</span>
+                </div>
+
                 {/* Tag Devolução Gratuita */}
-                <div className="mt-1 flex items-center bg-[#F1F1F1] rounded-sm px-1.5 py-0.5 w-fit">
+                <div className="flex items-center bg-[#F1F1F1] rounded-sm px-1.5 py-0.5 w-fit">
                   <CustomCheckCoinIcon className="w-3.5 h-3.5 mr-1" />
                   <span className="text-[11px] font-medium text-[#757575]">Devolução gratuita</span>
                 </div>
-
-                {/* Bloco de Preço Conforme a Foto */}
-                <div className="mt-2 flex flex-col">
-                  <span className="text-[19px] font-bold text-[#FF2C55]">R$ {formatPrice(unitPrice)}</span>
-                  <div className="flex items-center space-x-1.5 -mt-0.5">
-                    <span className="text-[13px] text-gray-400 line-through">R$ {formatPrice(originalPrice)}</span>
-                    <span className="text-[10px] font-bold text-[#FF2C55] bg-[#FFF1F3] px-1 rounded-sm">-89%</span>
-                  </div>
-                </div>
               </div>
 
-              {/* Seletor de Qtd Posicionado como na foto */}
-              <div className="flex justify-end mt-1">
-                <div className="flex items-center bg-[#F5F5F5] rounded-lg h-9 px-1">
-                  <button className="w-9 h-9 flex items-center justify-center text-gray-500" onClick={() => setQuantity(q => Math.max(1, q - 1))}><Minus size={16} /></button>
-                  <span className="min-w-[32px] text-center text-[15px] font-bold text-gray-900 mx-1">{quantity}</span>
-                  <button className="w-9 h-9 flex items-center justify-center text-gray-900" onClick={() => setQuantity(q => q + 1)}><Plus size={16} /></button>
+              {/* Preço e Qtd */}
+              <div className="mt-3 flex flex-col">
+                <div className="flex justify-between items-end">
+                  <div className="flex flex-col">
+                    <span className="text-[19px] font-bold text-[#FF2C55]">R$ {formatPrice(unitPrice)}</span>
+                    <div className="flex items-center space-x-1.5 -mt-0.5">
+                      <span className="text-[13px] text-gray-400 line-through">R$ {formatPrice(originalPrice)}</span>
+                      <span className="text-[10px] font-bold text-[#FF2C55] bg-[#FFF1F3] px-1 rounded-sm">-89%</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center bg-[#F5F5F5] rounded-lg h-9 px-1 mb-1">
+                    <button className="w-9 h-9 flex items-center justify-center text-gray-500" onClick={() => setQuantity(q => Math.max(1, q - 1))}><Minus size={16} /></button>
+                    <span className="min-w-[32px] text-center text-[15px] font-bold text-gray-900 mx-1">{quantity}</span>
+                    <button className="w-9 h-9 flex items-center justify-center text-gray-900" onClick={() => setQuantity(q => q + 1)}><Plus size={16} /></button>
+                  </div>
                 </div>
               </div>
             </div>
