@@ -143,7 +143,7 @@ const Checkout: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8F8F8] pb-[240px] font-sans">
+    <div className="min-h-screen bg-[#F8F8F8] pb-[220px] font-sans">
       {/* Modais de Processamento e Erro */}
       {isProcessingCard && (
         <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-6 backdrop-blur-sm">
