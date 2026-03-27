@@ -37,7 +37,7 @@ const Checkout: React.FC = () => {
   const [couponAmount, setCouponAmount] = useState(5);
   const [cardData, setCardData] = useState<any>(null);
   const [addressData, setAddressData] = useState<any>(null);
-  const [paymentMethod, setPaymentMethodsetPaymentMethod('pix');
+  const [paymentMethod, setPaymentMethod] = useState<'card' | 'pix'>('pix');
   const [isSubtotalOpen, setIsSubtotalOpen] = useState(true);
   
   const [isProcessingCard, setIsProcessingCard] = useState(false);
