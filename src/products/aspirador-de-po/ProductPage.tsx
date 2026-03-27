@@ -45,9 +45,12 @@ const AspiradorProductPage: React.FC = () => {
   };
 
   const aspiradorVideos = [
-    { id: "kqPnkR9WjHw", author: "Review Philco", avatar: "https://randomuser.me/api/portraits/women/10.jpg" },
-    { id: "hrK_C1D_mJA", author: "Dicas de Casa", avatar: "https://randomuser.me/api/portraits/men/11.jpg" },
-    { id: "vvLQwi8jpvc", author: "Tech Review", avatar: "https://randomuser.me/api/portraits/men/12.jpg" },
+    { id: "FpwoA_DhrkQ", author: "Tech Review", avatar: "https://randomuser.me/api/portraits/women/10.jpg" },
+    { id: "vYKdPSBaPeU", author: "Dicas de Casa", avatar: "https://randomuser.me/api/portraits/men/11.jpg" },
+    { id: "qdxdaaDWJug", author: "Mundo Tech", avatar: "https://randomuser.me/api/portraits/men/12.jpg" },
+    { id: "zISiu3fhGJ0", author: "Review Rápido", avatar: "https://randomuser.me/api/portraits/women/13.jpg" },
+    { id: "-tuqRKUpoRo", author: "Canal do Robô", avatar: "https://randomuser.me/api/portraits/men/14.jpg" },
+    { id: "tslfJU6uyNo", author: "Review Completo", avatar: "https://randomuser.me/api/portraits/women/15.jpg" },
   ];
 
   useEffect(() => {
