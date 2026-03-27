@@ -6,6 +6,15 @@ import { Button } from '@/components/ui/button';
 import { products } from '@/data/products';
 import { useNavigate } from 'react-router-dom';
 
+// Ícone de Câmera Clone 1:1
+const CustomCameraIcon = () => (
+  <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4.5 1H9.5L10.5 3H12.5C13.05 3 13.5 3.45 13.5 4V10.5C13.5 11.05 13.05 11.5 12.5 11.5H1.5C0.95 11.5 0.5 11.05 0.5 10.5V4C0.5 3.45 0.95 3 1.5 3H3.5L4.5 1Z" fill="black" />
+    <circle cx="7" cy="7.25" r="2.25" fill="white" />
+    <circle cx="7" cy="7.25" r="1.5" fill="black" />
+  </svg>
+);
+
 const StoreSection: React.FC = () => {
   const navigate = useNavigate();
 
@@ -18,6 +27,7 @@ const StoreSection: React.FC = () => {
         </div>
         <div className="flex space-x-2 overflow-x-auto no-scrollbar">
           <div className="flex items-center space-x-1.5 bg-[#F1F1F1] px-3 py-2 rounded-md shrink-0">
+            <CustomCameraIcon />
             <span className="text-[12px] font-medium text-gray-900">Inclui imagens ou vídeos (16M)</span>
           </div>
           <div className="flex items-center space-x-1 bg-[#F1F1F1] px-3 py-2 rounded-md shrink-0">
