@@ -14,7 +14,8 @@ import {
   Loader2, 
   AlertCircle,
   Smile,
-  Star
+  ShieldCheck,
+  CreditCard
 } from 'lucide-react';
 import { products, Product } from '@/data/products';
 import { Button } from '@/components/ui/button';
@@ -22,13 +23,6 @@ import NoteDrawer from '@/components/NoteDrawer';
 import TikTokCouponDrawer from '@/components/TikTokCouponDrawer';
 import { supabase } from "@/integrations/supabase/client";
 import { showError } from '@/utils/toast';
-
-// Ícone do Raio Customizado (Flat no topo como na foto)
-const CustomFlashIcon = ({ className }: { className?: string }) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" className={className} xmlns="http://www.w3.org/2000/svg">
-    <path d="M7 2H17L14 11H20L10 22L12 13H5L7 2Z" />
-  </svg>
-);
 
 // Ícone da Moeda Dourada com Check (Réplica da foto)
 const CustomCheckCoinIcon = ({ className }: { className?: string }) => (
@@ -158,9 +152,16 @@ const Checkout: React.FC = () => {
         </div>
       )}
 
-      <div className="bg-white sticky top-0 z-50 border-b h-12 flex items-center px-4">
-        <button onClick={() => navigate(-1)} className="p-2 -ml-2"><ArrowLeft size={24} /></button>
-        <h1 className="w-full text-center text-[18px] font-bold">Resumo do Pedido</h1>
+      {/* Header Atualizado com Selo de Segurança */}
+      <div className="bg-white sticky top-0 z-50 border-b pb-2">
+        <div className="h-12 flex items-center px-4">
+          <button onClick={() => navigate(-1)} className="p-2 -ml-2"><ArrowLeft size={24} /></button>
+          <h1 className="w-full text-center text-[18px] font-bold">Resumo do Pedido</h1>
+        </div>
+        <div className="flex items-center justify-center space-x-1 -mt-1">
+          <CreditCard size={14} className="text-[#00BFA5]" />
+          <span className="text-[13px] font-medium text-[#00BFA5]">Checkout seguro garantido</span>
+        </div>
       </div>
 
       <div className="max-w-[600px] mx-auto">
@@ -176,9 +177,8 @@ const Checkout: React.FC = () => {
           <ChevronRight size={20} className="text-gray-300" />
         </div>
 
-        {/* Produto - REPLICA 1:1 DA FOTO */}
+        {/* Produto - CLONE 1:1 DA FOTO */}
         <div className="bg-white mt-2 p-4">
-          {/* Cabeçalho do Bloco: HAVAN + Nota */}
           <div className="flex justify-between items-center mb-3">
             <span className="text-[13px] font-bold text-gray-900 uppercase">HAVAN</span>
             <button className="text-[12px] text-gray-400 flex items-center font-medium" onClick={() => setIsNoteDrawerOpen(true)}>
@@ -188,38 +188,39 @@ const Checkout: React.FC = () => {
 
           <div className="flex space-x-3">
             {/* Imagem */}
-            <div className="w-[110px] h-[110px] rounded-xl border border-gray-100 flex items-center justify-center p-1 bg-white shrink-0 overflow-hidden shadow-sm">
+            <div className="w-[110px] h-[110px] rounded-xl border border-gray-100 flex items-center justify-center p-1 bg-white shrink-0 overflow-hidden">
               <img src={product.media[0].src} className="w-full h-full object-contain" alt="Produto" />
             </div>
 
             {/* Informações da Direita */}
-            <div className="flex-grow flex flex-col justify-start">
-              <h4 className="text-[15px] font-extrabold text-black leading-snug line-clamp-2">
-                {product.title}
-              </h4>
-              <p className="text-[13px] text-[#A6B0C3] mt-0.5">{selectedVar}</p>
-
-              <div className="mt-2 flex flex-col space-y-1">
-                {/* Tag Oferta Relâmpago com Raio Flat */}
-                <div className="flex items-center bg-[#FFF1F3] rounded-sm px-1.5 py-0.5 w-fit">
-                  <CustomFlashIcon className="w-3 h-3 text-[#FF2C55] mr-1" />
-                  <span className="text-[11px] font-bold text-[#FF2C55]">Oferta Relâmpago</span>
+            <div className="flex-grow flex flex-col justify-between">
+              <div>
+                <h4 className="text-[15px] font-bold text-black leading-snug line-clamp-1">
+                  {product.title}
+                </h4>
+                
+                {/* Tag Devolução Gratuita */}
+                <div className="mt-1 flex items-center bg-[#F1F1F1] rounded-sm px-1.5 py-0.5 w-fit">
+                  <CustomCheckCoinIcon className="w-3.5 h-3.5 mr-1" />
+                  <span className="text-[11px] font-medium text-[#757575]">Devolução gratuita</span>
                 </div>
 
-                {/* Tag Devolução Gratuita com Moeda Check */}
-                <div className="flex items-center bg-[#F1F1F1] rounded-sm px-1.5 py-0.5 w-fit">
-                  <CustomCheckCoinIcon className="w-3 h-3 mr-1" />
-                  <span className="text-[11px] font-medium text-[#757575]">Devolução gratuita</span>
+                {/* Bloco de Preço Conforme a Foto */}
+                <div className="mt-2 flex flex-col">
+                  <span className="text-[19px] font-bold text-[#FF2C55]">R$ {formatPrice(unitPrice)}</span>
+                  <div className="flex items-center space-x-1.5 -mt-0.5">
+                    <span className="text-[13px] text-gray-400 line-through">R$ {formatPrice(originalPrice)}</span>
+                    <span className="text-[10px] font-bold text-[#FF2C55] bg-[#FFF1F3] px-1 rounded-sm">-89%</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Preço e Qtd */}
-              <div className="flex justify-between items-center mt-3">
-                <span className="text-[16px] font-bold text-[#FF2C55]">R$ {formatPrice(unitPrice)}</span>
-                <div className="flex items-center bg-[#F1F1F1] rounded-lg h-7 px-1">
-                  <button className="w-7 h-7 flex items-center justify-center text-gray-400" onClick={() => setQuantity(q => Math.max(1, q - 1))}><Minus size={14} /></button>
-                  <span className="min-w-[20px] text-center text-[13px] font-bold text-gray-900 mx-1">{quantity}</span>
-                  <button className="w-7 h-7 flex items-center justify-center text-gray-900" onClick={() => setQuantity(q => q + 1)}><Plus size={14} /></button>
+              {/* Seletor de Qtd Posicionado como na foto */}
+              <div className="flex justify-end mt-1">
+                <div className="flex items-center bg-[#F5F5F5] rounded-lg h-9 px-1">
+                  <button className="w-9 h-9 flex items-center justify-center text-gray-500" onClick={() => setQuantity(q => Math.max(1, q - 1))}><Minus size={16} /></button>
+                  <span className="min-w-[32px] text-center text-[15px] font-bold text-gray-900 mx-1">{quantity}</span>
+                  <button className="w-9 h-9 flex items-center justify-center text-gray-900" onClick={() => setQuantity(q => q + 1)}><Plus size={16} /></button>
                 </div>
               </div>
             </div>
