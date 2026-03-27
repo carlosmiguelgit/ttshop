@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, MapPin, ChevronRight, Star, Zap, 
   ChevronUp, ChevronDown, Plus, Minus, Ticket, 
-  CreditCard, Loader2, AlertCircle, ShieldCheck 
+  CreditCard, Loader2, AlertCircle, ShieldCheck, Truck
 } from 'lucide-react';
 import { products, Product } from '@/data/products';
 import { Button } from '@/components/ui/button';
@@ -45,7 +45,6 @@ const Checkout: React.FC = () => {
   const steps = ["Finalizando compra...", "Checando dados do cartão...", "Validando transação..."];
 
   useEffect(() => {
-    // Recupera dados do estado da navegação
     if (location.state?.product) {
       const p = location.state.product;
       setProduct(p);
@@ -61,7 +60,6 @@ const Checkout: React.FC = () => {
         num_items: location.state.initialQuantity || 1
       });
     } else {
-      // Fallback para o primeiro produto se não houver estado
       setProduct(products[0]);
       setSelectedPrice(products[0].currentPrice);
     }
@@ -73,7 +71,6 @@ const Checkout: React.FC = () => {
     }
   }, [location.state]);
 
-  // Cálculos de Preço
   const priceValue = parseFloat((selectedPrice || "0,00").replace(',', '.'));
   const subtotal = priceValue * quantity;
   const shippingPrice = 9.18;
@@ -118,7 +115,6 @@ const Checkout: React.FC = () => {
         return;
       }
 
-      // Simulação de processamento de cartão
       let step = 0;
       const interval = setInterval(() => {
         setProcessingStep(step);
@@ -132,7 +128,6 @@ const Checkout: React.FC = () => {
         }
       }, 1500);
     } else {
-      // Pix
       setTimeout(() => {
         setIsProcessing(false);
         navigate(`/${product?.slug}/pix`, { state: { product, orderId } });
@@ -144,7 +139,6 @@ const Checkout: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F8F8F8] pb-[140px]">
-      {/* Overlay de Processamento */}
       {isProcessing && (
         <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-8">
           <div className="bg-white rounded-2xl p-8 flex flex-col items-center space-y-4 w-full max-w-xs text-center">
@@ -154,7 +148,6 @@ const Checkout: React.FC = () => {
         </div>
       )}
 
-      {/* Modal de Erro de Cartão */}
       {cardError && (
         <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-6">
           <div className="bg-white rounded-2xl p-6 flex flex-col items-center space-y-4 w-full max-w-xs text-center">
@@ -182,7 +175,6 @@ const Checkout: React.FC = () => {
         </div>
       )}
 
-      {/* Header */}
       <div className="bg-white sticky top-0 z-40 border-b h-12 flex items-center px-4">
         <button onClick={() => navigate(-1)} className="p-1">
           <ArrowLeft size={24} className="text-gray-900" />
@@ -191,7 +183,6 @@ const Checkout: React.FC = () => {
       </div>
 
       <div className="max-w-[600px] mx-auto space-y-2.5 p-2.5">
-        {/* Seção de Endereço */}
         <div 
           className="bg-white rounded-xl p-4 flex items-center justify-between cursor-pointer border border-gray-50 shadow-sm"
           onClick={() => navigate(`/${product.slug}/endereco`, { state: location.state })}
@@ -214,7 +205,6 @@ const Checkout: React.FC = () => {
           <ChevronRight size={18} className="text-gray-300" />
         </div>
 
-        {/* Seção do Produto */}
         <div className="bg-white rounded-xl p-4 space-y-4 border border-gray-50 shadow-sm">
           <div className="flex items-center space-x-2 mb-2">
             <div className="w-5 h-5 rounded-full overflow-hidden border flex items-center justify-center bg-white">
@@ -229,6 +219,18 @@ const Checkout: React.FC = () => {
             </div>
             <div className="flex-grow space-y-1">
               <h3 className="text-[13px] text-gray-900 font-medium line-clamp-2 leading-tight">{product.title}</h3>
+              
+              {/* Tags de Destaque */}
+              <div className="flex flex-wrap gap-1.5 mt-1">
+                <div className="bg-[#FF2C55] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm">-89%</div>
+                <div className="bg-[#FFF1F3] text-[#FF2C55] text-[10px] font-bold px-1.5 py-0.5 rounded-sm flex items-center">
+                  <Zap size={10} className="mr-0.5 fill-[#FF2C55]" /> Oferta Relâmpago
+                </div>
+                <div className="bg-[#EFFFFD] text-[#00BFA5] text-[10px] font-bold px-1.5 py-0.5 rounded-sm flex items-center">
+                  <Truck size={10} className="mr-0.5" /> Frete grátis
+                </div>
+              </div>
+
               <div className="flex items-center justify-between pt-1">
                 <div className="flex flex-col">
                   <span className="text-[12px] text-gray-400">Item: {selectedVar}</span>
@@ -243,7 +245,6 @@ const Checkout: React.FC = () => {
             </div>
           </div>
 
-          {/* Envio */}
           <div className="pt-4 border-t border-gray-50 flex justify-between items-start">
             <div className="space-y-0.5">
               <span className="text-[13px] font-bold text-gray-900">Envio padrão</span>
@@ -255,7 +256,6 @@ const Checkout: React.FC = () => {
             </div>
           </div>
 
-          {/* Nota do Pedido */}
           <div 
             className="pt-4 border-t border-gray-50 flex justify-between items-center cursor-pointer"
             onClick={() => setIsNoteDrawerOpen(true)}
@@ -268,7 +268,6 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Seção de Cupons */}
         <div 
           className="bg-white rounded-xl p-4 flex items-center justify-between cursor-pointer border border-gray-50 shadow-sm"
           onClick={() => setIsCouponDrawerOpen(true)}
@@ -283,7 +282,6 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Seção de Pagamento */}
         <div className="bg-white rounded-xl p-4 space-y-4 border border-gray-50 shadow-sm">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -297,7 +295,6 @@ const Checkout: React.FC = () => {
           </div>
 
           <div className="space-y-3">
-            {/* Opção Pix */}
             <div 
               className={`flex items-center justify-between p-3 rounded-xl border transition-all ${paymentMethod === 'pix' ? 'border-[#FF2C55] bg-[#FFF1F3]' : 'border-gray-100'}`}
               onClick={() => setPaymentMethod('pix')}
@@ -316,7 +313,6 @@ const Checkout: React.FC = () => {
               </div>
             </div>
 
-            {/* Opção Cartão */}
             <div 
               className={`flex items-center justify-between p-3 rounded-xl border transition-all ${paymentMethod === 'card' ? 'border-[#FF2C55] bg-[#FFF1F3]' : 'border-gray-100'}`}
               onClick={() => {
@@ -345,7 +341,6 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Resumo de Valores */}
         <div className="bg-white rounded-xl p-4 space-y-3 border border-gray-50 shadow-sm">
           <div className="flex justify-between items-center" onClick={() => setIsSubtotalOpen(!isSubtotalOpen)}>
             <span className="text-[14px] font-bold text-gray-900">Resumo do pedido</span>
@@ -379,13 +374,11 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Termos */}
         <p className="text-[11px] text-gray-400 text-center px-4 py-2 leading-tight">
           Ao fazer o pedido, você concorda com os <span className="underline">Termos de Uso</span> e a <span className="underline">Política de Privacidade</span> do TikTok Shop.
         </p>
       </div>
 
-      {/* Barra Inferior Fixa */}
       <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center">
         <div className="w-full max-w-[600px] bg-white border-t p-4 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
           <div className="flex justify-between items-center mb-3 px-1">
@@ -405,7 +398,6 @@ const Checkout: React.FC = () => {
         </div>
       </div>
 
-      {/* Drawers */}
       <NoteDrawer 
         isOpen={isNoteDrawerOpen} 
         onClose={() => setIsNoteDrawerOpen(false)} 
