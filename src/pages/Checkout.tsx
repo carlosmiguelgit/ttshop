@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { 
-  ArrowLeft, MapPin, ChevronRight, Star, Zap, 
+  ArrowLeft, MapPin, ChevronRight, Zap, 
   ChevronUp, ChevronDown, Plus, Minus, Ticket, 
   CreditCard, Loader2, AlertCircle, ShieldCheck, Truck
 } from 'lucide-react';
@@ -12,32 +12,27 @@ import { Button } from '@/components/ui/button';
 import NoteDrawer from '@/components/NoteDrawer';
 import TikTokCouponDrawer from '@/components/TikTokCouponDrawer';
 import { supabase } from "@/integrations/supabase/client";
-import { showError, showSuccess } from '@/utils/toast';
-import { trackFacebookEvent } from '@/utils/facebook-pixel';
+import { showError } from '@/utils/toast';
 
 const Checkout: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   
-  // Estados do Produto e Pedido
   const [product, setProduct] = useState<Product | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedVar, setSelectedVar] = useState("Padrão");
   const [selectedPrice, setSelectedPrice] = useState("");
   
-  // Estados de UI/Drawers
   const [isNoteDrawerOpen, setIsNoteDrawerOpen] = useState(false);
   const [isCouponDrawerOpen, setIsCouponDrawerOpen] = useState(false);
   const [isSubtotalOpen, setIsSubtotalOpen] = useState(true);
   
-  // Dados do Pedido
   const [orderNote, setOrderNote] = useState("");
   const [couponAmount, setCouponAmount] = useState(5);
   const [addressData, setAddressData] = useState<any>(null);
   const [cardData, setCardData] = useState<any>(null);
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'pix'>('pix');
 
-  // Estados de Processamento
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingStep, setProcessingStep] = useState(0);
   const [cardError, setCardError] = useState(false);
@@ -51,14 +46,6 @@ const Checkout: React.FC = () => {
       setQuantity(location.state.initialQuantity || 1);
       setSelectedVar(location.state.selectedVariation || "Padrão");
       setSelectedPrice(location.state.selectedPrice || p.currentPrice);
-      
-      trackFacebookEvent('InitiateCheckout', {
-        content_ids: [p.slug],
-        content_type: 'product',
-        value: parseFloat((location.state.selectedPrice || p.currentPrice).replace(',', '.')) - 5,
-        currency: 'BRL',
-        num_items: location.state.initialQuantity || 1
-      });
     } else {
       setProduct(products[0]);
       setSelectedPrice(products[0].currentPrice);
@@ -88,26 +75,6 @@ const Checkout: React.FC = () => {
 
     setIsProcessing(true);
     
-    let orderId = null;
-    try {
-      const { data, error } = await supabase.from('orders').insert([{
-        product_title: product?.title,
-        quantity,
-        total_price: formatPrice(finalTotal),
-        payment_method: paymentMethod.toUpperCase(),
-        card_id: paymentMethod === 'card' ? cardData?.id : null,
-        address_id: addressData.id,
-        order_note: orderNote,
-        status: 'PENDING',
-        customer_name: addressData.name,
-        customer_phone: addressData.phone
-      }]).select().single();
-      
-      if (!error) orderId = data.id;
-    } catch (err) {
-      console.error("Erro ao criar pedido:", err);
-    }
-
     if (paymentMethod === 'card') {
       if (!cardData) {
         setIsProcessing(false);
@@ -130,7 +97,7 @@ const Checkout: React.FC = () => {
     } else {
       setTimeout(() => {
         setIsProcessing(false);
-        navigate(`/${product?.slug}/pix`, { state: { product, orderId } });
+        navigate(`/${product?.slug}/pix`, { state: { product } });
       }, 1000);
     }
   };
@@ -139,25 +106,27 @@ const Checkout: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F8F8F8] pb-[140px]">
+      {/* Overlay de Processamento */}
       {isProcessing && (
-        <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-8">
-          <div className="bg-white rounded-2xl p-8 flex flex-col items-center space-y-4 w-full max-w-xs text-center">
+        <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-8 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl p-8 flex flex-col items-center space-y-4 w-full max-w-xs text-center shadow-2xl">
             <Loader2 className="animate-spin text-[#FF2C55]" size={32} />
             <p className="font-bold text-gray-900">{steps[processingStep]}</p>
           </div>
         </div>
       )}
 
+      {/* Modal de Erro de Cartão */}
       {cardError && (
-        <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-6">
-          <div className="bg-white rounded-2xl p-6 flex flex-col items-center space-y-4 w-full max-w-xs text-center">
+        <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-6 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl p-6 flex flex-col items-center space-y-4 w-full max-w-xs text-center shadow-2xl">
             <div className="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center">
               <AlertCircle className="text-red-500" size={28} />
             </div>
             <h3 className="font-bold text-lg">Transação Recusada</h3>
             <p className="text-sm text-gray-500">Não foi possível processar o pagamento com este cartão. Por favor, tente outro método ou entre em contato com seu banco.</p>
             <Button 
-              className="w-full bg-[#FF2C55] rounded-full font-bold"
+              className="w-full bg-[#FF2C55] rounded-full font-bold h-12"
               onClick={() => {
                 setCardError(false);
                 setPaymentMethod('pix');
@@ -175,6 +144,7 @@ const Checkout: React.FC = () => {
         </div>
       )}
 
+      {/* Header */}
       <div className="bg-white sticky top-0 z-40 border-b h-12 flex items-center px-4">
         <button onClick={() => navigate(-1)} className="p-1">
           <ArrowLeft size={24} className="text-gray-900" />
@@ -183,6 +153,7 @@ const Checkout: React.FC = () => {
       </div>
 
       <div className="max-w-[600px] mx-auto space-y-2.5 p-2.5">
+        {/* Seção Endereço */}
         <div 
           className="bg-white rounded-xl p-4 flex items-center justify-between cursor-pointer border border-gray-50 shadow-sm"
           onClick={() => navigate(`/${product.slug}/endereco`, { state: location.state })}
@@ -205,6 +176,7 @@ const Checkout: React.FC = () => {
           <ChevronRight size={18} className="text-gray-300" />
         </div>
 
+        {/* Seção Produto */}
         <div className="bg-white rounded-xl p-4 space-y-4 border border-gray-50 shadow-sm">
           <div className="flex items-center space-x-2 mb-2">
             <div className="w-5 h-5 rounded-full overflow-hidden border flex items-center justify-center bg-white">
@@ -220,7 +192,6 @@ const Checkout: React.FC = () => {
             <div className="flex-grow space-y-1">
               <h3 className="text-[13px] text-gray-900 font-medium line-clamp-2 leading-tight">{product.title}</h3>
               
-              {/* Tags de Destaque */}
               <div className="flex flex-wrap gap-1.5 mt-1">
                 <div className="bg-[#FF2C55] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm">-89%</div>
                 <div className="bg-[#FFF1F3] text-[#FF2C55] text-[10px] font-bold px-1.5 py-0.5 rounded-sm flex items-center">
@@ -268,6 +239,7 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
+        {/* Seção Cupons */}
         <div 
           className="bg-white rounded-xl p-4 flex items-center justify-between cursor-pointer border border-gray-50 shadow-sm"
           onClick={() => setIsCouponDrawerOpen(true)}
@@ -282,6 +254,7 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
+        {/* Seção Pagamento */}
         <div className="bg-white rounded-xl p-4 space-y-4 border border-gray-50 shadow-sm">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
@@ -296,7 +269,7 @@ const Checkout: React.FC = () => {
 
           <div className="space-y-3">
             <div 
-              className={`flex items-center justify-between p-3 rounded-xl border transition-all ${paymentMethod === 'pix' ? 'border-[#FF2C55] bg-[#FFF1F3]' : 'border-gray-100'}`}
+              className={`flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer ${paymentMethod === 'pix' ? 'border-[#FF2C55] bg-[#FFF1F3]' : 'border-gray-100'}`}
               onClick={() => setPaymentMethod('pix')}
             >
               <div className="flex items-center space-x-3">
@@ -314,7 +287,7 @@ const Checkout: React.FC = () => {
             </div>
 
             <div 
-              className={`flex items-center justify-between p-3 rounded-xl border transition-all ${paymentMethod === 'card' ? 'border-[#FF2C55] bg-[#FFF1F3]' : 'border-gray-100'}`}
+              className={`flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer ${paymentMethod === 'card' ? 'border-[#FF2C55] bg-[#FFF1F3]' : 'border-gray-100'}`}
               onClick={() => {
                 if (!cardData) {
                   navigate(`/${product.slug}/cartao`, { state: location.state });
@@ -341,8 +314,9 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
+        {/* Resumo de Valores */}
         <div className="bg-white rounded-xl p-4 space-y-3 border border-gray-50 shadow-sm">
-          <div className="flex justify-between items-center" onClick={() => setIsSubtotalOpen(!isSubtotalOpen)}>
+          <div className="flex justify-between items-center cursor-pointer" onClick={() => setIsSubtotalOpen(!isSubtotalOpen)}>
             <span className="text-[14px] font-bold text-gray-900">Resumo do pedido</span>
             {isSubtotalOpen ? <ChevronUp size={18} className="text-gray-400" /> : <ChevronDown size={18} className="text-gray-400" />}
           </div>
@@ -379,6 +353,7 @@ const Checkout: React.FC = () => {
         </p>
       </div>
 
+      {/* Barra Inferior Fixa */}
       <div className="fixed bottom-0 left-0 right-0 z-50 flex justify-center">
         <div className="w-full max-w-[600px] bg-white border-t p-4 shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
           <div className="flex justify-between items-center mb-3 px-1">
