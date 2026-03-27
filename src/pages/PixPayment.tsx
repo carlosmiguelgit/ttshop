@@ -52,7 +52,7 @@ const PixPayment: React.FC = () => {
       setTimeLeft(180);
       setIsExpired(false);
 
-      const pixValue = 179.78; // ATUALIZADO PARA O NOVO PREÇO
+      const pixValue = 174.78; // ATUALIZADO PARA O VALOR COM CUPOM
       const amountInCents = Math.round(pixValue * 100);
 
       const payload = {
@@ -142,7 +142,7 @@ const PixPayment: React.FC = () => {
               content_id: product?.slug,
               content_type: 'product',
               content_name: product?.title,
-              value: 179.78, // ATUALIZADO NO RASTREAMENTO
+              value: 174.78, 
               currency: 'BRL',
               quantity: 1
             });
@@ -192,7 +192,7 @@ const PixPayment: React.FC = () => {
 
           <div className="flex flex-col items-center py-2 border-t border-b border-gray-50 my-4">
             <span className="text-[12px] text-gray-500 mb-1">Total a pagar</span>
-            <span className="text-[32px] font-bold text-[#FF2C55]">R$ 179,78</span>
+            <span className="text-[32px] font-bold text-[#FF2C55]">R$ 174,78</span>
           </div>
 
           <div className="flex flex-col items-center space-y-4">
