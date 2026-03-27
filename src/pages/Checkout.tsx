@@ -15,15 +15,14 @@ import {
   Ticket, 
   CreditCard, 
   Loader2, 
-  AlertCircle, 
-  ShieldCheck
+  AlertCircle
 } from 'lucide-react';
 import { products, Product } from '@/data/products';
 import { Button } from '@/components/ui/button';
 import NoteDrawer from '@/components/NoteDrawer';
 import TikTokCouponDrawer from '@/components/TikTokCouponDrawer';
 import { supabase } from "@/integrations/supabase/client";
-import { showError, showSuccess } from '@/utils/toast';
+import { showError } from '@/utils/toast';
 
 const Checkout: React.FC = () => {
   const location = useLocation();
@@ -39,7 +38,6 @@ const Checkout: React.FC = () => {
   const [addressData, setAddressData] = useState<any>(null);
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'pix'>('pix');
   const [isSubtotalOpen, setIsSubtotalOpen] = useState(true);
-  const [isInitialLoading, setIsInitialLoading] = useState(false);
   
   const [isProcessingCard, setIsProcessingCard] = useState(false);
   const [cardProcessingStep, setCardProcessingStep] = useState(0);
@@ -53,7 +51,6 @@ const Checkout: React.FC = () => {
   ];
 
   useEffect(() => {
-    // Carrega apenas dados passados via navegação direta (sessão atual)
     if (location.state?.addressData) {
       setAddressData(location.state.addressData);
     }
@@ -299,38 +296,52 @@ const Checkout: React.FC = () => {
         <div className="bg-white mt-2.5 p-4 space-y-6">
           <h3 className="text-[16px] font-bold text-gray-900">Forma de pagamento</h3>
           
-          <div className="flex flex-col space-y-3 cursor-pointer" onClick={() => { 
-            setPaymentMethod('card'); 
-            navigate(`${getProductBasePath()}/cartao`, { state: location.state }); 
-          }}>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-3">
-                <div className="bg-[#EFFFFD] p-1.5 rounded-sm"><CreditCard size={18} className="text-[#00BFA5]" /></div>
-                <span className="text-[15px] font-medium text-gray-900">{cardData ? `Cartão final ${cardData.last4}` : "Adicionar cartão"}</span>
+          {/* Opção Cartão */}
+          <div className="flex items-start justify-between">
+            <div 
+              className="flex items-start space-x-3 flex-grow cursor-pointer"
+              onClick={() => navigate(`${getProductBasePath()}/cartao`, { state: location.state })}
+            >
+              <div className="bg-[#EFFFFD] p-1.5 rounded-sm shrink-0">
+                <CreditCard size={18} className="text-[#00BFA5]" />
               </div>
-              <div className="flex items-center space-x-3">
-                {paymentMethod === 'card' && <div className="w-2.5 h-2.5 bg-[#FF2C55] rounded-full" />}
-                <ChevronRight size={18} className="text-gray-200" />
+              <div className="flex flex-col">
+                <span className="text-[15px] font-medium text-gray-900">
+                  {cardData ? `Cartão final ${cardData.last4}` : "Adicionar cartão"}
+                </span>
+                {cardData && (
+                  <div className="mt-2 space-y-3">
+                    <div className="flex gap-2">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-4" alt="Mastercard" />
+                      <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-4" alt="Visa" />
+                    </div>
+                    <div className="bg-[#FFF1F3] text-[#FF2C55] text-[11px] font-bold px-2.5 py-1 rounded-sm border border-[#FFD9E0] flex items-center w-fit">
+                      Sem juros em até 3 parcelas <ChevronRight size={12} className="ml-1" />
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-            {cardData && (
-              <div className="pl-10 space-y-3">
-                <div className="flex gap-2">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Mastercard-logo.svg" className="h-4" />
-                  <img src="https://images.seeklogo.com/logo-png/14/1/visa-logo-png_seeklogo-149698.png" className="h-4" />
-                </div>
-                <div className="bg-[#FFF1F3] text-[#FF2C55] text-[11px] font-bold px-3 py-1 rounded-sm border border-[#FFD9E0] flex items-center w-fit">
-                  Sem juros em até 3 parcelas <ChevronRight size={12} className="ml-1" />
-                </div>
+            
+            <div className="flex items-center space-x-3">
+              <div 
+                className={`w-5 h-5 rounded-full border-2 flex items-center justify-center cursor-pointer ${paymentMethod === 'card' ? 'border-[#FF2C55]' : 'border-gray-200'}`}
+                onClick={() => setPaymentMethod('card')}
+              >
+                {paymentMethod === 'card' && <div className="w-2.5 h-2.5 bg-[#FF2C55] rounded-full" />}
               </div>
-            )}
+              <ChevronRight size={18} className="text-gray-200" />
+            </div>
           </div>
 
           <div className="h-[1px] bg-gray-100 w-full"></div>
 
+          {/* Opção Pix */}
           <div className="flex items-center justify-between cursor-pointer" onClick={() => setPaymentMethod('pix')}>
             <div className="flex items-center space-x-3">
-              <div className="bg-[#EFFFFD] p-1.5 rounded-sm"><img src="https://logospng.org/download/pix/logo-pix-icone-512.png" className="h-4 w-4" /></div>
+              <div className="bg-[#EFFFFD] p-1.5 rounded-sm shrink-0">
+                <img src="https://logospng.org/download/pix/logo-pix-icone-512.png" className="h-4 w-4" alt="Pix" />
+              </div>
               <span className="text-[15px] font-medium text-gray-900">Pix</span>
             </div>
             <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${paymentMethod === 'pix' ? 'border-[#FF2C55]' : 'border-gray-200'}`}>
@@ -347,7 +358,7 @@ const Checkout: React.FC = () => {
             <span className="text-[22px] font-bold text-[#FF2C55]">R$ {formatPrice(finalTotal)}</span>
           </div>
           <Button className="w-full bg-[#FF2C55] hover:bg-[#E0254B] text-white font-bold rounded-full h-[56px] text-[17px]" onClick={handlePlaceOrder}>
-            {isInitialLoading ? <Loader2 className="animate-spin" /> : "Fazer pedido"}
+            Fazer pedido
           </Button>
         </div>
       </div>
