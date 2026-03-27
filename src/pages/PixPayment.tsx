@@ -52,7 +52,7 @@ const PixPayment: React.FC = () => {
       setTimeLeft(180);
       setIsExpired(false);
 
-      const pixValue = 97.28;
+      const pixValue = 179.78; // ATUALIZADO PARA O NOVO PREÇO
       const amountInCents = Math.round(pixValue * 100);
 
       const payload = {
@@ -131,7 +131,6 @@ const PixPayment: React.FC = () => {
           if (status === "APPROVED" || status.includes("PAID") || status.includes("SUCCESS")) {
             setPaymentApproved(true);
             
-            // Atualiza o status do pedido no banco de dados
             if (location.state?.orderId) {
               await supabase
                 .from('orders')
@@ -143,7 +142,7 @@ const PixPayment: React.FC = () => {
               content_id: product?.slug,
               content_type: 'product',
               content_name: product?.title,
-              value: 97.28,
+              value: 179.78, // ATUALIZADO NO RASTREAMENTO
               currency: 'BRL',
               quantity: 1
             });
@@ -183,7 +182,7 @@ const PixPayment: React.FC = () => {
         <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
           <div className="flex items-center space-x-3 mb-4">
             <div className="w-12 h-12 rounded-lg bg-gray-50 flex-shrink-0 border p-1">
-              <img src={product.media[1]?.src || product.media[0].src} className="w-full h-full object-contain" />
+              <img src={product.media[0].src} className="w-full h-full object-contain" />
             </div>
             <div className="flex-grow overflow-hidden">
               <h3 className="text-[13px] font-bold text-gray-900 truncate">{product.title}</h3>
@@ -193,7 +192,7 @@ const PixPayment: React.FC = () => {
 
           <div className="flex flex-col items-center py-2 border-t border-b border-gray-50 my-4">
             <span className="text-[12px] text-gray-500 mb-1">Total a pagar</span>
-            <span className="text-[32px] font-bold text-[#FF2C55]">R$ 97,28</span>
+            <span className="text-[32px] font-bold text-[#FF2C55]">R$ 179,78</span>
           </div>
 
           <div className="flex flex-col items-center space-y-4">

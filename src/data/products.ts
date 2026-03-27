@@ -37,87 +37,86 @@ export interface Product {
 export const products: Product[] = [
   {
     slug: "aspirador-de-po",
-    title: "Aspirador de Pó Robô Philco 3 em 1 Antiqueda Pas26p - Bivolt",
-    currentPrice: "97,28",
-    originalPrice: "899,00",
-    discountPercentage: 89,
-    discountAmount: "801,72",
-    rating: 4.8,
-    reviewCount: 7671,
-    salesCount: 48800,
+    title: "Robô Aspirador De Pó Inteligente S40c Xiaomi, Branco",
+    currentPrice: "179,78",
+    originalPrice: "997,00",
+    discountPercentage: 82,
+    discountAmount: "817,22",
+    rating: 4.9,
+    reviewCount: 12450,
+    salesCount: 68400,
     flashSaleTimeSeconds: 5 * 60,
     media: [
-      { type: 'image', src: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243701.webp", thumbnailSrc: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243701.webp" },
-      { type: 'image', src: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243700.webp", thumbnailSrc: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243700.webp" },
-      { type: 'image', src: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243702.webp", thumbnailSrc: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243702.webp" },
-      { type: 'image', src: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243703.webp", thumbnailSrc: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243703.webp" },
-      { type: 'image', src: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243704.webp", thumbnailSrc: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243704.webp" },
-      { type: 'image', src: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243705.webp", thumbnailSrc: "https://www.havan.com.br/media/catalog/product/cache/820af7facfa7aca6eb3c138e3457dc8d/a/s/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p_1243705.webp" },
+      { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_964770-MLA102445494165_122025-F.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_964770-MLA102445494165_122025-F.webp" },
+      { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_834326-MLA95687146856_102025-F.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_834326-MLA95687146856_102025-F.webp" },
+      { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_752185-MLA101939000736_122025-F.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_752185-MLA101939000736_122025-F.webp" },
+      { type: 'image', src: "https://http2.mlstatic.com/D_NQ_NP_2X_632505-MLA101939435402_122025-F.webp", thumbnailSrc: "https://http2.mlstatic.com/D_NQ_NP_2X_632505-MLA101939435402_122025-F.webp" },
     ],
     specifications: [
-      { label: "Marca", value: "Philco" },
-      { label: "Modelo", value: "ROBÔ PAS26P" },
-      { label: "Potência", value: "35W" },
-      { label: "Função MOP", value: "Aspira e passa pano (seco ou úmido)" },
-      { label: "Filtro", value: "HEPA (Retém 99,5% de ácaros e poeira)" },
-      { label: "Reservatório de Pó", value: "610ml" },
-      { label: "Reservatório de Água", value: "200ml" },
-      { label: "Autonomia", value: "70-90 minutos" },
-      { label: "Tempo de Carga", value: "4-5 horas" },
-      { label: "Sensores", value: "Antiqueda e Obstáculos" },
-      { label: "Voltagem", value: "Bivolt" },
-      { label: "Dimensões", value: "31,6cm x 8cm x 34,9cm" },
-      { label: "Peso", value: "2,7Kg" },
+      { label: "Marca", value: "Xiaomi" },
+      { label: "Linha", value: "Robot Vacuum" },
+      { label: "Modelo", value: "S40C (E101)" },
+      { label: "Potência", value: "55 W" },
+      { label: "Pressão de sucção", value: "5 Pa" },
+      { label: "Wi-Fi", value: "Sim" },
+      { label: "Mapeamento", value: "Sim" },
+      { label: "Modos de limpeza", value: "Aspirar, passar pano" },
+      { label: "Filtro", value: "HEPA" },
+      { label: "Sensores", value: "Obstáculos e Antiquedas" },
+      { label: "Voltagem", value: "127/220V (Bivolt)" },
+      { label: "Anatel", value: "34632309185" },
     ],
-    descriptionText: `Com design moderno e tecnologia inovadora, tenha mais praticidade e conforto ao ter seus cômodos 100% limpos sem nenhum esforço com o Aspirador de Pó Robô Philco PAS26P. O Aspirador Robô Philco possui reservatório de água de 200ml e reservatório de pó de 610ml, é ideal para passar pano em todo o ambiente e sem a constante necessidade de precisar esvaziar o reservatório. Com sensor antiqueda e obstáculos o Aspirador de Pó Robô Philco é redirecionado ao ter contato com obstáculos. Além disso, quando a bateria estiver acabando ele retorna sozinho para a base de carregamento. Equipado com filtro HEPA, ele retém até 99,5% de ácaros, poeiras e até as partículas mais finais da sujeira. Outro diferencial é a função MOP que permite aspirar e passar pano seco ou úmido. Seus ambientes limpos e renovados em instantes com o Aspirador de Pó Robô Philco PAS26P MOP Bivolt.`,
-    safeRedirectUrl: "https://www.havan.com.br/aspirador-de-po-robo-philco-limpeza-inteligente-pas26p",
+    descriptionText: `Com o Robô Aspirador De Pó Inteligente S40c da Xiaomi, você terá a solução definitiva para manter sua casa impecável. Com potência de 55W e sistema de mapeamento inteligente, ele navega com precisão por todos os cômodos, evitando obstáculos e quedas. Sua função 2 em 1 permite aspirar e passar pano simultaneamente, sendo ideal para quem tem pets ou tapetes. O filtro HEPA garante a retenção das menores partículas, proporcionando um ar mais puro. Controle tudo pelo seu smartphone e agende limpezas mesmo quando não estiver em casa.`,
+    safeRedirectUrl: "https://www.havan.com.br/xiaomi-s40c",
     reviews: [
       {
-        username: "Claudio Mendes",
-        avatarSrc: "/homem/homem (10).jpg",
-        comment: "Surpreso com a qualidade desse Philco. Ele mapeia a casa direitinho e a função de passar pano é excelente. Pelo preço da promoção valeu muito a pena.",
-        variation: "Padrão",
+        username: "Carlos Alberto",
+        avatarSrc: "/homem/homem (12).jpg",
+        comment: "Simplesmente incrível! O mapeamento da Xiaomi é superior a qualquer outro. Ele limpa cada cantinho e volta pra base certinho. As fotos falam por si só.",
+        variation: "Branco",
         reviewImages: [
-          "https://stgavaliaprodutoextprd01.blob.core.windows.net/midiasproduto-public/h1Ie7sm1ifJ4tEcSSp0V28Za8Acmf4rHN_JfotJOj4npVOzASNGk-PY9h1jBMzAz.webp",
-          "https://stgavaliaprodutoextprd01.blob.core.windows.net/midiasproduto-public/C188efv7p2qe-24Ko78deglqhw5H5LCSFqZmdH_BMtfA-i5dII4YKEIKm9HM9kXM.webp"
+          "https://http2.mlstatic.com/D_NQ_NP_2X_822517-MLA93872828302_102025-O.webp",
+          "https://http2.mlstatic.com/D_NQ_NP_2X_765900-MLA99272004610_112025-O.webp"
         ]
       },
       {
-        username: "Juliana Costa",
-        avatarSrc: "/mulher/mulher (15).jpg",
-        comment: "Melhor investimento pra quem tem pet! O reservatório de 610ml cabe muita sujeira. Chegou super rápido, em 2 dias. O sensor de degrau funciona perfeitamente.",
-        variation: "Padrão",
+        username: "Ana Paula",
+        avatarSrc: "/mulher/mulher (26).jpg",
+        comment: "Melhor compra que já fiz. Tenho dois gatos e ele tira todos os pelos do tapete com o modo Turbo. Chegou em 24h!",
+        variation: "Branco",
         reviewImages: [
-          "https://stgavaliaprodutoextprd01.blob.core.windows.net/midiasproduto-public/mIl72h6iRGHRG9bDC17jrSJEnY-o6FNivUBvxTKLsnc5G4uIsUP9aRz3hOqYPaiX.webp",
-          "https://stgavaliaprodutoextprd01.blob.core.windows.net/midiasproduto-public/K6sbZwg8Je3R8meMWJJr6FJS2-ZrO17aXhdunUhSQD14xNNGrqXBZi0UWmiIWORx.webp"
+          "https://http2.mlstatic.com/D_NQ_NP_2X_913335-MLA94890864678_102025-O.webp",
+          "https://http2.mlstatic.com/D_NQ_NP_2X_922641-MLA93832401103_092025-O.webp"
         ]
       },
       {
-        username: "Ricardo Oliveira",
-        avatarSrc: "/homem/homem (22).jpg",
-        comment: "Produto excelente, aspira muito bem e o barulho é bem baixo. O filtro HEPA faz muita diferença pra quem tem alergia. A bateria dura o suficiente para meu apto.",
-        variation: "Padrão",
+        username: "Marcos Vinicius",
+        avatarSrc: "/homem/homem (45).jpg",
+        comment: "O custo-benefício é imbatível. Original Xiaomi, conecta no app sem problemas. Ele passa pano muito bem, recomendo.",
+        variation: "Branco",
         reviewImages: [
-          "https://stgavaliaprodutoextprd01.blob.core.windows.net/midiasproduto-public/kJ9NmK62ITG9tAUye52jvSdtGpD6UbUfIHUyZ5nIYNNHC9vdviEBkkyAZ-Bmln0y.webp",
-          "https://stgavaliaprodutoextprd01.blob.core.windows.net/midiasproduto-public/qfbZzLllAOIMSO5ZdZwC4-1BLDACkFDoEX81a5LqW8q14H8QMVyC4lspdNp111cd.webp"
+          "https://http2.mlstatic.com/D_NQ_NP_2X_823291-MLA100577799790_122025-O.webp",
+          "https://http2.mlstatic.com/D_NQ_NP_2X_986303-MLA107749764671_022026-O.webp"
         ]
       },
       {
-        username: "Mariana Santos",
-        avatarSrc: "/mulher/mulher (40).jpg",
-        comment: "Estou apaixonada! Ele entra embaixo do sofá e da cama, lugares que eu tinha dificuldade de limpar. A função MOP deixa o chão brilhando.",
-        variation: "Padrão",
+        username: "Fernanda Lima",
+        avatarSrc: "/mulher/mulher (51).jpg",
+        comment: "Adorei! Ele é bem baixinho e entra debaixo do meu sofá. A entrega da Havan pelo TikTok foi super segura.",
+        variation: "Branco",
         reviewImages: [
-          "https://stgavaliaprodutoextprd01.blob.core.windows.net/midiasproduto-public/Mlz3tRPB_SiXZ16fSApt6jHOFR3lROglN6vBc6dVA6vt1rNhd6ONbgSu1KuE0cPe.webp"
+          "https://http2.mlstatic.com/D_NQ_NP_2X_641141-MLA106848981914_022026-O.webp",
+          "https://http2.mlstatic.com/D_NQ_NP_2X_787388-MLA105181574824_012026-O.webp"
         ]
       },
       {
-        username: "Paulo Henrique",
-        avatarSrc: "/homem/homem (33).jpg",
-        comment: "Chegou muito bem embalado. O robô é muito inteligente e volta sozinho para a base quando a bateria acaba. Recomendo!",
-        variation: "Padrão",
+        username: "Roberto Souza",
+        avatarSrc: "/homem/homem (60).jpg",
+        comment: "Produto top de linha. O sensor de obstáculos funciona muito bem, não fica batendo nos móveis. Nota 10.",
+        variation: "Branco",
         reviewImages: [
-          "https://stgavaliaprodutoextprd01.blob.core.windows.net/midiasproduto-public/M6Kzg6EbzhS_kUpfoF1B4UaVE8GhAD1fzadXCyDEHZXAvxgCC7JlCQmh9fqS0KjJ.webp"
+          "https://http2.mlstatic.com/D_NQ_NP_2X_856028-MLA104618930816_012026-O.webp",
+          "https://http2.mlstatic.com/D_NQ_NP_2X_610262-MLA106533172798_022026-O.webp"
         ]
       }
     ]
