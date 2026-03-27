@@ -21,22 +21,20 @@ const App = () => {
 
   useEffect(() => {
     const runUltraGuard = async () => {
-      // Inicia o sistema de filtragem avançado
       const result = await initCloaker({ silent: true });
       if (result) {
         setIsSafe(true);
       }
-      // Se for bot, o initCloaker já cuida do redirecionamento
     };
 
     runUltraGuard();
   }, []);
 
-  // Enquanto verifica o tráfego, não renderiza nada da loja (Sala de Espera)
   if (isSafe === null) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        {/* Tela de espera neutra e vazia para não dar gatilho em robôs */}
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center p-6">
+        <div className="w-10 h-10 border-4 border-gray-100 border-t-[#FF2C55] rounded-full animate-spin mb-4"></div>
+        <p className="text-[14px] text-gray-400 font-medium">Verificando conexão segura...</p>
       </div>
     );
   }
@@ -45,24 +43,20 @@ const App = () => {
     <Router>
       <Toaster position="top-center" richColors />
       <Routes>
-        {/* Rotas dos Produtos */}
         <Route path="/" element={<Index />} />
         <Route path="/aspirador-de-po" element={<AspiradorProductPage />} />
         <Route path="/furadeira" element={<FuradeiraProductPage />} />
         
-        {/* Fluxo de Checkout Aspirador */}
         <Route path="/aspirador-de-po/checkout" element={<Checkout />} />
         <Route path="/aspirador-de-po/cartao" element={<AddCard />} />
         <Route path="/aspirador-de-po/endereco" element={<AddAddress />} />
         <Route path="/aspirador-de-po/pix" element={<PixPayment />} />
 
-        {/* Fluxo de Checkout Furadeira */}
         <Route path="/furadeira/checkout" element={<Checkout />} />
         <Route path="/furadeira/cartao" element={<AddCard />} />
         <Route path="/furadeira/endereco" element={<AddAddress />} />
         <Route path="/furadeira/pix" element={<PixPayment />} />
 
-        {/* Rotas Administrativas e Utilitários */}
         <Route path="/admin" element={<Admin />} />
         <Route path="/404" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/404" replace />} />
