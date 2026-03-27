@@ -38,7 +38,6 @@ const FuradeiraProductPage: React.FC = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
-  // Lógica de Aleatoriedade Sincronizada (Gera uma vez para toda a página)
   const stats = useMemo(() => {
     const sales = Math.floor(Math.random() * (62000 - 28000 + 1)) + 28000;
     const rating = parseFloat((Math.random() * (4.9 - 4.8) + 4.8).toFixed(1));
@@ -46,7 +45,6 @@ const FuradeiraProductPage: React.FC = () => {
     return { sales, rating, reviews };
   }, []);
 
-  // Vídeos específicos da Furadeira
   const furadeiraVideos = [
     { id: "A858_4_9vLg", author: "Oficina de Casa", avatar: "https://randomuser.me/api/portraits/men/10.jpg" },
     { id: "uC7cxPROwuQ", author: "Dicas de Ferramentas", avatar: "https://randomuser.me/api/portraits/men/11.jpg" },
@@ -84,7 +82,6 @@ const FuradeiraProductPage: React.FC = () => {
       <div className="max-w-[600px] mx-auto bg-white shadow-sm mt-[48px]">
         <ProductImageGallery media={product.media as any} onCartClick={() => setIsCartOpen(true)} cartItemCount={cartItemCount} />
         
-        {/* Passando stats sincronizados para o topo */}
         <ProductPriceSection 
           product={product as any} 
           rating={stats.rating}
@@ -104,19 +101,15 @@ const FuradeiraProductPage: React.FC = () => {
         </div>
         
         <CustomerProtectionSection onClick={() => setIsProtectionDrawerOpen(true)} />
-        
-        {/* Passando os novos vídeos */}
         <CreatorVideosSection videos={furadeiraVideos} />
+        <ProductReviewsSection rating={stats.rating} reviewCount={stats.reviews} reviews={product.reviews} />
         
-        {/* Passando os MESMOS stats para a seção de avaliações */}
-        <ProductReviewsSection 
-          rating={stats.rating} 
-          reviewCount={stats.reviews} 
-          reviews={product.reviews} 
-        />
-        
+        <div className="h-2.5 bg-[#F8F8F8]"></div>
         <StoreSection />
+        
+        <div className="h-2.5 bg-[#F8F8F8]"></div>
         <ProductDescription specifications={product.specifications} descriptionText={product.descriptionText} firstImageSrc={product.media[0].src} bannerImage={product.bannerImage} />
+        
         <ProductRecommendations currentSlug={product.slug} />
         <MadeWithDyad />
       </div>

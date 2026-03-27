@@ -17,7 +17,7 @@ const ProductReviewsSection: React.FC<ProductReviewsSectionProps> = ({ rating, r
   };
 
   return (
-    <div className="bg-white p-4 mt-4">
+    <div className="bg-white p-4">
       <ProductReviewsHeader 
         rating={rating} 
         reviewCount={reviewCount} 
@@ -28,6 +28,8 @@ const ProductReviewsSection: React.FC<ProductReviewsSectionProps> = ({ rating, r
         showAll={showAllReviews} 
         reviews={reviews}
       />
+      {/* Linha separadora horizontal abaixo dos depoimentos */}
+      <div className="h-[1px] bg-gray-50 w-full mt-4"></div>
     </div>
   );
 };

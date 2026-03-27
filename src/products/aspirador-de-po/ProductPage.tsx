@@ -107,8 +107,13 @@ const AspiradorProductPage: React.FC = () => {
         <CustomerProtectionSection onClick={() => setIsProtectionDrawerOpen(true)} />
         <CreatorVideosSection videos={aspiradorVideos} />
         <ProductReviewsSection rating={stats.rating} reviewCount={stats.reviews} reviews={product.reviews} />
+        
+        <div className="h-2.5 bg-[#F8F8F8]"></div>
         <StoreSection />
+        
+        <div className="h-2.5 bg-[#F8F8F8]"></div>
         <ProductDescription specifications={product.specifications} descriptionText={product.descriptionText} firstImageSrc={product.media[0].src} />
+        
         <ProductRecommendations currentSlug={product.slug} />
         <MadeWithDyad />
       </div>
