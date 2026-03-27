@@ -236,7 +236,7 @@ const Checkout: React.FC = () => {
           </div>
         </div>
 
-        {/* Cupom - Nome atualizado conforme imagem */}
+        {/* Cupom */}
         <div className="bg-white mt-2 p-4 flex items-center justify-between cursor-pointer" onClick={() => setIsCouponDrawerOpen(true)}>
           <div className="flex items-center space-x-3">
             <Ticket size={20} className="text-[#FF2C55]" />
@@ -271,9 +271,9 @@ const Checkout: React.FC = () => {
                   <span>Preço original</span>
                   <span>R$ {formatPrice(originalSubtotal)}</span>
                 </div>
-                <div className="flex justify-between text-[#FF2C55]">
+                <div className="flex justify-between text-gray-600">
                   <span>Desconto no produto</span>
-                  <span>- R$ {formatPrice(productDiscount)}</span>
+                  <span className="text-[#FF2C55]">- R$ {formatPrice(productDiscount)}</span>
                 </div>
               </div>
             )}

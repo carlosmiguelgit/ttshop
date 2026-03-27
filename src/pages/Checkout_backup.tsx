@@ -22,7 +22,6 @@ import TikTokCouponDrawer from '@/components/TikTokCouponDrawer';
 import { supabase } from "@/integrations/supabase/client";
 import { showError } from '@/utils/toast';
 
-// Ícone da Carteira/Cartão Ciano com Check (Réplica 1:1 da foto enviada)
 const CustomSecureCardIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
     <rect x="3" y="6" width="18" height="12" rx="2" stroke="#00BFA5" strokeWidth="2" />
@@ -33,14 +32,12 @@ const CustomSecureCardIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-// Ícone do Raio para Oferta Relâmpago
 const CustomFlashIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="currentColor" className={className} xmlns="http://www.w3.org/2000/svg">
     <path d="M7 2H17L14 11H20L10 22L12 13H5L7 2Z" />
   </svg>
 );
 
-// Ícone da Moeda Dourada com Check
 const CustomCheckCoinIcon = ({ className }: { className?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
     <circle cx="12" cy="12" r="10" fill="#FFB800" />
@@ -91,8 +88,8 @@ const CheckoutBackup: React.FC = () => {
   const subtotal = unitPrice * quantity;
   const originalSubtotal = originalPrice * quantity;
   const productDiscount = originalSubtotal - subtotal;
-  const totalSavings = productDiscount + couponAmount;
   const finalTotal = subtotal - couponAmount;
+  const totalSavings = productDiscount + couponAmount;
   
   const formatPrice = (val: number) => val.toFixed(2).replace('.', ',');
   const getProductBasePath = () => `/${product.slug}`;
@@ -144,7 +141,6 @@ const CheckoutBackup: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F8F8F8] pb-[200px] font-sans">
-      {/* Modais de Processamento e Erro */}
       {isProcessingCard && (
         <div className="fixed inset-0 z-[100] bg-black/60 flex items-center justify-center p-6 backdrop-blur-sm">
           <div className="bg-white rounded-2xl p-8 flex flex-col items-center space-y-4 w-full max-w-[300px]">
@@ -168,7 +164,6 @@ const CheckoutBackup: React.FC = () => {
         </div>
       )}
 
-      {/* Header com Ícone de Carteira Ciano Clone 1:1 */}
       <div className="bg-white sticky top-0 z-50 border-b pb-2">
         <div className="h-12 flex items-center px-4">
           <button onClick={() => navigate(-1)} className="p-2 -ml-2"><ArrowLeft size={24} /></button>
@@ -181,7 +176,6 @@ const CheckoutBackup: React.FC = () => {
       </div>
 
       <div className="max-w-[600px] mx-auto">
-        {/* Endereço */}
         <div className="bg-white p-4 flex items-center justify-between border-b cursor-pointer" onClick={() => navigate(`${getProductBasePath()}/endereco`, { state: location.state })}>
           <div className="flex items-center space-x-3">
             <MapPin size={20} className="text-[#00BFA5]" />
@@ -193,7 +187,6 @@ const CheckoutBackup: React.FC = () => {
           <ChevronRight size={20} className="text-gray-300" />
         </div>
 
-        {/* Produto - Réplica com as tags empilhadas */}
         <div className="bg-white mt-2 p-4">
           <div className="flex justify-between items-center mb-3">
             <span className="text-[13px] font-bold text-gray-900 uppercase">HAVAN</span>
@@ -213,20 +206,16 @@ const CheckoutBackup: React.FC = () => {
               </h4>
               
               <div className="mt-2 flex flex-col space-y-1">
-                {/* Tag Oferta Relâmpago Restaurada */}
                 <div className="flex items-center bg-[#FFF1F3] rounded-sm px-1.5 py-0.5 w-fit">
                   <CustomFlashIcon className="w-3 h-3 text-[#FF2C55] mr-1" />
                   <span className="text-[11px] font-bold text-[#FF2C55]">Oferta Relâmpago</span>
                 </div>
-
-                {/* Tag Devolução Gratuita */}
                 <div className="flex items-center bg-[#F1F1F1] rounded-sm px-1.5 py-0.5 w-fit">
                   <CustomCheckCoinIcon className="w-3.5 h-3.5 mr-1" />
                   <span className="text-[11px] font-medium text-[#757575]">Devolução gratuita</span>
                 </div>
               </div>
 
-              {/* Preço e Qtd */}
               <div className="mt-3 flex flex-col">
                 <div className="flex justify-between items-end">
                   <div className="flex flex-col">
@@ -251,7 +240,7 @@ const CheckoutBackup: React.FC = () => {
         <div className="bg-white mt-2 p-4 flex items-center justify-between cursor-pointer" onClick={() => setIsCouponDrawerOpen(true)}>
           <div className="flex items-center space-x-3">
             <Ticket size={20} className="text-[#FF2C55]" />
-            <span className="text-[14px] font-bold">Cupons TikTok Shop</span>
+            <span className="text-[14px] font-bold">Desconto do TikTok Shop</span>
           </div>
           <div className="flex items-center space-x-1">
             <span className="text-[13px] font-bold text-[#FF2C55] bg-[#FFF1F3] px-2 py-0.5">- R$ {formatPrice(couponAmount)}</span>
@@ -259,25 +248,49 @@ const CheckoutBackup: React.FC = () => {
           </div>
         </div>
 
-        {/* Resumo Valores */}
+        {/* Resumo do Pedido - Réplica 1:1 da Imagem */}
         <div className="bg-white mt-2 p-4">
-          <div className="flex justify-between items-center mb-4" onClick={() => setIsSubtotalOpen(!isSubtotalOpen)}>
-            <span className="text-[15px] font-bold">Resumo</span>
-            {isSubtotalOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+          <div className="flex justify-between items-center mb-6">
+            <span className="text-[16px] font-bold text-gray-900">Resumo do Pedido</span>
           </div>
-          {isSubtotalOpen && (
-            <div className="space-y-3 pb-3 text-[14px] text-gray-500">
-              <div className="flex justify-between"><span>Subtotal</span><span className="text-gray-900">R$ {formatPrice(subtotal)}</span></div>
-              <div className="flex justify-between"><span>Descontos</span><span className="text-[#FF2C55]">- R$ {formatPrice(productDiscount + couponAmount)}</span></div>
+          
+          <div className="space-y-4 text-[14px]">
+            {/* Subtotal do Produto com Chevron */}
+            <div className="flex justify-between items-center cursor-pointer" onClick={() => setIsSubtotalOpen(!isSubtotalOpen)}>
+              <div className="flex items-center space-x-2">
+                <span className="font-bold text-gray-900">Subtotal do produto</span>
+                {isSubtotalOpen ? <ChevronUp size={16} className="text-gray-400" /> : <ChevronDown size={16} className="text-gray-400" />}
+              </div>
+              <span className="font-bold text-gray-900">R$ {formatPrice(subtotal)}</span>
             </div>
-          )}
-          <div className="pt-3 border-t flex justify-between items-center">
-            <span className="text-[16px] font-bold text-gray-900">Total</span>
-            <span className="text-[18px] font-bold text-gray-900">R$ {formatPrice(finalTotal)}</span>
+
+            {/* Detalhes do Subtotal (Aberto por padrão) */}
+            {isSubtotalOpen && (
+              <div className="pl-4 space-y-3">
+                <div className="flex justify-between text-gray-600">
+                  <span>Preço original</span>
+                  <span>R$ {formatPrice(originalSubtotal)}</span>
+                </div>
+                <div className="flex justify-between text-gray-600">
+                  <span>Desconto no produto</span>
+                  <span className="text-[#FF2C55]">- R$ {formatPrice(productDiscount)}</span>
+                </div>
+              </div>
+            )}
+
+            {/* Total com Estilo da Imagem */}
+            <div className="pt-4 border-t border-gray-100 mt-2">
+              <div className="flex justify-between items-start">
+                <span className="text-[17px] font-bold text-gray-900 mt-1">Total</span>
+                <div className="flex flex-col items-end">
+                  <span className="text-[20px] font-bold text-gray-900">R$ {formatPrice(finalTotal)}</span>
+                  <span className="text-[12px] text-gray-400 font-medium">Impostos inclusos</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* FORMA DE PAGAMENTO */}
         <div className="bg-white mt-2.5 p-4 mb-[20px]">
           <h3 className="text-[16px] font-bold text-gray-900 mb-6">Forma de pagamento</h3>
           
@@ -328,7 +341,6 @@ const CheckoutBackup: React.FC = () => {
         </div>
       </div>
 
-      {/* RODAPÉ FIXO CLONE 1:1 */}
       <div className="fixed bottom-0 left-0 right-0 z-50">
         <div className="bg-white px-4 py-3 border-t">
           <p className="text-[11px] text-gray-400 leading-tight">
